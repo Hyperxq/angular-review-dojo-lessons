@@ -1,0 +1,465 @@
+/* Tokens. See DESIGN.md for the reasoning. light-dark() follows color-scheme, which the theme toggle pins. */
+:root {
+  color-scheme: light dark;
+
+  --paper: light-dark(#f7f4ee, #16150f);
+  --paper-raised: light-dark(#fffdf9, #1e1c16);
+  --paper-sunk: light-dark(#efe9de, #22201a);
+  --ink: light-dark(#1d1b18, #ece6da);
+  --ink-2: light-dark(#4b463f, #c4bcad);
+  --ink-3: light-dark(#6b6459, #9d9586);
+  --rule: light-dark(#ddd4c5, #36322a);
+  --rule-strong: light-dark(#c4b9a6, #4a453b);
+  --accent: light-dark(#b8321f, #f08a6c);
+  --accent-ink: light-dark(#fffaf5, #1a0e0a);
+  --accent-soft: light-dark(#f5e2d9, #3a1f17);
+  --focus: light-dark(#1f5f99, #8cc2f2);
+
+  --note: light-dark(#2a5a86, #8fbbe3);
+  --note-soft: light-dark(#e3ecf4, #182634);
+  --tip: light-dark(#356b3f, #92c99b);
+  --tip-soft: light-dark(#e3eee0, #19281b);
+  --important: var(--accent);
+  --important-soft: var(--accent-soft);
+  --warning: light-dark(#8a5300, #e8b464);
+  --warning-soft: light-dark(#f6ead3, #2e2412);
+  --caution: light-dark(#a3222c, #f0868d);
+  --caution-soft: light-dark(#f6dfe0, #351a1c);
+
+  /* Marble values: distinct hues, none violet, all readable with --accent-ink text. */
+  --m0: light-dark(#b8321f, #e9775a);
+  --m1: light-dark(#1d6f69, #5cc0b5);
+  --m2: light-dark(#9a6412, #e0ac57);
+  --m3: light-dark(#2b5c98, #7fadea);
+  --m4: light-dark(#4a7428, #9fcf74);
+  --m5: light-dark(#a3346a, #ea86b5);
+
+  --font-text: 'Newsreader', 'Iowan Old Style', 'Charter', Georgia, serif;
+  --font-ui: 'Instrument Sans', system-ui, sans-serif;
+  --font-code: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --step--1: 0.8125rem;
+  --step-0: 0.9375rem;
+  --step-text: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  --step-1: 1.25rem;
+  --step-2: clamp(1.375rem, 1.2rem + 0.6vw, 1.625rem);
+  --step-3: clamp(2rem, 1.5rem + 2vw, 3rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+
+  --radius-s: 4px;
+  --radius-m: 8px;
+  /* rem, not ch: prose, code and diagrams use different fonts but must share one right edge. */
+  --measure: 43rem;
+  --shadow: 0 1px 2px light-dark(rgb(60 40 20 / 0.06), rgb(0 0 0 / 0.4)),
+    0 6px 20px -8px light-dark(rgb(60 40 20 / 0.14), rgb(0 0 0 / 0.5));
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scrollbar-color: var(--rule-strong) transparent;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: var(--step-0);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: var(--rule-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color 160ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a:hover {
+    text-decoration-color: var(--accent);
+  }
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-text);
+  font-weight: 560;
+  line-height: 1.2;
+  text-wrap: balance;
+  margin: 0;
+}
+
+code,
+kbd,
+pre {
+  font-family: var(--font-code);
+  font-size: 0.86em;
+  font-variant-ligatures: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Buttons: one family, two weights. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.5rem;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-m);
+  background: var(--paper-raised);
+  color: var(--ink);
+  font: 550 var(--step-0) / 1 var(--font-ui);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 140ms var(--ease-out),
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+.button--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.button[aria-pressed='true'] {
+  background: var(--tip-soft);
+  border-color: var(--tip);
+  color: var(--tip);
+}
+
+.button--quiet {
+  border-color: transparent;
+  background: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .button:hover {
+    border-color: var(--ink-3);
+  }
+
+  .button--primary:hover {
+    border-color: var(--accent);
+    background: color-mix(in oklab, var(--accent) 88%, var(--ink));
+  }
+
+  .button--quiet:hover {
+    background: var(--paper-sunk);
+    border-color: transparent;
+  }
+}
+
+.icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Lesson prose, rendered from Markdown through [innerHTML]. */
+.prose {
+  font-family: var(--font-text);
+  font-size: var(--step-text);
+  line-height: 1.65;
+  font-optical-sizing: auto;
+  hanging-punctuation: first;
+}
+
+.prose > * {
+  max-width: var(--measure);
+}
+
+.prose p,
+.prose ul,
+.prose ol,
+.prose table,
+.prose pre,
+.prose blockquote,
+.prose .callout,
+.prose .table-scroll {
+  margin: 0 0 1.1em;
+}
+
+.prose h2 {
+  font-size: var(--step-2);
+  margin: 2.2em 0 0.6em;
+}
+
+.prose h3 {
+  font-size: var(--step-1);
+  margin: 1.8em 0 0.5em;
+}
+
+.prose h4 {
+  font-size: 1.05em;
+  margin: 1.5em 0 0.4em;
+}
+
+.prose li + li {
+  margin-top: 0.3em;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.3em;
+}
+
+.prose li::marker {
+  color: var(--ink-3);
+}
+
+.prose strong {
+  font-weight: 640;
+}
+
+.prose :not(pre) > code {
+  padding: 0.08em 0.32em;
+  border-radius: var(--radius-s);
+  background: var(--paper-sunk);
+  font-size: 0.82em;
+  overflow-wrap: anywhere;
+}
+
+.prose blockquote {
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--rule-strong);
+  color: var(--ink-2);
+  font-style: italic;
+}
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: var(--space-7) 0;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.prose table {
+  border-collapse: collapse;
+  font-family: var(--font-ui);
+  font-size: var(--step-0);
+  line-height: 1.45;
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+
+.prose th,
+.prose td {
+  padding: 0.55em 0.8em 0.55em 0;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose th {
+  font-weight: 600;
+  color: var(--ink-2);
+  border-bottom-color: var(--rule-strong);
+}
+
+.prose .table-scroll table {
+  margin: 0;
+  min-width: 34rem;
+}
+
+.prose pre.code {
+  padding: var(--space-4);
+  border-radius: var(--radius-m);
+  background: var(--paper-sunk);
+  overflow-x: auto;
+  line-height: 1.55;
+}
+
+/* Callouts: tinted surface, 1px frame, labelled with a drawn icon. */
+.callout {
+  --tone: var(--note);
+  --tone-soft: var(--note-soft);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid color-mix(in oklab, var(--tone) 30%, transparent);
+  border-radius: var(--radius-m);
+  background: var(--tone-soft);
+}
+
+.callout > :last-child {
+  margin-bottom: 0;
+}
+
+.callout--tip {
+  --tone: var(--tip);
+  --tone-soft: var(--tip-soft);
+}
+
+.callout--important {
+  --tone: var(--important);
+  --tone-soft: var(--important-soft);
+}
+
+.callout--warning {
+  --tone: var(--warning);
+  --tone-soft: var(--warning-soft);
+}
+
+.callout--caution {
+  --tone: var(--caution);
+  --tone-soft: var(--caution-soft);
+}
+
+.prose .callout__label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-2);
+  color: var(--tone);
+  font: 650 var(--step--1) / 1.2 var(--font-ui);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.callout__label::before {
+  content: '';
+  width: 1rem;
+  height: 1rem;
+  background: currentColor;
+  mask: var(--callout-icon) center / contain no-repeat;
+}
+
+.callout--note,
+.callout--tip {
+  --callout-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 11v5M12 8h.01'/%3E%3C/svg%3E");
+}
+
+.callout--tip {
+  --callout-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z'/%3E%3C/svg%3E");
+}
+
+.callout--important,
+.callout--warning,
+.callout--caution {
+  --callout-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.3 3.9 2.4 17.6A2 2 0 0 0 4.1 20.6h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z'/%3E%3Cpath d='M12 9v4M12 17h.01'/%3E%3C/svg%3E");
+}
+
+/* Syntax colours (highlight.js classes), tuned to the paper palette. */
+.hljs-comment,
+.hljs-quote {
+  color: var(--ink-3);
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-meta .hljs-keyword {
+  color: var(--accent);
+}
+
+.hljs-string,
+.hljs-attr .hljs-string,
+.hljs-template-tag {
+  color: var(--tip);
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-symbol {
+  color: var(--warning);
+}
+
+.hljs-title,
+.hljs-title.function_,
+.hljs-title.class_,
+.hljs-section {
+  color: var(--note);
+}
+
+.hljs-attr,
+.hljs-attribute,
+.hljs-name,
+.hljs-tag {
+  color: var(--m1);
+}
+
+.hljs-variable,
+.hljs-params,
+.hljs-property {
+  color: var(--ink);
+}
+
+.hljs-meta,
+.hljs-decorator {
+  color: var(--m5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

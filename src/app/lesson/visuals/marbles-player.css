@@ -1,0 +1,317 @@
+:host {
+  display: block;
+  margin: var(--space-6) 0;
+  max-width: var(--measure);
+}
+
+.player {
+  margin: 0;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-m);
+  background: var(--paper-raised);
+  box-shadow: var(--shadow);
+  font-family: var(--font-ui);
+}
+
+.stage {
+  overflow-x: auto;
+  padding: var(--space-5) var(--space-5) var(--space-3);
+}
+
+.grid {
+  --mark: 1.625rem;
+  display: grid;
+  grid-template-columns: minmax(3rem, max-content) minmax(calc(var(--frames) * 1.15rem), 1fr);
+  column-gap: var(--space-4);
+  row-gap: var(--space-3);
+  align-items: start;
+  position: relative;
+}
+
+.label {
+  grid-column: 1;
+  min-height: var(--mark);
+  display: flex;
+  align-items: center;
+  font: 600 var(--step--1) / 1.2 var(--font-code);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.lane,
+.ruler,
+.head-lane {
+  grid-column: 2;
+}
+
+/* Every lane shares this inset box, so the same frame lands on the same x in every row. */
+.axis {
+  position: relative;
+  height: var(--mark);
+  margin-inline: 0;
+}
+
+.rail {
+  position: absolute;
+  top: 50%;
+  height: 1px;
+  background: var(--rule-strong);
+  transform-origin: left center;
+}
+
+.rail:not(.rail--live) {
+  background: repeating-linear-gradient(90deg, var(--rule-strong) 0 3px, transparent 3px 7px);
+}
+
+.rail--live {
+  height: 2px;
+  margin-top: -0.5px;
+  background: var(--ink-2);
+}
+
+.mark {
+  position: absolute;
+  top: 50%;
+  width: min(var(--mark), calc(100cqw / var(--frames)));
+  height: var(--mark);
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  scale: 0.6;
+  transition:
+    opacity 160ms var(--ease-out),
+    scale 220ms var(--ease-out);
+}
+
+.lane .axis,
+.ruler .axis,
+.head-lane .axis {
+  container-type: inline-size;
+}
+
+.mark.is-on {
+  opacity: 1;
+  scale: 1;
+}
+
+.mark--value {
+  width: min(var(--mark), calc(100cqw / var(--frames) - 2px));
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--tone, var(--m0));
+  color: var(--accent-ink);
+  font: 650 0.8125rem / 1 var(--font-code);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.18);
+}
+
+.mark--complete::before {
+  content: '';
+  width: 2px;
+  height: 100%;
+  border-radius: 1px;
+  background: var(--ink);
+}
+
+.mark--error,
+.mark--cancel {
+  width: var(--mark);
+}
+
+.mark svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.mark--error svg {
+  stroke: var(--caution);
+  stroke-width: 3.25;
+}
+
+.mark--cancel svg {
+  stroke: var(--ink-3);
+  stroke-width: 2;
+  stroke-dasharray: none;
+}
+
+.note {
+  margin: var(--space-1) 0 0;
+  color: var(--ink-3);
+  font: italic 400 var(--step--1) / 1.35 var(--font-text);
+  font-size: 0.875rem;
+}
+
+.ruler .axis {
+  height: 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+
+.tick {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 4px;
+  background: var(--rule-strong);
+}
+
+.tick--major {
+  height: 7px;
+  background: var(--ink-3);
+}
+
+.tick span {
+  position: absolute;
+  top: 8px;
+  translate: -50% 0;
+  font: 500 0.6875rem / 1 var(--font-code);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The playhead spans every lane: it sits in the lane column across all rows. */
+.head-lane {
+  grid-row: 1 / span var(--rows);
+  align-self: stretch;
+  pointer-events: none;
+}
+
+.head-lane .axis {
+  height: 100%;
+}
+
+.head {
+  position: absolute;
+  top: calc(var(--space-2) * -1);
+  bottom: calc(var(--space-2) * -1);
+  width: 2px;
+  translate: -1px 0;
+  border-radius: 1px;
+  background: var(--accent);
+  opacity: 0.85;
+}
+
+.head::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  translate: -50% 0;
+  border-radius: 2px;
+  rotate: 45deg;
+  background: var(--accent);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--rule);
+}
+
+.play {
+  min-width: 6.5rem;
+  justify-content: center;
+}
+
+.controls .button--quiet {
+  padding: 0 var(--space-2);
+}
+
+.controls .button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.scrub {
+  flex: 1;
+  min-width: 4rem;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.clock {
+  min-width: 3.5rem;
+  text-align: right;
+  font: 600 var(--step--1) / 1 var(--font-code);
+  font-variant-numeric: tabular-nums;
+}
+
+.clock span {
+  color: var(--ink-3);
+  font-weight: 400;
+}
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-5);
+  padding: var(--space-3) var(--space-5) var(--space-4);
+  border-top: 1px solid var(--rule);
+  background: var(--paper-sunk);
+  border-radius: 0 0 var(--radius-m) var(--radius-m);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.legend .mark {
+  --mark: 1.125rem;
+  position: relative;
+  top: auto;
+  translate: none;
+  width: var(--mark);
+  font-size: 0.625rem;
+}
+
+.source summary {
+  cursor: pointer;
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+
+.source pre {
+  margin: var(--space-3) 0 0;
+  white-space: pre;
+  overflow-x: auto;
+  font-size: 0.8125rem;
+  color: var(--ink-2);
+}
+
+@media (max-width: 40rem) {
+  .stage,
+  .controls,
+  .foot {
+    padding-inline: var(--space-4);
+  }
+
+  .grid {
+    --mark: 1.375rem;
+    column-gap: var(--space-3);
+  }
+
+  .play {
+    min-width: 0;
+  }
+}

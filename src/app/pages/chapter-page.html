@@ -1,0 +1,152 @@
+@if (source.isLoading() && !lesson()) {
+  <p class="state" aria-live="polite">Loading the lesson…</p>
+} @else if (source.error() || !lesson()) {
+  <div class="state">
+    <h1>This lesson is not here yet</h1>
+    <p>
+      There is no <code>{{ topic() }}</code> lesson in the reader. If its <code>LESSON.md</code> exists in the dojo, run
+      <code>bun run sync</code> and reload.
+    </p>
+    <a class="button" routerLink="/">See all lessons</a>
+  </div>
+} @else if (!current()) {
+  <div class="state">
+    <h1>No page called “{{ page() }}”</h1>
+    <p>The {{ name() }} lesson has no page with that name.</p>
+    <a class="button" [routerLink]="['/', topic(), pages()[0].slug]">Go to the start of the lesson</a>
+  </div>
+} @else {
+  <div class="layout">
+    <nav class="rail" [class.is-open]="railOpen()" aria-label="Chapters">
+      <p class="rail__topic">
+        <a routerLink="/">Lessons</a>
+        <span aria-hidden="true">/</span>
+        {{ name() }}
+      </p>
+      <button
+        type="button"
+        class="button rail__toggle"
+        [attr.aria-expanded]="railOpen()"
+        aria-controls="chapter-list"
+        (click)="railOpen.set(!railOpen())"
+      >
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" /></svg>
+        Chapters
+        <span class="rail__count">{{ doneCount() }} of {{ chapterCount() }} done</span>
+      </button>
+      <ol class="rail__list" id="chapter-list">
+        @for (item of pages(); track item.slug) {
+          <li>
+            <a
+              [routerLink]="['/', topic(), item.slug]"
+              [attr.aria-current]="item.slug === page() ? 'page' : null"
+              [class.is-done]="item.chapter && progress.has(chapterKey(topic(), item.slug))"
+            >
+              <span class="rail__mark" aria-hidden="true">
+                @if (item.chapter && progress.has(chapterKey(topic(), item.slug))) {
+                  <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+                } @else if (item.chapter) {
+                  {{ item.chapter.number }}
+                }
+              </span>
+              <span class="rail__label" [innerHTML]="inline(item.title)"></span>
+              @if (item.chapter && progress.has(chapterKey(topic(), item.slug))) {
+                <span class="visually-hidden">(done)</span>
+              }
+            </a>
+          </li>
+        }
+      </ol>
+    </nav>
+
+    <article class="page">
+      <header class="page__head">
+        <h1 #heading tabindex="-1" [innerHTML]="inline(current().title)"></h1>
+        <p class="page__meta">
+          @if (current().chapter; as chapter) {
+            <span>Chapter {{ chapter.number }}</span>
+            @if (exercise(); as ex) {
+              <span>Exercise {{ ex.number }}</span>
+              <code>{{ ex.path }}</code>
+            }
+          } @else {
+            <span>{{ name() }}</span>
+          }
+        </p>
+      </header>
+
+      <app-lesson-body [markdown]="current().body" />
+
+      @if (current().chapter; as chapter) {
+        @if (chapter.reviewQuestions.length) {
+          <section class="review" aria-labelledby="review-title">
+            <h2 id="review-title">Review questions</h2>
+            <p class="review__hint">Ask each one while you read the exercise code, and tick it off.</p>
+            <ul>
+              @for (question of chapter.reviewQuestions; track $index; let i = $index) {
+                <li>
+                  <label>
+                    <input
+                      type="checkbox"
+                      [checked]="progress.has(questionKey(topic(), current().slug, i))"
+                      (change)="progress.toggle(questionKey(topic(), current().slug, i))"
+                    />
+                    <span [innerHTML]="inline(question)"></span>
+                  </label>
+                </li>
+              }
+            </ul>
+          </section>
+        }
+
+        @if (exercise(); as ex) {
+          <section class="exercise" aria-labelledby="exercise-title">
+            <h2 id="exercise-title">Now do exercise {{ ex.number }}</h2>
+            <p>
+              Open <code>{{ ex.path }}</code> in the dojo, read <code>TICKET.md</code> and look for the defects before you
+              run anything. When you have a theory, run the exercise's spec:
+            </p>
+            <div class="command">
+              <code>{{ ex.command }}</code>
+              <app-copy-button [text]="ex.command" label="Copy the test command" />
+            </div>
+          </section>
+        }
+
+        <div class="done">
+          <button
+            type="button"
+            class="button"
+            [attr.aria-pressed]="progress.has(chapterKey(topic(), current().slug))"
+            (click)="progress.toggle(chapterKey(topic(), current().slug))"
+          >
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+            {{ progress.has(chapterKey(topic(), current().slug)) ? 'Done' : 'Mark chapter as done' }}
+          </button>
+        </div>
+      }
+
+      <nav class="pager" aria-label="Lesson pages">
+        @if (previous(); as prev) {
+          <a class="pager__link" [routerLink]="['/', topic(), prev.slug]" rel="prev">
+            <span class="pager__dir">Previous</span>
+            <span class="pager__title" [innerHTML]="inline(prev.title)"></span>
+          </a>
+        } @else {
+          <span></span>
+        }
+        @if (next(); as nxt) {
+          <a class="pager__link pager__link--next" [routerLink]="['/', topic(), nxt.slug]" rel="next">
+            <span class="pager__dir">Next</span>
+            <span class="pager__title" [innerHTML]="inline(nxt.title)"></span>
+          </a>
+        } @else {
+          <a class="pager__link pager__link--next" routerLink="/">
+            <span class="pager__dir">End of the lesson</span>
+            <span class="pager__title">Back to all lessons</span>
+          </a>
+        }
+      </nav>
+    </article>
+  </div>
+}

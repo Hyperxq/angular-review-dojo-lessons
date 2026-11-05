@@ -1,0 +1,51 @@
+<div class="index">
+  <header class="intro">
+    <h1>Read the lesson, then review the code</h1>
+    <p>
+      Every topic in the Angular Review Dojo has a lesson to read before its exercises. Each chapter rebuilds the ideas
+      one exercise needs, starting from what you knew in Angular 17, and ends with the questions to ask while you read
+      the code. The examples use other domains, so the lesson never gives the defect away.
+    </p>
+  </header>
+
+  @if (catalog.index.isLoading()) {
+    <p class="state" aria-live="polite">Loading lessons…</p>
+  } @else if (catalog.index.error()) {
+    <p class="state">
+      The lesson index did not load. Run <code>bun run sync</code> with the dojo checked out next to this folder, then
+      reload.
+    </p>
+  } @else if (catalog.parts().length === 0) {
+    <p class="state">
+      No lessons yet. Run <code>bun run sync</code> with the dojo checked out next to this folder, then reload.
+    </p>
+  } @else {
+    @for (group of catalog.parts(); track group.part) {
+      <section class="part" [attr.aria-labelledby]="'part-' + group.part">
+        <h2 [id]="'part-' + group.part">{{ partNames[group.part + ''] }}</h2>
+        <ul class="topics">
+          @for (entry of group.entries; track entry.topic) {
+            <li class="topic">
+              <a class="topic__link" [routerLink]="['/', entry.topic, resume(entry).slug]">
+                <span class="topic__name">{{ entry.name }}</span>
+                <span class="topic__title" [innerHTML]="inline(resume(entry).next)"></span>
+                <span class="topic__meta">
+                  <span class="ticks" aria-hidden="true">
+                    @for (chapter of entry.chapters; track chapter.number) {
+                      <span class="tick" [class.is-done]="done(entry, chapter.number)"></span>
+                    }
+                  </span>
+                  <span>{{ doneCount(entry) }} of {{ entry.chapters.length }} chapters done</span>
+                </span>
+                <span class="topic__go">
+                  {{ resume(entry).label }}
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                </span>
+              </a>
+            </li>
+          }
+        </ul>
+      </section>
+    }
+  }
+</div>
