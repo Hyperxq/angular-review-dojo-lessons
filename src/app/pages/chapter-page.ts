@@ -1,19 +1,33 @@
 import { httpResource } from '@angular/common/http';
-import { Component, ElementRef, computed, effect, inject, input, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  ElementRef,
+  Injector,
+  afterNextRender,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { splitLesson } from '../lesson/parse/lesson';
 import { LessonBody } from '../lesson/render/lesson-body';
 import { renderInline } from '../lesson/render/segments';
 import { Catalog, chapterSlug, lessonPages } from '../lessons/catalog';
 import { Progress, chapterKey, questionKey } from '../lessons/progress';
 import { CopyButton } from '../shared/copy-button';
+import { ReadingMode, readingCommand } from '../shell/reading-mode';
 
 @Component({
   selector: 'app-chapter-page',
   imports: [RouterLink, LessonBody, CopyButton],
   templateUrl: './chapter-page.html',
   styleUrl: './chapter-page.css',
+  host: { '(document:keydown)': 'onKey($event)', '(window:scroll)': 'measureProgress()' },
 })
 export class ChapterPage {
   readonly topic = input.required<string>();
@@ -22,6 +36,9 @@ export class ChapterPage {
   private readonly catalog = inject(Catalog);
   protected readonly progress = inject(Progress);
   private readonly title = inject(Title);
+  private readonly router = inject(Router);
+  private readonly injector = inject(Injector);
+  protected readonly reading = inject(ReadingMode);
 
   protected readonly source = httpResource.text(() => `lessons/${this.topic()}.md`);
   protected readonly lesson = computed(() => (this.source.hasValue() ? splitLesson(this.source.value()) : null));
@@ -54,6 +71,8 @@ export class ChapterPage {
   protected readonly chapterCount = computed(() => this.pages().filter((page) => page.chapter).length);
 
   protected readonly railOpen = signal(false);
+  /** Percent of the page scrolled, for the reading-mode progress bar. */
+  protected readonly readProgress = signal(0);
   private readonly heading = viewChild<ElementRef<HTMLElement>>('heading');
   private lastSlug: string | null = null;
 
@@ -63,6 +82,8 @@ export class ChapterPage {
   protected readonly chapterSlug = chapterSlug;
 
   constructor() {
+    this.reading.available.set(true);
+    inject(DestroyRef).onDestroy(() => this.reading.available.set(false));
     effect(() => {
       const page = this.current();
       this.title.setTitle(page ? `${stripCode(page.title)} · ${this.name()} · Review Dojo Lessons` : 'Review Dojo Lessons');
@@ -76,6 +97,55 @@ export class ChapterPage {
       this.lastSlug = slug;
       this.railOpen.set(false);
     });
+  }
+
+  /** Splits after each slash so a long path wraps between folders, never inside a name. */
+  protected pathParts(path: string): string[] {
+    return path.split(/(?<=\/)/);
+  }
+
+  protected pageLabel(page: { readonly slug: string; readonly title: string }): string {
+    return stripCode(page.title);
+  }
+
+  protected toggleReading(anchor?: Element): void {
+    this.keepPlace(() => this.reading.toggle(), anchor);
+  }
+
+  protected onKey(event: KeyboardEvent): void {
+    const command = readingCommand(event, this.reading.on());
+    if (!command || !this.current()) return;
+    if (command === 'toggle') this.toggleReading();
+    else if (command === 'exit') this.keepPlace(() => this.reading.set(false));
+    else {
+      const target = command === 'previous' ? this.previous() : this.next();
+      if (!target) return;
+      void this.router.navigate(['/', this.topic(), target.slug]);
+    }
+    event.preventDefault();
+  }
+
+  protected measureProgress(): void {
+    const root = document.documentElement;
+    const room = root.scrollHeight - root.clientHeight;
+    this.readProgress.set(room > 0 ? Math.round(Math.min(1, Math.max(0, root.scrollTop / room)) * 100) : 0);
+  }
+
+  /** Header and rail come and go above the text; scroll so the line being read stays where it was. */
+  private keepPlace(change: () => void, anchor?: Element): void {
+    const target =
+      anchor ?? document.elementFromPoint?.(innerWidth / 2, innerHeight / 3)?.closest('.page *') ?? this.heading()?.nativeElement;
+    const before = target?.getBoundingClientRect().top;
+    change();
+    afterNextRender(
+      () => {
+        if (!target?.isConnected || before === undefined) return;
+        const delta = target.getBoundingClientRect().top - before;
+        if (delta !== 0) window.scrollBy(0, delta);
+        this.measureProgress();
+      },
+      { injector: this.injector },
+    );
   }
 }
 

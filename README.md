@@ -20,6 +20,18 @@ bun run sync    # only the copy step
 `DOJO_ROOT=/path/to/dojo bun run sync` reads the dojo from somewhere else. A topic without a `LESSON.md` is left out of
 the index; a new one shows up on the next sync with no code change.
 
+## Keyboard shortcuts
+
+| Key | On a chapter page |
+|-----|-------------------|
+| `R` | turn reading mode on or off |
+| `Esc` | leave reading mode |
+| `←` / `→` | previous / next chapter, in reading mode |
+
+Reading mode hides the header and the chapter list so only the lesson is left, with a progress bar along the top and
+a small previous/next control in the bottom corner. The choice is remembered. Shortcuts do nothing while you type in
+a field, and the arrows stay with the marble player when focus is inside it.
+
 ## How it fits together
 
 - `scripts/sync-lessons.ts` copies `src/app/exercises/*/LESSON.md` from the dojo to `public/lessons/<topic>.md` and writes
@@ -50,4 +62,4 @@ Besides Angular 22.2 (core, common, router, platform-browser), RxJS and tslib, w
 Dev tooling is what `ng new` installs for Vitest: `@angular/build`, `@angular/cli`, `@angular/compiler-cli`, `vitest`,
 `jsdom`, `typescript`, `prettier`. Every version is pinned exactly.
 
-Fonts (Newsreader, Instrument Sans, JetBrains Mono) load from Google Fonts; see `DESIGN.md`.
+Fonts (Atkinson Hyperlegible Next, Newsreader, Atkinson Hyperlegible Mono) load from Google Fonts; see `DESIGN.md`.

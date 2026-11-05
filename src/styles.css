@@ -5,7 +5,7 @@
   --paper: light-dark(#f7f4ee, #16150f);
   --paper-raised: light-dark(#fffdf9, #1e1c16);
   --paper-sunk: light-dark(#efe9de, #22201a);
-  --ink: light-dark(#1d1b18, #ece6da);
+  --ink: light-dark(#1d1b18, #e4ddd0);
   --ink-2: light-dark(#4b463f, #c4bcad);
   --ink-3: light-dark(#6b6459, #9d9586);
   --rule: light-dark(#ddd4c5, #36322a);
@@ -34,9 +34,18 @@
   --m4: light-dark(#4a7428, #9fcf74);
   --m5: light-dark(#a3346a, #ea86b5);
 
-  --font-text: 'Newsreader', 'Iowan Old Style', 'Charter', Georgia, serif;
-  --font-ui: 'Instrument Sans', system-ui, sans-serif;
-  --font-code: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* Code: a raised block, plain ink for names, colour kept for the few tokens that change how code reads.
+     No red: in code it reads as an error. Each hue is above 6:1 on --code-ground in its theme. */
+  --code-ground: var(--paper-raised);
+  --code-frame: color-mix(in oklab, var(--rule) 70%, transparent);
+  --code-keyword: light-dark(#2c5577, #93b4d4);
+  --code-string: light-dark(#3f6845, #a9c79e);
+  --code-number: light-dark(#7d5a1f, #d4b483);
+
+  --font-text: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --font-display: 'Newsreader', 'Iowan Old Style', 'Charter', Georgia, serif;
+  --font-ui: var(--font-text);
+  --font-code: 'Atkinson Hyperlegible Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
   --step--1: 0.8125rem;
   --step-0: 0.9375rem;
@@ -56,13 +65,32 @@
 
   --radius-s: 4px;
   --radius-m: 8px;
+  /* One frame for header, rail and content so their outer edges line up at every width. */
+  --gutter: var(--space-5);
+  --frame: 72rem;
   /* rem, not ch: prose, code and diagrams use different fonts but must share one right edge. */
-  --measure: 43rem;
+  --measure: 41rem;
+  --measure-wide: 54rem;
+  --rail: 14rem;
+  --rail-gap: 4rem;
   --shadow: 0 1px 2px light-dark(rgb(60 40 20 / 0.06), rgb(0 0 0 / 0.4)),
     0 6px 20px -8px light-dark(rgb(60 40 20 / 0.14), rgb(0 0 0 / 0.5));
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+@media (max-width: 89.99rem) {
+  :root {
+    --rail: 13rem;
+    --rail-gap: 3rem;
+  }
+}
+
+@media (max-width: 40rem) {
+  :root {
+    --gutter: var(--space-4);
+  }
 }
 
 :root[data-theme='light'] {
@@ -71,6 +99,27 @@
 
 :root[data-theme='dark'] {
   color-scheme: dark;
+}
+
+/* Light text on a dark ground blooms under subpixel smoothing; greyscale keeps strokes thin. Light stays default. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) body {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :root:not([data-theme='light']) .prose {
+    line-height: 1.7;
+    letter-spacing: 0.005em;
+  }
+}
+
+:root[data-theme='dark'] body {
+  -webkit-font-smoothing: antialiased;
+}
+
+:root[data-theme='dark'] .prose {
+  line-height: 1.7;
+  letter-spacing: 0.005em;
 }
 
 *,
@@ -92,7 +141,6 @@ body {
   font-family: var(--font-ui);
   font-size: var(--step-0);
   line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
@@ -125,7 +173,7 @@ h1,
 h2,
 h3,
 h4 {
-  font-family: var(--font-text);
+  font-family: var(--font-display);
   font-weight: 560;
   line-height: 1.2;
   text-wrap: balance;
@@ -173,6 +221,15 @@ pre {
   transform: scale(0.97);
 }
 
+.button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.button:disabled:active {
+  transform: none;
+}
+
 .button--primary {
   background: var(--accent);
   border-color: var(--accent);
@@ -191,7 +248,7 @@ pre {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .button:hover {
+  .button:hover:not(:disabled) {
     border-color: var(--ink-3);
   }
 
@@ -200,7 +257,7 @@ pre {
     background: color-mix(in oklab, var(--accent) 88%, var(--ink));
   }
 
-  .button--quiet:hover {
+  .button--quiet:hover:not(:disabled) {
     background: var(--paper-sunk);
     border-color: transparent;
   }
@@ -228,6 +285,30 @@ pre {
 
 .prose > * {
   max-width: var(--measure);
+}
+
+/* Code and diagrams need more width than a line of text; the visual components set the same width on their host. */
+.prose > :is(.table-scroll, pre) {
+  max-width: var(--measure-wide);
+}
+
+@media (max-width: 40rem) {
+  .prose {
+    line-height: 1.55;
+  }
+
+  /* On a phone, figures run edge to edge so code and diagrams keep every pixel of width. */
+  .prose > :is(.table-scroll, pre),
+  :root app-lesson-body > :is(app-code-block, app-flow-diagram, app-tree-view, app-marbles-player) {
+    margin-inline: calc(-1 * var(--gutter));
+    max-width: none;
+    --figure-radius: 0;
+    --figure-edge: 0;
+  }
+
+  .prose > .table-scroll {
+    padding-inline: var(--gutter);
+  }
 }
 
 .prose p,
@@ -277,8 +358,16 @@ pre {
   padding: 0.08em 0.32em;
   border-radius: var(--radius-s);
   background: var(--paper-sunk);
-  font-size: 0.82em;
+  font-size: 0.9em;
   overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.prose :is(h2, h3, h4) code {
+  padding: 0;
+  background: none;
+  font-size: 0.85em;
 }
 
 .prose blockquote {
@@ -329,10 +418,17 @@ pre {
 
 .prose pre.code {
   padding: var(--space-4);
-  border-radius: var(--radius-m);
-  background: var(--paper-sunk);
+  border: 1px solid var(--code-frame);
+  border-inline-width: var(--figure-edge, 1px);
+  border-radius: var(--figure-radius, var(--radius-m));
+  background: var(--code-ground);
   overflow-x: auto;
-  line-height: 1.55;
+  font-size: 0.875em;
+  line-height: 1.6;
+}
+
+.prose pre.code code {
+  font-size: inherit;
 }
 
 /* Callouts: tinted surface, 1px frame, labelled with a drawn icon. */
@@ -375,9 +471,8 @@ pre {
   gap: var(--space-2);
   margin: 0 0 var(--space-2);
   color: var(--tone);
-  font: 650 var(--step--1) / 1.2 var(--font-ui);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font: 500 var(--step--1) / 1.2 var(--font-ui);
+  letter-spacing: 0;
 }
 
 .callout__label::before {
@@ -403,63 +498,51 @@ pre {
   --callout-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.3 3.9 2.4 17.6A2 2 0 0 0 4.1 20.6h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z'/%3E%3Cpath d='M12 9v4M12 17h.01'/%3E%3C/svg%3E");
 }
 
-/* Syntax colours (highlight.js classes), tuned to the paper palette. */
+/* Syntax colours (highlight.js classes). Names, properties, params and types stay in plain ink;
+   only keywords, strings, numbers and comments get a hue, and declared names get weight instead. */
 .hljs-comment,
 .hljs-quote {
   color: var(--ink-3);
-  font-style: italic;
 }
 
 .hljs-keyword,
 .hljs-selector-tag,
-.hljs-built_in,
 .hljs-meta .hljs-keyword {
-  color: var(--accent);
+  color: var(--code-keyword);
 }
 
 .hljs-string,
 .hljs-attr .hljs-string,
-.hljs-template-tag {
-  color: var(--tip);
+.hljs-template-tag,
+.hljs-regexp {
+  color: var(--code-string);
 }
 
 .hljs-number,
-.hljs-literal,
-.hljs-symbol {
-  color: var(--warning);
+.hljs-literal {
+  color: var(--code-number);
 }
 
-.hljs-title,
-.hljs-title.function_,
+/* hljs tags method calls as titles too; only declared functions and type names get the weight. */
+.hljs-function > .hljs-title,
 .hljs-title.class_,
 .hljs-section {
-  color: var(--note);
+  font-weight: 600;
 }
 
-.hljs-attr,
-.hljs-attribute,
-.hljs-name,
-.hljs-tag {
-  color: var(--m1);
-}
-
-.hljs-variable,
-.hljs-params,
-.hljs-property {
-  color: var(--ink);
-}
-
-.hljs-meta,
-.hljs-decorator {
-  color: var(--m5);
-}
-
+/* Reduced motion removes movement, not feedback: colour and opacity fades stay. Components drop their own transforms. */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  html {
+    scroll-behavior: auto;
+  }
+
+  .button {
+    transition:
+      background-color 120ms ease,
+      border-color 120ms ease;
+  }
+
+  .button:active {
+    transform: none;
   }
 }

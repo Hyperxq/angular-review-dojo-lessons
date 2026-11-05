@@ -67,4 +67,4 @@ export function lessonPages(lesson: Lesson): LessonPage[] {
 }
 
 /** Lesson chapter titles are written in sentence case without the first capital ("a subscription has..."). */
-const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+export const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);

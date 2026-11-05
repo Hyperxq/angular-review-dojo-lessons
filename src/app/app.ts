@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { ReadingMode } from './shell/reading-mode';
 import { ThemeToggle } from './shell/theme-toggle';
 
 @Component({
@@ -7,13 +8,15 @@ import { ThemeToggle } from './shell/theme-toggle';
   imports: [RouterOutlet, RouterLink, ThemeToggle],
   template: `
     <a class="skip" href="#main">Skip to the lesson</a>
-    <header class="bar">
-      <a class="brand" routerLink="/">
-        <span class="seal" aria-hidden="true"></span>
-        <span>Review Dojo <span class="brand__sub">Lessons</span></span>
-      </a>
-      <app-theme-toggle />
-    </header>
+    @if (!reading.hidesChrome()) {
+      <header class="bar">
+        <a class="brand" routerLink="/">
+          <span class="seal" aria-hidden="true"></span>
+          <span>Review Dojo <span class="brand__sub">Lessons</span></span>
+        </a>
+        <app-theme-toggle />
+      </header>
+    }
     <main id="main" tabindex="-1">
       <router-outlet />
     </main>
@@ -41,9 +44,15 @@ import { ThemeToggle } from './shell/theme-toggle';
       align-items: center;
       justify-content: space-between;
       gap: var(--space-4);
-      max-width: 82rem;
+      max-width: calc(var(--frame) + 2 * var(--gutter));
       margin: 0 auto;
-      padding: var(--space-4) var(--space-5);
+      padding: var(--space-4) var(--gutter);
+      transition: opacity 150ms var(--ease-out);
+    }
+    @starting-style {
+      .bar {
+        opacity: 0;
+      }
     }
     .brand {
       display: inline-flex;
@@ -67,11 +76,8 @@ import { ThemeToggle } from './shell/theme-toggle';
     main:focus {
       outline: none;
     }
-    @media (max-width: 40rem) {
-      .bar {
-        padding: var(--space-3) var(--space-4);
-      }
-    }
   `,
 })
-export class App {}
+export class App {
+  protected readonly reading = inject(ReadingMode);
+}

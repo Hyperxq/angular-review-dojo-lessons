@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { renderInline } from '../lesson/render/segments';
-import { Catalog, chapterSlug, type LessonEntry } from '../lessons/catalog';
+import { Catalog, capitalize, chapterSlug, type LessonEntry } from '../lessons/catalog';
 import { Progress, chapterKey } from '../lessons/progress';
 
 const PART_NAMES: Record<string, string> = {
@@ -35,7 +35,7 @@ export class TopicIndex {
     const next = entry.chapters.find((chapter) => !this.done(entry, chapter.number));
     // Every lesson opens with the same Chapter 0, so the row names the next exercise chapter instead.
     const shown = entry.chapters.find((chapter) => chapter.exercise && !this.done(entry, chapter.number)) ?? next;
-    const nextTitle = shown ? `Chapter ${shown.number}: ${shown.title}` : 'Every chapter is done';
+    const nextTitle = shown ? capitalize(shown.title) : 'Every chapter is done';
     if (this.doneCount(entry) === 0) return { slug: 'intro', label: 'Start reading', next: nextTitle };
     return next
       ? { slug: chapterSlug(next), label: `Continue with chapter ${next.number}`, next: nextTitle }

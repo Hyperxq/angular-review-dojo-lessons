@@ -19,6 +19,11 @@ interface DrawnEdge {
   readonly y: number;
 }
 
+const LABEL_AT = 0.72;
+
+const cubic = (p0: number, p1: number, p2: number, p3: number, t: number) =>
+  (1 - t) ** 3 * p0 + 3 * (1 - t) ** 2 * t * p1 + 3 * (1 - t) * t ** 2 * p2 + t ** 3 * p3;
+
 @Component({
   selector: 'app-flow-diagram',
   template: `
@@ -102,7 +107,10 @@ export class FlowDiagram {
         const y1 = a.bottom - box.top;
         const y2 = b.top - box.top - 2;
         const bend = (y2 - y1) / 2;
-        return [{ d: `M${ax},${y1} C${ax},${y1 + bend} ${bx},${y2 - bend} ${bx},${y2}`, label: edge.label, x: (ax + bx) / 2, y: (y1 + y2) / 2 }];
+        // Labels sit past the middle, towards the target, so edges fanning out of one node keep theirs apart.
+        const x = cubic(ax, ax, bx, bx, LABEL_AT);
+        const y = cubic(y1, y1 + bend, y2 - bend, y2, LABEL_AT);
+        return [{ d: `M${ax},${y1} C${ax},${y1 + bend} ${bx},${y2 - bend} ${bx},${y2}`, label: edge.label, x, y }];
       }
       // Back edge (a loop): leave from the right side and come round outside the nodes.
       const x1 = a.right - box.left;

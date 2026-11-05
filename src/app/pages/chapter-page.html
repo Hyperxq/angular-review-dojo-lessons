@@ -16,7 +16,20 @@
     <a class="button" [routerLink]="['/', topic(), pages()[0].slug]">Go to the start of the lesson</a>
   </div>
 } @else {
-  <div class="layout">
+  @if (reading.on()) {
+    <div
+      class="reading-progress"
+      role="progressbar"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      [attr.aria-valuenow]="readProgress()"
+      [attr.aria-label]="'Reading progress: ' + pageLabel(current())"
+    >
+      <span [style.transform]="'scaleX(' + readProgress() / 100 + ')'"></span>
+    </div>
+  }
+  <div class="layout" [class.is-reading]="reading.on()">
+    @if (!reading.on()) {
     <nav class="rail" [class.is-open]="railOpen()" aria-label="Chapters">
       <p class="rail__topic">
         <a routerLink="/">Lessons</a>
@@ -58,6 +71,7 @@
         }
       </ol>
     </nav>
+    }
 
     <article class="page">
       <header class="page__head">
@@ -66,13 +80,31 @@
           @if (current().chapter; as chapter) {
             <span>Chapter {{ chapter.number }}</span>
             @if (exercise(); as ex) {
-              <span>Exercise {{ ex.number }}</span>
-              <code>{{ ex.path }}</code>
+              <span class="page__meta-exercise">Exercise {{ ex.number }}</span>
+              <code>@for (part of pathParts(ex.path); track $index) {<span>{{ part }}</span><wbr />}</code>
             }
           } @else {
             <span>{{ name() }}</span>
           }
         </p>
+        <button
+          #readingToggle
+          type="button"
+          class="button button--quiet reading-toggle"
+          aria-keyshortcuts="R"
+          [attr.aria-pressed]="reading.on()"
+          (click)="toggleReading(readingToggle)"
+        >
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            @if (reading.on()) {
+              <path d="M4 4h16v16H4zM9 4v16" />
+            } @else {
+              <path d="M4 6c3-1.5 5.5-1.5 8 0 2.5-1.5 5-1.5 8 0v13c-3-1.5-5.5-1.5-8 0-2.5-1.5-5-1.5-8 0zM12 6v13" />
+            }
+          </svg>
+          {{ reading.on() ? 'Exit reading mode' : 'Reading mode' }}
+          <kbd aria-hidden="true">{{ reading.on() ? 'Esc' : 'R' }}</kbd>
+        </button>
       </header>
 
       <app-lesson-body [markdown]="current().body" />
@@ -149,4 +181,30 @@
       </nav>
     </article>
   </div>
+
+  @if (reading.on()) {
+    <nav class="reading-nav" aria-label="Chapter navigation">
+      @if (previous(); as prev) {
+        <a class="reading-nav__step" [routerLink]="['/', topic(), prev.slug]" rel="prev" [attr.aria-label]="'Previous chapter: ' + pageLabel(prev)">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" /></svg>
+        </a>
+      } @else {
+        <span class="reading-nav__step" aria-hidden="true"></span>
+      }
+      <span class="reading-nav__where">
+        @if (current().chapter; as chapter) {
+          <span class="visually-hidden">Chapter</span> {{ chapter.number }}
+        } @else {
+          {{ current().slug === 'intro' ? 'Intro' : 'End' }}
+        }
+      </span>
+      @if (next(); as nxt) {
+        <a class="reading-nav__step" [routerLink]="['/', topic(), nxt.slug]" rel="next" [attr.aria-label]="'Next chapter: ' + pageLabel(nxt)">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </a>
+      } @else {
+        <span class="reading-nav__step" aria-hidden="true"></span>
+      }
+    </nav>
+  }
 }

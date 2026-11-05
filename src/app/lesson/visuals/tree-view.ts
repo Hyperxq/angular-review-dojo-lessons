@@ -32,13 +32,14 @@ import type { TreeNode } from '../parse/tree';
     :host {
       display: block;
       margin: var(--space-5) 0 var(--space-6);
-      max-width: var(--measure);
+      max-width: var(--measure-wide);
     }
     .tree {
       margin: 0;
       padding: var(--space-4) var(--space-5);
       border: 1px solid var(--rule);
-      border-radius: var(--radius-m);
+      border-inline-width: var(--figure-edge, 1px);
+      border-radius: var(--figure-radius, var(--radius-m));
       background: var(--paper-raised);
       overflow-x: auto;
     }
@@ -96,8 +97,7 @@ import type { TreeNode } from '../parse/tree';
       border-radius: 999px;
       background: var(--accent-soft);
       color: var(--accent);
-      font: 600 0.6875rem / 1.4 var(--font-ui);
-      letter-spacing: 0.02em;
+      font: 600 0.8125rem / 1.3 var(--font-ui);
     }
   `,
 })

@@ -1,10 +1,10 @@
 :host {
   display: block;
-  padding: 0 var(--space-5) var(--space-8);
+  padding: 0 var(--gutter) var(--space-8);
 }
 
 .index {
-  max-width: 58rem;
+  max-width: var(--frame);
   margin: 0 auto;
 }
 
@@ -23,7 +23,7 @@
 }
 
 .intro p {
-  max-width: 60ch;
+  max-width: var(--measure);
   margin: var(--space-5) 0 0;
   color: var(--ink-2);
   font: 400 var(--step-text) / 1.6 var(--font-text);
@@ -71,6 +71,10 @@
   transition: background-color 160ms ease;
 }
 
+.topic__link:active {
+  background: var(--paper-sunk);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .topic__link:hover {
     background: var(--paper-sunk);
@@ -87,7 +91,7 @@
 
 .topic__name {
   grid-area: name;
-  font: 560 var(--step-2) / 1.15 var(--font-text);
+  font: 560 var(--step-2) / 1.15 var(--font-display);
 }
 
 .topic__title {
@@ -111,10 +115,10 @@
 }
 
 .tick {
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.625rem;
+  height: 0.625rem;
   border-radius: 2px;
-  border: 1px solid var(--rule-strong);
+  border: 1px solid color-mix(in oklab, var(--ink-3) 60%, transparent);
 }
 
 .tick.is-done {
@@ -137,9 +141,19 @@
   transition: translate 200ms var(--ease-out);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .topic__go .icon {
+    transition: none;
+  }
+
+  .topic__link:hover .topic__go .icon {
+    translate: none;
+  }
+}
+
 @media (max-width: 44rem) {
   :host {
-    padding: 0 var(--space-4) var(--space-7);
+    padding-bottom: var(--space-7);
   }
 
   .intro {

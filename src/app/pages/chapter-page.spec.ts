@@ -1,7 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import type { LessonEntry } from '../lessons/catalog';
 import { ChapterPage } from './chapter-page';
 
@@ -105,6 +105,85 @@ describe('ChapterPage', () => {
     const links = [...el.querySelectorAll<HTMLAnchorElement>('.pager a')].map((a) => a.getAttribute('href'));
 
     expect(links).toEqual(['/forms/intro', '/forms/chapter-2']);
+  });
+
+  describe('reading mode', () => {
+    const press = (key: string, target: EventTarget = document.body) =>
+      target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+    const toggle = (el: HTMLElement) => el.querySelector<HTMLButtonElement>('.reading-toggle')!;
+
+    it('turns on from its button, hides the rail and remembers the choice', async () => {
+      const { el, fixture } = await render('chapter-1');
+      expect(toggle(el).getAttribute('aria-pressed')).toBe('false');
+      expect(toggle(el).textContent).toContain('Reading mode');
+
+      toggle(el).click();
+      fixture.detectChanges();
+      expect(toggle(el).getAttribute('aria-pressed')).toBe('true');
+      expect(toggle(el).textContent).toContain('Exit reading mode');
+      expect(el.querySelector('nav.rail')).toBeNull();
+      expect(el.querySelector('.layout')!.classList).toContain('is-reading');
+      expect(el.querySelector('.reading-toggle')!.closest('.page__head')).not.toBeNull();
+      expect(localStorage.getItem('review-dojo-lessons:reading')).toBe('on');
+
+      TestBed.resetTestingModule();
+      const again = await render('chapter-1');
+      expect(again.el.querySelector('nav.rail')).toBeNull();
+    });
+
+    it('toggles with R and exits with Escape, but not while typing', async () => {
+      const { el, fixture } = await render('chapter-1');
+      press('r');
+      fixture.detectChanges();
+      expect(el.querySelector('nav.rail')).toBeNull();
+
+      const input = el.querySelector<HTMLInputElement>('.review input')!;
+      press('Escape', input);
+      fixture.detectChanges();
+      expect(el.querySelector('nav.rail')).toBeNull();
+
+      press('Escape');
+      fixture.detectChanges();
+      expect(el.querySelector('nav.rail')).not.toBeNull();
+    });
+
+    it('keeps previous and next in reach with named links and the arrow keys', async () => {
+      const { el, fixture } = await render('chapter-1');
+      const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+      press('ArrowRight');
+      expect(navigate).not.toHaveBeenCalled();
+
+      toggle(el).click();
+      fixture.detectChanges();
+      const links = [...el.querySelectorAll<HTMLAnchorElement>('.reading-nav a')];
+      expect(links.map((a) => a.getAttribute('aria-label'))).toEqual([
+        'Previous chapter: Before you start',
+        'Next chapter: Arrays',
+      ]);
+      expect(links.map((a) => a.getAttribute('href'))).toEqual(['/forms/intro', '/forms/chapter-2']);
+      expect(el.querySelector('.pager')).not.toBeNull();
+
+      press('ArrowRight');
+      expect(navigate).toHaveBeenLastCalledWith(['/', 'forms', 'chapter-2']);
+      press('ArrowLeft');
+      expect(navigate).toHaveBeenLastCalledWith(['/', 'forms', 'intro']);
+
+      navigate.mockClear();
+      press('ArrowRight', el.querySelector('app-marbles-player button')!);
+      press('ArrowRight', el.querySelector('.review input')!);
+      expect(navigate).not.toHaveBeenCalled();
+    });
+
+    it('shows reading progress through the chapter', async () => {
+      const { el, fixture } = await render('chapter-1');
+      expect(el.querySelector('[role=progressbar]')).toBeNull();
+
+      toggle(el).click();
+      fixture.detectChanges();
+      const bar = el.querySelector('[role=progressbar]')!;
+      expect(bar.getAttribute('aria-label')).toBe('Reading progress: Typed controls');
+      expect(bar.getAttribute('aria-valuenow')).toBe('0');
+    });
   });
 
   it('explains when the page does not exist', async () => {
