@@ -1,0 +1,293 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    code { font-family: var(--font-code); font-size: 0.92em; }
+    .c2-h { position: absolute; left: 200px; top: 120px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c2-big { position: absolute; left: 200px; top: 440px; width: 1520px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+
+    .c2-win .app-header { font-size: 32px; }
+    .c2-nav { position: absolute; left: 40px; top: 40px; width: 300px; }
+    .c2-nav div { height: 72px; padding: 0 20px; display: flex; align-items: center; border-radius: 8px; font: 400 34px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-nav div.on { background: var(--paper-sunk); color: var(--ink); font-weight: 700; }
+    .c2-list { position: absolute; left: 380px; right: 40px; top: 40px; }
+    .c2-list .label { margin-bottom: 14px; }
+    .c2-book { height: 92px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 400 36px/1 var(--font-text); }
+    .c2-book span { margin-left: auto; font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-bar { display: block; height: 24px; border-radius: 4px; background: var(--rule); margin: 0 0 34px; }
+    #c2-slot { position: absolute; left: 40px; right: 40px; top: 300px; height: 340px; border: 3px dashed var(--rule-strong); border-radius: 8px; display: grid; place-items: center; font: 700 36px/1 var(--font-text); color: var(--ink-muted); }
+
+    .c2-chip { position: absolute; box-sizing: border-box; padding: 26px 40px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 44px/1 var(--font-code); white-space: nowrap; }
+
+    .c2-table { position: absolute; display: grid; font: 400 32px/1.35 var(--font-text); }
+    .c2-table > div { display: contents; }
+    .c2-table span { padding: 18px 24px; border-bottom: 1px solid var(--rule); }
+    .c2-table code { font: 400 30px/1.35 var(--font-code); }
+    .c2-table .th span { font: 700 30px/1.3 var(--font-text); color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c2-recipes { left: 110px; top: 150px; width: 1700px; grid-template-columns: 780px 440px 480px; }
+    #c2-shapes { left: 110px; top: 220px; width: 1700px; grid-template-columns: 760px 500px 440px; }
+
+    .c2-code { left: 104px; width: 1712px; box-sizing: border-box; padding: 40px 44px; font-size: 30px; line-height: 45px; }
+    .c2-code .ln { position: relative; min-height: 45px; }
+    .c2-code.big { font-size: 34px; line-height: 51px; }
+    .c2-code.big .ln { min-height: 51px; }
+    .c2-code.small { font-size: 28px; line-height: 42px; }
+    .c2-code.small .ln { min-height: 42px; }
+    .c2-wrap { white-space: pre-wrap !important; padding-left: 4ch; text-indent: -4ch; }
+    .c2-mark { border-radius: 4px; }
+
+    #c2-warn { position: absolute; left: 200px; top: 250px; width: 1520px; box-sizing: border-box; padding: 40px 48px; border-left: 8px solid var(--warning); border-radius: 8px; background: var(--warning-soft); }
+    #c2-warn-h { font: 700 34px/1 var(--font-text); color: var(--warning); margin-bottom: 28px; }
+    #c2-warn-p { font: 400 40px/1.5 var(--font-text); }
+    #c2-warn-p span { border-radius: 4px; }
+    #c2-warn-p code { font-size: 36px; }
+
+    #c2-bad-h { position: absolute; left: 180px; top: 150px; font: 700 40px/1 var(--font-text); color: var(--ink-muted); }
+    #c2-bad { position: absolute; left: 160px; top: 230px; width: 1600px; }
+    .c2-item { padding: 18px 24px; margin-bottom: 30px; border-radius: 8px; font: 400 38px/1.45 var(--font-text); display: grid; grid-template-columns: 60px 1fr; }
+    .c2-item > b { color: var(--ink-muted); }
+    .c2-item code { font-size: 35px; }
+
+    .q { font-size: 40px; margin-bottom: 34px; }
+    .q code { font: 400 36px/1 var(--font-code); }
+  </style>
+
+  <div id="root" data-composition-id="c2" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c2-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">11:30</div>
+      <div class="chapter-title">Provider recipes and feature APIs</div>
+    </div>
+
+    <!-- c2-1: 11:30, the catalogue screen; another team's app beside it -->
+    <div id="c2-desk" class="clip world sunk" data-start="3" data-duration="8.29">
+      <div class="app c2-win" style="width: 1040px">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">11:30</span></div>
+        <div class="app-body">
+          <div class="c2-nav">
+            <div>Members</div>
+            <div class="on">Catalogue</div>
+            <div>Loans</div>
+            <div>Returns</div>
+          </div>
+          <div class="c2-list" data-hold>
+            <div class="label">Catalogue</div>
+            <div class="c2-book">Dune<span>Herbert</span></div>
+            <div class="c2-book">Foundation<span>Asimov</span></div>
+            <div class="c2-book">Hyperion<span>Simmons</span></div>
+            <div class="c2-book">Solaris<span>Lem</span></div>
+            <div class="c2-book">Kindred<span>Butler</span></div>
+            <div class="c2-book">Ubik<span>Dick</span></div>
+          </div>
+        </div>
+      </div>
+      <div id="c2-other" class="app c2-win" style="left: 1200px; top: 160px; width: 600px; height: 760px">
+        <div class="app-header"><span>Another team's app</span></div>
+        <div class="app-body">
+          <i class="c2-bar" style="width: 320px"></i>
+          <i class="c2-bar" style="width: 440px"></i>
+          <i class="c2-bar" style="width: 260px"></i>
+          <div id="c2-slot" data-hold>Catalogue</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-2: the public function, the only label -->
+    <div id="c2-api" class="clip world" data-start="11.29" data-duration="5.68">
+      <div id="c2-api-chip" class="c2-chip" style="left: 200px; top: 470px; font-size: 64px" data-hold>provideCatalogue()</div>
+    </div>
+
+    <!-- c2-3: Recipe / Gives / Instances, header only; c2-3b: rows one by one -->
+    <div id="c2-recw" class="clip world" data-start="16.97" data-duration="17.94">
+      <div id="c2-recipes" class="c2-table" data-hold>
+        <div id="c2-rh" class="th"><span>Recipe</span><span>Gives</span><span>Instances</span></div>
+        <div id="c2-r1"><span><code>SomeClass</code> (short for <code>{ provide: SomeClass, useClass: SomeClass }</code>)</span><span>A new instance of the class</span><span>One per injector with this provider</span></div>
+        <div id="c2-r2"><span><code>{ provide: T, useClass: Impl }</code></span><span>A new instance of <code>Impl</code></span><span>A new one, even if <code>Impl</code> is also provided elsewhere</span></div>
+        <div id="c2-r3"><span><code>{ provide: T, useValue: v }</code></span><span><code>v</code> itself</span><span>The value you passed</span></div>
+        <div id="c2-r4"><span><code>{ provide: T, useFactory: () =&gt; … }</code></span><span>What the factory returns</span><span>One per injector; the factory runs in an injection context</span></div>
+        <div id="c2-r5"><span><code>{ provide: T, useExisting: Other }</code></span><span>Whatever the injector gives for <code>Other</code></span><span>None of its own: an alias</span></div>
+      </div>
+    </div>
+
+    <!-- c2-4: the SocketNotifier providers, cut in whole, no line banded -->
+    <div id="c2-notifier" class="clip world" data-start="34.91" data-duration="10.76">
+      <div class="code c2-code big" style="left: 200px; width: auto; top: 340px; padding: 44px 56px" data-hold>
+        <span class="ln">providers: [</span>
+        <span class="ln">  SocketNotifier,</span>
+        <span class="ln">  { provide: Notifier, useClass: SocketNotifier },</span>
+        <span class="ln">]</span>
+      </div>
+    </div>
+
+    <!-- c2-5: heading "Replace or collect" -->
+    <div id="c2-replace" class="clip world" data-start="45.67" data-duration="8.26">
+      <div id="c2-replace-h" class="c2-big" data-hold>Replace or collect</div>
+    </div>
+
+    <!-- c2-6: SEARCH_SOURCES, band on the first multi: true -->
+    <div id="c2-search" class="clip world" data-start="53.93" data-duration="9.27">
+      <div class="code c2-code small" style="top: 170px" data-hold>
+        <span class="ln c2-wrap"><span class="k">export const</span> SEARCH_SOURCES = <span class="k">new</span> InjectionToken&lt;SearchSource[]&gt;(<span class="s">'SEARCH_SOURCES'</span>);</span>
+        <span class="ln"></span>
+        <span class="ln c">// in the catalogue feature</span>
+        <span class="ln"><span class="k">export const</span> provideCatalogSearch = () =&gt;</span>
+        <span class="ln c2-wrap">  makeEnvironmentProviders([{ provide: SEARCH_SOURCES, <span id="c2-multi" class="c2-mark">multi: <span class="k">true</span></span>, useValue: catalogueSource }]);</span>
+        <span class="ln"></span>
+        <span class="ln c">// in the events feature</span>
+        <span class="ln"><span class="k">export const</span> provideEventsSearch = () =&gt;</span>
+        <span class="ln c2-wrap">  makeEnvironmentProviders([{ provide: SEARCH_SOURCES, multi: <span class="k">true</span>, useClass: EventsSource }]);</span>
+        <span class="ln"></span>
+        <span class="ln c">// inject(SEARCH_SOURCES) -&gt; [catalogueSource, an EventsSource], in registration order</span>
+      </div>
+    </div>
+
+    <!-- c2-7: the WARNING callout -->
+    <div id="c2-warnw" class="clip world" data-start="63.2" data-duration="12.23">
+      <div id="c2-warn" data-hold>
+        <div id="c2-warn-h">Warning</div>
+        <div id="c2-warn-p">Mixing multi and regular providers for one token in the same injector throws "Cannot mix multi providers and regular providers", <span id="c2-w1">but only in development mode (the check is guarded by <code>ngDevMode</code>)</span>. In a production build the outcome depends on the order: <span id="c2-w2">a later regular provider silently wins, and a later multi provider crashes</span>. A mistake here can pass a production smoke test and still be wrong.</div>
+      </div>
+    </div>
+
+    <!-- c2-8: Shape / Nobody provides it / Good for, rows one by one; c2-8b: the optional row -->
+    <div id="c2-shapew" class="clip world" data-start="75.43" data-duration="15.44">
+      <div id="c2-shapes" class="c2-table" data-hold>
+        <div id="c2-sh" class="th"><span>Shape</span><span>Nobody provides it</span><span>Good for</span></div>
+        <div id="c2-s1"><span><code>new InjectionToken&lt;string&gt;('API_BASE_URL')</code></span><span><code>inject()</code> throws <code>NullInjectorError</code> when the code runs</span><span>Values with no sensible default: failing fast is the feature.</span></div>
+        <div id="c2-s2"><span><code>new InjectionToken&lt;number&gt;('PAGE_SIZE', { factory: () =&gt; 20 })</code></span><span>The factory's value. The token is provided in root by default.</span><span>Settings that should work out of the box and stay overridable.</span></div>
+        <div id="c2-s3"><span><code>inject(SOME_TOKEN, { optional: true })</code></span><span><code>null</code>, and the consumer handles it</span><span>Truly optional collaborators.</span></div>
+      </div>
+    </div>
+
+    <!-- c2-9: provideCatalogue, band on makeEnvironmentProviders([; c2-9b: cut in whole -->
+    <div id="c2-provide" class="clip world" data-start="90.87" data-duration="17.43">
+      <div class="code c2-code" style="top: 330px" data-hold>
+        <span class="ln c2-wrap"><span class="k">export function</span> provideCatalogue(options: { pageSize?: <span class="k">number</span> } = {}): EnvironmentProviders {</span>
+        <span class="ln">  <span class="k">return</span> <span id="c2-mep" class="c2-mark">makeEnvironmentProviders([</span></span>
+        <span class="ln">    { provide: PAGE_SIZE, useValue: options.pageSize ?? <span class="n">20</span> },</span>
+        <span class="ln c">    // ...the feature's other providers</span>
+        <span class="ln">  ]);</span>
+        <span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c2-10: "How bad is it?", the first item; c2-10b: the second -->
+    <div id="c2-badw" class="clip world" data-start="108.3" data-duration="17.96">
+      <div id="c2-bad-h">How bad is it?</div>
+      <div id="c2-bad" data-hold>
+        <div id="c2-b1" class="c2-item"><b>1.</b><span><b>An optional <code>RENEWAL_REMINDERS</code> token whose default factory returns <code>{ enabled: false }</code>.</b> Nothing crashes, and in production no member ever gets a reminder, because no app knew it had to switch them on. The feature looks finished and does nothing. <b>Blocking</b> if reminders were the point of the release, otherwise a <b>question</b> about the default.</span></div>
+        <div id="c2-b2" class="c2-item"><b>2.</b><span><b>A <code>provideCatalogue()</code> function that also registers an app-wide HTTP interceptor adding a catalogue header to every request.</b> Every consumer gets behaviour they did not ask for, on requests that have nothing to do with the catalogue. <b>Should-fix</b>: move the interceptor behind an option, or scope it to the catalogue's own requests.</span></div>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c2-questions" class="clip world note" data-start="126.26" data-duration="27.2">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c2-q1" class="q">For one <code>provideX()</code> function in the exercise, read each provider as a sentence: which token, which recipe, how many times?</div>
+        <div id="c2-q2" class="q">Could a consumer use this feature, and replace any of its dependencies in a test, without knowing an internal token?</div>
+        <div id="c2-q3" class="q">Where a token is registered more than once: is the intent "replace" or "collect", and what happens in a production build if the code says the other one?</div>
+        <div id="c2-q4" class="q">Where two tokens or two classes meet: does anyone need them to be the same object?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c2-pause" class="clip world" data-start="153.46" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c2-pause-2" class="pause-2" data-hold>Now do exercise 02.</div>
+    </div>
+
+    <audio id="c2-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="64" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-bed2" class="clip" src="assets/music/bed.mp3" data-start="126.26" data-duration="27.2" data-media-start="96" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c2-1" class="clip" src="assets/vo/c2-1.wav" data-start="3.0" data-duration="7.936" data-volume="1"></audio>
+    <audio id="vo-c2-2" class="clip" src="assets/vo/c2-2.wav" data-start="11.29" data-duration="5.333" data-volume="1"></audio>
+    <audio id="vo-c2-3" class="clip" src="assets/vo/c2-3.wav" data-start="16.97" data-duration="6.549" data-volume="1"></audio>
+    <audio id="vo-c2-3b" class="clip" src="assets/vo/c2-3b.wav" data-start="23.87" data-duration="10.688" data-volume="1"></audio>
+    <audio id="vo-c2-4" class="clip" src="assets/vo/c2-4.wav" data-start="34.91" data-duration="10.411" data-volume="1"></audio>
+    <audio id="vo-c2-5" class="clip" src="assets/vo/c2-5.wav" data-start="45.67" data-duration="7.915" data-volume="1"></audio>
+    <audio id="vo-c2-6" class="clip" src="assets/vo/c2-6.wav" data-start="53.93" data-duration="8.917" data-volume="1"></audio>
+    <audio id="vo-c2-7" class="clip" src="assets/vo/c2-7.wav" data-start="63.2" data-duration="11.883" data-volume="1"></audio>
+    <audio id="vo-c2-8" class="clip" src="assets/vo/c2-8.wav" data-start="75.43" data-duration="10.816" data-volume="1"></audio>
+    <audio id="vo-c2-8b" class="clip" src="assets/vo/c2-8b.wav" data-start="86.6" data-duration="3.925" data-volume="1"></audio>
+    <audio id="vo-c2-9" class="clip" src="assets/vo/c2-9.wav" data-start="90.87" data-duration="9.835" data-volume="1"></audio>
+    <audio id="vo-c2-9b" class="clip" src="assets/vo/c2-9b.wav" data-start="101.06" data-duration="6.891" data-volume="1"></audio>
+    <audio id="vo-c2-10" class="clip" src="assets/vo/c2-10.wav" data-start="108.3" data-duration="8.853" data-volume="1"></audio>
+    <audio id="vo-c2-10b" class="clip" src="assets/vo/c2-10b.wav" data-start="117.5" data-duration="8.405" data-volume="1"></audio>
+    <audio id="vo-c2-end" class="clip" src="assets/vo/c2-end.wav" data-start="126.26" data-duration="2.027" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: CLEAR, duration: 0.4 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c2-1: the catalogue screen, then another team's app with a slot for it
+    fadeIn("#c2-desk .c2-list", 3.1, 0.5);
+    fadeIn("#c2-other", 4.3, 0.6);
+    fadeIn("#c2-slot", 6.5, 0.5);
+    tl.fromTo("#c2-slot", { borderColor: "#c4b9a6", color: "#5f584d" }, { borderColor: "#b8321f", color: "#b8321f", duration: 0.3 }, 6.7);
+
+    // c2-2: the only thing the consumer knows
+    fadeIn("#c2-api-chip", 11.4, 0.5);
+
+    // c2-3: header first; c2-3b: rows as each recipe is named, band follows the voice
+    fadeIn("#c2-rh span", 17.1, 0.5);
+    fadeIn("#c2-r1 span", 24.0, 0.4);
+    fadeIn("#c2-r2 span", 24.6, 0.4);
+    band("#c2-r2 span", 24.8);
+    fadeIn("#c2-r3 span", 29.0, 0.4);
+    unband("#c2-r2 span", 29.0);
+    band("#c2-r3 span", 29.1);
+    fadeIn("#c2-r4 span", 30.5, 0.4);
+    fadeIn("#c2-r5 span", 30.9, 0.4);
+    unband("#c2-r3 span", 31.0);
+    band("#c2-r5 span", 31.1);
+
+    // c2-4: cut in whole, held while the questions are asked
+
+    // c2-5: the heading
+    fadeIn("#c2-replace-h", 45.8, 0.5);
+
+    // c2-6: band on the first multi: true when "collect" is named
+    band("#c2-multi", 54.6);
+
+    // c2-7: dev mode only; then what production does
+    band("#c2-w1", 66.3);
+    unband("#c2-w1", 69.4);
+    band("#c2-w2", 69.5);
+
+    // c2-8: rows one by one; c2-8b: the optional row
+    fadeIn("#c2-sh span", 75.6, 0.4);
+    fadeIn("#c2-s1 span", 76.0, 0.4);
+    band("#c2-s1 span", 76.2);
+    unband("#c2-s1 span", 83.2);
+    fadeIn("#c2-s2 span", 83.3, 0.4);
+    band("#c2-s2 span", 83.4);
+    unband("#c2-s2 span", 86.6);
+    fadeIn("#c2-s3 span", 86.7, 0.4);
+    band("#c2-s3 span", 86.8);
+
+    // c2-9: band on makeEnvironmentProviders([; c2-9b: the band clears, the whole function is read
+    band("#c2-mep", 94.6);
+    unband("#c2-mep", 101.1);
+
+    // c2-10: first item; c2-10b: second item
+    fadeIn("#c2-bad-h", 108.4, 0.4);
+    fadeIn("#c2-b1", 108.6, 0.5);
+    band("#c2-b1", 108.8);
+    unband("#c2-b1", 117.5);
+    fadeIn("#c2-b2", 117.6, 0.5);
+    band("#c2-b2", 117.7);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c2-q1", "#c2-q2", "#c2-q3", "#c2-q4"].forEach((q, i) => fadeIn(q, 126.5 + i * 0.6));
+    fadeIn("#c2-pause-2", 153.94);
+
+    window.__timelines["c2"] = tl;
+  </script>
+</template>

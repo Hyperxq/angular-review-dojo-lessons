@@ -1,0 +1,383 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c1-h { position: absolute; left: 140px; top: 84px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c1-h code { font: 600 50px/1 var(--font-code); }
+    .c1-chip { position: absolute; padding: 14px 24px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 400 34px/1 var(--font-code); white-space: nowrap; }
+    .c1-chip.err { border: 3px solid var(--caution); background: var(--caution-soft); color: var(--caution); font-weight: 700; }
+    .c1-prose code { font-family: var(--font-code); font-size: 0.9em; }
+    .c1-code { left: 140px; padding: 40px 48px; }
+    .c1-code .ln { white-space: pre-wrap; margin: 0 -48px; padding: 0 48px; background-color: rgba(245, 226, 217, 0); }
+
+    /* desk app */
+    .c1-panel-h { font: 600 48px/1.1 var(--font-display); letter-spacing: -0.01em; margin-bottom: 24px; }
+    .c1-mem { display: grid; grid-template-columns: 560px 1fr 220px; align-items: center; height: 92px; padding: 0 24px; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c1-mem b { font-weight: 700; }
+    .c1-mem span:nth-child(2) { color: var(--ink-muted); }
+    .c1-mem span:last-child { color: var(--ink-muted); font-variant-numeric: tabular-nums; text-align: right; }
+    .c1-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+    .c1-bk { height: 316px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); padding: 20px; box-sizing: border-box; }
+    .c1-cover { height: 126px; border-radius: 6px; background: var(--paper-sunk); border: 1px solid var(--rule); }
+    .c1-bk-t { margin-top: 18px; font: 700 32px/1 var(--font-text); }
+    .c1-bk-a { margin-top: 10px; font: 400 28px/1 var(--font-text); color: var(--ink-muted); }
+    .c1-bk-l { display: inline-block; margin-top: 18px; padding: 6px 14px; border: 2px solid var(--rule-strong); border-radius: 6px; font: 400 28px/1 var(--font-code); }
+
+    /* tables from LESSON.md */
+    .c1-tbl { position: absolute; left: 120px; top: 200px; width: 1680px; font: 400 32px/1.35 var(--font-text); }
+    .c1-tbl code { font: 400 30px/1.3 var(--font-code); white-space: nowrap; }
+    .c1-tr { display: grid; column-gap: 40px; padding: 22px 28px; border-bottom: 1px solid var(--rule); border-radius: 6px; background-color: rgba(245, 226, 217, 0); }
+    .c1-th { font-weight: 700; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c1-simple-tbl .c1-tr { grid-template-columns: 520px 500px 1fr; }
+    #c1-vp-tbl .c1-tr { grid-template-columns: 340px 640px 1fr; }
+    #c1-opt-tbl .c1-tr { grid-template-columns: 400px 560px 1fr; }
+    #c1-scope-tbl .c1-tr { grid-template-columns: 520px 320px 1fr; }
+
+    /* injector tree from LESSON.md */
+    .c1-tree .node { box-sizing: border-box; height: 76px; padding: 20px 28px; font: 700 30px/1 var(--font-code); display: flex; align-items: center; }
+    .c1-tree .node .badge { font: 400 28px/1 var(--font-text); }
+    .c1-tree .node.two { height: 118px; flex-direction: column; align-items: flex-start; justify-content: center; gap: 12px; }
+    .c1-tree .node.two .badge { margin-left: 0; }
+    .c1-edges path { stroke: var(--rule-strong); stroke-width: 4; fill: none; }
+
+    /* lists and paragraphs from LESSON.md */
+    .c1-li { padding: 6px 0 6px 32px; border-left: 6px solid var(--rule-strong); margin-bottom: 30px; font: 400 38px/1.35 var(--font-text); }
+    .c1-para { position: absolute; left: 140px; width: 1600px; font: 400 40px/1.5 var(--font-text); }
+    .c1-grade { padding: 24px 32px; border-radius: 8px; margin-bottom: 28px; font: 400 36px/1.45 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c1-grade b { font-weight: 700; }
+
+    #c1-questions .q { font-size: 40px; }
+    #c1-questions .q code { font: 400 36px/1 var(--font-code); }
+  </style>
+
+  <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c1-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c1-card-time" class="chapter-time">09:00</div>
+      <div id="c1-card-title" class="chapter-title">Scope, lifetime and injection context</div>
+    </div>
+
+    <!-- c1-1 the desk app, members at the counter -->
+    <div id="c1-desk" class="clip world" data-start="3" data-duration="8.14">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-panel-h">Members at the desk</div>
+          <div data-hold>
+            <div id="c1-m1" class="c1-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span><span>card 1042</span></div>
+            <div id="c1-m2" class="c1-mem"><span><b>Tom Okafor</b></span><span>Walden</span><span>card 1187</span></div>
+            <div id="c1-m3" class="c1-mem"><span><b>Mei Lin</b></span><span>Cranford</span><span>card 1203</span></div>
+            <div id="c1-m4" class="c1-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span><span>card 1251</span></div>
+            <div id="c1-m5" class="c1-mem"><span><b>Leo Park</b></span><span>Middlemarch</span><span>card 1318</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-2 the question, a test fake as the label -->
+    <div id="c1-need" class="clip world" data-start="11.14" data-duration="8.3">
+      <div class="line" style="top: 380px">Do you need an injectable at all?</div>
+      <div id="c1-fake" class="c1-chip" style="left: 200px; top: 540px" data-hold>{ provide: Catalogue, useValue: fake }</div>
+    </div>
+
+    <!-- c1-3 What you have / Simplest home / When to move up -->
+    <div id="c1-simple" class="clip world" data-start="19.44" data-duration="9.12">
+      <div class="c1-h">Do you need an injectable at all?</div>
+      <div id="c1-simple-tbl" class="c1-tbl c1-prose" data-hold>
+        <div class="c1-tr c1-th"><div>What you have</div><div>Simplest home</div><div>When to move up</div></div>
+        <div id="c1-st1" class="c1-tr"><div>A pure calculation (late fee from days overdue)</div><div>A plain function or a <code>const</code> exported from a module</div><div>Never, unless it needs injected data.</div></div>
+        <div id="c1-st2" class="c1-tr"><div>State that one component owns</div><div>A <code>signal()</code> or <code>model()</code> in that component</div><div>When other components must share it.</div></div>
+        <div id="c1-st3" class="c1-tr"><div>Shared state, or logic that needs other services</div><div>An injectable class</div><div>When scope or replacement matters, read on.</div></div>
+        <div id="c1-st4" class="c1-tr"><div>A value someone must be able to replace (configuration, a platform API)</div><div>An <code>InjectionToken</code></div><div>Only when a replacement really exists. A token nobody overrides is indirection.</div></div>
+      </div>
+    </div>
+
+    <!-- c1-4 inject(X) alone on the code ground -->
+    <div id="c1-injx" class="clip world" data-start="28.56" data-duration="8.56">
+      <div class="code c1-code" style="left: 200px; top: 440px" data-hold><span id="c1-injx-ln" class="ln">inject(X)</span></div>
+    </div>
+
+    <!-- c1-5, c1-5b the injector tree, drawn top down -->
+    <div id="c1-tree" class="clip world sunk c1-tree" data-start="37.12" data-duration="18.94">
+      <svg class="c1-edges" style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <path id="c1-e0" pathLength="1" stroke-dasharray="1" d="M960,186 V233 H480 V280 M960,233 H1120 V280" />
+        <path id="c1-e1" pathLength="1" stroke-dasharray="1" d="M1120,356 V398 H810 V440 M1120,398 H1430 V440" />
+        <path id="c1-e2" pathLength="1" stroke-dasharray="1" d="M620,558 V858 M620,658 H670 M620,758 H670 M620,858 H670" />
+        <path id="c1-e3" pathLength="1" stroke-dasharray="1" d="M1240,558 V858 M1240,658 H1290 M1240,758 H1290 M1240,858 H1290" />
+      </svg>
+      <div id="c1-n-root" class="node" style="left: 680px; top: 110px; width: 560px">Root environment injector</div>
+      <div id="c1-n-cache" class="node" style="left: 210px; top: 280px; width: 540px">CoverCache<span class="badge">[one for the app]</span></div>
+      <div id="c1-n-page" class="node" style="left: 990px; top: 280px; width: 260px">BookPage</div>
+      <div id="c1-n-t1" class="node two" style="left: 580px; top: 440px; width: 460px"><span>ReviewThread first</span><span class="badge">[providers ThreadContext]</span></div>
+      <div id="c1-n-t2" class="node two" style="left: 1200px; top: 440px; width: 460px"><span>ReviewThread second</span><span class="badge">[providers ThreadContext]</span></div>
+      <div id="c1-n-a1" class="node" style="left: 670px; top: 620px; width: 520px">ThreadContext<span class="badge">[instance 1]</span></div>
+      <div id="c1-n-a2" class="node" style="left: 670px; top: 720px; width: 300px">ReplyList</div>
+      <div id="c1-n-a3" class="node" style="left: 670px; top: 820px; width: 300px">ReplyBox</div>
+      <div id="c1-n-b1" class="node" style="left: 1290px; top: 620px; width: 520px">ThreadContext<span class="badge">[instance 2]</span></div>
+      <div id="c1-n-b2" class="node" style="left: 1290px; top: 720px; width: 300px">ReplyList</div>
+      <div id="c1-n-b3" class="node" style="left: 1290px; top: 820px; width: 300px" data-hold>ReplyBox</div>
+    </div>
+
+    <!-- c1-6 ReviewThread and ReplyBox, band on inject(ThreadContext) -->
+    <div id="c1-thread" class="clip world" data-start="56.06" data-duration="9.81">
+      <div class="code c1-code" style="top: 170px; width: 1560px; font-size: 32px" data-hold>
+<span class="ln">@Component({</span>
+<span class="ln">  selector: <span class="s">'app-review-thread'</span>,</span>
+<span class="ln">  providers: [ThreadContext],</span>
+<span class="ln">  template: <span class="s">`&lt;app-reply-list /&gt; &lt;app-reply-box /&gt;`</span>,</span>
+<span class="ln">})</span>
+<span class="ln"><span class="k">export class</span> ReviewThread {}</span>
+<span class="ln"> </span>
+<span class="ln">@Component({ selector: <span class="s">'app-reply-box'</span>, template: <span class="s">`...`</span> })</span>
+<span class="ln"><span class="k">export class</span> ReplyBox {</span>
+<span class="ln"><span class="c">  // climbs to the nearest ReviewThread and gets that thread's context</span></span>
+<span id="c1-thread-inj" class="ln">  <span class="k">private readonly</span> thread = inject(ThreadContext);</span>
+<span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c1-7 Array / Visible to / Not visible to -->
+    <div id="c1-vp" class="clip world" data-start="65.87" data-duration="7.13">
+      <div class="c1-h"><code>providers</code> and <code>viewProviders</code></div>
+      <div id="c1-vp-tbl" class="c1-tbl c1-prose" style="top: 220px" data-hold>
+        <div class="c1-tr c1-th"><div>Array</div><div>Visible to</div><div>Not visible to</div></div>
+        <div class="c1-tr"><div><code>providers</code></div><div>The component, its own template, and content projected into it</div><div>Its ancestors</div></div>
+        <div id="c1-vp2" class="c1-tr"><div><code>viewProviders</code></div><div>The component and its own template</div><div>Content projected into it from outside</div></div>
+      </div>
+    </div>
+
+    <!-- c1-8 Option / Effect / Typical use -->
+    <div id="c1-opt" class="clip world" data-start="73" data-duration="9.6">
+      <div class="c1-h">Controlling the climb</div>
+      <div id="c1-opt-tbl" class="c1-tbl c1-prose" data-hold>
+        <div class="c1-tr c1-th"><div>Option</div><div>Effect</div><div>Typical use</div></div>
+        <div id="c1-o1" class="c1-tr"><div><code>{ self: true }</code></div><div>Look only in the current node's own injector</div><div>A directive that requires a sibling directive on the same element</div></div>
+        <div id="c1-o2" class="c1-tr"><div><code>{ skipSelf: true }</code></div><div>Start at the parent</div><div>A nested component that wants its parent's instance of the same service, such as a nested menu</div></div>
+        <div id="c1-o3" class="c1-tr"><div><code>{ host: true }</code></div><div>Stop at the host component</div><div>Directives that must not reach past the component they live in</div></div>
+        <div id="c1-o4" class="c1-tr"><div><code>{ optional: true }</code></div><div>Return <code>null</code> instead of throwing when nothing is found</div><div>Collaborators that may be absent</div></div>
+      </div>
+    </div>
+
+    <!-- c1-9 Kind of state / Lifetime it needs / Where it is provided -->
+    <div id="c1-scope" class="clip world" data-start="82.6" data-duration="8.55">
+      <div class="c1-h">Scope and lifetime</div>
+      <div id="c1-scope-tbl" class="c1-tbl c1-prose" data-hold>
+        <div class="c1-tr c1-th"><div>Kind of state</div><div>Lifetime it needs</div><div>Where it is provided</div></div>
+        <div id="c1-sc1" class="c1-tr"><div>API clients, caches, configuration, telemetry</div><div>The app</div><div>Root: <code>@Service()</code> or <code>providedIn: 'root'</code></div></div>
+        <div id="c1-sc2" class="c1-tr"><div>State of one widget instance, or one subtree</div><div>That instance</div><div>The component's <code>providers</code></div></div>
+        <div id="c1-sc3" class="c1-tr"><div>Shared by several Angular applications on one page (micro-frontend hosts)</div><div>The page</div><div><code>providedIn: 'platform'</code>, rarely needed</div></div>
+        <div id="c1-sc4" class="c1-tr"><div>Feature areas</div><div>See chapter 3</div><div>Route <code>providers</code></div></div>
+      </div>
+    </div>
+
+    <!-- c1-9b a page of book cards, each with its own CoverCache -->
+    <div id="c1-books" class="clip world" data-start="91.15" data-duration="6.67">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-panel-h">New arrivals</div>
+          <div class="c1-cards" data-hold>
+            <div class="c1-bk"><div class="c1-cover"></div><div class="c1-bk-t">Middlemarch</div><div class="c1-bk-a">George Eliot</div><div id="c1-cc1" class="c1-bk-l">CoverCache</div></div>
+            <div class="c1-bk"><div class="c1-cover"></div><div class="c1-bk-t">Persuasion</div><div class="c1-bk-a">Jane Austen</div><div id="c1-cc2" class="c1-bk-l">CoverCache</div></div>
+            <div class="c1-bk"><div class="c1-cover"></div><div class="c1-bk-t">Kindred</div><div class="c1-bk-a">Octavia Butler</div><div id="c1-cc3" class="c1-bk-l">CoverCache</div></div>
+            <div class="c1-bk"><div class="c1-cover"></div><div class="c1-bk-t">Walden</div><div class="c1-bk-a">H. D. Thoreau</div><div id="c1-cc4" class="c1-bk-l">CoverCache</div></div>
+            <div class="c1-bk"><div class="c1-cover"></div><div class="c1-bk-t">Cranford</div><div class="c1-bk-a">Elizabeth Gaskell</div><div id="c1-cc5" class="c1-bk-l">CoverCache</div></div>
+            <div class="c1-bk"><div class="c1-cover"></div><div class="c1-bk-t">Ivanhoe</div><div class="c1-bk-a">Walter Scott</div><div id="c1-cc6" class="c1-bk-l">CoverCache</div></div>
+            <div class="c1-bk"><div class="c1-cover"></div><div class="c1-bk-t">Dune</div><div class="c1-bk-a">Frank Herbert</div><div id="c1-cc7" class="c1-bk-l">CoverCache</div></div>
+            <div class="c1-bk"><div class="c1-cover"></div><div class="c1-bk-t">Emma</div><div class="c1-bk-a">Jane Austen</div><div id="c1-cc8" class="c1-bk-l">CoverCache</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-10 DestroyRef as the label -->
+    <div id="c1-destroy" class="clip world" data-start="97.82" data-duration="10.54">
+      <div class="c1-h">Scope and lifetime</div>
+      <div id="c1-dr" class="c1-chip" style="left: 200px; top: 480px" data-hold>inject(DestroyRef).onDestroy(() =&gt; …)</div>
+    </div>
+
+    <!-- c1-11 where the injection context is -->
+    <div id="c1-ctx" class="clip world" data-start="108.36" data-duration="11.96">
+      <div class="c1-h">Injection context</div>
+      <div class="c1-prose" style="position: absolute; left: 140px; top: 220px; width: 1640px" data-hold>
+        <div id="c1-ctx1" class="c1-li">field initializers and the constructor of a class Angular creates;</div>
+        <div id="c1-ctx2" class="c1-li">provider factories (<code>useFactory</code>, <code>InjectionToken</code> factories, <code>@Service({ factory })</code>);</div>
+        <div id="c1-ctx3" class="c1-li">the callbacks of <code>provideAppInitializer</code>, <code>provideEnvironmentInitializer</code>, functional guards, resolvers and interceptors;</div>
+        <div id="c1-ctx4" class="c1-li"><code>runInInjectionContext(injector, fn)</code>.</div>
+      </div>
+    </div>
+
+    <!-- c1-11b the paragraph after the list, NG0203 as a label -->
+    <div id="c1-later" class="clip world" data-start="120.32" data-duration="9.31">
+      <div class="c1-h">Injection context</div>
+      <div class="c1-para c1-prose" style="top: 260px" data-hold>Event handlers, <code>subscribe</code> callbacks, timers, and the rest of an <code>async</code> method after its first <code>await</code> all run later, outside it. Calling <code>inject()</code> there throws <code>NG0203</code>, and the code after the call does not run.</div>
+      <div id="c1-ng" class="c1-chip err" style="left: 140px; top: 620px" data-hold>NG0203</div>
+    </div>
+
+    <!-- c1-12, c1-12b injectBookId, the band moving through it -->
+    <div id="c1-helper" class="clip world" data-start="129.63" data-duration="16.12">
+      <div class="code c1-code" style="left: 120px; top: 120px; width: 1584px; font-size: 30px" data-hold>
+<span class="ln"><span class="k">export function</span> injectBookId(): Signal&lt;number&gt; {</span>
+<span id="c1-h-assert" class="ln">  assertInInjectionContext(injectBookId); <span class="c">// clear error message if misused</span></span>
+<span class="ln">  <span class="k">const</span> route = inject(ActivatedRoute);</span>
+<span class="ln" style="padding-left: calc(48px + 6ch); text-indent: -6ch">  <span class="k">return</span> toSignal(route.paramMap.pipe(map((p) =&gt; Number(p.get(<span class="s">'id'</span>)))), { requireSync: <span class="k">true</span> });</span>
+<span class="ln">}</span>
+<span class="ln"> </span>
+<span class="ln"><span class="k">export class</span> BookPage {</span>
+<span id="c1-h-field" class="ln">  <span class="k">protected readonly</span> bookId = injectBookId(); <span class="c">// fine: a field initializer</span></span>
+<span class="ln"> </span>
+<span class="ln">  <span class="k">protected async</span> refresh() {</span>
+<span class="ln">    <span class="k">await this</span>.api.ping();</span>
+<span id="c1-h-after" class="ln" style="padding-left: calc(48px + 8ch); text-indent: -8ch">    <span class="k">const</span> id = injectBookId(); <span class="c">// NG0203: this line runs after an await, outside the context</span></span>
+<span class="ln">  }</span>
+<span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c1-13 How bad is it? -->
+    <div id="c1-bad" class="clip world" data-start="145.75" data-duration="11.64">
+      <div class="c1-h">How bad is it?</div>
+      <div class="c1-prose" style="position: absolute; left: 120px; top: 220px; width: 1680px" data-hold>
+        <div id="c1-g1" class="c1-grade"><b><code>CoverCache</code> provided per book card.</b> Nothing on screen is wrong; the cost is duplicate downloads. Who pays: users on slow connections, and the image server. <b>Should-fix</b>, with the request count in the comment.</div>
+        <div id="c1-g2" class="c1-grade"><b>A root service that starts a polling timer in its constructor and never stops it.</b> Harmless with one poll a minute, a battery and bandwidth problem at one a second. Grade by the numbers: <b>question</b> first ("what stops it?"), then <b>should-fix</b> once the cost is known.</div>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c1-questions" class="clip world note" data-start="157.39" data-duration="26">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c1-q1" class="q">For each service: if the page showed this component twice, how many instances would exist, and does the state need that many?</div>
+        <div id="c1-q2" class="q">Who else can reach this instance by climbing the tree? Is everyone who can reach it supposed to share it?</div>
+        <div id="c1-q3" class="q">For each <code>inject()</code> call, including those hidden in <code>injectX()</code> helpers: on which line does it run, and is that line inside an injection context?</div>
+        <div id="c1-q4" class="q">Would this class be simpler as a function, a component signal or a token?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c1-pause" class="clip world" data-start="183.39" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c1-pause-2" class="pause-2" data-hold>Now do exercise 01.</div>
+    </div>
+
+    <audio id="c1-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="40" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-bed2" class="clip" src="assets/music/bed.mp3" data-start="157.39" data-duration="26" data-media-start="100" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c1-1" class="clip" src="assets/vo/c1-1.wav" data-start="3" data-duration="7.787" data-volume="1"></audio>
+    <audio id="vo-c1-2" class="clip" src="assets/vo/c1-2.wav" data-start="11.14" data-duration="7.957" data-volume="1"></audio>
+    <audio id="vo-c1-3" class="clip" src="assets/vo/c1-3.wav" data-start="19.44" data-duration="8.768" data-volume="1"></audio>
+    <audio id="vo-c1-4" class="clip" src="assets/vo/c1-4.wav" data-start="28.56" data-duration="8.213" data-volume="1"></audio>
+    <audio id="vo-c1-5" class="clip" src="assets/vo/c1-5.wav" data-start="37.12" data-duration="9.195" data-volume="1"></audio>
+    <audio id="vo-c1-5b" class="clip" src="assets/vo/c1-5b.wav" data-start="46.67" data-duration="9.045" data-volume="1"></audio>
+    <audio id="vo-c1-6" class="clip" src="assets/vo/c1-6.wav" data-start="56.06" data-duration="9.451" data-volume="1"></audio>
+    <audio id="vo-c1-7" class="clip" src="assets/vo/c1-7.wav" data-start="65.87" data-duration="6.784" data-volume="1"></audio>
+    <audio id="vo-c1-8" class="clip" src="assets/vo/c1-8.wav" data-start="73" data-duration="8.725" data-volume="1"></audio>
+    <audio id="vo-c1-9" class="clip" src="assets/vo/c1-9.wav" data-start="82.08" data-duration="8.725" data-volume="1"></audio>
+    <audio id="vo-c1-9b" class="clip" src="assets/vo/c1-9b.wav" data-start="91.15" data-duration="6.315" data-volume="1"></audio>
+    <audio id="vo-c1-10" class="clip" src="assets/vo/c1-10.wav" data-start="97.82" data-duration="10.197" data-volume="1"></audio>
+    <audio id="vo-c1-11" class="clip" src="assets/vo/c1-11.wav" data-start="108.36" data-duration="11.605" data-volume="1"></audio>
+    <audio id="vo-c1-11b" class="clip" src="assets/vo/c1-11b.wav" data-start="120.32" data-duration="8.96" data-volume="1"></audio>
+    <audio id="vo-c1-12" class="clip" src="assets/vo/c1-12.wav" data-start="129.63" data-duration="9.707" data-volume="1"></audio>
+    <audio id="vo-c1-12b" class="clip" src="assets/vo/c1-12b.wav" data-start="139.68" data-duration="5.717" data-volume="1"></audio>
+    <audio id="vo-c1-13" class="clip" src="assets/vo/c1-13.wav" data-start="145.75" data-duration="11.285" data-volume="1"></audio>
+    <audio id="vo-c1-end" class="clip" src="assets/vo/c1-end.wav" data-start="157.39" data-duration="2.091" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "#f5e2d9", SOFT0 = "rgba(245, 226, 217, 0)";
+    const INK = "#1d1b18", RULE = "#c4b9a6", ACCENT = "#b8321f";
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+    const draw = (sel, at, d = 0.5) => tl.fromTo(sel, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+    const lit = (sel, at) => tl.fromTo(sel, { borderColor: RULE, color: INK }, { borderColor: ACCENT, color: ACCENT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unlit = (sel, at) => tl.to(sel, { borderColor: RULE, color: INK, duration: 0.4, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0, the time with no fade
+
+    // c1-1: the queue fills on "Members queue"
+    for (let i = 1; i <= 5; i++) fadeIn("#c1-m" + i, 4.6 + (i - 1) * 0.15, 0.5);
+
+    // c1-2: the test fake on "a test or a consumer"
+    fadeIn("#c1-fake", 17.4);
+
+    // c1-3: rows on "plain function", "signal", then the class and the token
+    fadeIn("#c1-st1", 21.3, 0.5);
+    fadeIn("#c1-st2", 22.6, 0.5);
+    fadeIn("#c1-st3", 23.7, 0.5);
+    fadeIn("#c1-st4", 24.5, 0.5);
+    band("#c1-st4", 26.4);
+
+    // c1-4: the band on "Get that number wrong"
+    band("#c1-injx-ln", 34.7);
+
+    // c1-5: the tree draws on top down; c1-5b: root, then the first ReviewThread, as the accent
+    fadeIn("#c1-n-root", 38.9, 0.5);
+    draw("#c1-e0", 40.2);
+    fadeIn("#c1-n-cache", 40.5, 0.5);
+    fadeIn("#c1-n-page", 40.65, 0.5);
+    draw("#c1-e1", 41.3);
+    fadeIn("#c1-n-t1", 41.6, 0.5);
+    fadeIn("#c1-n-t2", 41.75, 0.5);
+    draw("#c1-e2", 42.4);
+    draw("#c1-e3", 42.55);
+    ["a", "b"].forEach((s, j) => {
+      for (let i = 1; i <= 3; i++) fadeIn("#c1-n-" + s + i, 42.6 + j * 0.15 + (i - 1) * 0.2, 0.5);
+    });
+    lit("#c1-n-root", 48.2);
+    unlit("#c1-n-root", 50.8);
+    lit("#c1-n-t1", 50.8);
+
+    // c1-6: the band on inject(ThreadContext) at "the reply box gets"
+    band("#c1-thread-inj", 64.0);
+
+    // c1-7: the viewProviders row on "View providers"
+    band("#c1-vp2", 66.3);
+
+    // c1-8: one row per option as it is named
+    fadeIn("#c1-o1", 75.4, 0.5);
+    fadeIn("#c1-o2", 76.8, 0.5);
+    fadeIn("#c1-o3", 78.8, 0.5);
+    fadeIn("#c1-o4", 79.9, 0.5);
+
+    // c1-9: the table a beat after "Caches"; rows on "Caches", "One widget's", then the last two
+    fadeIn("#c1-sc1", 82.7, 0.5);
+    fadeIn("#c1-sc2", 84.7, 0.5);
+    fadeIn("#c1-sc3", 86.2, 0.5);
+    fadeIn("#c1-sc4", 87.3, 0.5);
+
+    // c1-9b: a CoverCache label lands in each card on "each book card's providers"
+    for (let i = 1; i <= 8; i++) fadeIn("#c1-cc" + i, 92.0 + (i - 1) * 0.15, 0.5);
+
+    // c1-10: the label on "clean up through Destroy Ref"
+    fadeIn("#c1-dr", 100.5);
+
+    // c1-11: the list item by item as it is read
+    fadeIn("#c1-ctx1", 111.4);
+    fadeIn("#c1-ctx2", 114.2);
+    fadeIn("#c1-ctx3", 115.7);
+    fadeIn("#c1-ctx4", 118.6);
+
+    // c1-11b: NG0203 on "throws"
+    tl.fromTo("#c1-ng", { opacity: 0, scale: 0.9, transformOrigin: "left center" }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 127.4);
+
+    // c1-12: band on the field line, then on the line after the await; c1-12b: on assertInInjectionContext
+    band("#c1-h-field", 132.0);
+    unband("#c1-h-field", 134.5);
+    band("#c1-h-after", 134.5);
+    unband("#c1-h-after", 139.8);
+    band("#c1-h-assert", 139.8);
+
+    // c1-13: the band follows the item being graded
+    band("#c1-g1", 146.0);
+    unband("#c1-g1", 151.3);
+    band("#c1-g2", 151.3);
+
+    // questions 0.6 s apart, then hold; pause card
+    for (let i = 1; i <= 4; i++) fadeIn("#c1-q" + i, 157.8 + (i - 1) * 0.6);
+    fadeIn("#c1-pause-2", 183.9);
+
+    window.__timelines["c1"] = tl;
+  </script>
+</template>

@@ -1,0 +1,277 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c0-h { position: absolute; left: 140px; top: 84px; width: 1640px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-h code { font: 600 50px/1 var(--font-code); }
+    .c0-prose code { font-family: var(--font-code); font-size: 0.9em; }
+    .c0-chip { position: absolute; padding: 10px 20px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 34px/1 var(--font-code); white-space: nowrap; }
+    .c0-mk { border-radius: 4px; -webkit-box-decoration-break: clone; box-decoration-break: clone; background-color: rgba(245, 226, 217, 0); }
+
+    /* desk */
+    .c0-page-title { font: 600 52px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-right { display: flex; align-items: center; gap: 28px; }
+    .c0-build { position: relative; display: flex; align-items: center; gap: 12px; padding: 10px 20px; border: 2px solid var(--tip); border-radius: 26px; background: var(--tip-soft); color: var(--tip); font: 700 30px/1 var(--font-text); }
+    .c0-build i { width: 16px; height: 16px; border-radius: 50%; background: var(--tip); }
+    .c0-status { position: absolute; left: 40px; top: 130px; display: flex; align-items: center; gap: 18px; }
+    .c0-pill { position: relative; width: 150px; height: 52px; }
+    .c0-pill > span { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 26px; font: 700 30px/1 var(--font-text); }
+    .c0-closed { background: var(--paper-sunk); color: var(--ink-muted); border: 2px solid var(--rule-strong); }
+    .c0-open { background: var(--tip-soft); color: var(--tip); border: 2px solid var(--tip); }
+    .c0-members { position: absolute; left: 40px; top: 230px; width: 860px; }
+    .c0-mem { display: flex; justify-content: space-between; padding: 22px 0; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c0-mem b { font-weight: 700; }
+    .c0-mem span:last-child { color: var(--ink-muted); }
+    .c0-stack { position: absolute; left: 1000px; top: 230px; width: 600px; }
+    .c0-stack .label { margin-bottom: 10px; }
+    .c0-api { font: 700 32px/1 var(--font-code); padding: 24px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+    .c0-api span { font: 400 32px/1 var(--font-text); }
+    #c0-asks { position: absolute; left: 40px; top: 230px; width: 860px; }
+    #c0-asks .label { margin-bottom: 14px; }
+    .c0-ask { padding: 26px 0; border-bottom: 1px solid var(--rule); font: 600 50px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-clock { position: relative; display: inline-block; }
+    #c0-t9 { position: absolute; right: 0; top: 0; }
+
+    /* grading */
+    #c0-labels { position: absolute; left: 140px; top: 190px; display: flex; gap: 20px; }
+    #c0-labels span { padding: 10px 22px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 32px/1 var(--font-text); }
+    .c0-list { position: absolute; left: 120px; width: 1680px; }
+    .c0-row { padding: 18px 32px; border-bottom: 1px solid var(--rule); border-radius: 6px; font: 400 34px/1.4 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c0-row code { font: 400 31px/1 var(--font-code); }
+    #c0-grade-list { top: 290px; }
+
+    /* tables */
+    .c0-table { position: absolute; left: 120px; top: 200px; width: 1680px; font: 400 34px/1.35 var(--font-text); }
+    .c0-table code { font: 400 30px/1.35 var(--font-code); }
+    .c0-tr { display: flex; gap: 40px; border-bottom: 1px solid var(--rule); border-radius: 6px; padding: 22px 32px; background-color: rgba(245, 226, 217, 0); }
+    .c0-tr > div:last-child { flex: 1; }
+    .c0-th { font-weight: 700; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c0-svc-table .c0-tr > div:first-child { width: 640px; flex: none; }
+    #c0-init-table .c0-tr > div:first-child { width: 820px; flex: none; }
+    .c0-wrap { display: block; white-space: pre-wrap; padding-left: 2ch; text-indent: -2ch; }
+
+    /* compiler rules */
+    #c0-svc-chip { left: 140px; top: 200px; font-size: 44px; }
+    #c0-inj-chip { left: 560px; top: 200px; font-size: 44px; }
+    #c0-rules { top: 340px; }
+    #c0-same { position: absolute; left: 152px; top: 560px; width: 1600px; font: 400 38px/1.5 var(--font-text); }
+
+    /* initializer sentence */
+    #c0-init-note { position: absolute; left: 152px; top: 760px; width: 1600px; font: 400 38px/1.5 var(--font-text); }
+
+    /* what stayed */
+    #c0-stay-list { top: 196px; }
+  </style>
+
+  <div id="root" data-composition-id="c0" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c0-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c0-card-time" class="chapter-time">08:55</div>
+      <div id="c0-card-title" class="chapter-title">What moved since Angular 17</div>
+    </div>
+
+    <!-- c0-1, c0-1b, c0-1c: the desk before opening; what you already moved to; the three questions; a green build -->
+    <div id="c0-desk" class="clip world" data-start="3" data-duration="24.35">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="c0-right"><span id="c0-build" class="c0-build"><i></i>Build passed</span><span class="app-clock">08:55</span></span></div>
+        <div class="app-body">
+          <div class="c0-page-title">What moved since Angular 17</div>
+          <div class="c0-status"><span class="label">Desk</span><span class="c0-pill"><span class="c0-closed">Closed</span></span></div>
+          <div id="c0-members" class="c0-members">
+            <div class="c0-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div class="c0-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div class="c0-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div class="c0-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+          <div id="c0-asks" data-hold>
+            <div id="c0-ask0" class="label">For every provider, ask</div>
+            <div id="c0-ask1" class="c0-ask">how many instances</div>
+            <div id="c0-ask2" class="c0-ask">who can see each one</div>
+            <div id="c0-ask3" class="c0-ask">how long it lives</div>
+          </div>
+          <div id="c0-moved" class="c0-stack" data-hold>
+            <div id="c0-moved0" class="label">By v17</div>
+            <div id="c0-moved1" class="c0-api">inject()</div>
+            <div id="c0-moved2" class="c0-api">provideX()</div>
+            <div id="c0-moved3" class="c0-api"><span>route</span> providers</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-2, c0-2b, c0-2c: grading DI findings (LESSON.md list) -->
+    <div id="c0-grade" class="clip world" data-start="27.35" data-duration="24.92">
+      <div class="c0-h">Grading DI findings</div>
+      <div id="c0-labels"><span id="c0-lb1">blocking</span><span id="c0-lb2">should-fix</span><span id="c0-lb3">nit</span><span id="c0-lb4">question</span></div>
+      <div id="c0-grade-list" class="c0-list" data-hold>
+        <div id="c0-g1" class="c0-row">A crash on first use, in your app or in a consumer's, is loud. Someone will notice before users do, or users will hit it at once. It blocks, because the feature does not work.</div>
+        <div id="c0-g2" class="c0-row">A silently wrong instance (two objects where everyone expects one, or one where everyone expects their own) is worse than a crash, because nobody notices. Data goes to a place nobody reads, or appears where it does not belong. It blocks as soon as users can see the consequence.</div>
+        <div id="c0-g3" class="c0-row">An API that works but is easy to misuse costs every future consumer a little. That is usually should-fix: cheap now, expensive once ten teams have copied the workaround.</div>
+        <div id="c0-g4" class="c0-row">A provider whose intent you cannot tell (an unexplained second registration that is harmless today) is a question. Ask for the reason, and for a comment that records it.</div>
+      </div>
+    </div>
+
+    <!-- c0-3, c0-3b: the @Service() table (LESSON.md) -->
+    <div id="c0-svc" class="clip world" data-start="52.27" data-duration="17.45">
+      <div class="c0-h"><code>@Service()</code></div>
+      <div id="c0-svc-table" class="c0-table" data-hold>
+        <div id="c0-s0" class="c0-tr c0-th"><div>Form</div><div>Meaning</div></div>
+        <div id="c0-s1" class="c0-tr"><div><code>@Service()</code></div><div>Provided automatically in the root injector. One instance for the app, created on first use.</div></div>
+        <div id="c0-s2" class="c0-tr"><div><code>@Service({ autoProvided: false })</code></div><div>Not provided anywhere. It exists only where a <code>providers</code> array lists it; asking for it elsewhere throws <code>NullInjectorError</code>.</div></div>
+        <div id="c0-s3" class="c0-tr"><div><code>@Service({ factory: () =&gt; … })</code></div><div>Provided automatically, and the factory builds the value.</div></div>
+      </div>
+    </div>
+
+    <!-- c0-4: the compiler rules, then @Service() beside @Injectable({ providedIn: 'root' }) -->
+    <div id="c0-rule" class="clip world" data-start="69.72" data-duration="10.84">
+      <div id="c0-svc-chip" class="c0-chip">@Service()</div>
+      <div id="c0-inj-chip" class="c0-chip">@Injectable({ providedIn: 'root' })</div>
+      <div id="c0-rules" class="c0-list c0-prose" data-hold>
+        <div id="c0-r1" class="c0-row">a <code>@Service</code> class cannot take constructor parameters (use <code>inject()</code> in fields)</div>
+        <div id="c0-r2" class="c0-row">it cannot carry another Angular decorator</div>
+      </div>
+      <div id="c0-same" class="c0-prose" data-hold><code>@Service()</code> with no options means app-wide singleton, exactly like <code>providedIn: 'root'</code>, so <span id="c0-same-mk" class="c0-mk">the same scope questions apply to it</span>.</div>
+    </div>
+
+    <!-- c0-5: provider functions replaced the initializer tokens (LESSON.md table and sentence) -->
+    <div id="c0-init" class="clip world" data-start="80.56" data-duration="12.04">
+      <div class="c0-h">Provider functions replaced the initializer tokens</div>
+      <div id="c0-init-table" class="c0-table" data-hold>
+        <div id="c0-i0" class="c0-tr c0-th"><div>v17</div><div>v22</div></div>
+        <div id="c0-i1" class="c0-tr"><div><code class="c0-wrap">{ provide: APP_INITIALIZER, multi: true, useFactory: … }</code></div><div><code>provideAppInitializer(() =&gt; …)</code> (the token is deprecated since v19)</div></div>
+        <div id="c0-i2" class="c0-tr"><div><code class="c0-wrap">{ provide: ENVIRONMENT_INITIALIZER, multi: true, useValue: … }</code></div><div><code>provideEnvironmentInitializer(() =&gt; …)</code> (deprecated since v19)</div></div>
+      </div>
+      <div id="c0-init-note" class="c0-prose" data-hold>The new functions run their callback in an injection context, so <code id="c0-init-inj" class="c0-mk">inject()</code> works inside them.</div>
+    </div>
+
+    <!-- c0-6, c0-7: what stayed (LESSON.md list), the band moves down three items -->
+    <div id="c0-stay" class="clip world" data-start="92.6" data-duration="18.35">
+      <div class="c0-h">What stayed, and what you may have missed</div>
+      <div id="c0-stay-list" class="c0-list c0-prose" data-hold>
+        <div id="c0-w1" class="c0-row"><code>inject(token, { optional, self, skipSelf, host })</code> takes an options object (chapter 1 explains the flags). The parameter decorators (<code>@Optional()</code> and friends) still exist for constructor injection.</div>
+        <div id="c0-w2" class="c0-row"><code>makeEnvironmentProviders([...])</code> returns <code>EnvironmentProviders</code>: providers that can go into <code>bootstrapApplication</code>, <code>ApplicationConfig</code> or a route's <code>providers</code>, and that a component's <code>providers</code> array rejects at compile time.</div>
+        <div id="c0-w3" class="c0-row"><code>runInInjectionContext(injector, fn)</code> and <code>assertInInjectionContext(fn)</code> for code that must call <code>inject()</code> later.</div>
+        <div id="c0-w4" class="c0-row"><code>createEnvironmentInjector(providers, parent)</code> builds an environment injector by hand, for features loaded dynamically outside the router.</div>
+        <div id="c0-w5" class="c0-row"><code>DOCUMENT</code> is exported from <code>@angular/core</code>.</div>
+      </div>
+    </div>
+
+    <!-- c0-7 end: the desk again; the clock turns to 09:00 and the desk opens -->
+    <div id="c0-desk2" class="clip world" data-start="110.95" data-duration="2.61">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock c0-clock"><span id="c0-t8">08:59</span><span id="c0-t9">09:00</span></span></div>
+        <div class="app-body">
+          <div class="c0-page-title">Members</div>
+          <div class="c0-status"><span class="label">Desk</span><span class="c0-pill"><span id="c0-closed2" class="c0-closed">Closed</span><span id="c0-open2" class="c0-open">Open</span></span></div>
+          <div class="c0-members" data-hold>
+            <div class="c0-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div class="c0-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div class="c0-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div class="c0-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <audio id="c0-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="0" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c0-1" class="clip" src="assets/vo/c0-1.wav" data-start="3.0" data-duration="9.792" data-volume="1"></audio>
+    <audio id="vo-c0-1b" class="clip" src="assets/vo/c0-1b.wav" data-start="13.14" data-duration="7.936" data-volume="1"></audio>
+    <audio id="vo-c0-1c" class="clip" src="assets/vo/c0-1c.wav" data-start="21.43" data-duration="5.568" data-volume="1"></audio>
+    <audio id="vo-c0-2" class="clip" src="assets/vo/c0-2.wav" data-start="27.35" data-duration="8.235" data-volume="1"></audio>
+    <audio id="vo-c0-2b" class="clip" src="assets/vo/c0-2b.wav" data-start="35.93" data-duration="7.744" data-volume="1"></audio>
+    <audio id="vo-c0-2c" class="clip" src="assets/vo/c0-2c.wav" data-start="44.02" data-duration="7.893" data-volume="1"></audio>
+    <audio id="vo-c0-3" class="clip" src="assets/vo/c0-3.wav" data-start="52.27" data-duration="8.768" data-volume="1"></audio>
+    <audio id="vo-c0-3b" class="clip" src="assets/vo/c0-3b.wav" data-start="61.39" data-duration="7.979" data-volume="1"></audio>
+    <audio id="vo-c0-4" class="clip" src="assets/vo/c0-4.wav" data-start="69.72" data-duration="10.496" data-volume="1"></audio>
+    <audio id="vo-c0-5" class="clip" src="assets/vo/c0-5.wav" data-start="80.56" data-duration="11.691" data-volume="1"></audio>
+    <audio id="vo-c0-6" class="clip" src="assets/vo/c0-6.wav" data-start="92.6" data-duration="9.749" data-volume="1"></audio>
+    <audio id="vo-c0-7" class="clip" src="assets/vo/c0-7.wav" data-start="102.7" data-duration="9.856" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "rgba(245, 226, 217, 1)", SOFT0 = "rgba(245, 226, 217, 0)";
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0
+
+    // c0-1: what you already moved to, on "inject", "provide functions", "route providers"
+    fadeIn("#c0-moved0", 6.6, 0.5);
+    fadeIn("#c0-moved1", 6.9, 0.5);
+    fadeIn("#c0-moved2", 8.1, 0.5);
+    fadeIn("#c0-moved3", 9.4, 0.5);
+
+    // c0-1b: the queue gives way to the three questions, each on its words
+    fadeOut("#c0-members", 13.2, 0.4);
+    fadeIn("#c0-ask0", 13.6, 0.5);
+    fadeIn("#c0-ask1", 16.6, 0.5);
+    fadeIn("#c0-ask2", 18.1, 0.5);
+    fadeIn("#c0-ask3", 19.6, 0.5);
+
+    // c0-1c: the build badge lands in the header on "compile"
+    tl.fromTo("#c0-build", { opacity: 0, scale: 0.9, transformOrigin: "right center" }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 25.2);
+
+    // c0-2: the four labels; the first item, banded, on "A crash"
+    tl.fromTo("#c0-labels span", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.15 }, 27.9);
+    fadeIn("#c0-g1", 32.5, 0.5);
+    band("#c0-g1", 32.7);
+
+    // c0-2b: the second item
+    unband("#c0-g1", 35.9);
+    fadeIn("#c0-g2", 35.9, 0.5);
+    band("#c0-g2", 36.1);
+
+    // c0-2c: the last two items, the band moving from one to the other
+    unband("#c0-g2", 44.0);
+    fadeIn(["#c0-g3", "#c0-g4"], 44.0, 0.5);
+    band("#c0-g3", 44.2);
+    unband("#c0-g3", 48.1);
+    band("#c0-g4", 48.2);
+
+    // c0-3: header and the @Service() row on "at Service", banded on "provided in root"
+    fadeIn("#c0-s0", 52.4, 0.4);
+    fadeIn("#c0-s1", 53.9, 0.5);
+    band("#c0-s1", 56.6);
+
+    // c0-3b: the autoProvided: false row, then the factory row
+    unband("#c0-s1", 61.4);
+    fadeIn("#c0-s2", 61.4, 0.5);
+    band("#c0-s2", 61.6);
+    fadeIn("#c0-s3", 64.4, 0.5);
+
+    // c0-4: the two rules on their words, @Injectable beside @Service(), then the scope sentence
+    fadeIn("#c0-r1", 70.4, 0.5);
+    fadeIn("#c0-r2", 72.3, 0.5);
+    fadeIn("#c0-inj-chip", 74.3, 0.5);
+    fadeIn("#c0-same", 74.45, 0.5);
+    band("#c0-same-mk", 77.7);
+
+    // c0-5: rows one by one; inject() banded on "inject works"
+    fadeIn("#c0-i0", 80.7, 0.4);
+    fadeIn("#c0-i1", 83.3, 0.5);
+    fadeIn("#c0-i2", 85.1, 0.5);
+    fadeIn("#c0-init-note", 87.3, 0.5);
+    band("#c0-init-inj", 90.3);
+
+    // c0-6: the makeEnvironmentProviders item
+    band("#c0-w2", 92.8);
+
+    // c0-7: runInInjectionContext, then createEnvironmentInjector
+    unband("#c0-w2", 102.7);
+    band("#c0-w3", 102.8);
+    unband("#c0-w3", 107.2);
+    band("#c0-w4", 107.3);
+
+    // c0-7 end: the clock turns to 09:00 and the desk opens on "Then the desk opens"
+    fadeOut("#c0-t8", 111.3, 0.2);
+    fadeIn("#c0-t9", 111.4, 0.3);
+    fadeOut("#c0-closed2", 111.7, 0.3);
+    fadeIn("#c0-open2", 111.8, 0.5);
+
+    window.__timelines["c0"] = tl;
+  </script>
+</template>

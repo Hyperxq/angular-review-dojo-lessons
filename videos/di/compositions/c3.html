@@ -1,0 +1,342 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c3-svg { position: absolute; left: 0; top: 0; }
+    code { font-family: var(--font-code); font-size: 0.92em; }
+    .c3-big { position: absolute; left: 200px; top: 300px; width: 1520px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+    .c3-big code { font-size: 0.86em; font-weight: 700; }
+
+    .c3-nav { position: absolute; left: 40px; top: 40px; width: 300px; }
+    .c3-nav div { height: 72px; padding: 0 20px; display: flex; align-items: center; border-radius: 8px; font: 400 34px/1 var(--font-text); color: var(--ink-muted); }
+    .c3-nav div.on { background: var(--paper-sunk); color: var(--ink); font-weight: 700; }
+    .c3-panel { position: absolute; left: 380px; right: 40px; top: 40px; }
+    .c3-panel .label { margin-bottom: 14px; }
+    .c3-row { height: 92px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 400 36px/1 var(--font-text); }
+    .c3-row span { margin-left: auto; font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+
+    #c3-lazybox { position: absolute; left: 480px; top: 190px; width: 1300px; height: 640px; border: 4px dashed var(--accent); border-radius: 12px; }
+    #c3-lazytag { position: absolute; left: 1360px; top: 160px; padding: 14px 24px; border-radius: 8px; background: var(--accent); color: var(--paper); font: 700 34px/1 var(--font-text); white-space: nowrap; }
+
+    .c3-node { box-sizing: border-box; height: 84px; padding: 0 28px; display: flex; align-items: center; justify-content: center; font-size: 32px; }
+    .c3-node .badge { font-size: 28px; }
+
+    .c3-chip { position: absolute; box-sizing: border-box; padding: 26px 40px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 44px/1 var(--font-code); white-space: nowrap; }
+
+    #c3-page { position: absolute; left: 40px; right: 40px; top: 40px; }
+    #c3-page .c3-title { font: 600 56px/1.1 var(--font-display); margin-bottom: 12px; }
+    #c3-dim { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: rgb(29 27 24 / 0.16); }
+    #c3-dialog { position: absolute; left: 80px; top: 200px; width: 820px; height: 600px; box-sizing: border-box; padding: 40px 44px; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow); }
+    #c3-dialog-t { font: 700 44px/1 var(--font-text); margin-bottom: 36px; }
+    .c3-field { height: 84px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 400 36px/1 var(--font-text); }
+    .c3-field span { width: 200px; color: var(--ink-muted); font-size: 32px; }
+    .c3-tag { position: absolute; box-sizing: border-box; padding: 14px 22px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper); font: 700 34px/1 var(--font-code); white-space: nowrap; }
+    .c3-tag small { display: block; margin-bottom: 10px; font: 400 28px/1 var(--font-text); color: var(--ink-muted); }
+    #c3-qs { position: absolute; left: 980px; top: 330px; width: 620px; box-sizing: border-box; padding: 32px 36px; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow); }
+    #c3-qs div { font: 400 40px/1.35 var(--font-text); }
+    #c3-qs div + div { margin-top: 24px; }
+
+    #c3-upload { position: absolute; left: 380px; right: 40px; top: 40px; }
+    #c3-drop { height: 220px; border: 3px dashed var(--rule-strong); border-radius: 8px; display: grid; place-items: center; font: 400 36px/1 var(--font-text); color: var(--ink-muted); margin-bottom: 30px; }
+    .c3-file { height: 110px; display: grid; grid-template-columns: 1fr 120px; align-items: center; column-gap: 24px; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c3-file span { text-align: right; font-size: 30px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+    .c3-file i { grid-column: 1 / 3; display: block; height: 10px; border-radius: 5px; background: var(--rule); position: relative; overflow: hidden; margin-top: -18px; }
+    .c3-file i b { position: absolute; left: 0; top: 0; bottom: 0; background: var(--ink-muted); border-radius: 5px; }
+
+    #c3-bad-h { position: absolute; left: 180px; top: 150px; font: 700 40px/1 var(--font-text); color: var(--ink-muted); }
+    #c3-bad { position: absolute; left: 160px; top: 230px; width: 1600px; }
+    .c3-item { padding: 18px 24px; margin-bottom: 30px; border-radius: 8px; font: 400 40px/1.45 var(--font-text); display: grid; grid-template-columns: 60px 1fr; }
+    .c3-item > b { color: var(--ink-muted); }
+    .c3-item code { font-size: 36px; }
+
+    .q { font-size: 40px; margin-bottom: 34px; }
+    .q code { font: 400 36px/1 var(--font-code); }
+
+    #c3-after-title { position: absolute; left: 200px; top: 150px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+    #c3-after-p { position: absolute; left: 200px; top: 330px; width: 1520px; font: 400 42px/1.5 var(--font-text); }
+    #c3-after-p span { border-radius: 4px; }
+    #c3-after-p code { font-size: 38px; }
+    #c3-closed { position: absolute; left: 80px; top: 280px; font: 600 88px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c3-lights { position: absolute; inset: 0; background: var(--ink); }
+  </style>
+
+  <div id="root" data-composition-id="c3" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c3-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">15:00</div>
+      <div class="chapter-title">Injectors in a routed, lazy application</div>
+    </div>
+
+    <!-- c3-1: 15:00; an annotation tag "lazy bundle" points at the members area (not app UI) -->
+    <div id="c3-desk" class="clip world sunk" data-start="3" data-duration="7.47">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">15:00</span></div>
+        <div class="app-body">
+          <div class="c3-nav">
+            <div class="on">Members</div>
+            <div>Catalogue</div>
+            <div>Loans</div>
+            <div>Returns</div>
+          </div>
+          <div class="c3-panel" data-hold>
+            <div class="label">Members</div>
+            <div class="c3-row">Ada Brooks<span>2 loans</span></div>
+            <div class="c3-row">Mia Lindqvist<span>no loans</span></div>
+            <div class="c3-row">Ravi Menon<span>1 loan</span></div>
+            <div class="c3-row">Leo Park<span>3 loans</span></div>
+            <div class="c3-row">Tom Okafor<span>1 loan</span></div>
+          </div>
+        </div>
+      </div>
+      <div id="c3-lazybox"></div>
+      <div id="c3-lazytag" data-hold>lazy bundle</div>
+    </div>
+
+    <!-- c3-2: the route tree, members route injector as the accent; c3-2b: the climb; c3-3: the route node again -->
+    <div id="c3-tree" class="clip world sunk" data-start="10.47" data-duration="20.47">
+      <svg class="c3-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke-width="4">
+        <g id="c3-edges" stroke="#c4b9a6">
+          <path d="M960 184 V280" />
+          <path d="M960 364 V460" />
+          <path d="M960 544 V592 H560 V640" />
+          <path d="M960 592 H1360 V640" />
+          <path d="M560 724 V820" />
+          <path d="M1360 724 V820" />
+        </g>
+        <path id="c3-climb" pathLength="1" stroke="#b8321f" d="M1360 820 V592 H960 V184" />
+      </svg>
+      <div id="c3-n0" class="node c3-node" style="left: 530px; top: 100px; width: 860px">Root environment injector<span class="badge">[app providers]</span></div>
+      <div id="c3-n1" class="node c3-node" style="left: 430px; top: 280px; width: 1060px">members route environment injector<span class="badge">[route providers]</span></div>
+      <div id="c3-n2" class="node c3-node" style="left: 620px; top: 460px; width: 680px">MembersShell<span class="badge">[component providers]</span></div>
+      <div id="c3-n3" class="node c3-node" style="left: 380px; top: 640px; width: 360px">profile route</div>
+      <div id="c3-n4" class="node c3-node" style="left: 1180px; top: 640px; width: 360px">loans route</div>
+      <div id="c3-n5" class="node c3-node" style="left: 230px; top: 820px; width: 660px">ProfilePage<span class="badge">[component providers]</span></div>
+      <div id="c3-n6" class="node c3-node" style="left: 1030px; top: 820px; width: 660px" data-hold>LoansPage<span class="badge">[component providers]</span></div>
+    </div>
+
+    <!-- c3-3b: the opt-in and the reuse strategy hook, as labels -->
+    <div id="c3-cleanup" class="clip world" data-start="30.94" data-duration="11.46">
+      <div id="c3-cl1" class="c3-chip" style="left: 200px; top: 380px" data-hold>provideRouter(routes, withAutoCleanupInjectors())</div>
+      <div id="c3-cl2" class="c3-chip" style="left: 200px; top: 580px" data-hold>shouldDestroyInjector</div>
+    </div>
+
+    <!-- c3-4: a "Lend a copy" dialog over a book page, LoanBasket in the dialog and in root; c3-4b: the lesson's two questions -->
+    <div id="c3-lend" class="clip world sunk" data-start="42.4" data-duration="18.99">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">15:00</span></div>
+        <div class="app-body">
+          <div id="c3-page">
+            <div class="c3-title">Dune</div>
+            <div class="label">Frank Herbert · 3 copies</div>
+            <div class="c3-row" style="margin-top: 30px">Copy 1<span>on shelf</span></div>
+            <div class="c3-row">Copy 2<span>on loan</span></div>
+            <div class="c3-row">Copy 3<span>on shelf</span></div>
+          </div>
+          <div id="c3-dim"></div>
+          <div id="c3-rootl" class="c3-tag" style="left: 1240px; top: 40px"><small>root</small>LoanBasket</div>
+          <div id="c3-dialog" data-layout-allow-occlusion>
+            <div id="c3-dialog-t">Lend a copy</div>
+            <div class="c3-field"><span>Member</span>Ada Brooks</div>
+            <div class="c3-field"><span>Copy</span>Copy 1</div>
+            <div class="c3-field"><span>Basket</span><b id="c3-added">Dune</b></div>
+            <div id="c3-dlgl" class="c3-tag" style="left: 44px; top: 440px" data-hold><small>dialog providers</small>LoanBasket</div>
+          </div>
+          <div id="c3-qs" data-layout-allow-occlusion data-hold>
+            <div id="c3-qa">Which copy does the page that opened the dialog see?</div>
+            <div id="c3-qb">And which did the author mean?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3-5: heading "HttpClient below the root" -->
+    <div id="c3-http" class="clip world" data-start="61.39" data-duration="8.92">
+      <div id="c3-http-h" class="c3-big"><code>HttpClient</code> below the root</div>
+      <div id="c3-http-c" class="c3-chip" style="left: 200px; top: 560px" data-hold>provideHttpClient()</div>
+    </div>
+
+    <!-- c3-5b: an upload panel in the desk app -->
+    <div id="c3-up" class="clip world sunk" data-start="70.31" data-duration="8.61">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">15:00</span></div>
+        <div class="app-body">
+          <div class="c3-nav">
+            <div>Members</div>
+            <div>Catalogue</div>
+            <div class="on">Uploads</div>
+            <div>Returns</div>
+          </div>
+          <div id="c3-upload" data-hold>
+            <div class="label">Cover images · media server</div>
+            <div id="c3-drop">Drop cover images here</div>
+            <div class="c3-file">dune-cover.jpg<span>64%</span><i><b style="width: 64%"></b></i></div>
+            <div class="c3-file">kindred-cover.jpg<span>28%</span><i><b style="width: 28%"></b></i></div>
+            <div class="c3-file">ubik-cover.jpg<span>queued</span><i></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3-5c: the package name alone, no function named -->
+    <div id="c3-pkg" class="clip world" data-start="78.92" data-duration="6.77">
+      <div id="c3-pkg-c" class="c3-chip" style="left: 200px; top: 460px; font-size: 64px" data-hold>@angular/common/http</div>
+    </div>
+
+    <!-- c3-6: createEnvironmentInjector and destroy, as labels -->
+    <div id="c3-dyn" class="clip world" data-start="85.69" data-duration="8.05">
+      <div id="c3-d1" class="c3-chip" style="left: 200px; top: 380px" data-hold>createEnvironmentInjector(providers, parentInjector)</div>
+      <div id="c3-d2" class="c3-chip" style="left: 200px; top: 580px" data-hold>injector.destroy()</div>
+    </div>
+
+    <!-- c3-7: "How bad is it?", both items -->
+    <div id="c3-badw" class="clip world" data-start="93.74" data-duration="12.53">
+      <div id="c3-bad-h">How bad is it?</div>
+      <div id="c3-bad" data-hold>
+        <div id="c3-b1" class="c3-item"><b>1.</b><span><b>A lazy area that provides its own <code>TitleStrategy</code>, so pages inside it lose the app-wide title suffix.</b> Users see slightly different tab titles; screen reader users hear them. Nobody loses data. <b>Should-fix</b>, unless the suffix carries meaning such as an environment name, then higher.</span></div>
+        <div id="c3-b2" class="c3-item"><b>2.</b><span><b>A plugin injector created with <code>createEnvironmentInjector</code> and never destroyed.</b> Each time the plugin reloads, its timers and sockets stay alive. With one reload a day, a <b>question</b>; with one per navigation, <b>blocking</b> for long sessions.</span></div>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c3-questions" class="clip world note" data-start="106.27" data-duration="26.3">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c3-q1" class="q">Draw the injector tree for the area: root, every route with <code>providers</code>, every component with <code>providers</code>. How many times is each service provided?</div>
+        <div id="c3-q2" class="q">For each pair of components that must agree on some state: do they reach the same node of the tree?</div>
+        <div id="c3-q3" class="q">For each instance provided below root: who can see it, and how long does it actually live?</div>
+        <div id="c3-q4" class="q">A new interceptor is added in root next month. Which areas of the app will it miss, and would anyone notice?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c3-pause" class="clip world" data-start="132.57" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c3-pause-2" class="pause-2" data-hold>Now do exercise 03.</div>
+    </div>
+
+    <!-- c3-after, c3-afterb: the "After the lesson" card, its last sentence banded -->
+    <div id="c3-after" class="clip world" data-start="136.07" data-duration="13.81">
+      <div id="c3-after-title">After the lesson</div>
+      <div id="c3-after-p" data-hold><span id="c3-a1">When you finish an exercise, read its <code>SOLUTION.md</code> on the <code>solutions</code> branch. Compare its severity table with yours, then its fix.</span> <span id="c3-a2">Then write the PR comment in a few sentences, each starting with its label.</span> <span id="c3-a3">Say the impact in terms of instances and data ("the area writes to a second copy that the rest of the app never reads"), and say in one line what you checked and found fine, such as an intended re-provide.</span></div>
+    </div>
+
+    <!-- c3-close: 18:00, the desk closes, lights down to the end -->
+    <div id="c3-close" class="clip world" data-start="149.88" data-duration="2.96">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock" style="color: var(--accent)">18:00</span></div>
+        <div class="app-body">
+          <div id="c3-closed">Opens again at 09:00</div>
+        </div>
+      </div>
+      <div id="c3-lights" data-hold></div>
+    </div>
+
+    <audio id="c3-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="82" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c3-bed2" class="clip" src="assets/music/bed.mp3" data-start="106.27" data-duration="26.3" data-media-start="128" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c3-1" class="clip" src="assets/vo/c3-1.wav" data-start="3.0" data-duration="7.125" data-volume="1"></audio>
+    <audio id="vo-c3-2" class="clip" src="assets/vo/c3-2.wav" data-start="10.47" data-duration="7.829" data-volume="1"></audio>
+    <audio id="vo-c3-2b" class="clip" src="assets/vo/c3-2b.wav" data-start="18.65" data-duration="5.269" data-volume="1"></audio>
+    <audio id="vo-c3-3" class="clip" src="assets/vo/c3-3.wav" data-start="24.27" data-duration="6.315" data-volume="1"></audio>
+    <audio id="vo-c3-3b" class="clip" src="assets/vo/c3-3b.wav" data-start="30.94" data-duration="11.115" data-volume="1"></audio>
+    <audio id="vo-c3-4" class="clip" src="assets/vo/c3-4.wav" data-start="42.4" data-duration="10.283" data-volume="1"></audio>
+    <audio id="vo-c3-4b" class="clip" src="assets/vo/c3-4b.wav" data-start="53.04" data-duration="8.0" data-volume="1"></audio>
+    <audio id="vo-c3-5" class="clip" src="assets/vo/c3-5.wav" data-start="61.39" data-duration="8.576" data-volume="1"></audio>
+    <audio id="vo-c3-5b" class="clip" src="assets/vo/c3-5b.wav" data-start="70.31" data-duration="8.256" data-volume="1"></audio>
+    <audio id="vo-c3-5c" class="clip" src="assets/vo/c3-5c.wav" data-start="78.92" data-duration="6.421" data-volume="1"></audio>
+    <audio id="vo-c3-6" class="clip" src="assets/vo/c3-6.wav" data-start="85.69" data-duration="7.701" data-volume="1"></audio>
+    <audio id="vo-c3-7" class="clip" src="assets/vo/c3-7.wav" data-start="93.74" data-duration="12.181" data-volume="1"></audio>
+    <audio id="vo-c3-end" class="clip" src="assets/vo/c3-end.wav" data-start="106.27" data-duration="2.091" data-volume="1"></audio>
+    <audio id="vo-c3-after" class="clip" src="assets/vo/c3-after.wav" data-start="136.42" data-duration="5.184" data-volume="1"></audio>
+    <audio id="vo-c3-afterb" class="clip" src="assets/vo/c3-afterb.wav" data-start="141.95" data-duration="7.573" data-volume="1"></audio>
+    <audio id="vo-c3-close" class="clip" src="assets/vo/c3-close.wav" data-start="149.88" data-duration="1.963" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const RULE = "#c4b9a6";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const hot = (sel, at) => tl.to(sel, { borderColor: ACCENT, duration: 0.3 }, at);
+    const cool = (sel, at) => tl.to(sel, { borderColor: RULE, duration: 0.3 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c3-1: the members area, then the annotation marks it as the lazy bundle
+    fadeIn("#c3-desk .c3-panel", 3.1, 0.5);
+    fadeIn("#c3-lazybox", 5.0, 0.5);
+    fadeIn("#c3-lazytag", 5.15, 0.5);
+
+    // c3-2: the tree top down, edges with it; the route injector takes the accent
+    ["#c3-n0", "#c3-n1", "#c3-n2", "#c3-n3, #c3-n4", "#c3-n5, #c3-n6"].forEach((n, i) => fadeIn(n, 10.6 + i * 0.3, 0.5));
+    fadeIn("#c3-edges", 10.9, 1.2);
+    hot("#c3-n1", 12.2);
+
+    // c3-2b: the climb from LoansPage to the root
+    cool("#c3-n1", 18.7);
+    tl.fromTo("#c3-climb", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 2.0, ease: "power2.inOut" }, 18.9);
+    hot("#c3-n0", 20.9);
+
+    // c3-3: the climb clears, the route node held as the accent
+    fadeOut("#c3-climb", 24.3, 0.4);
+    cool("#c3-n0", 24.3);
+    hot("#c3-n1", 24.5);
+
+    // c3-3b: the opt-in, then the reuse strategy hook
+    fadeIn("#c3-cl1", 32.8, 0.5);
+    fadeIn("#c3-cl2", 37.6, 0.5);
+
+    // c3-4: root's basket, the dialog with its own, a book goes in
+    fadeIn("#c3-rootl", 42.6, 0.5);
+    fadeIn("#c3-dim", 45.6, 0.4);
+    fadeIn("#c3-dialog", 45.7, 0.5);
+    tl.fromTo("#c3-dlgl", { borderColor: RULE }, { borderColor: ACCENT, duration: 0.3 }, 47.4);
+    fadeIn("#c3-added", 48.8, 0.4);
+
+    // c3-4b: the lesson's two questions beside the dialog, left open
+    fadeIn("#c3-qs", 53.2, 0.4);
+    fadeIn("#c3-qb", 53.5, 0.4);
+
+    // c3-5: the heading, then the function it is about
+    fadeIn("#c3-http-h", 61.5, 0.5);
+    fadeIn("#c3-http-c", 62.3, 0.5);
+
+    // c3-5b: uploads in progress
+    fadeIn("#c3-upload", 70.4, 0.5);
+
+    // c3-5c: the package name alone
+    fadeIn("#c3-pkg-c", 79.0, 0.5);
+
+    // c3-6: the creator, then who destroys it
+    fadeIn("#c3-d1", 86.0, 0.5);
+    fadeIn("#c3-d2", 90.3, 0.5);
+
+    // c3-7: both items; the band follows the voice
+    fadeIn("#c3-bad-h", 93.85, 0.4);
+    fadeIn("#c3-b1", 94.0, 0.5);
+    band("#c3-b1", 94.2);
+    tl.to("#c3-b1", { backgroundColor: CLEAR, duration: 0.4 }, 99.6);
+    fadeIn("#c3-b2", 94.15, 0.5);
+    band("#c3-b2", 99.8);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c3-q1", "#c3-q2", "#c3-q3", "#c3-q4"].forEach((q, i) => fadeIn(q, 106.5 + i * 0.6));
+    fadeIn("#c3-pause-2", 133.05);
+
+    // after the lesson: compare; then write, the last sentence banded
+    fadeIn("#c3-after-title", 136.15, 0.4);
+    fadeIn("#c3-a1", 136.5, 0.4);
+    fadeIn("#c3-a2", 142.0, 0.4);
+    fadeIn("#c3-a3", 144.2, 0.4);
+    band("#c3-a3", 144.3);
+
+    // close: 18:00, the lights go down and stay down to the last frame
+    fadeIn("#c3-closed", 150.0);
+    tl.fromTo("#c3-lights", { opacity: 0 }, { opacity: 0.62, duration: 2.0, ease: "power2.inOut" }, 150.5);
+
+    window.__timelines["c3"] = tl;
+  </script>
+</template>
