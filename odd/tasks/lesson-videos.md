@@ -24,7 +24,8 @@ Delivery: ask-on-risk. Runner: `npx hyperframes check --json` and `snapshot --re
 | T3 | S1 | inline | done: 63 clips (wav gitignored), durations.json, timing.json via videos/scripts/timing.py; 710 s total | 6f587d3 |
 | T4 | S1 S2 S3 | c0 + kit inline; c1-c8 delegated, 4 parallel writers × 2 scenes | done: check ok, 0 errors; seam check = full check + review snapshot | see T5 |
 | T5 | S1 | inline | done: user approved ("Si dale"); rendered 11:50, loudness normalized to -16.9 LUFS | see Log |
-| T6 | S2 | inline | pending: user decides the other 17 | |
+| T6 | S2 | inline | done: user chose "Tanda de 3 ahora (Recommended)" | |
+| T8 | S1 S3 | per topic: narration writer → expert review → correction → recheck; voice + timing inline; scenes by 2 parallel writers | in progress: rxjs-to-signals, change-detection, lifecycle | |
 
 ## Log
 

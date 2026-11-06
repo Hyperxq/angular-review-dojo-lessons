@@ -33,6 +33,10 @@ TIME:    narration-driven, about 8-10 min; each scene's length comes from `asset
   Newsreader 96 px, left aligned at x=200, y centred. Holds 3.0 s.
 - **Questions card**: note-soft ground, heading "Review questions" Atkinson 700 36 px, each question Atkinson 400 40 px, max
   1440 px wide, verbatim from LESSON.md; questions appear one by one 0.6 s apart, then hold.
+- **Tree diagram**: kit `.node` boxes (`.badge` for `[OnPush]`-style badges, `.hot` for the node the narration points at),
+  joined by SVG lines in `--rule-strong`, 4 px; laid out top-down, root centred, filling at least 60% of the frame width.
+- **Flow diagram**: kit `.fbox` boxes left to right with SVG arrows in ink, 4 px, each edge label as `.flabel` above its
+  arrow; arrows draw on when the narration names the step.
 - **Pause card**: paper ground, "Pause here." Newsreader 64 px, "Now do exercise NN." Atkinson 700 48 px in accent. Holds 3.5 s.
 
 ## Scene clock

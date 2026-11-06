@@ -128,3 +128,13 @@
 .q { font: 400 44px/1.35 var(--font-text); margin-bottom: 36px; }
 .pause-1 { position: absolute; left: 200px; top: 400px; font: 600 64px/1 var(--font-display); }
 .pause-2 { position: absolute; left: 200px; top: 500px; font: 700 48px/1 var(--font-text); color: var(--accent); }
+
+/* Tree diagram (```tree in LESSON.md): nodes joined by SVG edges drawn in the scene */
+.node { position: absolute; padding: 24px 32px; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; font: 700 44px/1 var(--font-code); white-space: nowrap; }
+.node .badge { font: 400 32px/1 var(--font-text); color: var(--ink-muted); margin-left: 14px; }
+.node.hot { border-color: var(--accent); }
+.node.dim { color: var(--ink-muted); border-style: dashed; }
+
+/* Flow diagram (```flow in LESSON.md): boxes left to right, labelled SVG arrows drawn in the scene */
+.fbox { position: absolute; padding: 26px 34px; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; font: 700 40px/1.15 var(--font-text); text-align: center; }
+.flabel { position: absolute; font: 400 32px/1.2 var(--font-text); color: var(--ink-muted); text-align: center; }
