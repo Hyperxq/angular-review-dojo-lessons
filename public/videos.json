@@ -191,6 +191,90 @@
           "start": 418.5
         }
       ]
+    },
+    {
+      "topic": "routing",
+      "release": "videos-batch-3",
+      "file": "routing-lesson.mp4",
+      "duration": 656.8,
+      "chapters": [
+        {
+          "number": 0,
+          "start": 0.0
+        },
+        {
+          "number": 1,
+          "start": 84.7
+        },
+        {
+          "number": 2,
+          "start": 195.1
+        },
+        {
+          "number": 3,
+          "start": 321.0
+        },
+        {
+          "number": 4,
+          "start": 432.8
+        },
+        {
+          "number": 5,
+          "start": 530.8
+        }
+      ]
+    },
+    {
+      "topic": "performance",
+      "release": "videos-batch-3",
+      "file": "performance-lesson.mp4",
+      "duration": 653.5,
+      "chapters": [
+        {
+          "number": 0,
+          "start": 0.0
+        },
+        {
+          "number": 1,
+          "start": 125.2
+        },
+        {
+          "number": 2,
+          "start": 242.1
+        },
+        {
+          "number": 3,
+          "start": 355.3
+        },
+        {
+          "number": 4,
+          "start": 488.8
+        }
+      ]
+    },
+    {
+      "topic": "testing",
+      "release": "videos-batch-3",
+      "file": "testing-lesson.mp4",
+      "duration": 635.3,
+      "chapters": [
+        {
+          "number": 0,
+          "start": 0.0
+        },
+        {
+          "number": 1,
+          "start": 195.8
+        },
+        {
+          "number": 2,
+          "start": 316.7
+        },
+        {
+          "number": 3,
+          "start": 465.1
+        }
+      ]
     }
   ]
 }

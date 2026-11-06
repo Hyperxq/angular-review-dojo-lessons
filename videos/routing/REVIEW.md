@@ -32,3 +32,9 @@
 ## Weakest shot
 
 - c3 "Guard / Receives" table is on screen about 2.6 s before the `hasRole` code replaces it inside one clip.
+
+## Delivery
+
+- `renders/routing-lesson.mp4` (gitignored; published in release `videos-batch-3`): 1920x1080, 30 fps, 10:56, about 31 MB.
+- Mix normalized with ffmpeg `loudnorm` (I=-16, TP=-1.5): -16.8 LUFS integrated, true peak -1.1 dBTP, clipping count 0.
+- Frame 0 is chapter 0's card, which serves as the thumbnail.

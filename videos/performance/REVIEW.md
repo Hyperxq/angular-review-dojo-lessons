@@ -34,3 +34,9 @@
 
 - c3-7 holds the Performance and Network panels with placeholder bars and no timing numbers, by design, so the shot reads as
   a diagram more than a real trace.
+
+## Delivery
+
+- `renders/performance-lesson.mp4` (gitignored; published in release `videos-batch-3`): 1920x1080, 30 fps, 10:53, about 32 MB.
+- Mix normalized with ffmpeg `loudnorm` (I=-16, TP=-1.5): -16.8 LUFS integrated, true peak -0.4 dBTP, clipping count 0.
+- Frame 0 is chapter 0's card, which serves as the thumbnail.
