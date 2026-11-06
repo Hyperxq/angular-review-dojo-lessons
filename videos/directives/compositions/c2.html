@@ -1,0 +1,339 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c2-svg { position: absolute; left: 0; top: 0; }
+    .c2-band { position: absolute; left: 0; right: 0; top: 40px; height: 51px; background: var(--accent-soft); }
+    .c2-code .ln { position: relative; }
+    .c2-mk { border-radius: 4px; }
+    .c2-head { position: absolute; left: 142px; top: 150px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+
+    #c2-book { position: absolute; left: 40px; top: 40px; width: 1000px; box-sizing: border-box; padding: 40px 48px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
+    #c2-book-t { font: 600 56px/1.1 var(--font-display); }
+    #c2-book-a { margin-top: 12px; }
+    #c2-copies { margin-top: 56px; }
+    .c2-crow { display: grid; grid-template-columns: 260px 320px 1fr; align-items: center; height: 120px; border-top: 1px solid var(--rule); font: 400 38px/1 var(--font-text); }
+    .c2-crow b { font-weight: 700; }
+    .c2-crow .label { font-size: 32px; }
+    #c2-cf { position: absolute; left: 1100px; top: 40px; width: 540px; box-sizing: border-box; padding: 40px 48px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
+    .c2-cfrow { position: relative; display: flex; align-items: center; gap: 36px; margin-top: 64px; font: 700 44px/1 var(--font-code); }
+    .c2-old { position: relative; color: var(--ink-muted); }
+    .c2-strike { position: absolute; left: -8px; right: -8px; top: 22px; height: 6px; background: var(--accent); }
+
+    .c2-case { position: absolute; left: 200px; width: 1520px; display: flex; gap: 40px; align-items: baseline; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c2-case b { font: 700 48px/1 var(--font-text); color: var(--ink-muted); }
+
+    #c2-star-code { left: 140px; top: 440px; }
+    #c2-q { position: absolute; left: 300px; top: 330px; font: 600 112px/1 var(--font-display); color: var(--accent); }
+
+    #c2-sugar-l { position: absolute; left: 110px; top: 236px; }
+    #c2-sugar { left: 110px; top: 330px; }
+
+    .c2-tn { box-sizing: border-box; text-align: center; }
+    .c2-tn .badge { display: block; margin: 14px 0 0; }
+    #c2-t0 { left: 610px; top: 150px; width: 700px; }
+    #c2-t1 { left: 160px; top: 400px; width: 560px; }
+    #c2-t2 { left: 860px; top: 400px; width: 900px; }
+    #c2-t3 { left: 860px; top: 690px; width: 440px; font-size: 36px; }
+    #c2-t4 { left: 1320px; top: 690px; width: 440px; font-size: 36px; }
+
+    #c2-tab { position: absolute; left: 120px; top: 250px; width: 1680px; display: grid; grid-template-columns: 860px 820px; font: 400 38px/1.3 var(--font-text); }
+    #c2-tab > div { display: contents; }
+    #c2-tab span { padding: 28px 28px; border-bottom: 1px solid var(--rule); }
+    #c2-tab span:first-child { font: 400 32px/1.55 var(--font-code); white-space: nowrap; }
+    #c2-thead span { font: 700 32px/1.3 var(--font-text) !important; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+
+    #c2-guard { left: 112px; top: 90px; padding: 40px 32px; font-size: 30px; line-height: 1.5; }
+    #c2-guard .c2-band { height: 45px; }
+    #c2-chip { position: absolute; left: 112px; top: 850px; padding: 20px 32px; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; font: 400 34px/1 var(--font-code); }
+    #c2-chip-l { position: absolute; left: 1010px; top: 870px; }
+
+    #c2-eff { left: 142px; top: 280px; font-size: 28px; line-height: 1.5; }
+    #c2-eff .c2-band { height: 42px; }
+
+    #c2-wont-h { position: absolute; left: 240px; top: 170px; font: 700 36px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-item { position: absolute; left: 200px; width: 1520px; box-sizing: border-box; padding: 28px 40px; border-radius: 8px; font: 400 44px/1.4 var(--font-text); }
+    .c2-item code { font: 400 40px/1 var(--font-code); }
+
+    .q { font-size: 40px; margin-bottom: 30px; }
+  </style>
+
+  <div id="root" data-composition-id="c2" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c2-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">12:00</div>
+      <div class="chapter-title">Structural directives own a view container</div>
+    </div>
+
+    <!-- c2-1: a book page, one row per copy; control flow replaced the starred directives -->
+    <div id="c2-desk" class="clip world" data-start="3" data-duration="10.04">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">12:00</span></div>
+        <div class="app-body">
+          <div id="c2-book">
+            <div id="c2-book-t">The Left Hand of Darkness</div>
+            <div id="c2-book-a" class="label">Ursula K. Le Guin · 3 copies</div>
+            <div id="c2-copies">
+              <div id="c2-cr1" class="c2-crow"><b>Copy 1</b><span class="label">Shelf 4B</span><span>On shelf</span></div>
+              <div id="c2-cr2" class="c2-crow"><b>Copy 2</b><span class="label">Shelf 4B</span><span>On loan</span></div>
+              <div id="c2-cr3" class="c2-crow"><b>Copy 3</b><span class="label">Shelf 4B</span><span>On shelf</span></div>
+            </div>
+          </div>
+          <div id="c2-cf">
+            <div class="label">Template</div>
+            <div class="c2-cfrow"><span class="c2-old">*ngIf<i id="c2-s1" class="c2-strike"></i></span><span id="c2-new1">@if</span></div>
+            <div class="c2-cfrow"><span class="c2-old">*ngFor<i id="c2-s2" class="c2-strike"></i></span><span id="c2-new2" data-hold>@for</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-2: the two cases where a custom one earns its place -->
+    <div id="c2-cases" class="clip world" data-start="13.04" data-duration="7.79">
+      <div id="c2-case1" class="c2-case" style="top: 360px"><b>1</b><span>The same rule is repeated across many templates</span></div>
+      <div id="c2-case2" class="c2-case" style="top: 560px" data-hold><b>2</b><span>The directive provides a context the template uses</span></div>
+    </div>
+
+    <!-- c2-3: the star, circled, with a question mark -->
+    <div id="c2-star" class="clip world" data-start="20.83" data-duration="7.05">
+      <div id="c2-star-code" class="code">
+        <span class="ln">&lt;li *appCopies=<span class="s">"book.copies; max 5; let n = index"</span>&gt;Copy {{ n + <span class="n">1</span> }}&lt;/li&gt;</span>
+      </div>
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
+        <circle id="c2-ring" cx="286.7" cy="505" r="28" pathLength="1" stroke="#b8321f" stroke-width="5" />
+      </svg>
+      <div id="c2-q" data-hold>?</div>
+    </div>
+
+    <!-- c2-4, c2-4b: the two templates, each sugar part linked to what it becomes -->
+    <div id="c2-sug" class="clip world" data-start="27.88" data-duration="15.84">
+      <div id="c2-sugar-l" class="label">These two templates are the same</div>
+      <div id="c2-sugar" class="code">
+        <span class="ln">&lt;li *appCopies=<span class="s">"<span id="c2-a1" class="c2-mk">book.copies</span>; <span id="c2-a2" class="c2-mk">max 5</span>; <span id="c2-a3" class="c2-mk">let n = index</span>"</span>&gt;Copy {{ n + <span class="n">1</span> }}&lt;/li&gt;</span>
+        <span class="ln"> </span>
+        <span class="ln">&lt;ng-template <span id="c2-b1" class="c2-mk">[appCopies]=<span class="s">"book.copies"</span></span> <span id="c2-b2" class="c2-mk">[appCopiesMax]=<span class="s">"5"</span></span> <span id="c2-b3" class="c2-mk">let-n=<span class="s">"index"</span></span>&gt;</span>
+        <span class="ln">  &lt;li&gt;Copy {{ n + <span class="n">1</span> }}&lt;/li&gt;</span>
+        <span class="ln">&lt;/ng-template&gt;</span>
+      </div>
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#b8321f" stroke-width="4">
+        <g id="c2-k1"><path pathLength="1" d="M621 416 C621 446 707 440 707 466" /><polygon points="707,478 699,464 715,464" fill="#b8321f" stroke="none" /></g>
+        <g id="c2-k2"><path pathLength="1" d="M836 416 C836 446 1190 440 1190 466" /><polygon points="1190,478 1182,464 1198,464" fill="#b8321f" stroke="none" /></g>
+        <g id="c2-k3" data-hold><path pathLength="1" d="M1072 416 C1072 446 1545 440 1545 466" /><polygon points="1545,478 1537,464 1553,464" fill="#b8321f" stroke="none" /></g>
+      </svg>
+    </div>
+
+    <!-- c2-5: the tree under ng-template [appCopies] -->
+    <div id="c2-tree" class="clip world sunk" data-start="43.72" data-duration="6.46">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#c4b9a6" stroke-width="4">
+        <path id="c2-te1" pathLength="1" d="M960 242 V320 H440 V400" />
+        <path id="c2-te2" pathLength="1" d="M960 242 V320 H1310 V400" />
+        <path id="c2-te3" pathLength="1" d="M1310 538 V610 H1080 V690" />
+        <path id="c2-te4" pathLength="1" d="M1310 538 V610 H1540 V690" />
+      </svg>
+      <div id="c2-t0" class="node c2-tn">ng-template [appCopies]</div>
+      <div id="c2-t1" class="node c2-tn">TemplateRef<span class="badge">[what to stamp]</span></div>
+      <div id="c2-t2" class="node c2-tn">ViewContainerRef<span class="badge">[where to stamp it, the anchor after the template]</span></div>
+      <div id="c2-t3" class="node c2-tn">embedded view 0<span class="badge">[context: index 0]</span></div>
+      <div id="c2-t4" class="node c2-tn" data-hold>embedded view 1<span class="badge">[context: index 1]</span></div>
+    </div>
+
+    <!-- c2-6, c2-6b: the container table, rows lit in turn, then all four -->
+    <div id="c2-list" class="clip world" data-start="50.18" data-duration="16.52">
+      <div id="c2-tab">
+        <div id="c2-thead"><span>Call</span><span>Effect</span></div>
+        <div id="c2-r1"><span>createEmbeddedView(template, context?)</span><span>Creates a view and appends it to the list</span></div>
+        <div id="c2-r2"><span>clear()</span><span>Destroys every view in the list</span></div>
+        <div id="c2-r3"><span>remove(index)</span><span>Destroys one view</span></div>
+        <div id="c2-r4" data-hold><span>length</span><span>How many views are in the list right now</span></div>
+      </div>
+    </div>
+
+    <!-- c2-7: Copies, the context guard banded; the template guard name beside it -->
+    <div id="c2-typing" class="clip world" data-start="66.7" data-duration="10.25">
+      <div id="c2-guard" class="code c2-code">
+        <div id="c2-band1" class="c2-band"></div>
+        <span class="ln"><span class="k">interface</span> CopiesContext {</span>
+        <span class="ln">  $implicit: <span class="k">number</span>;</span>
+        <span class="ln">  index: <span class="k">number</span>;</span>
+        <span class="ln">}</span>
+        <span class="ln"> </span>
+        <span class="ln">@Directive({ selector: <span class="s">'[appCopies]'</span> })</span>
+        <span class="ln"><span class="k">export class</span> Copies {</span>
+        <span class="ln">  <span class="k">readonly</span> appCopies = input.required&lt;<span class="k">number</span>&gt;();</span>
+        <span class="ln">  <span class="k">readonly</span> appCopiesMax = input(<span class="n">10</span>);</span>
+        <span class="ln"> </span>
+        <span class="ln">  <span class="k">static</span> ngTemplateContextGuard(_dir: Copies, _ctx: <span class="k">unknown</span>): _ctx <span class="k">is</span> CopiesContext {</span>
+        <span class="ln">    <span class="k">return true</span>;</span>
+        <span class="ln">  }</span>
+        <span class="ln">}</span>
+      </div>
+      <div id="c2-chip">ngTemplateGuard_appCopies: <span class="s">'binding'</span></div>
+      <div id="c2-chip-l" class="label" data-hold>narrow the template's types the way <code style="font-family: var(--font-code)">@if</code> does</div>
+    </div>
+
+    <!-- c2-8, c2-9, c2-9b: the page-title effect; band on the tracked read, then the untracked block -->
+    <div id="c2-effect" class="clip world" data-start="76.95" data-duration="28.13">
+      <div id="c2-eff-h" class="c2-head">Keeping imperative work in step with signals</div>
+      <div id="c2-eff" class="code c2-code">
+        <div id="c2-band2" class="c2-band"></div>
+        <span class="ln"><span class="k">constructor</span>() {</span>
+        <span class="ln">  effect(() =&gt; {</span>
+        <span class="ln">    <span class="k">const</span> title = <span class="k">this</span>.book().title;  <span class="c">// tracked: the effect re-runs when book changes</span></span>
+        <span class="ln">    untracked(() =&gt; {</span>
+        <span class="ln">      document.title = <span class="s">`${title} | ${<span id="c2-lib" class="c2-mk"><span class="k">this</span>.library.name()</span>}`</span>;   <span class="c">// not tracked</span></span>
+        <span class="ln">      <span class="k">this</span>.analytics.pageView(title);</span>
+        <span class="ln">    });</span>
+        <span class="ln">  });</span>
+        <span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c2-10, c2-10b: when you would not write this; the authorization item banded -->
+    <div id="c2-wont" class="clip world" data-start="105.08" data-duration="12.54">
+      <div id="c2-wont-h">When you would not write this</div>
+      <div id="c2-i1" class="c2-item" style="top: 250px">A condition used in one template: write <code>@if</code>.</div>
+      <div id="c2-i2" class="c2-item" style="top: 410px" data-hold>A rule about who may see something: hiding UI by role is a convenience for the user, never authorization. The server must reject the request no matter what the template showed.</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c2-questions" class="clip world note" data-start="117.62" data-duration="20">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c2-q1" class="q">When the condition changes from true to false and back, how many views does the container hold after each step?</div>
+        <div id="c2-q2" class="q">Is the condition evaluated once, or does it follow every signal it depends on?</div>
+        <div id="c2-q3" class="q">What has to be true before this code can run, and what guarantees it?</div>
+        <div id="c2-q4" class="q">Which reads should make this code run again, and which should not?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c2-pause" class="clip world" data-start="137.62" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c2-pause-2" class="pause-2" data-hold>Now do exercise 02.</div>
+    </div>
+
+    <audio id="c2-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="30" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-bed2" class="clip" src="assets/music/bed.mp3" data-start="117.62" data-duration="20" data-media-start="38" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c2-1" class="clip" src="assets/vo/c2-1.wav" data-start="3" data-duration="9.685" data-volume="1"></audio>
+    <audio id="vo-c2-2" class="clip" src="assets/vo/c2-2.wav" data-start="13.04" data-duration="7.445" data-volume="1"></audio>
+    <audio id="vo-c2-3" class="clip" src="assets/vo/c2-3.wav" data-start="20.83" data-duration="6.699" data-volume="1"></audio>
+    <audio id="vo-c2-4" class="clip" src="assets/vo/c2-4.wav" data-start="27.88" data-duration="6.677" data-volume="1"></audio>
+    <audio id="vo-c2-4b" class="clip" src="assets/vo/c2-4b.wav" data-start="34.91" data-duration="8.469" data-volume="1"></audio>
+    <audio id="vo-c2-5" class="clip" src="assets/vo/c2-5.wav" data-start="43.72" data-duration="6.101" data-volume="1"></audio>
+    <audio id="vo-c2-6" class="clip" src="assets/vo/c2-6.wav" data-start="50.18" data-duration="8.64" data-volume="1"></audio>
+    <audio id="vo-c2-6b" class="clip" src="assets/vo/c2-6b.wav" data-start="59.17" data-duration="7.189" data-volume="1"></audio>
+    <audio id="vo-c2-7" class="clip" src="assets/vo/c2-7.wav" data-start="66.7" data-duration="9.899" data-volume="1"></audio>
+    <audio id="vo-c2-8" class="clip" src="assets/vo/c2-8.wav" data-start="76.95" data-duration="10.645" data-volume="1"></audio>
+    <audio id="vo-c2-9" class="clip" src="assets/vo/c2-9.wav" data-start="87.95" data-duration="8.427" data-volume="1"></audio>
+    <audio id="vo-c2-9b" class="clip" src="assets/vo/c2-9b.wav" data-start="96.73" data-duration="8" data-volume="1"></audio>
+    <audio id="vo-c2-10" class="clip" src="assets/vo/c2-10.wav" data-start="105.08" data-duration="7.872" data-volume="1"></audio>
+    <audio id="vo-c2-10b" class="clip" src="assets/vo/c2-10b.wav" data-start="113.3" data-duration="3.968" data-volume="1"></audio>
+    <audio id="vo-c2-end" class="clip" src="assets/vo/c2-end.wav" data-start="117.62" data-duration="2.027" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const print = (sel, at) =>
+      tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out" }, at);
+    const draw = (sel, at, d = 0.4) => {
+      tl.fromTo(sel + " path", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+      tl.fromTo(sel + " polygon", { opacity: 0 }, { opacity: 1, duration: 0.12 }, at + d - 0.08);
+    };
+    const line = (sel, at, d = 0.4) =>
+      tl.fromTo(sel, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+    const SOFT = "rgba(245,226,217,1)";
+    const NONE = "rgba(245,226,217,0)";
+    const mark = (sel, at) => tl.fromTo(sel, { backgroundColor: NONE }, { backgroundColor: SOFT, duration: 0.3 }, at);
+    const unmark = (sel, at) => tl.to(sel, { backgroundColor: NONE, duration: 0.3 }, at);
+    const bandTo = (sel, lh, line, at, lines = 1) =>
+      tl.to(sel, { y: line * lh, scaleY: lines, transformOrigin: "50% 0%", duration: 0.8, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c2-1: the book page with its copy rows; the starred directives struck, control flow beside them
+    fadeIn("#c2-book", 3.1, 0.4);
+    ["#c2-cr1", "#c2-cr2", "#c2-cr3"].forEach((r, i) => fadeIn(r, 6.0 + i * 0.25, 0.4));
+    fadeIn("#c2-cf", 8.4, 0.4);
+    tl.set(["#c2-new1", "#c2-new2"], { opacity: 0 }, 3);
+    ["#c2-s1", "#c2-s2"].forEach((s, i) =>
+      tl.fromTo(s, { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.4, ease: "power2.inOut" }, 10.5 + i * 0.15));
+    fadeIn("#c2-new1", 10.9, 0.4);
+    fadeIn("#c2-new2", 11.05, 0.4);
+
+    // c2-2: the two cases
+    fadeIn("#c2-case1", 13.4);
+    fadeIn("#c2-case2", 17.0);
+
+    // c2-3: the star is circled; a question mark beside it
+    fadeIn("#c2-star-code", 20.9, 0.4);
+    line("#c2-ring", 22.6, 0.6);
+    print("#c2-q", 23.3);
+
+    // c2-4: book.copies → [appCopies]; c2-4b: max 5 → [appCopiesMax]="5", then let n = index → let-n="index"
+    mark("#c2-a1", 30.6);
+    mark("#c2-b1", 30.75);
+    draw("#c2-k1", 30.9, 0.4);
+    unmark("#c2-a1", 36.9);
+    unmark("#c2-b1", 36.9);
+    tl.to("#c2-k1", { opacity: 0, duration: 0.3, ease: "power2.in" }, 36.9);
+    mark("#c2-a2", 37.2);
+    mark("#c2-b2", 37.35);
+    draw("#c2-k2", 37.5, 0.4);
+    unmark("#c2-a2", 40.0);
+    unmark("#c2-b2", 40.0);
+    tl.to("#c2-k2", { opacity: 0, duration: 0.3, ease: "power2.in" }, 40.0);
+    mark("#c2-a3", 40.3);
+    mark("#c2-b3", 40.45);
+    draw("#c2-k3", 40.6, 0.4);
+
+    // c2-5: the tree; TemplateRef lit, then ViewContainerRef with its two embedded views
+    fadeIn("#c2-t0", 43.8, 0.4);
+    line("#c2-te1", 44.1, 0.4);
+    line("#c2-te2", 44.1, 0.4);
+    fadeIn("#c2-t1", 44.4, 0.4);
+    fadeIn("#c2-t2", 44.55, 0.4);
+    tl.to("#c2-t1", { borderColor: "#b8321f", duration: 0.3 }, 45.4);
+    tl.to("#c2-t1", { borderColor: "#c4b9a6", duration: 0.3 }, 47.4);
+    tl.to("#c2-t2", { borderColor: "#b8321f", duration: 0.3 }, 47.4);
+    line("#c2-te3", 47.4, 0.4);
+    line("#c2-te4", 47.4, 0.4);
+    fadeIn("#c2-t3", 47.6, 0.4);
+    fadeIn("#c2-t4", 47.7, 0.4);
+
+    // c2-6: rows lit in turn; c2-6b: all four lit
+    ["#c2-thead span", "#c2-r1 span", "#c2-r2 span", "#c2-r3 span", "#c2-r4 span"].forEach((r, i) => fadeIn(r, 50.3 + i * 0.12, 0.4));
+    mark("#c2-r1 span", 51.9);
+    unmark("#c2-r1 span", 54.3);
+    mark("#c2-r2 span", 54.3);
+    unmark("#c2-r2 span", 55.9);
+    mark("#c2-r3 span", 55.9);
+    unmark("#c2-r3 span", 57.2);
+    mark("#c2-r4 span", 57.2);
+    mark(["#c2-r1 span", "#c2-r2 span", "#c2-r3 span"], 59.5);
+
+    // c2-7: band on ngTemplateContextGuard; the template guard name set beside it
+    tl.fromTo("#c2-band1", { opacity: 0, y: 10 * 45, scaleY: 3, transformOrigin: "50% 0%" }, { opacity: 1, duration: 0.3 }, 67.6);
+    print("#c2-chip", 71.6);
+    fadeIn("#c2-chip-l", 71.9, 0.4);
+
+    // c2-8: the effect code; c2-9: band on const title, then on the untracked block; c2-9b: library.name() marked
+    fadeIn("#c2-eff-h", 77.1, 0.4);
+    fadeIn("#c2-eff", 77.25, 0.4);
+    tl.fromTo("#c2-band2", { opacity: 0, y: 2 * 42 }, { opacity: 1, duration: 0.3 }, 89.0);
+    bandTo("#c2-band2", 42, 3, 92.3, 4);
+    tl.to("#c2-lib, #c2-lib .k", { color: "#b8321f", duration: 0.3 }, 98.6);
+
+    // c2-10: both items; c2-10b: the authorization item banded
+    fadeIn("#c2-wont-h", 105.2, 0.4);
+    fadeIn("#c2-i1", 105.4, 0.4);
+    fadeIn("#c2-i2", 107.6, 0.4);
+    mark("#c2-i2", 113.5);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c2-q1", "#c2-q2", "#c2-q3", "#c2-q4"].forEach((q, i) => fadeIn(q, 117.9 + i * 0.6));
+    fadeIn("#c2-pause-2", 138.1);
+
+    window.__timelines["c2"] = tl;
+  </script>
+</template>
