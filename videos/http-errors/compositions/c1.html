@@ -1,0 +1,299 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #root code { font-family: var(--font-code); font-size: 0.9em; white-space: nowrap; }
+
+    .c1-h { position: absolute; left: 200px; top: 96px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c1-chip { position: absolute; box-sizing: border-box; padding: 18px 30px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 40px/1 var(--font-code); white-space: nowrap; }
+    .c1-chip.txt { font: 700 40px/1 var(--font-text); }
+    .c1-chip.hot { border-color: var(--accent); color: var(--accent); }
+    .c1-row { position: absolute; left: 200px; display: flex; gap: 32px; }
+    .c1-row .c1-chip { position: static; }
+
+    /* desk app: the three audiences */
+    .c1-panel-h { font: 600 48px/1.1 var(--font-display); letter-spacing: -0.01em; margin-bottom: 40px; }
+    .c1-aud { display: flex; flex-direction: column; align-items: flex-start; gap: 32px; }
+    .c1-aud { padding: 40px 0 0 40px; gap: 40px; }
+    .c1-aud .c1-chip { position: static; padding: 26px 44px; font-size: 56px; }
+
+    /* the six layers, bottom to top */
+    .c1-layer { position: absolute; left: 320px; width: 720px; height: 84px; box-sizing: border-box; display: flex; align-items: center; padding: 0 36px; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; font: 700 40px/1 var(--font-text); }
+    .c1-arrow path { stroke: var(--ink); stroke-width: 4; fill: none; }
+
+    /* tables from LESSON.md: rows are grid divs */
+    .c1-tbl { position: absolute; left: 120px; width: 1680px; font: 400 34px/1.35 var(--font-text); }
+    .c1-tbl code { font-size: 31px; }
+    .c1-tr { display: grid; column-gap: 40px; padding: 22px 28px; border-bottom: 1px solid var(--rule); border-radius: 6px; background-color: rgba(245, 226, 217, 0); }
+    .c1-th { font: 700 30px/1.3 var(--font-text); color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c1-moves .c1-tr { grid-template-columns: 230px 620px 1fr; }
+    #c1-moves .c1-tr > div:first-child { font-weight: 700; }
+    #c1-where .c1-tr { grid-template-columns: 720px 1fr; }
+    #c1-rep .c1-tr { grid-template-columns: 1fr 1fr; column-gap: 0; padding: 0; }
+    #c1-rep .c1-tr > div { padding: 20px 28px; background-color: rgba(245, 226, 217, 0); }
+    #c1-else { position: absolute; left: 148px; top: 930px; font: 700 40px/1.2 var(--font-text); color: var(--accent); }
+
+    /* book(id) */
+    .c1-code { left: 120px; width: 1680px; box-sizing: border-box; padding: 40px 48px; font-size: 32px; }
+    .c1-code .ln { margin: 0 -48px; padding: 0 48px; background-color: rgba(245, 226, 217, 0); }
+
+    .c1-big { position: absolute; left: 200px; top: 420px; width: 1520px; font: 600 72px/1.2 var(--font-display); letter-spacing: -0.01em; }
+
+    /* When not to catch */
+    .c1-list { position: absolute; left: 200px; top: 290px; width: 1520px; }
+    .c1-li { display: grid; grid-template-columns: 56px 1fr; margin-bottom: 44px; font: 400 42px/1.45 var(--font-text); }
+    .c1-li > b { color: var(--ink-muted); }
+
+    /* should-fix comment */
+    .c1-quote { position: absolute; left: 200px; top: 400px; width: 1520px; box-sizing: border-box; padding: 40px 52px 44px; border-left: 10px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); box-shadow: var(--shadow); font: 400 40px/1.5 var(--font-text); }
+
+    #c1-questions .q { font-size: 40px; margin-bottom: 32px; }
+  </style>
+
+  <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c1-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c1-card-time" class="chapter-time">09:00</div>
+      <div id="c1-card-title" class="chapter-title">An error is information</div>
+    </div>
+
+    <!-- c1-1, c1-2: the desk at 09:00, the three audiences; the accent moves member, desk staff, on-call engineer -->
+    <div id="c1-desk" class="clip world sunk" data-start="3" data-duration="16.17">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-aud" data-hold>
+            <div id="c1-a1" class="c1-chip txt">member</div>
+            <div id="c1-a2" class="c1-chip txt">desk staff</div>
+            <div id="c1-a3" class="c1-chip txt">on-call engineer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-3: Four honest moves; the six layers, bottom to top -->
+    <div id="c1-layers" class="clip world" data-start="19.17" data-duration="7.07">
+      <div class="c1-h">Four honest moves</div>
+      <svg class="c1-arrow" style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <path id="c1-up" pathLength="1" stroke-dasharray="1" d="M240,960 V250 M216,280 L240,250 L264,280" />
+      </svg>
+      <div id="c1-ly1" class="c1-layer" style="top: 876px">HTTP client</div>
+      <div id="c1-ly2" class="c1-layer" style="top: 756px">interceptors</div>
+      <div id="c1-ly3" class="c1-layer" style="top: 636px">service</div>
+      <div id="c1-ly4" class="c1-layer" style="top: 516px">store or resource</div>
+      <div id="c1-ly5" class="c1-layer" style="top: 396px">component</div>
+      <div id="c1-ly6" class="c1-layer" style="top: 276px" data-hold>template</div>
+    </div>
+
+    <!-- c1-4, c1-5, c1-6: the moves table, cut in whole; the band follows the move named -->
+    <div id="c1-moves-w" class="clip world" data-start="26.24" data-duration="17.84">
+      <div id="c1-moves" class="c1-tbl" style="top: 90px" data-hold>
+        <div class="c1-tr c1-th"><div>Move</div><div>When it is right</div><div>Library example</div></div>
+        <div id="c1-m1" class="c1-tr"><div>Pass it on</div><div>The layer has nothing to add. This is the default.</div><div>A service method that just calls <code>http.get</code>.</div></div>
+        <div id="c1-m2" class="c1-tr"><div>Translate it</div><div>The layer can give the error a better meaning.</div><div>A <code>404</code> on <code>/api/books/:id</code> becomes <code>BookWithdrawn</code>.</div></div>
+        <div id="c1-m3" class="c1-tr"><div>Show it</div><div>The layer owns some screen and can tell the user what happened and what to do next.</div><div>"Renewal failed. The loan is unchanged. Try again or ask at the desk."</div></div>
+        <div id="c1-m4" class="c1-tr"><div>Recover</div><div>The layer has a fallback that is true, and labels it.</div><div>The branch hours from the last successful load, shown with "as of 9:00".</div></div>
+      </div>
+      <div id="c1-else" data-hold>Anything else is dropping the error.</div>
+    </div>
+
+    <!-- c1-7: book(id), cut in whole; band on BookWithdrawn, then on the pass-on line -->
+    <div id="c1-book" class="clip world" data-start="44.08" data-duration="8.67">
+      <div class="code c1-code" style="top: 230px" data-hold>
+<span class="ln">book(id: <span class="k">number</span>): Observable&lt;Book&gt; {</span>
+<span class="ln">  <span class="k">return this</span>.http.get&lt;Book&gt;(<span class="s">`/api/books/${id}`</span>).pipe(</span>
+<span class="ln">    catchError((error: <span class="k">unknown</span>) =&gt;</span>
+<span class="ln">      error <span class="k">instanceof</span> HttpErrorResponse &amp;&amp; error.status === <span class="n">404</span></span>
+<span id="c1-b-new" class="ln">        ? throwError(() =&gt; <span class="k">new</span> BookWithdrawn(id))</span>
+<span id="c1-b-pass" class="ln">        : throwError(() =&gt; error), <span class="c">// everything else passes on unchanged</span></span>
+<span class="ln">    ),</span>
+<span class="ln">  );</span>
+<span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c1-8: expected failures, the resource vocabulary; c1-9: the timeout option -->
+    <div id="c1-expected" class="clip world" data-start="52.75" data-duration="17.66">
+      <div class="c1-h">Expected failures and unexpected ones</div>
+      <div class="c1-row" style="top: 340px">
+        <div id="c1-v1" class="c1-chip">status()</div>
+        <div id="c1-v2" class="c1-chip">error()</div>
+        <div id="c1-v3" class="c1-chip">hasValue()</div>
+        <div id="c1-v4" class="c1-chip" data-hold>reload()</div>
+      </div>
+      <div id="c1-to" class="c1-chip hot" style="left: 200px; top: 560px; font-size: 48px" data-hold>{ timeout: 8000 }</div>
+    </div>
+
+    <!-- c1-10: where unexpected errors end up, cut in whole; TypeError as a label -->
+    <div id="c1-where-w" class="clip world" data-start="70.41" data-duration="7.09">
+      <div id="c1-te" class="c1-chip" style="left: 148px; top: 90px" data-hold>TypeError</div>
+      <div id="c1-where" class="c1-tbl" style="top: 230px" data-hold>
+        <div class="c1-tr c1-th"><div>Where the error happens</div><div>Where it ends up</div></div>
+        <div class="c1-tr"><div>Inside a <code>catchError</code></div><div>Wherever that <code>catchError</code> sends it; the layers above see only what it returns.</div></div>
+        <div class="c1-tr"><div>In a resource's <code>stream</code></div><div>The resource: <code>error()</code> and <code>status() === 'error'</code>.</div></div>
+        <div id="c1-w3" class="c1-tr"><div>Thrown in a template, an event handler or a lifecycle hook</div><div><code>ErrorHandler.handleError</code></div></div>
+        <div class="c1-tr"><div>An unhandled promise rejection or a stray <code>error</code> event</div><div><code>ErrorHandler</code>, when <code>provideBrowserGlobalErrorListeners()</code> is set up</div></div>
+        <div class="c1-tr"><div>A <code>subscribe</code> with no error callback</div><div>Reported as unhandled, so it also reaches the global listeners</div></div>
+      </div>
+    </div>
+
+    <!-- c1-11, c1-12: what a report carries; the band moves from one column to the other -->
+    <div id="c1-report" class="clip world" data-start="77.5" data-duration="13.82">
+      <div class="c1-h">What makes an error report useful</div>
+      <div id="c1-rep" class="c1-tbl" style="top: 270px" data-hold>
+        <div class="c1-tr c1-th"><div>A report must carry</div><div>A report must never carry</div></div>
+        <div class="c1-tr"><div class="ca">The release version, so the bug can be tied to a deploy</div><div class="cb">Tokens, cookies or any other credential</div></div>
+        <div class="c1-tr"><div class="ca">The route the user was on</div><div class="cb">Personal data: names, emails, card numbers, search terms</div></div>
+        <div class="c1-tr"><div class="ca">The user action that started it ("renew clicked")</div><div class="cb">Request or response bodies</div></div>
+        <div class="c1-tr"><div class="ca">The request id from chapter 0, to find the server side</div><div class="cb"></div></div>
+        <div class="c1-tr"><div class="ca">The HTTP status, for HTTP failures</div><div class="cb"></div></div>
+      </div>
+    </div>
+
+    <!-- c1-13: report once, at the edge -->
+    <div id="c1-once" class="clip world" data-start="91.32" data-duration="9.33">
+      <div id="c1-once-l" class="c1-big" data-hold>Report HTTP failures <span style="color: var(--accent)">once</span>, at the transport edge</div>
+    </div>
+
+    <!-- c1-14: When not to catch, the first two items -->
+    <div id="c1-nocatch" class="clip world" data-start="100.65" data-duration="9.54">
+      <div class="c1-h">When not to catch</div>
+      <div class="c1-list">
+        <div id="c1-n1" class="c1-li"><b>–</b><span>When you have nothing to add. A <code>catchError</code> that logs and rethrows in every service is noise; one place that reports is enough.</span></div>
+        <div id="c1-n2" class="c1-li" data-hold><b>–</b><span>When the error is expected and handled. Reporting every <code>404</code> as a crash fills the error tracker until people stop looking.</span></div>
+      </div>
+    </div>
+
+    <!-- c1-15, c1-16: Saying it in a review; the severity labels, then the should-fix comment -->
+    <div id="c1-review" class="clip world" data-start="110.19" data-duration="17.58">
+      <div class="c1-h">Saying it in a review</div>
+      <div class="c1-row" style="top: 250px">
+        <div id="c1-s1" class="c1-chip">blocking</div>
+        <div id="c1-s2" class="c1-chip">should-fix</div>
+        <div id="c1-s3" class="c1-chip">nit</div>
+        <div id="c1-s4" class="c1-chip" data-hold>question</div>
+      </div>
+      <div id="c1-comment" class="c1-quote" data-hold><b>Should-fix:</b> the new interceptor sends every <code>404</code> on <code>/api/holds</code> to the error tracker as a crash. A <code>404</code> there means "this member has no holds at this branch", which is normal, and the on-call dashboard is now 80% expected noise. Decide which outcomes are expected for this endpoint and stop reporting those.</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c1-questions" class="clip world note" data-start="127.77" data-duration="26.9">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c1-q1" class="q">Pick one failure and follow it upward. At each layer, is it passed on, translated, shown, recovered, or dropped? Would any "recovery" make a user believe something false?</div>
+        <div id="c1-q2" class="q">For each empty state in this app, list the three things that can produce it.</div>
+        <div id="c1-q3" class="q">After a failure, what is the user's next move, and does the screen offer it? Does every loading state have an end?</div>
+        <div id="c1-q4" class="q">For each kind of error report: who receives it, and what would they need in it to act?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c1-pause" class="clip world" data-start="154.67" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c1-pause-2" class="pause-2" data-hold>Now do exercise 01.</div>
+    </div>
+
+    <audio id="c1-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="47" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-bed2" class="clip" src="assets/music/bed.mp3" data-start="127.77" data-duration="26.9" data-media-start="104" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c1-1" class="clip" src="assets/vo/c1-1.wav" data-start="3.0" data-duration="6.613" data-volume="1"></audio>
+    <audio id="vo-c1-2" class="clip" src="assets/vo/c1-2.wav" data-start="9.96" data-duration="8.853" data-volume="1"></audio>
+    <audio id="vo-c1-3" class="clip" src="assets/vo/c1-3.wav" data-start="19.17" data-duration="6.72" data-volume="1"></audio>
+    <audio id="vo-c1-4" class="clip" src="assets/vo/c1-4.wav" data-start="26.24" data-duration="5.227" data-volume="1"></audio>
+    <audio id="vo-c1-5" class="clip" src="assets/vo/c1-5.wav" data-start="31.81" data-duration="5.696" data-volume="1"></audio>
+    <audio id="vo-c1-6" class="clip" src="assets/vo/c1-6.wav" data-start="37.86" data-duration="5.867" data-volume="1"></audio>
+    <audio id="vo-c1-7" class="clip" src="assets/vo/c1-7.wav" data-start="44.08" data-duration="8.32" data-volume="1"></audio>
+    <audio id="vo-c1-8" class="clip" src="assets/vo/c1-8.wav" data-start="52.75" data-duration="8.981" data-volume="1"></audio>
+    <audio id="vo-c1-9" class="clip" src="assets/vo/c1-9.wav" data-start="62.08" data-duration="7.979" data-volume="1"></audio>
+    <audio id="vo-c1-10" class="clip" src="assets/vo/c1-10.wav" data-start="70.41" data-duration="6.741" data-volume="1"></audio>
+    <audio id="vo-c1-11" class="clip" src="assets/vo/c1-11.wav" data-start="77.5" data-duration="8.405" data-volume="1"></audio>
+    <audio id="vo-c1-12" class="clip" src="assets/vo/c1-12.wav" data-start="86.25" data-duration="4.715" data-volume="1"></audio>
+    <audio id="vo-c1-13" class="clip" src="assets/vo/c1-13.wav" data-start="91.32" data-duration="8.981" data-volume="1"></audio>
+    <audio id="vo-c1-14" class="clip" src="assets/vo/c1-14.wav" data-start="100.65" data-duration="9.195" data-volume="1"></audio>
+    <audio id="vo-c1-15" class="clip" src="assets/vo/c1-15.wav" data-start="110.19" data-duration="8.896" data-volume="1"></audio>
+    <audio id="vo-c1-16" class="clip" src="assets/vo/c1-16.wav" data-start="119.44" data-duration="7.979" data-volume="1"></audio>
+    <audio id="vo-c1-end" class="clip" src="assets/vo/c1-end.wav" data-start="127.77" data-duration="2.091" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "#f5e2d9", SOFT0 = "rgba(245, 226, 217, 0)";
+    const INK = "#1d1b18", RULE = "#c4b9a6", ACCENT = "#b8321f";
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+    const lit = (sel, at) => tl.fromTo(sel, { borderColor: RULE, color: INK }, { borderColor: ACCENT, color: ACCENT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unlit = (sel, at) => tl.to(sel, { borderColor: RULE, color: INK, duration: 0.4, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0, the time with no fade
+
+    // c1-1: the audiences on "three audiences", member lit on "The member"; c1-2: desk staff, then on-call engineer
+    fadeIn("#c1-a1", 5.0, 0.5);
+    fadeIn("#c1-a2", 5.15, 0.5);
+    fadeIn("#c1-a3", 5.3, 0.5);
+    lit("#c1-a1", 6.0);
+    unlit("#c1-a1", 10.0);
+    lit("#c1-a2", 10.0);
+    unlit("#c1-a2", 14.1);
+    lit("#c1-a3", 14.1);
+
+    // c1-3: the failure walks up the layers, HTTP client first
+    tl.fromTo("#c1-up", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 2.6, ease: "power2.inOut" }, 19.5);
+    for (let i = 1; i <= 6; i++) fadeIn("#c1-ly" + i, 19.5 + (i - 1) * 0.42, 0.5);
+
+    // c1-4: Pass it on, then Translate it; c1-5: Show it, then Recover; c1-6: the band leaves for the closing sentence
+    band("#c1-m1", 26.4);
+    unband("#c1-m1", 29.3);
+    band("#c1-m2", 29.3);
+    unband("#c1-m2", 31.9);
+    band("#c1-m3", 31.9);
+    unband("#c1-m3", 34.6);
+    band("#c1-m4", 34.6);
+    unband("#c1-m4", 37.95);
+    fadeIn("#c1-else", 37.95);
+
+    // c1-7: band on the BookWithdrawn line on "becomes Book Withdrawn", then on the pass-on line
+    band("#c1-b-new", 46.6);
+    unband("#c1-b-new", 50.4);
+    band("#c1-b-pass", 50.4);
+
+    // c1-8: the resource vocabulary on "like a dropped network"; c1-9: the timeout on "Give requests a timeout"
+    for (let i = 1; i <= 4; i++) fadeIn("#c1-v" + i, 55.6 + (i - 1) * 0.15, 0.5);
+    fadeIn("#c1-to", 62.3);
+
+    // c1-10: TypeError on "like a Type Error", the template/handler row banded on "in an event handler"
+    fadeIn("#c1-te", 72.9, 0.5);
+    band("#c1-w3", 74.0);
+
+    // c1-11: the must-carry column banded; c1-12: the must-never-carry column
+    band("#c1-rep .ca", 81.3);
+    unband("#c1-rep .ca", 86.35);
+    band("#c1-rep .cb", 86.35);
+
+    // c1-13: the rule on "Report H T T P failures once"
+    fadeIn("#c1-once-l", 91.45);
+
+    // c1-14: the first item, then the second on "Reporting every expected four oh four"
+    fadeIn("#c1-n1", 100.85);
+    fadeIn("#c1-n2", 104.7);
+
+    // c1-15: blocking shown on "who finds out", lit on "A false screen"; c1-16: the comment cut in, then should-fix, nit, question as each is named
+    fadeIn("#c1-s1", 113.0, 0.5);
+    lit("#c1-s1", 115.8);
+    unlit("#c1-s1", 119.5);
+    fadeIn("#c1-comment", 119.5, 0.3);
+    fadeIn("#c1-s2", 122.2, 0.5);
+    lit("#c1-s2", 122.2);
+    unlit("#c1-s2", 124.9);
+    fadeIn("#c1-s3", 124.9, 0.5);
+    lit("#c1-s3", 124.9);
+    unlit("#c1-s3", 126.8);
+    fadeIn("#c1-s4", 126.8, 0.5);
+    lit("#c1-s4", 126.8);
+
+    // questions 0.6 s apart, then hold; pause card
+    for (let i = 1; i <= 4; i++) fadeIn("#c1-q" + i, 128.1 + (i - 1) * 0.6);
+    fadeIn("#c1-pause-2", 155.17);
+
+    window.__timelines["c1"] = tl;
+  </script>
+</template>

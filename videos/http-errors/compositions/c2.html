@@ -1,0 +1,335 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    code { font-family: var(--font-code); font-size: 0.92em; white-space: nowrap; }
+    .c2-svg { position: absolute; left: 0; top: 0; }
+    .c2-h { position: absolute; left: 200px; top: 120px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c2-sub { position: absolute; left: 200px; top: 120px; width: 1520px; font: 600 48px/1.15 var(--font-display); color: var(--ink-muted); }
+    .c2-chip { position: absolute; box-sizing: border-box; padding: 22px 36px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 40px/1 var(--font-code); white-space: nowrap; }
+    .c2-chip.big { font-size: 56px; padding: 28px 48px; }
+    .c2-chip.prose { font-family: var(--font-text); }
+
+    .c2-nav { position: absolute; left: 40px; top: 40px; width: 300px; }
+    .c2-nav div { height: 72px; padding: 0 20px; display: flex; align-items: center; border-radius: 8px; font: 400 34px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-nav div.on { background: var(--paper-sunk); color: var(--ink); font-weight: 700; }
+    .c2-panel { position: absolute; left: 380px; right: 40px; top: 40px; }
+    .c2-panel .label { margin-bottom: 14px; }
+    .c2-row { height: 92px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 400 36px/1 var(--font-text); }
+    .c2-row span { margin-left: auto; font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+    #c2-call { position: absolute; left: 380px; top: 560px; }
+
+    .c2-fbox { display: flex; align-items: center; justify-content: center; box-sizing: border-box; height: 300px; top: 400px; padding: 0; }
+    .c2-flab { white-space: nowrap; width: 210px; }
+
+    .c2-marbles { top: 330px; --fw: 80px; }
+    .c2-marbles .mrow { height: 200px; }
+    .c2-marbles .mlabel { left: 60px; width: 480px; font-size: 34px; top: 54px; }
+    .c2-marbles .mtrack { left: 600px; background: transparent; }
+    .c2-marbles .mnote { left: 600px; top: 130px; }
+    .c2-rule { display: block; left: 0 !important; top: 0; width: 100%; height: 3px; background: var(--rule-strong); transform-origin: 0 50%; }
+
+    .c2-list { position: absolute; left: 200px; top: 300px; width: 1520px; }
+    .c2-item { padding: 18px 24px; margin-bottom: 26px; border-radius: 8px; font: 400 42px/1.45 var(--font-text); display: grid; grid-template-columns: 56px 1fr; }
+    .c2-item > i { font-style: normal; color: var(--ink-muted); }
+    .c2-item code { font-size: 38px; }
+
+    #c2-pays { position: absolute; left: 200px; top: 520px; font: 600 96px/1.1 var(--font-display); color: var(--accent); }
+
+    #c2-comment { position: absolute; left: 200px; top: 280px; width: 1520px; box-sizing: border-box; padding: 44px 56px; background: var(--paper-raised); border: 1px solid var(--rule); border-left: 8px solid var(--warning); border-radius: 8px; box-shadow: var(--shadow); font: 400 42px/1.5 var(--font-text); }
+    #c2-comment code { font-size: 38px; }
+
+    .q { font-size: 40px; margin-bottom: 34px; }
+  </style>
+
+  <div id="root" data-composition-id="c2" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c2-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">11:30</div>
+      <div class="chapter-title">The interceptor chain is an onion</div>
+    </div>
+
+    <!-- c2-1: 11:30, the desk at rest; the one line a reader sees at the call site -->
+    <div id="c2-desk" class="clip world sunk" data-start="3" data-duration="8.22">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">11:30</span></div>
+        <div class="app-body">
+          <div class="c2-nav">
+            <div>Members</div>
+            <div class="on">Loans</div>
+            <div>Returns</div>
+            <div>Shelves</div>
+          </div>
+          <div class="c2-panel">
+            <div class="label">Due back this week</div>
+            <div class="c2-row">Ada Brooks · Kindred<span>Thursday</span></div>
+            <div class="c2-row">Ravi Menon · Hyperion<span>Friday</span></div>
+            <div class="c2-row">Mia Lindqvist · Middlemarch<span>Saturday</span></div>
+          </div>
+          <div id="c2-call" class="c2-chip" data-hold>this.http.get('/api/loans')</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-2: the lesson's flow, request edges drawing on, then response edges; c2-3: b as the accent -->
+    <div id="c2-flow" class="clip world" data-start="11.22" data-duration="17.79">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke-width="4" stroke="#1d1b18">
+        <path id="c2-q1a" pathLength="1" d="M394 470 H592" /><path id="c2-q1h" d="M580 458 L596 470 L580 482" />
+        <path id="c2-q2a" pathLength="1" d="M714 470 H912" /><path id="c2-q2h" d="M900 458 L916 470 L900 482" />
+        <path id="c2-q3a" pathLength="1" d="M1034 470 H1232" /><path id="c2-q3h" d="M1220 458 L1236 470 L1220 482" />
+        <path id="c2-q4a" pathLength="1" d="M1354 470 H1552" /><path id="c2-q4h" d="M1540 458 L1556 470 L1540 482" />
+        <path id="c2-r1a" pathLength="1" d="M1556 640 H1358" /><path id="c2-r1h" d="M1370 628 L1354 640 L1370 652" />
+        <path id="c2-r2a" pathLength="1" d="M1236 640 H1038" /><path id="c2-r2h" d="M1050 628 L1034 640 L1050 652" />
+        <path id="c2-r3a" pathLength="1" d="M916 640 H718" /><path id="c2-r3h" d="M730 628 L714 640 L730 652" />
+        <path id="c2-r4a" pathLength="1" d="M596 640 H398" /><path id="c2-r4h" d="M410 628 L394 640 L410 652" />
+      </svg>
+      <div id="c2-fb0" class="fbox c2-fbox" style="left: 120px; width: 270px">Component</div>
+      <div id="c2-fba" class="fbox c2-fbox" style="left: 600px; width: 110px">a</div>
+      <div id="c2-fbb" class="fbox c2-fbox" style="left: 920px; width: 110px">b</div>
+      <div id="c2-fbc" class="fbox c2-fbox" style="left: 1240px; width: 110px">c</div>
+      <div id="c2-fb4" class="fbox c2-fbox" style="left: 1560px; width: 240px">Backend</div>
+      <div id="c2-q1l" class="flabel c2-flab" style="left: 390px; top: 420px">request</div>
+      <div id="c2-q2l" class="flabel c2-flab" style="left: 710px; top: 420px">request</div>
+      <div id="c2-q3l" class="flabel c2-flab" style="left: 1030px; top: 420px">request</div>
+      <div id="c2-q4l" class="flabel c2-flab" style="left: 1350px; top: 420px">request</div>
+      <div id="c2-r1l" class="flabel c2-flab" style="left: 1350px; top: 551px">response<br />or error</div>
+      <div id="c2-r2l" class="flabel c2-flab" style="left: 1030px; top: 551px">response<br />or error</div>
+      <div id="c2-r3l" class="flabel c2-flab" style="left: 710px; top: 551px">response<br />or error</div>
+      <div id="c2-r4l" class="flabel c2-flab" style="left: 390px; top: 551px" data-hold>response<br />or error</div>
+    </div>
+
+    <!-- c2-4: the two orders, each as the accent in turn -->
+    <div id="c2-order" class="clip world" data-start="29.01" data-duration="9.67">
+      <div id="c2-o1" class="c2-chip big" style="left: 200px; top: 300px">[timing, cache]</div>
+      <div id="c2-o2" class="c2-chip big" style="left: 200px; top: 560px" data-hold>[cache, timing]</div>
+    </div>
+
+    <!-- c2-5: where the decision is written down -->
+    <div id="c2-arr" class="clip world" data-start="38.68" data-duration="4.81">
+      <div id="c2-arr-c" class="c2-chip big" style="left: 200px; top: 440px" data-hold>withInterceptors([a, b, c])</div>
+    </div>
+
+    <!-- c2-6: heading, the lesson's marble diagram printed row by row, c as the accent; c2-7: held -->
+    <div id="c2-marb" class="clip world sunk" data-start="43.49" data-duration="14.12">
+      <div id="c2-marb-h" class="c2-h" data-hold>Eager and lazy work</div>
+      <div class="marbles c2-marbles">
+        <div class="mrow">
+          <div class="mlabel">eager, repeated:</div>
+          <div class="mtrack"><i id="c2-rl1" class="c2-rule"></i>
+            <div id="c2-e1" class="m" style="--f: 0">a</div>
+            <div id="c2-e2" class="m" style="--f: 6">a</div>
+            <div id="c2-e3" class="m" style="--f: 12">a</div>
+          </div>
+          <div id="c2-n1" class="mnote">// of(Date.now()) built once: every subscription sees the same time</div>
+        </div>
+        <div class="mrow">
+          <div class="mlabel">deferred, repeated:</div>
+          <div class="mtrack"><i id="c2-rl2" class="c2-rule"></i>
+            <div id="c2-d1" class="m" style="--f: 0">a</div>
+            <div id="c2-d2" class="m" style="--f: 6">b</div>
+            <div id="c2-d3" class="m" style="--f: 12">c</div>
+          </div>
+          <div id="c2-n2" class="mnote" data-hold>// defer(() =&gt; of(Date.now())): a new time per subscription</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-8: heading; the question, the accent -->
+    <div id="c2-retry" class="clip world" data-start="57.61" data-duration="8.33">
+      <div id="c2-retry-h" class="c2-h" data-hold>A retry is a request nobody asked for</div>
+      <div id="c2-pays" data-hold>who pays?</div>
+    </div>
+
+    <!-- c2-9: the lesson's two-item list, the first, then the second -->
+    <div id="c2-who" class="clip world" data-start="65.94" data-duration="7.18">
+      <div class="c2-sub">A retry is a request nobody asked for</div>
+      <div class="c2-list" data-hold>
+        <div id="c2-w1" class="c2-item"><i>–</i><span>If the request reads data, usually nobody: the server answers twice.</span></div>
+        <div id="c2-w2" class="c2-item"><i>–</i><span>If it changes data, the second copy may change it again. The member pays (two loans, two fines), and support pays to untangle it.</span></div>
+      </div>
+    </div>
+
+    <!-- c2-10: RFC 9110; c2-11: the two 5xx that never go away -->
+    <div id="c2-rfc" class="clip world" data-start="73.12" data-duration="17.68">
+      <div id="c2-rfc-c" class="c2-chip big prose" style="left: 200px; top: 220px" data-hold>RFC 9110</div>
+      <div id="c2-501" class="c2-chip" style="left: 200px; top: 520px">501 Not Implemented</div>
+      <div id="c2-505" class="c2-chip" style="left: 200px; top: 680px" data-hold>505 HTTP Version Not Supported</div>
+    </div>
+
+    <!-- c2-12: the header the idempotency key travels in -->
+    <div id="c2-idem" class="clip world" data-start="90.8" data-duration="9.71">
+      <div id="c2-idem-c" class="c2-chip big" style="left: 200px; top: 440px" data-hold>Idempotency-Key</div>
+    </div>
+
+    <!-- c2-13: heading; c2-14: the lesson's three-item list, one by one -->
+    <div id="c2-load" class="clip world" data-start="100.51" data-duration="19.5">
+      <div id="c2-load-h" class="c2-h" data-hold>Retries multiply load</div>
+      <div class="c2-list" data-hold>
+        <div id="c2-l1" class="c2-item"><i>–</i><span>Jitter: add a random part to each delay, so clients that failed together do not come back together.</span></div>
+        <div id="c2-l2" class="c2-item"><i>–</i><span><code>Retry-After</code>: when the server says how long to wait (often with <code>429</code> or <code>503</code>), wait that long.</span></div>
+        <div id="c2-l3" class="c2-item"><i>–</i><span>Retry budgets: cap retries at a small share of normal traffic, so a widespread failure turns into fast errors instead of a flood.</span></div>
+      </div>
+    </div>
+
+    <!-- c2-15: heading, both items -->
+    <div id="c2-not" class="clip world" data-start="120.01" data-duration="7.69">
+      <div id="c2-not-h" class="c2-h" data-hold>When not to use an interceptor</div>
+      <div class="c2-list" data-hold>
+        <div id="c2-x1" class="c2-item"><i>–</i><span>For a policy that differs per call. A behaviour that applies to one endpoint belongs at the call site, where the reader of that call can see it.</span></div>
+        <div id="c2-x2" class="c2-item"><i>–</i><span>When the order between interceptors matters and nobody wrote down why. Add the comment or a test first.</span></div>
+      </div>
+    </div>
+
+    <!-- c2-16: heading; the label blocking -->
+    <div id="c2-say" class="clip world" data-start="127.7" data-duration="7.47">
+      <div id="c2-say-h" class="c2-h" data-hold>Saying it in a review</div>
+      <div id="c2-block" class="c2-chip big prose" style="left: 200px; top: 440px" data-hold>blocking</div>
+    </div>
+
+    <!-- c2-17: the lesson's should-fix comment, cut in whole -->
+    <div id="c2-fix" class="clip world" data-start="135.17" data-duration="8.82">
+      <div id="c2-comment" data-hold><b>Should-fix:</b> <code>loadingBarInterceptor</code> calls <code>bar.stop()</code> in a <code>tap</code> on success only. When a request fails, the bar keeps spinning until the next successful one. Use <code>finalize(() =&gt; bar.stop())</code> so it stops on success, error and cancellation.</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c2-questions" class="clip world note" data-start="143.99" data-duration="26">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c2-qq1" class="q">For each interceptor: what does it need to observe, and is it placed where it observes that?</div>
+        <div id="c2-qq2" class="q">Pick any function in the chain that returns an observable. Which of its work happens when it is called, and which when it is subscribed? Would a reader of the call site guess right?</div>
+        <div id="c2-qq3" class="q">For every request the client can send without a fresh user action: who pays when the second copy lands, and how would the server know it is a copy?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c2-pause" class="clip world" data-start="169.99" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c2-pause-2" class="pause-2" data-hold>Now do exercise 02.</div>
+    </div>
+
+    <audio id="c2-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="44" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-bed2" class="clip" src="assets/music/bed.mp3" data-start="143.99" data-duration="26" data-media-start="104" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c2-1" class="clip" src="assets/vo/c2-1.wav" data-start="3.0" data-duration="7.872" data-volume="1"></audio>
+    <audio id="vo-c2-2" class="clip" src="assets/vo/c2-2.wav" data-start="11.22" data-duration="8.469" data-volume="1"></audio>
+    <audio id="vo-c2-3" class="clip" src="assets/vo/c2-3.wav" data-start="20.04" data-duration="8.619" data-volume="1"></audio>
+    <audio id="vo-c2-4" class="clip" src="assets/vo/c2-4.wav" data-start="29.01" data-duration="9.323" data-volume="1"></audio>
+    <audio id="vo-c2-5" class="clip" src="assets/vo/c2-5.wav" data-start="38.68" data-duration="4.459" data-volume="1"></audio>
+    <audio id="vo-c2-6" class="clip" src="assets/vo/c2-6.wav" data-start="43.49" data-duration="9.963" data-volume="1"></audio>
+    <audio id="vo-c2-7" class="clip" src="assets/vo/c2-7.wav" data-start="53.8" data-duration="3.456" data-volume="1"></audio>
+    <audio id="vo-c2-8" class="clip" src="assets/vo/c2-8.wav" data-start="57.61" data-duration="7.979" data-volume="1"></audio>
+    <audio id="vo-c2-9" class="clip" src="assets/vo/c2-9.wav" data-start="65.94" data-duration="6.827" data-volume="1"></audio>
+    <audio id="vo-c2-10" class="clip" src="assets/vo/c2-10.wav" data-start="73.12" data-duration="9.515" data-volume="1"></audio>
+    <audio id="vo-c2-11" class="clip" src="assets/vo/c2-11.wav" data-start="82.98" data-duration="7.467" data-volume="1"></audio>
+    <audio id="vo-c2-12" class="clip" src="assets/vo/c2-12.wav" data-start="90.8" data-duration="9.365" data-volume="1"></audio>
+    <audio id="vo-c2-13" class="clip" src="assets/vo/c2-13.wav" data-start="100.51" data-duration="8.171" data-volume="1"></audio>
+    <audio id="vo-c2-14" class="clip" src="assets/vo/c2-14.wav" data-start="109.03" data-duration="10.624" data-volume="1"></audio>
+    <audio id="vo-c2-15" class="clip" src="assets/vo/c2-15.wav" data-start="120.01" data-duration="7.339" data-volume="1"></audio>
+    <audio id="vo-c2-16" class="clip" src="assets/vo/c2-16.wav" data-start="127.7" data-duration="7.125" data-volume="1"></audio>
+    <audio id="vo-c2-17" class="clip" src="assets/vo/c2-17.wav" data-start="135.17" data-duration="8.469" data-volume="1"></audio>
+    <audio id="vo-c2-end" class="clip" src="assets/vo/c2-end.wav" data-start="143.99" data-duration="2.112" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const INK = "#1d1b18";
+    const RULE = "#c4b9a6";
+    const FRAME = 0.18;
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const draw = (sel, at, d) => tl.fromTo(sel, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+    const print = (sel, at) => tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out" }, at);
+    const track = (sel, frames, at) => tl.fromTo(sel, { scaleX: 0 }, { scaleX: 1, duration: frames * FRAME, ease: "none" }, at);
+    const accentOn = (sel, at) => tl.to(sel, { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, at);
+    const accentOff = (sel, at) => tl.to(sel, { borderColor: RULE, color: INK, duration: 0.3 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c2-1: the loans panel, then the call site
+    fadeIn("#c2-desk .c2-panel", 3.1, 0.5);
+    fadeIn("#c2-call", 6.4, 0.5);
+
+    // c2-2: boxes, request edges a step at a time, then the response coming back
+    fadeIn("#c2-fb0, #c2-fba, #c2-fbb, #c2-fbc, #c2-fb4", 11.3, 0.5);
+    [1, 2, 3, 4].forEach((n, i) => {
+      const at = 13.9 + i * 0.5;
+      draw("#c2-q" + n + "a", at, 0.45);
+      fadeIn("#c2-q" + n + "h", at + 0.4, 0.15);
+      fadeIn("#c2-q" + n + "l", at + 0.15, 0.4);
+    });
+    [1, 2, 3, 4].forEach((n, i) => {
+      const at = 17.2 + i * 0.5;
+      draw("#c2-r" + n + "a", at, 0.45);
+      fadeIn("#c2-r" + n + "h", at + 0.4, 0.15);
+      fadeIn("#c2-r" + n + "l", at + 0.15, 0.4);
+    });
+
+    // c2-3: from inside b
+    tl.to("#c2-fbb", { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 20.6);
+
+    // c2-4: timing before cache, then cache first
+    fadeIn("#c2-o1", 29.1, 0.5);
+    accentOn("#c2-o1", 29.4);
+    fadeIn("#c2-o2", 33.6, 0.5);
+    accentOff("#c2-o1", 33.75);
+    accentOn("#c2-o2", 33.75);
+
+    // c2-5: the array
+    fadeIn("#c2-arr-c", 38.8, 0.5);
+
+    // c2-6: the diagram printed row by row, left to right at one frame per 0.18 s; c is the accent
+    fadeIn("#c2-marb-h", 43.6, 0.5);
+    fadeIn("#c2-marb .mlabel", 45.0, 0.4);
+    track("#c2-rl1", 15, 47.6);
+    print("#c2-e1", 47.6);
+    print("#c2-e2", 47.6 + 6 * FRAME);
+    print("#c2-e3", 47.6 + 12 * FRAME);
+    fadeIn("#c2-n1", 49.9, 0.4);
+    track("#c2-rl2", 15, 50.5);
+    print("#c2-d1", 50.5);
+    print("#c2-d2", 50.5 + 6 * FRAME);
+    print("#c2-d3", 50.5 + 12 * FRAME);
+    tl.to("#c2-d3", { backgroundColor: ACCENT, duration: 0.2 }, 50.5 + 12 * FRAME + 0.27);
+    tl.to("#c2-d3", { scale: 1.12, duration: 0.2, ease: "power2.inOut", yoyo: true, repeat: 1 }, 53.0);
+    fadeIn("#c2-n2", 52.9, 0.4);
+
+    // c2-8: the heading, then the question
+    fadeIn("#c2-retry-h", 57.7, 0.5);
+    fadeIn("#c2-pays", 64.2, 0.5);
+
+    // c2-9: a read, then a write
+    fadeIn("#c2-w1", 66.0, 0.5);
+    fadeIn("#c2-w2", 67.4, 0.5);
+
+    // c2-10, c2-11: the RFC, then the two that never recover
+    fadeIn("#c2-rfc-c", 73.6, 0.5);
+    fadeIn("#c2-501", 85.4, 0.4);
+    fadeIn("#c2-505", 86.6, 0.4);
+
+    // c2-12: the header
+    fadeIn("#c2-idem-c", 93.6, 0.5);
+
+    // c2-13: heading; c2-14: the three ideas as each is named
+    fadeIn("#c2-load-h", 100.6, 0.5);
+    fadeIn("#c2-l1", 109.1, 0.5);
+    fadeIn("#c2-l2", 110.9, 0.5);
+    fadeIn("#c2-l3", 113.0, 0.5);
+
+    // c2-15: heading, the first item, then the second
+    fadeIn("#c2-not-h", 120.1, 0.5);
+    fadeIn("#c2-x1", 120.4, 0.5);
+    fadeIn("#c2-x2", 122.8, 0.5);
+
+    // c2-16: heading, then the severity
+    fadeIn("#c2-say-h", 127.8, 0.5);
+    fadeIn("#c2-block", 132.9, 0.4);
+    accentOn("#c2-block", 133.1);
+
+    // c2-17: cut in whole
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c2-qq1", "#c2-qq2", "#c2-qq3"].forEach((q, i) => fadeIn(q, 144.2 + i * 0.6));
+    fadeIn("#c2-pause-2", 170.5);
+
+    window.__timelines["c2"] = tl;
+  </script>
+</template>

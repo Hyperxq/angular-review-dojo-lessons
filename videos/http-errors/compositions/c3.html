@@ -1,0 +1,303 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    code { font-family: var(--font-code); font-size: 0.92em; white-space: nowrap; }
+    .c3-h { position: absolute; left: 200px; top: 120px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c3-sub { position: absolute; left: 200px; top: 120px; width: 1520px; font: 600 48px/1.15 var(--font-display); color: var(--ink-muted); }
+    .c3-chip { position: absolute; box-sizing: border-box; padding: 22px 36px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 40px/1 var(--font-text); white-space: nowrap; }
+    .c3-chip.big { font-size: 56px; padding: 28px 48px; }
+
+    .c3-nav { position: absolute; left: 40px; top: 40px; width: 300px; }
+    .c3-nav div { height: 72px; padding: 0 20px; display: flex; align-items: center; border-radius: 8px; font: 400 34px/1 var(--font-text); color: var(--ink-muted); }
+    .c3-nav div.on { background: var(--paper-sunk); color: var(--ink); font-weight: 700; }
+    .c3-panel { position: absolute; left: 380px; right: 40px; top: 40px; }
+    .c3-panel .label { margin-bottom: 14px; }
+    .c3-row { height: 92px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 400 36px/1 var(--font-text); }
+    .c3-row b { width: 340px; font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+    .c3-who { display: flex; align-items: center; gap: 36px; }
+    .c3-who small { font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+    #c3-idle { position: absolute; left: 380px; right: 40px; top: 40px; bottom: 40px; border: 3px dashed var(--rule-strong); border-radius: 8px; display: grid; place-items: center; font: 600 64px/1.15 var(--font-display); color: var(--ink-muted); }
+
+    .c3-table { position: absolute; left: 100px; top: 110px; width: 1720px; font: 400 30px/1.35 var(--font-text); }
+    .c3-tr { display: grid; grid-template-columns: 760px 430px 530px; border-bottom: 1px solid var(--rule); border-radius: 4px; }
+    .c3-tr > span { padding: 12px 18px; }
+    .c3-tr > span:first-child { font-weight: 700; }
+    .c3-tr code { font: 400 28px/1.35 var(--font-code); }
+    .c3-tr.th { border-bottom: 2px solid var(--rule-strong); }
+    .c3-tr.th > span { font: 700 30px/1.3 var(--font-text); color: var(--ink-muted); }
+
+    .c3-list { position: absolute; left: 200px; top: 300px; width: 1520px; }
+    .c3-item { padding: 18px 24px; margin-bottom: 26px; border-radius: 8px; font: 400 42px/1.45 var(--font-text); display: grid; grid-template-columns: 56px 1fr; }
+    .c3-item > i { font-style: normal; color: var(--ink-muted); }
+    .c3-item code { font-size: 38px; }
+
+    #c3-ask { position: absolute; left: 200px; top: 300px; width: 1520px; font: 600 64px/1.25 var(--font-display); letter-spacing: -0.01em; }
+
+    .c3-code { left: 152px; width: 1616px; box-sizing: border-box; padding: 40px 48px; font-size: 32px; line-height: 48px; }
+    .c3-code .ln { min-height: 48px; }
+    .c3-wrap { white-space: pre-wrap !important; padding-left: 4ch; text-indent: -4ch; }
+    .c3-mark { border-radius: 4px; }
+
+    #c3-strike { position: absolute; left: -12px; right: -12px; top: 50%; height: 6px; margin-top: -3px; background: var(--ink); transform-origin: 0 50%; }
+
+    #c3-tline { position: absolute; left: 200px; top: 330px; width: 1520px; font: 400 44px/1.45 var(--font-text); }
+
+    .q { font-size: 40px; margin-bottom: 34px; }
+
+    #c3-after-title { position: absolute; left: 200px; top: 130px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+    #c3-after-p { position: absolute; left: 200px; top: 300px; width: 1520px; font: 400 42px/1.5 var(--font-text); }
+    #c3-after-p span { border-radius: 4px; }
+    #c3-after-p code { font-size: 38px; }
+    #c3-closed { position: absolute; left: 80px; top: 280px; font: 600 88px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c3-lights { position: absolute; inset: 0; background: var(--ink); }
+  </style>
+
+  <div id="root" data-composition-id="c3" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c3-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">15:00</div>
+      <div class="chapter-title">Shared work and the session boundary</div>
+    </div>
+
+    <!-- c3-1: 15:00, a signed-in member's name in the header -->
+    <div id="c3-desk" class="clip world sunk" data-start="3" data-duration="10.87">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="c3-who"><small>Signed in</small><span id="c3-member">Ada Brooks</span><span class="app-clock">15:00</span></span></div>
+        <div class="app-body">
+          <div class="c3-nav">
+            <div class="on">Account</div>
+            <div>Catalogue</div>
+            <div>Branches</div>
+            <div>Opening hours</div>
+          </div>
+          <div class="c3-panel" data-hold>
+            <div class="label">Member account</div>
+            <div class="c3-row"><b>Card</b>0412 8830</div>
+            <div class="c3-row"><b>Home branch</b>East wing</div>
+            <div class="c3-row"><b>Member since</b>2019</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3-2: the options table cut in whole; c3-3, c3-4: rows banded in turn; c3-5: held -->
+    <div id="c3-opts" class="clip world" data-start="13.87" data-duration="35.15">
+      <div class="c3-table" data-hold>
+        <div class="c3-tr th"><span>Option</span><span>What it shares</span><span>Watch out for</span></div>
+        <div id="c3-t1" class="c3-tr"><span><code>share()</code></span><span>One run for the callers subscribed at the same time.</span><span>Its lifetime rules (RxJS lesson, chapter 5) decide what late callers and leaving callers get; read them before relying on it.</span></div>
+        <div id="c3-t2" class="c3-tr"><span><code>shareReplay</code></span><span>The result, to everyone who comes later.</span><span>It is a cache: decide how long the value stays true and when it must be cleared.</span></div>
+        <div id="c3-t3" class="c3-tr"><span>A memoized promise (<code>this.pending ??= fetchHours()</code>)</span><span>One run; every caller awaits the same promise.</span><span>Eager and not cancellable. A rejected promise stays rejected unless you clear it.</span></div>
+        <div id="c3-t4" class="c3-tr"><span><code>exhaustMap</code> on a trigger stream</span><span>One run per burst of triggers; triggers during the run are dropped.</span><span>Only callers that listen to the output get the result; the dropped triggers get nothing.</span></div>
+        <div id="c3-t5" class="c3-tr"><span>A cross-tab lock (<code>navigator.locks.request(name, callback)</code>)</span><span>One run across all tabs of the same origin.</span><span>Async and browser-only; every tab must agree on the lock name and on how to share the result.</span></div>
+      </div>
+    </div>
+
+    <!-- c3-6: heading; the two lists -->
+    <div id="c3-sess" class="clip world" data-start="49.02" data-duration="10.54">
+      <div id="c3-sess-h" class="c3-h" data-hold>The session is a security boundary</div>
+      <div class="c3-list" data-hold>
+        <div id="c3-s1" class="c3-item"><i>–</i><span><b>What must stop:</b> requests in flight, polling, WebSocket connections, timers that will write state when they fire.</span></div>
+        <div id="c3-s2" class="c3-item"><i>–</i><span><b>What must be cleared:</b> stores, <code>shareReplay</code> buffers and other caches, <code>httpResource</code> and <code>rxResource</code> values, anything written to <code>localStorage</code> or <code>sessionStorage</code> for that member.</span></div>
+      </div>
+    </div>
+
+    <!-- c3-7: the desk app, a shared terminal at the desk -->
+    <div id="c3-term" class="clip world sunk" data-start="59.56" data-duration="8.84">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk · shared terminal</span><span class="app-clock">15:00</span></div>
+        <div class="app-body">
+          <div class="c3-nav">
+            <div class="on">Account</div>
+            <div>Catalogue</div>
+            <div>Branches</div>
+            <div>Opening hours</div>
+          </div>
+          <div id="c3-idle" data-hold>Scan a member card to begin</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3-8: the lesson's question as a label -->
+    <div id="c3-q" class="clip world" data-start="68.4" data-duration="6.26">
+      <div id="c3-ask" data-hold>When someone adds a feature next year, what makes that feature's state die at sign-out, the structure or the author's memory?</div>
+    </div>
+
+    <!-- c3-9: the lesson's two structural answers, the first, then the second -->
+    <div id="c3-struct" class="clip world" data-start="74.66" data-duration="11.11">
+      <div class="c3-sub">Two structural answers, with their costs</div>
+      <div class="c3-list" data-hold>
+        <div id="c3-a1" class="c3-item"><i>–</i><span>Keep per-member state in an injector that is created at sign-in and destroyed at sign-out. Cleanup comes from the structure, but the scoping has to be designed in from the start.</span></div>
+        <div id="c3-a2" class="c3-item"><i>–</i><span>Reload the page on sign-out. Crude, and it costs a full load, but nothing in memory survives. On public terminals it is often the honest answer.</span></div>
+      </div>
+    </div>
+
+    <!-- c3-10: heading; the lesson's CACHE_TTL_MS code, cut in whole, band on () => 0 -->
+    <div id="c3-ctx" class="clip world" data-start="85.77" data-duration="12.65">
+      <div id="c3-ctx-h" class="c3-h" data-hold>Behaviour flags and credentials are different things</div>
+      <div id="c3-code" class="code c3-code" style="top: 420px" data-hold>
+        <span class="ln c3-wrap"><span class="k">export const</span> CACHE_TTL_MS = <span class="k">new</span> HttpContextToken&lt;number&gt;(<span id="c3-band" class="c3-mark">() =&gt; <span class="n">0</span></span>);</span>
+        <span class="ln"> </span>
+        <span class="ln c3-wrap"><span class="k">this</span>.http.get(<span class="s">'/api/branches'</span>, { context: <span class="k">new</span> HttpContext().set(CACHE_TTL_MS, <span class="n">60_000</span>) });</span>
+      </div>
+    </div>
+
+    <!-- c3-11: allow-list as the accent, opt-out beside it, struck through -->
+    <div id="c3-cred" class="clip world" data-start="98.42" data-duration="12.13">
+      <div id="c3-allow" class="c3-chip big" style="left: 200px; top: 420px">allow-list</div>
+      <div id="c3-opt" class="c3-chip big" style="left: 720px; top: 420px; color: var(--ink-muted)" data-hold>opt-out<i id="c3-strike"></i></div>
+    </div>
+
+    <!-- c3-12: heading, its three items -->
+    <div id="c3-not" class="clip world" data-start="110.55" data-duration="8.97">
+      <div id="c3-not-h" class="c3-h" data-hold>When not to use them</div>
+      <div class="c3-list" style="top: 280px" data-hold>
+        <div id="c3-n1" class="c3-item"><i>–</i><span>Do not deduplicate work whose callers need independent results (different parameters, or different cancellation).</span></div>
+        <div id="c3-n2" class="c3-item"><i>–</i><span>Do not add an <code>HttpContextToken</code> for something only one call site cares about; that call can simply not use the feature.</span></div>
+        <div id="c3-n3" class="c3-item"><i>–</i><span>Do not rely on clearing one store at sign-out when a dozen others exist. Prefer a structure that ends them all.</span></div>
+      </div>
+    </div>
+
+    <!-- c3-13: heading; the lesson's timeline sentence; c3-14: the label blocking -->
+    <div id="c3-say" class="clip world" data-start="119.52" data-duration="19.3">
+      <div id="c3-say-h" class="c3-h" data-hold>Saying it in a review</div>
+      <div id="c3-tline" data-hold>"three components ask at the same millisecond; each one runs this line; the server sees three calls"</div>
+      <div id="c3-block" class="c3-chip big" style="left: 200px; top: 620px" data-hold>blocking</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c3-questions" class="clip world note" data-start="138.82" data-duration="26">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c3-qq1" class="q">List every piece of state that must die when the user changes. Which of it can a pending response resurrect?</div>
+        <div id="c3-qq2" class="q">When several parts of the app need the same async work at once, which deduplication option fits, and what does it do with errors and with callers who arrive late?</div>
+        <div id="c3-qq3" class="q">For every interceptor that attaches credentials: which origins receive them, and what decides that?</div>
+        <div id="c3-qq4" class="q">If two tabs of the app do the same work at the same time, what happens?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c3-pause" class="clip world" data-start="164.82" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c3-pause-2" class="pause-2" data-hold>Now do exercise 03.</div>
+    </div>
+
+    <!-- c3-after, c3-afterb: the "After the lesson" card, its last sentence banded -->
+    <div id="c3-after" class="clip world" data-start="168.32" data-duration="11.31">
+      <div id="c3-after-title">After the lesson</div>
+      <div id="c3-after-p" data-hold><span id="c3-p1">When you finish an exercise, read its <code>SOLUTION.md</code> on the <code>solutions</code> branch. Compare your severities with the table there, and defend any disagreement in writing: the table is a model answer, not ground truth. Then compare your PR comment with "What a reviewer should say in the PR comment".</span> <span id="c3-p2">If your comment names a rule ("errors must be reported") where it could name an impact ("the on-call dashboard is mostly expected noise, so real incidents get missed"), rewrite it.</span></div>
+    </div>
+
+    <!-- c3-close: 18:00, the desk closes, lights down to the end -->
+    <div id="c3-close" class="clip world" data-start="179.63" data-duration="2.97">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock" style="color: var(--accent)">18:00</span></div>
+        <div class="app-body">
+          <div id="c3-closed">Opens again at 09:00</div>
+        </div>
+      </div>
+      <div id="c3-lights" data-hold></div>
+    </div>
+
+    <audio id="c3-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="72" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c3-bed2" class="clip" src="assets/music/bed.mp3" data-start="138.82" data-duration="26" data-media-start="132" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c3-1" class="clip" src="assets/vo/c3-1.wav" data-start="3.0" data-duration="10.517" data-volume="1"></audio>
+    <audio id="vo-c3-2" class="clip" src="assets/vo/c3-2.wav" data-start="13.87" data-duration="8.277" data-volume="1"></audio>
+    <audio id="vo-c3-3" class="clip" src="assets/vo/c3-3.wav" data-start="22.49" data-duration="10.197" data-volume="1"></audio>
+    <audio id="vo-c3-4" class="clip" src="assets/vo/c3-4.wav" data-start="33.04" data-duration="9.216" data-volume="1"></audio>
+    <audio id="vo-c3-5" class="clip" src="assets/vo/c3-5.wav" data-start="42.61" data-duration="6.059" data-volume="1"></audio>
+    <audio id="vo-c3-6" class="clip" src="assets/vo/c3-6.wav" data-start="49.02" data-duration="10.197" data-volume="1"></audio>
+    <audio id="vo-c3-7" class="clip" src="assets/vo/c3-7.wav" data-start="59.56" data-duration="8.491" data-volume="1"></audio>
+    <audio id="vo-c3-8" class="clip" src="assets/vo/c3-8.wav" data-start="68.4" data-duration="5.909" data-volume="1"></audio>
+    <audio id="vo-c3-9" class="clip" src="assets/vo/c3-9.wav" data-start="74.66" data-duration="10.752" data-volume="1"></audio>
+    <audio id="vo-c3-10" class="clip" src="assets/vo/c3-10.wav" data-start="85.77" data-duration="12.309" data-volume="1"></audio>
+    <audio id="vo-c3-11" class="clip" src="assets/vo/c3-11.wav" data-start="98.42" data-duration="11.776" data-volume="1"></audio>
+    <audio id="vo-c3-12" class="clip" src="assets/vo/c3-12.wav" data-start="110.55" data-duration="8.619" data-volume="1"></audio>
+    <audio id="vo-c3-13" class="clip" src="assets/vo/c3-13.wav" data-start="119.52" data-duration="8.277" data-volume="1"></audio>
+    <audio id="vo-c3-14" class="clip" src="assets/vo/c3-14.wav" data-start="128.15" data-duration="10.325" data-volume="1"></audio>
+    <audio id="vo-c3-end" class="clip" src="assets/vo/c3-end.wav" data-start="138.82" data-duration="2.091" data-volume="1"></audio>
+    <audio id="vo-c3-after" class="clip" src="assets/vo/c3-after.wav" data-start="168.67" data-duration="6.571" data-volume="1"></audio>
+    <audio id="vo-c3-afterb" class="clip" src="assets/vo/c3-afterb.wav" data-start="175.59" data-duration="3.691" data-volume="1"></audio>
+    <audio id="vo-c3-close" class="clip" src="assets/vo/c3-close.wav" data-start="179.63" data-duration="1.963" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: CLEAR, duration: 0.4 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c3-1: the account panel; the signed-in member as the accent
+    fadeIn("#c3-desk .c3-panel", 3.1, 0.5);
+    tl.fromTo("#c3-member", { color: "#1d1b18" }, { color: ACCENT, duration: 0.3 }, 10.2);
+
+    // c3-3: shareReplay, then the memoized promise; c3-4: exhaustMap, then the lock; c3-5: held unbanded
+    band("#c3-t2", 22.6);
+    unband("#c3-t2", 26.8);
+    band("#c3-t3", 26.9);
+    unband("#c3-t3", 33.05);
+    band("#c3-t4", 33.15);
+    unband("#c3-t4", 37.6);
+    band("#c3-t5", 37.7);
+    unband("#c3-t5", 42.7);
+
+    // c3-6: heading, what must stop, what must be cleared
+    fadeIn("#c3-sess-h", 49.1, 0.5);
+    fadeIn("#c3-s1", 52.3, 0.5);
+    fadeIn("#c3-s2", 54.3, 0.5);
+
+    // c3-7: the idle terminal
+    fadeIn("#c3-idle", 59.7, 0.5);
+
+    // c3-8: the question
+    fadeIn("#c3-ask", 68.5, 0.5);
+
+    // c3-9: the injector, then the reload
+    fadeIn("#c3-a1", 74.8, 0.5);
+    fadeIn("#c3-a2", 79.6, 0.5);
+
+    // c3-10: heading, the code, then its default
+    fadeIn("#c3-ctx-h", 85.9, 0.5);
+    fadeIn("#c3-code", 87.6, 0.5);
+    band("#c3-band", 94.9);
+
+    // c3-11: the allow-list, then the opt-out struck through
+    fadeIn("#c3-allow", 102.6, 0.5);
+    tl.to("#c3-allow", { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 102.9);
+    fadeIn("#c3-opt", 105.5, 0.5);
+    tl.fromTo("#c3-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power2.inOut" }, 106.1);
+
+    // c3-12: heading and the three items
+    fadeIn("#c3-not-h", 110.65, 0.5);
+    fadeIn("#c3-n1", 110.9, 0.5);
+    fadeIn("#c3-n2", 112.2, 0.5);
+    fadeIn("#c3-n3", 113.6, 0.5);
+
+    // c3-13: heading, the timeline; c3-14: the severity
+    fadeIn("#c3-say-h", 119.6, 0.5);
+    fadeIn("#c3-tline", 123.3, 0.5);
+    fadeIn("#c3-block", 131.3, 0.4);
+    tl.to("#c3-block", { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 131.5);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c3-qq1", "#c3-qq2", "#c3-qq3", "#c3-qq4"].forEach((q, i) => fadeIn(q, 139.06 + i * 0.6));
+    fadeIn("#c3-pause-2", 165.3);
+
+    // after the lesson: compare, then the last sentence banded
+    fadeIn("#c3-after-title", 168.4, 0.4);
+    fadeIn("#c3-p1", 168.75, 0.4);
+    fadeIn("#c3-p2", 175.6, 0.4);
+    band("#c3-p2", 175.7);
+
+    // close: 18:00, the lights go down and stay down to the last frame
+    fadeIn("#c3-closed", 179.73);
+    tl.fromTo("#c3-lights", { opacity: 0 }, { opacity: 0.62, duration: 1.8, ease: "power2.inOut" }, 180.2);
+
+    window.__timelines["c3"] = tl;
+  </script>
+</template>
