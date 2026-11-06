@@ -1,0 +1,572 @@
+{
+  "total": 710.02,
+  "scenes": [
+    {
+      "id": "c0",
+      "start": 0.0,
+      "duration": 56.39,
+      "clips": [
+        {
+          "id": "c0-1",
+          "start": 3.0,
+          "duration": 9.899
+        },
+        {
+          "id": "c0-2",
+          "start": 13.25,
+          "duration": 8.64
+        },
+        {
+          "id": "c0-3",
+          "start": 22.24,
+          "duration": 10.539
+        },
+        {
+          "id": "c0-4",
+          "start": 33.13,
+          "duration": 9.045
+        },
+        {
+          "id": "c0-5",
+          "start": 42.52,
+          "duration": 7.637
+        },
+        {
+          "id": "c0-6",
+          "start": 50.51,
+          "duration": 4.885
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        }
+      }
+    },
+    {
+      "id": "c1",
+      "start": 56.39,
+      "duration": 82.59,
+      "clips": [
+        {
+          "id": "c1-1",
+          "start": 3.0,
+          "duration": 8.299
+        },
+        {
+          "id": "c1-2",
+          "start": 11.65,
+          "duration": 8.107
+        },
+        {
+          "id": "c1-3",
+          "start": 20.11,
+          "duration": 6.763
+        },
+        {
+          "id": "c1-4",
+          "start": 27.22,
+          "duration": 9.685
+        },
+        {
+          "id": "c1-5",
+          "start": 37.25,
+          "duration": 6.976
+        },
+        {
+          "id": "c1-6",
+          "start": 44.58,
+          "duration": 5.504
+        },
+        {
+          "id": "c1-7",
+          "start": 50.43,
+          "duration": 6.123
+        },
+        {
+          "id": "c1-8",
+          "start": 56.91,
+          "duration": 6.037
+        },
+        {
+          "id": "c1-end",
+          "start": 63.29,
+          "duration": 2.197
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 63.29,
+          "duration": 15.8,
+          "items": [
+            "For each subscription, which lives longer: the source or the code that subscribed? What ends the longer one?",
+            "If this component were created and destroyed a hundred times, what would be left behind?",
+            "When a value arrives, which mechanism from chapter 0 tells Angular about it?"
+          ]
+        },
+        "pause": {
+          "start": 79.09,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c2",
+      "start": 138.99,
+      "duration": 75.56,
+      "clips": [
+        {
+          "id": "c2-1",
+          "start": 3.0,
+          "duration": 5.675
+        },
+        {
+          "id": "c2-2",
+          "start": 9.02,
+          "duration": 6.336
+        },
+        {
+          "id": "c2-3",
+          "start": 15.71,
+          "duration": 8.576
+        },
+        {
+          "id": "c2-4",
+          "start": 24.64,
+          "duration": 8.149
+        },
+        {
+          "id": "c2-5",
+          "start": 33.14,
+          "duration": 6.763
+        },
+        {
+          "id": "c2-6",
+          "start": 40.25,
+          "duration": 5.888
+        },
+        {
+          "id": "c2-7",
+          "start": 46.49,
+          "duration": 7.019
+        },
+        {
+          "id": "c2-end",
+          "start": 53.86,
+          "duration": 2.496
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 53.86,
+          "duration": 18.2,
+          "items": [
+            "When the thing the user is looking at changes, what happens to work still running for the old one?",
+            "If the responses came back in the reverse order of the requests, what would the user see?",
+            "On any screen: which path of requests is the slowest, and which steps on it could start earlier?"
+          ]
+        },
+        "pause": {
+          "start": 72.06,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c3",
+      "start": 214.54,
+      "duration": 78.78,
+      "clips": [
+        {
+          "id": "c3-1",
+          "start": 3.0,
+          "duration": 14.123
+        },
+        {
+          "id": "c3-2",
+          "start": 17.47,
+          "duration": 5.525
+        },
+        {
+          "id": "c3-3",
+          "start": 23.35,
+          "duration": 3.925
+        },
+        {
+          "id": "c3-4",
+          "start": 27.62,
+          "duration": 5.952
+        },
+        {
+          "id": "c3-5",
+          "start": 33.92,
+          "duration": 6.997
+        },
+        {
+          "id": "c3-6",
+          "start": 41.27,
+          "duration": 8.427
+        },
+        {
+          "id": "c3-7",
+          "start": 50.05,
+          "duration": 6.677
+        },
+        {
+          "id": "c3-end",
+          "start": 57.08,
+          "duration": 1.856
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 57.08,
+          "duration": 18.2,
+          "items": [
+            "Say the business rule for the case where a second event arrives while the first is still being handled. Which operator says the same thing?",
+            "What changes if the user double-clicks, or if the network is ten times slower?",
+            "How many units of work does one human action produce, and what does each cost?"
+          ]
+        },
+        "pause": {
+          "start": 75.28,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c4",
+      "start": 293.32,
+      "duration": 81.84,
+      "clips": [
+        {
+          "id": "c4-1",
+          "start": 3.0,
+          "duration": 4.779
+        },
+        {
+          "id": "c4-2",
+          "start": 8.13,
+          "duration": 5.824
+        },
+        {
+          "id": "c4-3",
+          "start": 14.3,
+          "duration": 8.021
+        },
+        {
+          "id": "c4-4",
+          "start": 22.67,
+          "duration": 7.061
+        },
+        {
+          "id": "c4-5",
+          "start": 30.09,
+          "duration": 9.109
+        },
+        {
+          "id": "c4-6",
+          "start": 39.54,
+          "duration": 11.371
+        },
+        {
+          "id": "c4-7",
+          "start": 51.27,
+          "duration": 5.824
+        },
+        {
+          "id": "c4-end",
+          "start": 57.44,
+          "duration": 1.963
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 57.44,
+          "duration": 20.9,
+          "items": [
+            "For each operator that can throw and each request that can fail: which stream does the error end? Is that the stream you want to end?",
+            "After the failure, what does the user see, and what has to happen before the feature works again?",
+            "For each retry: what does one attempt cost, and can a second attempt succeed for this kind of failure?"
+          ]
+        },
+        "pause": {
+          "start": 78.34,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c5",
+      "start": 375.16,
+      "duration": 73.26,
+      "clips": [
+        {
+          "id": "c5-1",
+          "start": 3.0,
+          "duration": 5.205
+        },
+        {
+          "id": "c5-2",
+          "start": 8.55,
+          "duration": 7.616
+        },
+        {
+          "id": "c5-3",
+          "start": 16.52,
+          "duration": 9.195
+        },
+        {
+          "id": "c5-4",
+          "start": 26.07,
+          "duration": 5.589
+        },
+        {
+          "id": "c5-5",
+          "start": 32.01,
+          "duration": 8.043
+        },
+        {
+          "id": "c5-6",
+          "start": 40.4,
+          "duration": 12.309
+        },
+        {
+          "id": "c5-end",
+          "start": 53.06,
+          "duration": 2.197
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 53.06,
+          "duration": 16.7,
+          "items": [
+            "How many times does each producer run? Count every subscriber, including template pipes and signals made from it.",
+            "When someone subscribes late, what should they see: nothing, the latest value, or a history?",
+            "When the last subscriber leaves, what does the source still cost, and who pays for it?"
+          ]
+        },
+        "pause": {
+          "start": 69.76,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c6",
+      "start": 448.42,
+      "duration": 76.54,
+      "clips": [
+        {
+          "id": "c6-1",
+          "start": 3.0,
+          "duration": 8.107
+        },
+        {
+          "id": "c6-2",
+          "start": 11.46,
+          "duration": 10.24
+        },
+        {
+          "id": "c6-3",
+          "start": 22.05,
+          "duration": 6.485
+        },
+        {
+          "id": "c6-4",
+          "start": 28.88,
+          "duration": 9.323
+        },
+        {
+          "id": "c6-5",
+          "start": 38.55,
+          "duration": 12.032
+        },
+        {
+          "id": "c6-end",
+          "start": 50.94,
+          "duration": 1.472
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 50.94,
+          "duration": 22.1,
+          "items": [
+            "For every call to `inject()` or a function built on it: is it guaranteed to run during construction? Would it still be if someone moved it into a callback next month?",
+            "For every `effect`: what non-signal thing does it write to? If the answer is another signal, what would `computed` or `linkedSignal` look like?",
+            "When an effect runs again, is anything from its previous run still running?"
+          ]
+        },
+        "pause": {
+          "start": 73.04,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c7",
+      "start": 524.95,
+      "duration": 85.41,
+      "clips": [
+        {
+          "id": "c7-1",
+          "start": 3.0,
+          "duration": 4.736
+        },
+        {
+          "id": "c7-2",
+          "start": 8.09,
+          "duration": 6.912
+        },
+        {
+          "id": "c7-3",
+          "start": 15.35,
+          "duration": 8.704
+        },
+        {
+          "id": "c7-4",
+          "start": 24.4,
+          "duration": 9.664
+        },
+        {
+          "id": "c7-5",
+          "start": 34.42,
+          "duration": 15.147
+        },
+        {
+          "id": "c7-6",
+          "start": 49.91,
+          "duration": 7.445
+        },
+        {
+          "id": "c7-end",
+          "start": 57.71,
+          "duration": 1.92
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 57.71,
+          "duration": 24.2,
+          "items": [
+            "For each combined stream: what event in the real world does each emission correspond to? Is there an emission that corresponds to none?",
+            "Can two inputs change because of the same underlying event, or can one lag behind the other? Could the combination ever pair values that never existed together?",
+            "In a hand-written operator: list everything it creates or subscribes to. What stops each of those, and is there a test that proves it?"
+          ]
+        },
+        "pause": {
+          "start": 81.91,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c8",
+      "start": 610.36,
+      "duration": 99.66,
+      "clips": [
+        {
+          "id": "c8-1",
+          "start": 3.0,
+          "duration": 7.979
+        },
+        {
+          "id": "c8-2",
+          "start": 11.33,
+          "duration": 4.053
+        },
+        {
+          "id": "c8-3",
+          "start": 15.73,
+          "duration": 7.445
+        },
+        {
+          "id": "c8-4",
+          "start": 23.53,
+          "duration": 7.787
+        },
+        {
+          "id": "c8-5",
+          "start": 31.66,
+          "duration": 7.509
+        },
+        {
+          "id": "c8-6",
+          "start": 39.52,
+          "duration": 7.787
+        },
+        {
+          "id": "c8-7",
+          "start": 47.66,
+          "duration": 10.368
+        },
+        {
+          "id": "c8-end",
+          "start": 58.38,
+          "duration": 2.389
+        },
+        {
+          "id": "c8-after",
+          "start": 85.83,
+          "duration": 8.171
+        },
+        {
+          "id": "c8-close",
+          "start": 94.35,
+          "duration": 4.309
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 58.38,
+          "duration": 23.6,
+          "items": [
+            "For every state change: is a new object created, or an old one changed in place? Who compares references downstream?",
+            "For every response written into state: what moment does it describe, and what could the user have changed since?",
+            "For every optimistic change: what does the user see if the server says no?",
+            "For every infinite stream: what is the shortest lifetime that still works, and what ties the stream to it?"
+          ]
+        },
+        "pause": {
+          "start": 81.98,
+          "duration": 3.5
+        }
+      }
+    }
+  ]
+}
