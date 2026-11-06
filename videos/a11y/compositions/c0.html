@@ -1,0 +1,349 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c0-h { position: absolute; left: 120px; top: 84px; width: 1680px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-chip { display: inline-block; padding: 12px 24px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 36px/1 var(--font-code); white-space: nowrap; }
+    .c0-chip.hot { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+    .c0-nw { white-space: nowrap; }
+    /* long code in a narrow cell: wraps at its own spaces, continuation lines hang under the first */
+    .c0-wrap { display: inline-block; white-space: pre-wrap; padding-left: 1.5em; text-indent: -1.5em; }
+
+    /* desk */
+    .c0-page-title { font: 600 52px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-status { position: absolute; left: 40px; top: 130px; display: flex; align-items: center; gap: 18px; }
+    .c0-pill { position: relative; width: 150px; height: 52px; }
+    .c0-pill > span { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 26px; font: 700 30px/1 var(--font-text); }
+    .c0-closed { background: var(--paper-sunk); color: var(--ink-muted); border: 2px solid var(--rule-strong); }
+    .c0-open { background: var(--tip-soft); color: var(--tip); border: 2px solid var(--tip); }
+    .c0-members { position: absolute; left: 40px; top: 230px; width: 900px; }
+    .c0-members .label { margin-bottom: 8px; }
+    .c0-mem { display: flex; justify-content: space-between; padding: 22px 0; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c0-mem b { font-weight: 700; }
+    .c0-mem span:last-child { color: var(--ink-muted); }
+    .c0-clock { position: relative; display: inline-block; }
+    #c0-t9 { position: absolute; right: 0; top: 0; }
+
+    /* tables: every row is its own grid */
+    .c0-table { position: absolute; left: 112px; width: 1696px; }
+    .c0-tr { display: grid; column-gap: 20px; padding: 14px 16px; border-bottom: 1px solid var(--rule); border-radius: 6px; font: 400 28px/1.35 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c0-tr code { font: 400 28px/1.35 var(--font-code); }
+    .c0-tr b { font-weight: 700; }
+    .c0-th { font-weight: 700; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+
+    #c0-ppl { top: 176px; }
+    #c0-ppl .c0-tr { grid-template-columns: 480px 400px 764px; }
+
+    #c0-wc-intro { position: absolute; left: 420px; top: 82px; width: 1380px; font: 400 30px/1.35 var(--font-text); color: var(--ink-muted); }
+    #c0-wc { top: 190px; }
+    #c0-wc .c0-tr { grid-template-columns: 450px 100px 1094px; font-size: 30px; padding-top: 16px; padding-bottom: 16px; }
+
+    #c0-tools-head { top: 170px; }
+    #c0-tools-head .c0-tr, #c0-tools .c0-tr { grid-template-columns: 500px 620px 524px; }
+    #c0-tools-win { position: absolute; left: 112px; top: 232px; width: 1696px; height: 811px; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 90px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 90px), transparent); }
+    #c0-tools { position: absolute; left: 0; top: 0; width: 1696px; }
+
+    /* grading */
+    #c0-chips { position: absolute; left: 120px; top: 260px; display: flex; gap: 28px; }
+    #c0-chips-label { position: absolute; left: 120px; top: 196px; }
+    #c0-first { position: absolute; left: 120px; top: 460px; width: 1500px; padding-left: 40px; border-left: 6px solid var(--rule-strong); font: 400 44px/1.4 var(--font-text); }
+
+    /* numbered lists */
+    .c0-list { position: absolute; left: 120px; width: 1680px; }
+    .c0-row { display: flex; gap: 28px; padding: 26px 32px; border-bottom: 1px solid var(--rule); border-radius: 6px; font: 400 40px/1.4 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c0-row > span:first-child { flex: none; width: 44px; font-weight: 700; }
+    .c0-row code { font: 400 36px/1.4 var(--font-code); white-space: nowrap; }
+    #c0-q-list { top: 230px; }
+    #c0-cs-list { top: 250px; }
+    #c0-cs-list .c0-row { padding-top: 34px; padding-bottom: 34px; }
+    #c0-if { position: absolute; left: 120px; top: 720px; }
+
+    /* callouts */
+    .c0-call { position: absolute; left: 160px; width: 1600px; box-sizing: border-box; padding: 44px 56px 52px; border-left: 10px solid var(--note); border-radius: 8px; background: var(--note-soft); }
+    .c0-call-h { font: 700 34px/1 var(--font-text); color: var(--note); margin-bottom: 28px; }
+    .c0-call-p { font: 400 40px/1.45 var(--font-text); }
+    .c0-call code { font: 400 34px/1.45 var(--font-code); white-space: nowrap; }
+    #c0-note { top: 250px; }
+    #c0-tip { top: 180px; height: 720px; border-left-color: var(--tip); background: var(--tip-soft); }
+    #c0-tip .c0-call-h { color: var(--tip); }
+    .c0-tip-list { position: absolute; left: 56px; top: 110px; width: 1478px; }
+    .c0-ti { padding: 18px 20px; border-radius: 6px; font: 400 34px/1.42 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c0-ti + .c0-ti { margin-top: 10px; }
+    .c0-ti b { font-weight: 700; }
+    .c0-ti code { font: 400 30px/1.42 var(--font-code); white-space: nowrap; }
+
+    /* helper */
+    #c0-helper { position: absolute; left: 120px; top: 300px; }
+    #c0-helper .c0-chip { font-size: 52px; padding: 24px 36px; }
+    #c0-helper .label { margin-bottom: 20px; }
+    #c0-simple { position: absolute; left: 120px; top: 560px; width: 1500px; font: 400 44px/1.4 var(--font-text); }
+  </style>
+
+  <div id="root" data-composition-id="c0" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c0-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c0-card-time" class="chapter-time">08:55</div>
+      <div id="c0-card-title" class="chapter-title">What moved since Angular 17</div>
+    </div>
+
+    <!-- c0-1, c0-1b: the desk before opening, then the member list at rest -->
+    <div id="c0-desk" class="clip world" data-start="3" data-duration="15.02">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div class="c0-page-title">Members</div>
+          <div class="c0-status"><span class="label">Desk</span><span id="c0-pill1" class="c0-pill"><span class="c0-closed">Closed</span></span></div>
+          <div id="c0-members" class="c0-members" data-hold>
+            <div class="label">Members waiting</div>
+            <div class="c0-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div class="c0-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div class="c0-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div class="c0-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-2: who you are reviewing for (LESSON.md table), cut in whole, then the last row banded -->
+    <div id="c0-people" class="clip world" data-start="18.02" data-duration="11.14">
+      <div class="c0-h">Who you are reviewing for</div>
+      <div id="c0-ppl" class="c0-table" data-hold>
+        <div class="c0-tr c0-th"><div>People</div><div>How they use the app</div><div>Failures they hit first</div></div>
+        <div class="c0-tr"><div>Keyboard and switch users (motor disabilities, a broken wrist, power users)</div><div>Tab, Enter, Space, arrows, Escape</div><div>Controls they cannot reach, focus they cannot see, actions that need dragging</div></div>
+        <div class="c0-tr"><div>Blind and partially sighted screen reader users</div><div>The accessibility tree, read aloud or in braille</div><div>Missing roles and names, changes that are never announced</div></div>
+        <div class="c0-tr"><div>Low-vision users</div><div>Zoom, magnifiers, Contrast themes</div><div>Low contrast, layouts that break at 400% zoom, information outside the magnified area</div></div>
+        <div class="c0-tr"><div>Colour-blind users</div><div>Their own eyes</div><div>Meaning carried only by colour</div></div>
+        <div class="c0-tr"><div>Deaf and hard-of-hearing users</div><div>Captions and transcripts</div><div>Audio and video with no text alternative</div></div>
+        <div id="c0-ppl6" class="c0-tr"><div>People with cognitive and learning disabilities</div><div>Everything above, plus patience and memory</div><div>Error messages that do not say how to fix the field, help that moves between pages, forms that ask for the same data twice, logins that depend on remembering or transcribing a code</div></div>
+      </div>
+    </div>
+
+    <!-- c0-3: the four labels on their words, blocking as the accent; then the first test -->
+    <div id="c0-grade" class="clip world" data-start="29.16" data-duration="10.06">
+      <div class="c0-h">Grading what you find</div>
+      <div id="c0-chips-label" class="label">the README's labels</div>
+      <div id="c0-chips">
+        <span id="c0-g1" class="c0-chip">blocking</span>
+        <span id="c0-g2" class="c0-chip">should-fix</span>
+        <span id="c0-g3" class="c0-chip">nit</span>
+        <span id="c0-g4" class="c0-chip">question</span>
+      </div>
+      <div id="c0-first" data-hold>The first test is simple: can some group of people finish the task at all? If they cannot, the finding blocks the merge, however small the diff that fixes it.</div>
+    </div>
+
+    <!-- c0-4: the lesson's four numbered questions, one by one -->
+    <div id="c0-four" class="clip world" data-start="39.22" data-duration="10.37">
+      <div class="c0-h">After that, four questions settle the grade:</div>
+      <div id="c0-q-list" class="c0-list" data-hold>
+        <div id="c0-q1" class="c0-row"><span>1.</span><span>Who is blocked or slowed down? Name the group from the table.</span></div>
+        <div id="c0-q2" class="c0-row"><span>2.</span><span>From which task? Paying a fine matters more than reading a footer.</span></div>
+        <div id="c0-q3" class="c0-row"><span>3.</span><span>Is there a workaround they can reasonably find, such as another page that does the same thing?</span></div>
+        <div id="c0-q4" class="c0-row"><span>4.</span><span>Which WCAG criterion and level? A and AA failures are what audits and laws measure; AAA is advice.</span></div>
+      </div>
+    </div>
+
+    <!-- c0-5, c0-6, c0-7: WCAG 2.2 (LESSON.md table), cut in whole, rows banded one by one -->
+    <div id="c0-wcag" class="clip world" data-start="49.59" data-duration="33.46">
+      <div class="c0-h" style="width: 280px">WCAG 2.2</div>
+      <div id="c0-wc-intro">WCAG 2.2 (published in October 2023) added nine success criteria and removed one, 4.1.1 Parsing, which modern browsers made obsolete. The additions you will meet at level A and AA:</div>
+      <div id="c0-wc" class="c0-table" data-hold>
+        <div class="c0-tr c0-th"><div>Criterion</div><div>Level</div><div>What it asks</div></div>
+        <div id="c0-w1" class="c0-tr"><div>2.4.11 Focus Not Obscured (Minimum)</div><div>AA</div><div>The focused element is not <b>entirely</b> hidden by other content, such as a sticky header. (Fully visible is 2.4.12, AAA.)</div></div>
+        <div id="c0-w2" class="c0-tr"><div>2.5.7 Dragging Movements</div><div>AA</div><div>Anything done by dragging can also be done with single clicks or taps.</div></div>
+        <div id="c0-w3" class="c0-tr"><div>2.5.8 Target Size (Minimum)</div><div>AA</div><div>Pointer targets are at least 24 by 24 CSS pixels, or spaced so that a 24-pixel circle fits.</div></div>
+        <div id="c0-w4" class="c0-tr"><div>3.2.6 Consistent Help</div><div>A</div><div>Help (contact link, chat) sits in the same place on every page that has it.</div></div>
+        <div id="c0-w5" class="c0-tr"><div>3.3.7 Redundant Entry</div><div>A</div><div>Information already given in the same process is filled in or selectable, not typed again.</div></div>
+        <div id="c0-w6" class="c0-tr"><div>3.3.8 Accessible Authentication (Minimum)</div><div>AA</div><div>Logging in does not depend on a memory or transcription test, unless there is an alternative (paste allowed, password managers work).</div></div>
+      </div>
+    </div>
+
+    <!-- c0-8: the Angular tools (LESSON.md table) through a window that shows its first rows; viewChild, then the afterNextRender rows -->
+    <div id="c0-ng" class="clip world" data-start="83.05" data-duration="10.18">
+      <div class="c0-h">The Angular tools around it</div>
+      <div id="c0-tools-head" class="c0-table"><div class="c0-tr c0-th"><div>You wrote in v17</div><div>You read in v22</div><div>Why it matters for accessibility</div></div></div>
+      <div id="c0-tools-win" data-layout-allow-overflow>
+        <div id="c0-tools" data-hold>
+          <div id="c0-n1" class="c0-tr"><div><code class="c0-wrap">@ViewChild('x') x!: ElementRef</code> + <code class="c0-nw">ngAfterViewInit</code></div><div><code class="c0-nw">viewChild('x')</code> / <code class="c0-nw">viewChild.required('x')</code>, a signal</div><div>The element you want to focus is a signal you can read when it exists.</div></div>
+          <div id="c0-n2" class="c0-tr"><div><code class="c0-wrap">setTimeout(() =&gt; el.focus())</code></div><div><code class="c0-wrap">afterNextRender(() =&gt; el.focus(), { injector })</code></div><div>Focus needs the element in the DOM. These hooks run after Angular has rendered.</div></div>
+          <div id="c0-n3" class="c0-tr"><div>(no equivalent)</div><div><code class="c0-wrap">afterNextRender({ write: () =&gt; el.focus() })</code></div><div>The phased form: Angular groups DOM reads and writes by phase (<code class="c0-nw">earlyRead</code>, <code class="c0-nw">write</code>, <code class="c0-nw">mixedReadWrite</code>, <code class="c0-nw">read</code>) to avoid layout thrashing. A focus call is a write.</div></div>
+          <div id="c0-n4" class="c0-tr"><div><code class="c0-nw">ngAfterViewChecked</code> with flags</div><div><code class="c0-nw">afterRenderEffect(() =&gt; …)</code></div><div>Runs after render, and re-runs when the signals it read change (for example "the panel is now expanded").</div></div>
+          <div id="c0-n5" class="c0-tr"><div><code class="c0-nw">@Input() expanded</code> + <code class="c0-nw">@Output() expandedChange</code></div><div><code class="c0-nw">expanded = model(false)</code></div><div>Two-way expanded/collapsed state for widgets, written as one signal.</div></div>
+          <div id="c0-n6" class="c0-tr"><div><code class="c0-wrap">@HostListener('keydown', ['$event'])</code></div><div><code class="c0-wrap">host: { '(keydown)': 'onKeydown($event)' }</code></div><div>Same listener, declared in component metadata. The Angular style guide prefers it.</div></div>
+          <div id="c0-n7" class="c0-tr"><div><code class="c0-wrap">import { DOCUMENT } from '@angular/common'</code></div><div><code class="c0-nw">inject(DOCUMENT)</code> from <code class="c0-nw">@angular/core</code></div><div>Reading <code class="c0-nw">document.activeElement</code> without touching the global.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-9: the lesson's two consequences, one after the other; @if as a label -->
+    <div id="c0-cons" class="clip world" data-start="93.23" data-duration="9.44">
+      <div class="c0-h">Two consequences of the v22 defaults are worth keeping in mind:</div>
+      <div id="c0-cs-list" class="c0-list" data-hold>
+        <div id="c0-cs1" class="c0-row"><span>1.</span><span>This app is zoneless. A <code>setTimeout</code> still runs its callback, but the timeout itself schedules no render. DOM work that must wait for the render belongs in <code>afterNextRender</code> or <code>afterRenderEffect</code>.</span></div>
+        <div id="c0-cs2" class="c0-row"><span>2.</span><span><code>@if</code> adds and removes DOM. That matters for focus (an element that is removed loses focus) and for announcements (chapters 2 and 3).</span></div>
+      </div>
+      <span id="c0-if" class="c0-chip hot">@if</span>
+    </div>
+
+    <!-- c0-10: the NOTE callout -->
+    <div id="c0-notew" class="clip world" data-start="102.67" data-duration="6.07">
+      <div id="c0-note" class="c0-call" data-hold>
+        <div class="c0-call-h">Note</div>
+        <div class="c0-call-p">Angular CDK (<code>@angular/cdk/a11y</code> with <code>FocusTrap</code>, <code>LiveAnnouncer</code> and <code>FocusMonitor</code>, plus <code>@angular/cdk/listbox</code> and <code>@angular/cdk/dialog</code>) and the Angular team's headless <code>@angular/aria</code> package are not installed in this repo. This lesson teaches the rules by hand so you can review any implementation, including one built on those libraries.</div>
+      </div>
+    </div>
+
+    <!-- c0-11: the spec helper as a label, then what it cannot judge -->
+    <div id="c0-test" class="clip world" data-start="108.74" data-duration="9.97">
+      <div class="c0-h">How to test with real assistive technology</div>
+      <div id="c0-helper">
+        <div class="label">The exercise specs use a small helper</div>
+        <span class="c0-chip">src/app/core/a11y-queries.ts</span>
+      </div>
+      <div id="c0-simple" data-hold>It is a simplified model: it cannot judge contrast, target size or how a real screen reader sounds.</div>
+    </div>
+
+    <!-- c0-12, c0-13: the TIP callout, its first three items, then its last three -->
+    <div id="c0-tipw" class="clip world" data-start="118.71" data-duration="19.24">
+      <div id="c0-tip" class="c0-call">
+        <div class="c0-call-h">Tip</div>
+        <div id="c0-tipa" class="c0-tip-list" data-hold>
+          <div id="c0-t1" class="c0-ti"><b>Keyboard only.</b> Put the mouse away. Tab and Shift+Tab through the page; use Enter, Space, Escape and the arrow keys where a widget expects them. Watch where the focus is at every step.</div>
+          <div id="c0-t2" class="c0-ti"><b>The accessibility tree.</b> Chrome DevTools: Elements panel, Accessibility pane, and its full-tree view. Firefox: the Accessibility Inspector. Compare each node's role, name and state with what you expected.</div>
+          <div id="c0-t3" class="c0-ti"><b>Screen readers.</b> VoiceOver on macOS (Cmd+F5 to toggle; VO+U opens the rotor with lists of links, headings and form controls). NVDA on Windows with Firefox or Chrome (Insert+F7 for the elements list). Turn on the screen curtain, so you test by ear and not by sight.</div>
+        </div>
+        <div id="c0-tipb" class="c0-tip-list" data-hold>
+          <div id="c0-t4" class="c0-ti"><b>Automated checks.</b> axe DevTools or Lighthouse catch roughly a third of issues. A clean report is a start, never a verdict.</div>
+          <div id="c0-t5" class="c0-ti"><b>Low vision.</b> Zoom to 200% (1.4.4 Resize Text) and to 400% at 1280 pixels wide, where content should reflow into one column without horizontal scrolling (1.4.10 Reflow). Try a Contrast theme on Windows, or emulate <code>forced-colors</code> in DevTools.</div>
+          <div id="c0-t6" class="c0-ti"><b>Motion.</b> Emulate <code>prefers-reduced-motion: reduce</code> and check that animations calm down.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-13 end: the desk again; the clock turns to 09:00 and the desk opens -->
+    <div id="c0-desk2" class="clip world" data-start="137.95" data-duration="0.97">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock c0-clock"><span id="c0-t8">08:59</span><span id="c0-t9">09:00</span></span></div>
+        <div class="app-body">
+          <div class="c0-page-title">Members</div>
+          <div class="c0-status"><span class="label">Desk</span><span class="c0-pill" data-layout-allow-overlap><span id="c0-closed2" class="c0-closed">Closed</span><span id="c0-open2" class="c0-open">Open</span></span></div>
+          <div class="c0-members" data-hold>
+            <div class="label">Members waiting</div>
+            <div class="c0-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div class="c0-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div class="c0-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div class="c0-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <audio id="c0-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="0" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c0-1" class="clip" src="assets/vo/c0-1.wav" data-start="3.0" data-duration="8.811" data-volume="1"></audio>
+    <audio id="vo-c0-1b" class="clip" src="assets/vo/c0-1b.wav" data-start="12.16" data-duration="5.504" data-volume="1"></audio>
+    <audio id="vo-c0-2" class="clip" src="assets/vo/c0-2.wav" data-start="18.02" data-duration="10.795" data-volume="1"></audio>
+    <audio id="vo-c0-3" class="clip" src="assets/vo/c0-3.wav" data-start="29.16" data-duration="9.707" data-volume="1"></audio>
+    <audio id="vo-c0-4" class="clip" src="assets/vo/c0-4.wav" data-start="39.22" data-duration="10.027" data-volume="1"></audio>
+    <audio id="vo-c0-5" class="clip" src="assets/vo/c0-5.wav" data-start="49.59" data-duration="10.005" data-volume="1"></audio>
+    <audio id="vo-c0-6" class="clip" src="assets/vo/c0-6.wav" data-start="59.95" data-duration="11.755" data-volume="1"></audio>
+    <audio id="vo-c0-7" class="clip" src="assets/vo/c0-7.wav" data-start="72.05" data-duration="10.645" data-volume="1"></audio>
+    <audio id="vo-c0-8" class="clip" src="assets/vo/c0-8.wav" data-start="83.05" data-duration="9.835" data-volume="1"></audio>
+    <audio id="vo-c0-9" class="clip" src="assets/vo/c0-9.wav" data-start="93.23" data-duration="9.088" data-volume="1"></audio>
+    <audio id="vo-c0-10" class="clip" src="assets/vo/c0-10.wav" data-start="102.67" data-duration="5.717" data-volume="1"></audio>
+    <audio id="vo-c0-11" class="clip" src="assets/vo/c0-11.wav" data-start="108.74" data-duration="9.621" data-volume="1"></audio>
+    <audio id="vo-c0-12" class="clip" src="assets/vo/c0-12.wav" data-start="118.71" data-duration="7.872" data-volume="1"></audio>
+    <audio id="vo-c0-13" class="clip" src="assets/vo/c0-13.wav" data-start="126.93" data-duration="10.987" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "rgba(245, 226, 217, 1)", SOFT0 = "rgba(245, 226, 217, 0)";
+    const ACCENT = "#b8321f";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0
+
+    // c0-1: the closed desk on "opens at nine"
+    fadeIn("#c0-pill1", 5.28);
+    // c0-1b: the member list at rest, on "Accessibility review"
+    tl.fromTo("#c0-members > *", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.15 }, 12.2);
+
+    // c0-2: the table cut in whole; the last row banded on "Teams forget"
+    band("#c0-ppl6", 20.7);
+
+    // c0-3: each label on its word; blocking turns accent on "it blocks"; the first test on "If some group"
+    fadeIn("#c0-chips-label", 30.0);
+    fadeIn("#c0-g1", 31.42, 0.4);
+    fadeIn("#c0-g2", 32.05, 0.4);
+    fadeIn("#c0-g3", 32.94, 0.4);
+    fadeIn("#c0-g4", 33.72, 0.4);
+    fadeIn("#c0-first", 34.62, 0.6);
+    tl.to("#c0-g1", { borderColor: ACCENT, backgroundColor: SOFT, color: ACCENT, duration: 0.4, ease: "power2.inOut" }, 36.97);
+
+    // c0-4: the questions on "who", "in which task", "whether", "which criterion"; levels banded on "Audits and laws"
+    fadeIn("#c0-q1", 39.72);
+    fadeIn("#c0-q2", 40.96);
+    fadeIn("#c0-q3", 42.03);
+    fadeIn("#c0-q4", 43.94);
+    band("#c0-q4", 46.12);
+
+    // c0-5: heading and the lesson's sentence first; the table cut in whole on "added nine"
+    fadeIn("#c0-wc-intro", 49.66, 0.6);
+    fadeIn("#c0-wc", 54.01, 0.4);
+
+    // c0-6: one row per sentence
+    band("#c0-w1", 60.06);
+    unband("#c0-w1", 62.47);
+    band("#c0-w2", 62.47);
+    unband("#c0-w2", 65.31);
+    band("#c0-w3", 65.31);
+    unband("#c0-w3", 69.23);
+    band("#c0-w4", 69.23);
+
+    // c0-7: 3.3.7 on "Within one process", 3.3.8 on "Logging in"
+    unband("#c0-w4", 72.08);
+    band("#c0-w5", 72.08);
+    unband("#c0-w5", 76.01);
+    band("#c0-w6", 76.01);
+
+    // c0-8: viewChild on "signal", setTimeout's replacement on "after Next Render", the phased form on "phased"
+    band("#c0-n1", 85.41);
+    unband("#c0-n1", 87.25);
+    band("#c0-n2", 87.25);
+    band("#c0-n3", 90.22);
+
+    // c0-9: the first consequence at once, the second on "And an if block", @if on "if"
+    fadeIn("#c0-cs1", 93.29);
+    fadeIn("#c0-cs2", 98.35);
+    fadeIn("#c0-if", 98.7, 0.4);
+
+    // c0-11: the helper on "exercise specs", what it cannot judge on "That simplified model"
+    fadeIn("#c0-helper", 108.78);
+    fadeIn("#c0-simple", 112.26, 0.6);
+
+    // c0-12: the first three items cut in whole; each banded on "Put the mouse away", "Open the accessibility tree", "Listen"
+    band("#c0-t1", 118.78);
+    unband("#c0-t1", 120.85);
+    band("#c0-t2", 120.85);
+    unband("#c0-t2", 122.85);
+    band("#c0-t3", 122.85);
+
+    // c0-13: the last three items cut in on "Automated"; Low vision banded on "Zoom", Motion on "emulate"
+    fadeOut("#c0-tipa", 126.6, 0.3);
+    fadeIn("#c0-tipb", 126.96, 0.4);
+    band("#c0-t5", 133.21);
+    unband("#c0-t5", 136.36);
+    band("#c0-t6", 136.36);
+
+    // c0-13 end: the clock turns to 09:00 and the desk opens
+    fadeOut("#c0-t8", 138.05, 0.2);
+    fadeIn("#c0-t9", 138.12, 0.3);
+    fadeOut("#c0-closed2", 138.3, 0.3);
+    fadeIn("#c0-open2", 138.35, 0.4);
+
+    window.__timelines["c0"] = tl;
+  </script>
+</template>

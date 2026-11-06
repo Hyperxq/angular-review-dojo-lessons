@@ -1,0 +1,402 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    code { font-family: var(--font-code); font-size: 0.9em; white-space: nowrap; }
+    .c1-h { position: absolute; left: 200px; top: 110px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c1-h code { font: 600 56px/1 var(--font-code); }
+    .c1-p { position: absolute; left: 200px; width: 1520px; font: 400 42px/1.5 var(--font-text); }
+    .c1-p code { font-size: 38px; }
+    .c1-chip { position: absolute; box-sizing: border-box; padding: 22px 36px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 40px/1 var(--font-code); white-space: nowrap; }
+    .c1-chip.txt { font: 700 40px/1 var(--font-text); }
+    .c1-chip.hot { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+
+    /* desk app: search results, page 2 */
+    .c1-res-h { font: 600 48px/1.1 var(--font-display); letter-spacing: -0.01em; margin-bottom: 20px; }
+    .c1-row { display: grid; grid-template-columns: 1fr 420px 120px; align-items: center; height: 92px; padding: 0 24px; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c1-row b { font-weight: 700; }
+    .c1-row span:nth-child(2) { color: var(--ink-muted); }
+    .c1-row span:last-child { color: var(--ink-muted); font-variant-numeric: tabular-nums; text-align: right; }
+    .c1-pager { position: absolute; left: 40px; right: 40px; bottom: 48px; display: flex; gap: 20px; justify-content: center; font: 400 32px/1 var(--font-text); }
+    .c1-pager span { padding: 18px 26px; border: 2px solid var(--rule); border-radius: 8px; color: var(--note); text-decoration: underline; text-underline-offset: 6px; white-space: nowrap; }
+    .c1-pager span.cur { border-color: var(--ink); color: var(--ink); font-weight: 700; text-decoration: none; }
+    .c1-app-narrow { width: 1000px; }
+    .c1-app-narrow .c1-row { grid-template-columns: 1fr 380px; }
+    .c1-app-narrow .c1-row span:last-child { display: none; }
+
+    /* role / name / states */
+    #c1-terms { position: absolute; left: 1210px; top: 110px; width: 600px; }
+    .c1-term { margin-bottom: 30px; }
+    .c1-term b { display: block; font: 700 56px/1.1 var(--font-text); }
+    .c1-term span { font: 400 32px/1.3 var(--font-text); color: var(--ink-muted); }
+    #c1-looks { position: absolute; left: 1210px; top: 640px; width: 600px; font: 400 34px/1.45 var(--font-text); }
+    #c1-looks code { font-size: 31px; }
+
+    /* tree from LESSON.md, outline layout */
+    .c1-tree .node { box-sizing: border-box; height: 100px; display: flex; align-items: center; font-size: 52px; }
+    .c1-tree .node .badge { font-size: 36px; }
+    .c1-edges path { stroke: var(--rule-strong); stroke-width: 4; fill: none; }
+
+    /* code */
+    .c1-code { left: 104px; width: 1712px; box-sizing: border-box; padding: 32px 44px; font-size: 30px; line-height: 45px; }
+    .c1-code .ln { white-space: pre-wrap; padding-left: 8ch; text-indent: -8ch; margin: 0 -44px; padding-right: 44px; box-sizing: border-box; background-color: rgba(245, 226, 217, 0); }
+    .c1-code .ln { padding-left: calc(8ch + 44px); }
+    .c1-code.big { font-size: 34px; line-height: 51px; padding: 40px 48px; }
+    .c1-code .tok { border-radius: 4px; background-color: rgba(245, 226, 217, 0); }
+
+    /* table from LESSON.md: rows are grids */
+    .c1-tbl { position: absolute; left: 160px; top: 260px; width: 1600px; font: 400 36px/1.4 var(--font-text); }
+    .c1-tr { display: grid; grid-template-columns: 500px 500px 1fr; column-gap: 40px; padding: 26px 24px; border-bottom: 1px solid var(--rule); }
+    .c1-tr code { font: 400 32px/1.4 var(--font-code); }
+    .c1-th { font: 700 30px/1.3 var(--font-text); color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+
+    /* five-item name list */
+    .c1-ol { position: absolute; left: 200px; top: 250px; width: 1520px; }
+    .c1-oli { display: grid; grid-template-columns: 64px 1fr; margin-bottom: 22px; font: 400 38px/1.45 var(--font-text); }
+    .c1-oli > b { color: var(--ink-muted); }
+    .c1-oli code { font-size: 34px; }
+
+    /* screen reader's list of links over the desk */
+    #c1-rotor { position: absolute; left: 1080px; top: 150px; width: 640px; box-sizing: border-box; padding: 32px 40px; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; box-shadow: var(--shadow); }
+    #c1-rotor .label { font-weight: 700; margin-bottom: 14px; }
+    #c1-rotor div.ri { padding: 12px 18px; border-radius: 6px; font: 400 34px/1.2 var(--font-text); }
+    #c1-rotor div.ri.sel { background: var(--paper-sunk); font-weight: 700; }
+
+    /* graded examples */
+    .c1-ex { position: absolute; left: 200px; top: 250px; width: 1520px; font: 400 40px/1.5 var(--font-text); }
+    #c1-phr { position: absolute; left: 200px; top: 360px; width: 1520px; font: 600 64px/1.25 var(--font-display); letter-spacing: -0.01em; }
+    #c1-phr-a { color: var(--accent); }
+    #c1-phr-b { display: block; margin-top: 40px; font: 400 48px/1.3 var(--font-text); color: var(--ink-muted); }
+
+    #c1-questions .q { font-size: 40px; margin-bottom: 30px; }
+  </style>
+
+  <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c1-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">09:00</div>
+      <div class="chapter-title">Roles, names and focus</div>
+    </div>
+
+    <!-- c1-1: 09:00, search results with a pagination bar -->
+    <div id="c1-desk" class="clip world sunk" data-start="3" data-duration="7.28">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div id="c1-results" data-hold>
+            <div class="c1-res-h">Search results · page 2</div>
+            <div class="c1-row"><span><b>Persuasion</b></span><span>Jane Austen</span><span>1817</span></div>
+            <div class="c1-row"><span><b>Walden</b></span><span>Henry David Thoreau</span><span>1854</span></div>
+            <div class="c1-row"><span><b>Cranford</b></span><span>Elizabeth Gaskell</span><span>1853</span></div>
+            <div class="c1-row"><span><b>Ivanhoe</b></span><span>Walter Scott</span><span>1819</span></div>
+            <div class="c1-row"><span><b>Middlemarch</b></span><span>George Eliot</span><span>1871</span></div>
+          </div>
+          <div id="c1-pager" class="c1-pager" data-hold><span>Previous page</span><span>Page 1</span><span class="cur">Page 2</span><span>Page 3</span><span>Next page</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-2: role, name and states beside the desk app -->
+    <div id="c1-model" class="clip world sunk" data-start="10.28" data-duration="9.57">
+      <div class="app c1-app-narrow">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body" data-hold>
+          <div class="c1-res-h">Search results · page 2</div>
+          <div class="c1-row"><span><b>Persuasion</b></span><span>Jane Austen</span><span>1817</span></div>
+          <div class="c1-row"><span><b>Walden</b></span><span>Henry David Thoreau</span><span>1854</span></div>
+          <div class="c1-row"><span><b>Cranford</b></span><span>Elizabeth Gaskell</span><span>1853</span></div>
+          <div class="c1-row"><span><b>Ivanhoe</b></span><span>Walter Scott</span><span>1819</span></div>
+          <div class="c1-pager"><span>Page 1</span><span class="cur">Page 2</span><span>Page 3</span></div>
+        </div>
+      </div>
+      <div id="c1-terms" data-hold>
+        <div id="c1-t1" class="c1-term"><b>role</b><span>(what it is)</span></div>
+        <div id="c1-t2" class="c1-term"><b>name</b><span>(what it is called)</span></div>
+        <div id="c1-t3" class="c1-term"><b>states</b><span>(expanded, current, invalid)</span></div>
+      </div>
+      <div id="c1-looks" data-hold>An element that looks like a link but is a <code>span</code> with a click handler is, in the tree, a piece of text.</div>
+    </div>
+
+    <!-- c1-3: the pagination bar as a screen reader meets it -->
+    <div id="c1-tree" class="clip world" data-start="19.85" data-duration="4.6">
+      <div class="c1-tree" data-hold>
+        <svg class="c1-edges" width="1920" height="1080" style="position: absolute; left: 0; top: 0">
+          <path d="M 400 230 V 320 H 640" />
+          <path d="M 400 320 V 440 H 640" />
+          <path d="M 400 440 V 560 H 640" />
+          <path d="M 400 560 V 680 H 640" />
+          <path d="M 400 680 V 800 H 640" />
+        </svg>
+        <div class="node" style="left: 300px; top: 130px">navigation "Search results pages"</div>
+        <div class="node" style="left: 640px; top: 270px">link "Previous page"</div>
+        <div class="node" style="left: 640px; top: 390px">link "Page 1"</div>
+        <div class="node hot" style="left: 640px; top: 510px">link "Page 2"<span class="badge">[current page]</span></div>
+        <div class="node" style="left: 640px; top: 630px">link "Page 3"</div>
+        <div class="node" style="left: 640px; top: 750px">link "Next page"</div>
+      </div>
+    </div>
+
+    <!-- c1-3 / c1-4: the template cut in whole; band on <nav>, then on the aria-current line -->
+    <div id="c1-tpl" class="clip world" data-start="24.45" data-duration="12.16">
+      <div class="code c1-code" style="top: 160px" data-hold>
+        <span id="c1-l-nav" class="ln">&lt;nav aria-label=<span class="s">"Search results pages"</span>&gt;</span>
+        <span class="ln">  <span class="k">@if</span> (page() &gt; <span class="n">1</span>) {</span>
+        <span class="ln">    &lt;a [routerLink]=<span class="s">"[]"</span> [queryParams]=<span class="s">"{ page: page() - 1 }"</span>&gt;</span>
+        <span class="ln">      &lt;svg aria-hidden=<span class="s">"true"</span>&gt;...&lt;/svg&gt; Previous page</span>
+        <span class="ln">    &lt;/a&gt;</span>
+        <span class="ln">  }</span>
+        <span class="ln">  <span class="k">@for</span> (n of pages(); track n) {</span>
+        <span id="c1-l-cur" class="ln">    &lt;a [routerLink]=<span class="s">"[]"</span> [queryParams]=<span class="s">"{ page: n }"</span> [attr.aria-current]=<span class="s">"n === page() ? 'page' : null"</span>&gt;</span>
+        <span class="ln">      Page {{ n }}</span>
+        <span class="ln">    &lt;/a&gt;</span>
+        <span class="ln">  }</span>
+        <span class="ln">  ...</span>
+        <span class="ln">&lt;/nav&gt;</span>
+      </div>
+    </div>
+
+    <!-- c1-5: native elements carry the contract -->
+    <div id="c1-native" class="clip world" data-start="36.61" data-duration="9.46">
+      <div id="c1-native-h" class="c1-h" data-hold>Native elements carry the contract</div>
+      <div id="c1-native-a" class="c1-p" style="top: 270px" data-hold>A native element brings its role, keyboard behaviour and focusability with it. A link is in the Tab order, activates with Enter, and offers "open in new tab". A button activates with Enter and Space and respects <code>disabled</code>.</div>
+      <div id="c1-native-b" class="c1-p" style="top: 600px" data-hold>Recreating any of that on a generic element means adding a role, a <code>tabindex</code>, key handlers, and the details people forget (Space scrolls the page unless you prevent it; a disabled state must also stop the handler).</div>
+    </div>
+
+    <!-- c1-6: link or button, the table cut in whole -->
+    <div id="c1-choose" class="clip world" data-start="46.07" data-duration="7.09">
+      <div class="c1-tbl" data-hold>
+        <div class="c1-tr c1-th"><span>If activating it...</span><span>Use</span><span>Because</span></div>
+        <div class="c1-tr"><span>goes somewhere (a URL changes)</span><span><code>&lt;a href&gt;</code> / <code>routerLink</code></span><span>Users expect link behaviour: middle click, copy link, history.</span></div>
+        <div class="c1-tr"><span>does something on this page</span><span><code>&lt;button type="button"&gt;</code></span><span>Users expect Space to work and no navigation.</span></div>
+      </div>
+    </div>
+
+    <!-- c1-7: role="button" and role="link" -->
+    <div id="c1-roles" class="clip world" data-start="53.16" data-duration="5.96">
+      <div id="c1-roles-h" class="c1-h" data-hold>Do not reach for ARIA roles to fix a wrong element.</div>
+      <div id="c1-r1" class="c1-chip" style="left: 200px; top: 420px" data-hold>role="button"</div>
+      <div id="c1-r2" class="c1-chip" style="left: 200px; top: 560px" data-hold>role="link"</div>
+    </div>
+
+    <!-- c1-8: where names come from, one item at a time; placeholder as a label -->
+    <div id="c1-names" class="clip world" data-start="59.12" data-duration="11.15">
+      <div class="c1-h" data-hold>Where names come from</div>
+      <div class="c1-ol" data-hold>
+        <div id="c1-n1" class="c1-oli"><b>1.</b><span><code>aria-labelledby</code> (points at other elements by id),</span></div>
+        <div id="c1-n2" class="c1-oli"><b>2.</b><span><code>aria-label</code>,</span></div>
+        <div id="c1-n3" class="c1-oli"><b>3.</b><span>the native labelling mechanism: <code>&lt;label for&gt;</code> or a wrapping <code>&lt;label&gt;</code> for inputs, <code>alt</code> for images, <code>&lt;legend&gt;</code> for fieldsets, <code>&lt;caption&gt;</code> for tables,</span></div>
+        <div id="c1-n4" class="c1-oli"><b>4.</b><span>the element's text content, for roles such as link and button,</span></div>
+        <div id="c1-n5" class="c1-oli"><b>5.</b><span><code>title</code>, as a last resort.</span></div>
+      </div>
+      <div id="c1-ph" class="c1-chip" style="left: 200px; top: 850px" data-hold>placeholder is not a label</div>
+    </div>
+
+    <!-- c1-9: 2.5.3 Label in Name -->
+    <div id="c1-lin" class="clip world" data-start="70.27" data-duration="4.95">
+      <div id="c1-lin-chip" class="c1-chip txt" style="left: 200px; top: 460px; padding: 32px 48px; font-size: 64px" data-hold>2.5.3 Label in Name</div>
+    </div>
+
+    <!-- c1-9: the desk with a screen reader's list of links over it -->
+    <div id="c1-links" class="clip world sunk" data-start="75.22" data-duration="4.08">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-res-h">Search results · page 2</div>
+          <div class="c1-row"><span><b>Persuasion</b></span><span>Jane Austen</span><span>1817</span></div>
+          <div class="c1-row"><span><b>Walden</b></span><span>Henry David Thoreau</span><span>1854</span></div>
+          <div class="c1-row"><span><b>Cranford</b></span><span>Elizabeth Gaskell</span><span>1853</span></div>
+          <div class="c1-row"><span><b>Ivanhoe</b></span><span>Walter Scott</span><span>1819</span></div>
+          <div class="c1-row"><span><b>Middlemarch</b></span><span>George Eliot</span><span>1871</span></div>
+          <div class="c1-pager"><span>Previous page</span><span>Page 1</span><span class="cur">Page 2</span><span>Page 3</span><span>Next page</span></div>
+        </div>
+      </div>
+      <div id="c1-rotor" data-hold data-layout-allow-overlap>
+        <div class="label">Links</div>
+        <div class="ri">Persuasion</div>
+        <div class="ri">Walden</div>
+        <div class="ri">Cranford</div>
+        <div class="ri">Ivanhoe</div>
+        <div class="ri">Middlemarch</div>
+        <div class="ri">Previous page</div>
+        <div class="ri">Page 1</div>
+        <div class="ri sel">Page 2</div>
+        <div class="ri">Page 3</div>
+        <div class="ri">Next page</div>
+      </div>
+    </div>
+
+    <!-- c1-10: the book cover link, band on [alt]="book.title"; then the decorative cases -->
+    <div id="c1-cover" class="clip world" data-start="79.3" data-duration="9.4">
+      <div class="code c1-code big" style="top: 220px" data-hold>
+        <span class="ln">&lt;a [routerLink]=<span class="s">"['/books', book.id]"</span>&gt;</span>
+        <span class="ln">  &lt;img [src]=<span class="s">"book.coverUrl"</span> <span id="c1-alt" class="tok">[alt]=<span class="s">"book.title"</span></span> /&gt;</span>
+        <span class="ln">&lt;/a&gt;</span>
+      </div>
+      <div id="c1-deco1" class="c1-chip" style="left: 200px; top: 620px" data-hold>alt=""</div>
+      <div id="c1-deco2" class="c1-chip" style="left: 200px; top: 760px" data-hold>aria-hidden="true" (icon beside real text)</div>
+    </div>
+
+    <!-- c1-11: focus visible and on screen; the scroll-padding-top code -->
+    <div id="c1-focus" class="clip world" data-start="88.7" data-duration="10.1">
+      <div class="c1-h" data-hold>Focus must be visible, and on screen</div>
+      <div id="c1-f1" class="c1-chip txt" style="left: 200px; top: 290px" data-hold>2.4.7 Focus Visible</div>
+      <div id="c1-f2" class="c1-chip txt" style="left: 200px; top: 420px" data-hold>2.4.11 Focus Not Obscured (Minimum)</div>
+      <div id="c1-css" class="code c1-code big" style="top: 600px" data-hold>
+        <span class="ln">html {</span>
+        <span class="ln">  scroll-padding-top: <span class="n">72px</span>; <span class="c">&#47;* the sticky header's height plus a margin *&#47;</span></span>
+        <span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c1-12: :focus-visible -->
+    <div id="c1-fv" class="clip world" data-start="98.8" data-duration="7.39">
+      <div id="c1-fv-chip" class="c1-chip" style="left: 200px; top: 300px; padding: 32px 48px; font-size: 64px" data-hold>:focus-visible</div>
+      <div id="c1-fv-p" class="c1-p" style="top: 560px" data-hold>Removing the default without a replacement is the change to look for in a diff.</div>
+    </div>
+
+    <!-- c1-13: contrast, 4.5:1 and 3:1 -->
+    <div id="c1-contrast" class="clip world" data-start="106.19" data-duration="10.16">
+      <div class="c1-h" data-hold>Contrast is an AA requirement</div>
+      <div id="c1-c45" class="c1-chip txt" style="left: 200px; top: 330px; padding: 32px 48px; font-size: 80px" data-hold>4.5:1</div>
+      <div id="c1-c3" class="c1-chip txt" style="left: 640px; top: 330px; padding: 32px 48px; font-size: 80px" data-hold>3:1</div>
+      <div id="c1-crit" class="c1-p" style="top: 580px" data-hold>1.4.3 Contrast (Minimum) · 1.4.11 Non-text Contrast<br />Both are AA.</div>
+    </div>
+
+    <!-- c1-14 / c1-15: the two graded examples -->
+    <div id="c1-grade" class="clip world" data-start="116.35" data-duration="19.07">
+      <div class="c1-h" data-hold>How bad is it?</div>
+      <div id="c1-ex1" class="c1-ex" data-hold><b>A library card login field that blocks pasting.</b> Who: people who use a password manager, which includes many people with memory or learning disabilities. Task: logging in, the door to everything else. Workaround: typing a 14-digit number from memory, which is exactly the test 3.3.8 Accessible Authentication (AA) forbids. Grade: <b>blocking</b>.</div>
+      <div id="c1-g1" class="c1-chip txt hot" style="left: 200px; top: 800px" data-hold>blocking</div>
+      <div id="c1-ex2" class="c1-ex" data-hold><b>Due dates in light grey, at 3:1 against white.</b> Who: low-vision users, and anyone on a phone in sunlight. Task: knowing when a book is due. Workaround: zoom or a Contrast theme helps some; the date also appears in the reminder email. It fails 1.4.3 (AA). Grade: <b>should-fix</b>. If the date were very faint and shown nowhere else, it would be blocking.</div>
+      <div id="c1-g2" class="c1-chip txt" style="left: 200px; top: 840px" data-hold>should-fix</div>
+    </div>
+
+    <!-- c1-16: name the person and the task -->
+    <div id="c1-phrases" class="clip world" data-start="135.42" data-duration="3.76">
+      <div id="c1-phr" data-hold><span id="c1-phr-a">"a keyboard user cannot open a search result"</span><span id="c1-phr-b">lands better than "missing role".</span></div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c1-questions" class="clip world note" data-start="139.18" data-duration="34.7">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c1-q1" class="q">Put the mouse away. Can every action that has a click handler be done with Tab, Enter, Space or the arrow keys?</div>
+        <div id="c1-q2" class="q">Open the accessibility pane for this component. Does each node's role and name match what a sighted user sees?</div>
+        <div id="c1-q3" class="q">A toolbar button shows only the text "More". What does a voice-control user say to press it, and what does a screen reader user hear in the list of buttons?</div>
+        <div id="c1-q4" class="q">Grade a tooltip that appears only on mouse hover and holds the only explanation of a late fee.</div>
+        <div id="c1-q5" class="q">After every Tab, can you see where the focus is, and is the focused element at least partly on screen?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c1-pause" class="clip world" data-start="173.88" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c1-pause-2" class="pause-2" data-hold>Now do exercise 01.</div>
+    </div>
+
+    <audio id="c1-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="20" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-bed2" class="clip" src="assets/music/bed.mp3" data-start="139.18" data-duration="34.7" data-media-start="110" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c1-1" class="clip" src="assets/vo/c1-1.wav" data-start="3.0" data-duration="6.933" data-volume="1"></audio>
+    <audio id="vo-c1-2" class="clip" src="assets/vo/c1-2.wav" data-start="10.28" data-duration="9.216" data-volume="1"></audio>
+    <audio id="vo-c1-3" class="clip" src="assets/vo/c1-3.wav" data-start="19.85" data-duration="8.256" data-volume="1"></audio>
+    <audio id="vo-c1-4" class="clip" src="assets/vo/c1-4.wav" data-start="28.45" data-duration="7.808" data-volume="1"></audio>
+    <audio id="vo-c1-5" class="clip" src="assets/vo/c1-5.wav" data-start="36.61" data-duration="9.109" data-volume="1"></audio>
+    <audio id="vo-c1-6" class="clip" src="assets/vo/c1-6.wav" data-start="46.07" data-duration="6.741" data-volume="1"></audio>
+    <audio id="vo-c1-7" class="clip" src="assets/vo/c1-7.wav" data-start="53.16" data-duration="5.611" data-volume="1"></audio>
+    <audio id="vo-c1-8" class="clip" src="assets/vo/c1-8.wav" data-start="59.12" data-duration="10.795" data-volume="1"></audio>
+    <audio id="vo-c1-9" class="clip" src="assets/vo/c1-9.wav" data-start="70.27" data-duration="8.683" data-volume="1"></audio>
+    <audio id="vo-c1-10" class="clip" src="assets/vo/c1-10.wav" data-start="79.3" data-duration="9.045" data-volume="1"></audio>
+    <audio id="vo-c1-11" class="clip" src="assets/vo/c1-11.wav" data-start="88.7" data-duration="9.749" data-volume="1"></audio>
+    <audio id="vo-c1-12" class="clip" src="assets/vo/c1-12.wav" data-start="98.8" data-duration="7.04" data-volume="1"></audio>
+    <audio id="vo-c1-13" class="clip" src="assets/vo/c1-13.wav" data-start="106.19" data-duration="9.813" data-volume="1"></audio>
+    <audio id="vo-c1-14" class="clip" src="assets/vo/c1-14.wav" data-start="116.35" data-duration="11.755" data-volume="1"></audio>
+    <audio id="vo-c1-15" class="clip" src="assets/vo/c1-15.wav" data-start="128.45" data-duration="6.613" data-volume="1"></audio>
+    <audio id="vo-c1-16" class="clip" src="assets/vo/c1-16.wav" data-start="135.42" data-duration="3.413" data-volume="1"></audio>
+    <audio id="vo-c1-end" class="clip" src="assets/vo/c1-end.wav" data-start="139.18" data-duration="2.133" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: CLEAR, duration: 0.4 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c1-1: the desk, then the pagination bar on page 2
+    fadeIn("#c1-results", 3.1, 0.5);
+    fadeIn("#c1-pager", 4.2, 0.5);
+
+    // c1-2: role, name, states on their words; then the span that looks like a link
+    fadeIn("#c1-t1", 11.1);
+    fadeIn("#c1-t2", 11.65);
+    fadeIn("#c1-t3", 12.35);
+    fadeIn("#c1-looks", 14.4);
+
+    // c1-3: the tree on its own, then the template cut in whole
+
+    // c1-4: band on <nav>, then on the aria-current line
+    band("#c1-l-nav", 28.55);
+    unband("#c1-l-nav", 34.3);
+    band("#c1-l-cur", 34.3);
+
+    // c1-5: the heading, then what a native element brings, then what rebuilding costs
+    fadeIn("#c1-native-a", 36.8);
+    fadeIn("#c1-native-b", 39.8);
+
+    // c1-6: table cut in whole
+
+    // c1-7: the two roles
+    fadeIn("#c1-r1", 54.2);
+    fadeIn("#c1-r2", 54.35);
+
+    // c1-8: the five sources as they are named, then placeholder
+    fadeIn("#c1-n1", 61.8);
+    fadeIn("#c1-n2", 63.0);
+    fadeIn("#c1-n3", 63.8);
+    fadeIn("#c1-n4", 65.0);
+    fadeIn("#c1-n5", 65.9);
+    fadeIn("#c1-ph", 66.7);
+
+    // c1-9: the criterion, then the list of links over the desk
+    fadeIn("#c1-rotor", 75.3, 0.5);
+
+    // c1-10: the band on [alt], then the decorative cases
+    band("#c1-alt", 81.2);
+    fadeIn("#c1-deco1", 82.9);
+    fadeIn("#c1-deco2", 85.6);
+
+    // c1-11: the two criteria, then the CSS
+    fadeIn("#c1-f1", 89.6);
+    fadeIn("#c1-f2", 92.3);
+    fadeIn("#c1-css", 95.2);
+
+    // c1-12: the selector, then what to look for in a diff
+    fadeIn("#c1-fv-p", 101.1);
+
+    // c1-13: 4.5:1, 3:1, then the criteria
+    fadeIn("#c1-c45", 107.4);
+    fadeIn("#c1-c3", 109.8);
+    fadeIn("#c1-crit", 111.4);
+
+    // c1-14: the first example, blocking as the accent; c1-15: the second, should-fix
+    fadeIn("#c1-ex1", 116.6);
+    fadeIn("#c1-g1", 127.2);
+    fadeOut("#c1-ex1", 128.3, 0.3);
+    fadeOut("#c1-g1", 128.3, 0.3);
+    fadeIn("#c1-ex2", 128.6);
+    fadeIn("#c1-g2", 134.3);
+
+    // c1-16: the phrase that names the person, then the one that does not
+    fadeIn("#c1-phr-b", 137.0);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c1-q1", "#c1-q2", "#c1-q3", "#c1-q4", "#c1-q5"].forEach((q, i) => fadeIn(q, 139.4 + i * 0.6));
+    fadeIn("#c1-pause-2", 174.3);
+
+    window.__timelines["c1"] = tl;
+  </script>
+</template>

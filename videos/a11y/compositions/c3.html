@@ -1,0 +1,310 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    code { font-family: var(--font-code); font-size: 0.92em; white-space: nowrap; }
+    .c3-svg { position: absolute; left: 0; top: 0; }
+    .c3-h { position: absolute; left: 200px; top: 120px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c3-p { position: absolute; left: 200px; width: 1520px; font: 400 42px/1.5 var(--font-text); }
+    .c3-p code { font-size: 38px; }
+    .c3-chip { position: absolute; box-sizing: border-box; padding: 22px 36px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 40px/1 var(--font-text); white-space: nowrap; }
+    .c3-chip.mono { font-family: var(--font-code); }
+    .c3-chip.big { font-size: 56px; padding: 26px 44px; }
+
+    .c3-nav { position: absolute; left: 40px; top: 40px; width: 300px; }
+    .c3-nav div { height: 72px; padding: 0 20px; display: flex; align-items: center; border-radius: 8px; font: 400 34px/1 var(--font-text); color: var(--ink-muted); }
+    .c3-nav div.on { background: var(--paper-sunk); color: var(--ink); font-weight: 700; }
+    .c3-panel { position: absolute; left: 380px; right: 40px; top: 40px; }
+    .c3-panel .label { margin-bottom: 14px; }
+    .c3-row { height: 92px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 400 36px/1 var(--font-text); }
+    .c3-row span { margin-left: auto; font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+
+    .c3n { box-sizing: border-box; padding: 22px 28px; text-align: center; font-size: 32px; line-height: 1; }
+    .c3n .badge { font-size: 28px; }
+    .node.c3-hot { border-color: var(--accent); }
+    #c3-exist { position: absolute; left: 200px; top: 700px; width: 1520px; font: 400 40px/1.45 var(--font-text); }
+    #c3-exist code { font-size: 36px; }
+
+    #c3-cal { position: absolute; left: 380px; right: 40px; top: 40px; }
+    .c3-wk, .c3-days { display: grid; grid-template-columns: repeat(7, 160px); gap: 10px; }
+    .c3-wk div { padding: 8px 0 14px; font: 700 30px/1 var(--font-text); color: var(--ink-muted); text-align: center; }
+    .c3-days div { height: 112px; box-sizing: border-box; padding: 14px 18px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); font: 400 34px/1 var(--font-text); font-variant-numeric: tabular-nums; }
+    .c3-days div.out { border-color: transparent; background: transparent; }
+    .c3-days div.od { background: var(--caution-soft); color: var(--caution); border-color: var(--caution-soft); }
+
+    .c3-list { position: absolute; left: 200px; top: 300px; width: 1520px; }
+    .c3-item { padding: 10px 24px; margin-bottom: 14px; border-radius: 8px; font: 400 42px/1.4 var(--font-text); display: grid; grid-template-columns: 56px 1fr; }
+    .c3-item > b { color: var(--ink-muted); }
+
+    .c3-grade-h { position: absolute; left: 200px; top: 130px; font: 700 34px/1 var(--font-text); color: var(--ink-muted); }
+    .c3-grade { position: absolute; left: 200px; top: 220px; width: 1520px; font: 400 42px/1.5 var(--font-text); }
+
+    .q { font-size: 40px; margin-bottom: 34px; }
+
+    #c3-after-title { position: absolute; left: 200px; top: 130px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+    #c3-after-p { position: absolute; left: 200px; top: 300px; width: 1520px; font: 400 42px/1.5 var(--font-text); }
+    #c3-after-p span { border-radius: 4px; }
+    #c3-after-p code { font-size: 38px; }
+    #c3-closed { position: absolute; left: 80px; top: 280px; font: 600 88px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c3-lights { position: absolute; inset: 0; background: var(--ink); }
+  </style>
+
+  <div id="root" data-composition-id="c3" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c3-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">14:00</div>
+      <div class="chapter-title">Changes without a page load</div>
+    </div>
+
+    <!-- c3-1: 14:00, the desk at rest -->
+    <div id="c3-desk" class="clip world sunk" data-start="3" data-duration="6.98">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">14:00</span></div>
+        <div class="app-body">
+          <div class="c3-nav">
+            <div>Members</div>
+            <div class="on">Catalogue</div>
+            <div>Shelves</div>
+            <div>Returns</div>
+          </div>
+          <div id="c3-shelf" class="c3-panel" data-hold>
+            <div class="label">Catalogue · recently returned</div>
+            <div class="c3-row">Kindred<span>Octavia E. Butler</span></div>
+            <div class="c3-row">The Dispossessed<span>Ursula K. Le Guin</span></div>
+            <div class="c3-row">Middlemarch<span>George Eliot</span></div>
+            <div class="c3-row">Beloved<span>Toni Morrison</span></div>
+            <div class="c3-row">Pale Fire<span>Vladimir Nabokov</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3-2: the two questions a page load answers, then what the app now owes -->
+    <div id="c3-where" class="clip world" data-start="9.98" data-duration="9.12">
+      <div class="c3-h" style="top: 200px; font-size: 80px" data-hold>what is this, and where am I?</div>
+      <div id="c3-where-p" class="c3-p" style="top: 460px" data-hold>Ask, for any change that replaces the main content of a single-page app: what did the browser do here that the app now has to do itself?</div>
+    </div>
+
+    <!-- c3-3: TitleStrategy as a label, then what to check -->
+    <div id="c3-title" class="clip world" data-start="19.1" data-duration="10.55">
+      <div id="c3-ts" class="c3-chip mono big" style="left: 200px; top: 200px" data-hold>TitleStrategy</div>
+      <div id="c3-ts-p" class="c3-p" style="top: 440px" data-hold>Find which strategy the app uses, and what it does for each route, before you decide whether titles are right.</div>
+    </div>
+
+    <!-- c3-4: the form "Write a review" tree, then the existence rule; c3-5: the status node as the accent -->
+    <div id="c3-form" class="clip world sunk" data-start="29.65" data-duration="16.25">
+      <svg class="c3-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke-width="4">
+        <path id="c3-f-edges" stroke="#c4b9a6" d="M960 276 V350 H344 V420 M1000 350 V420 M960 350 H1615 V420" />
+      </svg>
+      <div id="c3-f0" class="node c3n" style="left: 716px; top: 200px; width: 488px">form "Write a review"</div>
+      <div id="c3-f1" class="node c3n" style="left: 110px; top: 420px; width: 468px">textbox "Your review"</div>
+      <div id="c3-f2" class="node c3n" style="left: 618px; top: 420px; width: 764px">status "Draft saved at 10:42"<span class="badge">[polite]</span></div>
+      <div id="c3-f3" class="node c3n" style="left: 1422px; top: 420px; width: 387px" data-hold>button "Publish"</div>
+      <div id="c3-exist" data-hold>A <code>status</code> region must exist before its text changes, because the screen reader starts watching it when it appears.</div>
+    </div>
+
+    <!-- c3-6: live regions in depth, then the question to ask -->
+    <div id="c3-depth" class="clip world" data-start="45.9" data-duration="8.42">
+      <div class="c3-h" data-hold>Live regions, in depth</div>
+      <div id="c3-depth-p" class="c3-p" style="top: 330px" data-hold>Before adding one, ask what is worth announcing: what does the user need to know, in how many words, and how often?</div>
+    </div>
+
+    <!-- c3-7: the heading, then the due-date calendar with overdue days only in red -->
+    <div id="c3-colour" class="clip world" data-start="54.32" data-duration="3.4">
+      <div class="c3-h" data-hold>Colour cannot be the only channel</div>
+      <div id="c3-141" class="c3-chip" style="left: 200px; top: 330px" data-hold>1.4.1 Use of Color (A)</div>
+    </div>
+    <div id="c3-calendar" class="clip world sunk" data-start="57.72" data-duration="6.7">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">14:00</span></div>
+        <div class="app-body">
+          <div class="c3-nav">
+            <div class="on">Members</div>
+            <div>Catalogue</div>
+            <div>Shelves</div>
+            <div>Returns</div>
+          </div>
+          <div id="c3-cal" data-hold>
+            <div class="label" style="margin-bottom: 12px">Due dates · November</div>
+            <div class="c3-wk"><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div></div>
+            <div class="c3-days">
+              <div class="out"></div><div class="out"></div><div class="out"></div><div class="out"></div><div class="out"></div><div>1</div><div>2</div>
+              <div class="od">3</div><div>4</div><div class="od">5</div><div>6</div><div>7</div><div>8</div><div>9</div>
+              <div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div>
+              <div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div>
+              <div>24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3-8: the four channels one by one, then how to weigh them -->
+    <div id="c3-channels" class="clip world" data-start="64.42" data-duration="9.77">
+      <div class="c3-h" style="font-size: 56px" data-hold>The second channel can be:</div>
+      <div class="c3-list" data-hold>
+        <div id="c3-ch1" class="c3-item"><b>–</b><span>text, visible or in the accessible name;</span></div>
+        <div id="c3-ch2" class="c3-item"><b>–</b><span>shape, such as an icon with a distinct outline;</span></div>
+        <div id="c3-ch3" class="c3-item"><b>–</b><span>pattern, such as hatching in a chart;</span></div>
+        <div id="c3-ch4" class="c3-item"><b>–</b><span>position, such as a separate "Overdue" group.</span></div>
+      </div>
+      <div id="c3-weigh" class="c3-p" style="top: 720px; font-size: 38px; color: var(--ink-muted)" data-hold>Which one fits depends on the layout. Weigh them for a dense table where every cell is small, and for a chart with five series: what fits in the space, what survives a Contrast theme, and what a screen reader can read.</div>
+    </div>
+
+    <!-- c3-9: the first graded example, blocking as the accent -->
+    <div id="c3-grade1" class="clip world" data-start="74.19" data-duration="10.0">
+      <div class="c3-grade-h">How bad is it?</div>
+      <div class="c3-grade" data-hold><b>An infinite-scroll catalogue whose footer, with the only "Contact a librarian" link, can never be reached.</b> Who: keyboard users, and anyone who needs help, including people with cognitive disabilities. Task: getting help. Workaround: the help link is on other pages, in a different place, which also fails 3.2.6 Consistent Help (A). Grade: <b>blocking</b> on the catalogue, where people most need help finding books.</div>
+      <div id="c3-blocking" class="c3-chip" style="left: 200px; top: 820px" data-hold>blocking</div>
+    </div>
+
+    <!-- c3-10: the second graded example, should-fix -->
+    <div id="c3-grade2" class="clip world" data-start="84.19" data-duration="9.26">
+      <div class="c3-grade-h">How bad is it?</div>
+      <div class="c3-grade" data-hold><b>A banner of new arrivals that rotates every five seconds with no pause button.</b> Who: screen reader users (the content changes under them), people with attention disorders, low-vision users reading slowly. Task: browsing new books, which is optional. Workaround: the "New arrivals" page lists the same books. It fails 2.2.2 Pause, Stop, Hide (A). Grade: <b>should-fix</b>, with the workaround in the comment.</div>
+      <div id="c3-shouldfix" class="c3-chip" style="left: 200px; top: 820px" data-hold>should-fix</div>
+    </div>
+
+    <!-- c3-11: the desk at rest -->
+    <div id="c3-rest" class="clip world sunk" data-start="93.45" data-duration="4.68">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">14:00</span></div>
+        <div class="app-body">
+          <div class="c3-nav">
+            <div>Members</div>
+            <div class="on">Catalogue</div>
+            <div>Shelves</div>
+            <div>Returns</div>
+          </div>
+          <div class="c3-panel" data-hold>
+            <div class="label">Catalogue · recently returned</div>
+            <div class="c3-row">Kindred<span>Octavia E. Butler</span></div>
+            <div class="c3-row">The Dispossessed<span>Ursula K. Le Guin</span></div>
+            <div class="c3-row">Middlemarch<span>George Eliot</span></div>
+            <div class="c3-row">Beloved<span>Toni Morrison</span></div>
+            <div class="c3-row">Pale Fire<span>Vladimir Nabokov</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c3-questions" class="clip world note" data-start="98.13" data-duration="26.6">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c3-q1" class="q">For each change in the exercise that replaces content: what would a page load have done here, and which of those things does the code do?</div>
+        <div id="c3-q2" class="q">A search result count updates while the user types. Announce it on every keystroke, after a pause, or never? Why?</div>
+        <div id="c3-q3" class="q">Grade a chart whose series differ only by colour, first in a report read once a year, then in a dashboard used daily.</div>
+        <div id="c3-q4" class="q">Take a grayscale screenshot and turn off the screen. Is any information lost?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c3-pause" class="clip world" data-start="124.73" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c3-pause-2" class="pause-2" data-hold>Now do exercise 03.</div>
+    </div>
+
+    <!-- c3-after, c3-afterb: the "After the lesson" card, its last sentence banded -->
+    <div id="c3-after" class="clip world" data-start="128.23" data-duration="18.08">
+      <div id="c3-after-title">After the lesson</div>
+      <div id="c3-after-p" data-hold><span id="c3-a1">When you finish an exercise, read its <code>SOLUTION.md</code> on the <code>solutions</code> branch.</span> <span id="c3-a2">Compare its severity table with yours before you compare fixes: disagreeing about whether something blocks is the most useful disagreement to have.</span> <span id="c3-a3">Then write the PR comment in two or three sentences, each starting with its label and naming the person who gets stuck and the task they cannot finish.</span></div>
+    </div>
+
+    <!-- c3-close: 18:00, the desk closes, lights down to the end -->
+    <div id="c3-close" class="clip world" data-start="146.31" data-duration="5.95">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock" style="color: var(--accent)">18:00</span></div>
+        <div class="app-body">
+          <div id="c3-closed">Opens again at 09:00</div>
+        </div>
+      </div>
+      <div id="c3-lights" data-hold></div>
+    </div>
+
+    <audio id="c3-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="70" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c3-bed2" class="clip" src="assets/music/bed.mp3" data-start="98.13" data-duration="26.6" data-media-start="130" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c3-1" class="clip" src="assets/vo/c3-1.wav" data-start="3.0" data-duration="6.635" data-volume="1"></audio>
+    <audio id="vo-c3-2" class="clip" src="assets/vo/c3-2.wav" data-start="9.98" data-duration="8.768" data-volume="1"></audio>
+    <audio id="vo-c3-3" class="clip" src="assets/vo/c3-3.wav" data-start="19.1" data-duration="10.197" data-volume="1"></audio>
+    <audio id="vo-c3-4" class="clip" src="assets/vo/c3-4.wav" data-start="29.65" data-duration="7.744" data-volume="1"></audio>
+    <audio id="vo-c3-5" class="clip" src="assets/vo/c3-5.wav" data-start="37.74" data-duration="7.808" data-volume="1"></audio>
+    <audio id="vo-c3-6" class="clip" src="assets/vo/c3-6.wav" data-start="45.9" data-duration="8.064" data-volume="1"></audio>
+    <audio id="vo-c3-7" class="clip" src="assets/vo/c3-7.wav" data-start="54.32" data-duration="9.749" data-volume="1"></audio>
+    <audio id="vo-c3-8" class="clip" src="assets/vo/c3-8.wav" data-start="64.42" data-duration="9.429" data-volume="1"></audio>
+    <audio id="vo-c3-9" class="clip" src="assets/vo/c3-9.wav" data-start="74.19" data-duration="9.643" data-volume="1"></audio>
+    <audio id="vo-c3-10" class="clip" src="assets/vo/c3-10.wav" data-start="84.19" data-duration="8.917" data-volume="1"></audio>
+    <audio id="vo-c3-11" class="clip" src="assets/vo/c3-11.wav" data-start="93.45" data-duration="4.331" data-volume="1"></audio>
+    <audio id="vo-c3-end" class="clip" src="assets/vo/c3-end.wav" data-start="98.13" data-duration="2.091" data-volume="1"></audio>
+    <audio id="vo-c3-after" class="clip" src="assets/vo/c3-after.wav" data-start="128.58" data-duration="9.835" data-volume="1"></audio>
+    <audio id="vo-c3-afterb" class="clip" src="assets/vo/c3-afterb.wav" data-start="138.77" data-duration="7.189" data-volume="1"></audio>
+    <audio id="vo-c3-close" class="clip" src="assets/vo/c3-close.wav" data-start="146.31" data-duration="4.949" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const RULE = "#c4b9a6";
+    const INK = "#1d1b18";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const accentOn = (sel, at) => tl.fromTo(sel, { borderColor: RULE, color: INK }, { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c3-1: the desk at rest
+    fadeIn("#c3-shelf", 3.1, 0.5);
+
+    // c3-2: the question, then what the app now owes
+    fadeIn("#c3-where-p", 14.6, 0.5);
+
+    // c3-3: the label, then what to check
+    fadeIn("#c3-ts-p", 24.4, 0.5);
+
+    // c3-4: the tree, then the existence rule
+    fadeIn("#c3-f0, #c3-f1, #c3-f2, #c3-f3, #c3-f-edges", 29.75, 0.5);
+    fadeIn("#c3-exist", 33.6, 0.5);
+
+    // c3-5: the status node takes the accent
+    tl.fromTo("#c3-f2", { borderColor: RULE }, { borderColor: ACCENT, duration: 0.3 }, 38.4);
+
+    // c3-6: the heading, then the question
+    fadeIn("#c3-depth-p", 48.6, 0.5);
+
+    // c3-7: the success criterion; then a hard cut to the calendar
+    fadeIn("#c3-141", 55.4, 0.4);
+
+    // c3-8: each channel as it is named, then how to weigh them
+    fadeIn("#c3-ch1", 65.6, 0.4);
+    fadeIn("#c3-ch2", 66.2, 0.4);
+    fadeIn("#c3-ch3", 66.8, 0.4);
+    fadeIn("#c3-ch4", 67.5, 0.4);
+    fadeIn("#c3-weigh", 68.6, 0.5);
+
+    // c3-9: the grade lands on "that is blocking"
+    fadeIn("#c3-blocking", 82.3, 0.4);
+    accentOn("#c3-blocking", 82.3);
+
+    // c3-10: should-fix
+    fadeIn("#c3-shouldfix", 89.0, 0.4);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c3-q1", "#c3-q2", "#c3-q3", "#c3-q4"].forEach((q, i) => fadeIn(q, 98.4 + i * 0.6));
+    fadeIn("#c3-pause-2", 125.2);
+
+    // after the lesson: read, compare, then the last sentence banded
+    fadeIn("#c3-after-title", 128.3, 0.4);
+    fadeIn("#c3-a1", 128.6, 0.4);
+    fadeIn("#c3-a2", 132.4, 0.4);
+    fadeIn("#c3-a3", 138.85, 0.4);
+    band("#c3-a3", 139.0);
+
+    // close: 18:00, the lights go down and stay down to the last frame
+    fadeIn("#c3-closed", 146.5);
+    tl.fromTo("#c3-lights", { opacity: 0 }, { opacity: 0.62, duration: 2.6, ease: "power2.inOut" }, 149.2);
+
+    window.__timelines["c3"] = tl;
+  </script>
+</template>

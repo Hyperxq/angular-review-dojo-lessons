@@ -1,0 +1,466 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    code { font-family: var(--font-code); font-size: 0.92em; white-space: nowrap; }
+    .c2-svg { position: absolute; left: 0; top: 0; }
+    .c2-h { position: absolute; left: 200px; top: 120px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c2-p { position: absolute; left: 200px; width: 1520px; font: 400 42px/1.5 var(--font-text); }
+    .c2-p span { border-radius: 4px; }
+    .c2-p code { font-size: 38px; }
+    .c2-chip { position: absolute; box-sizing: border-box; padding: 22px 36px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 40px/1 var(--font-code); white-space: nowrap; }
+    .c2-chip.prose { font-family: var(--font-text); }
+    .c2-chip.big { font-size: 56px; padding: 26px 44px; }
+
+    .c2-nav { position: absolute; left: 40px; top: 40px; width: 300px; }
+    .c2-nav div { height: 72px; padding: 0 20px; display: flex; align-items: center; border-radius: 8px; font: 400 34px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-nav div.on { background: var(--paper-sunk); color: var(--ink); font-weight: 700; }
+    .c2-panel { position: absolute; left: 380px; right: 40px; top: 40px; }
+    .c2-btitle { margin-top: 18px; font: 600 64px/1.1 var(--font-display); }
+    .c2-author { margin-top: 12px; font: 400 36px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-tabs { margin-top: 48px; display: flex; gap: 48px; border-bottom: 2px solid var(--rule); font: 400 34px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-tabs span { padding-bottom: 18px; }
+    .c2-tabs span.on { color: var(--ink); font-weight: 700; border-bottom: 4px solid var(--ink); margin-bottom: -2px; }
+    .c2-meta { margin-top: 36px; font: 400 36px/1.6 var(--font-text); }
+    .c2-meta b { display: inline-block; width: 220px; font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-msg { position: absolute; left: 40px; right: 40px; bottom: 40px; height: 110px; box-sizing: border-box; padding: 0 36px; display: flex; align-items: center; gap: 36px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper); font: 400 36px/1 var(--font-text); }
+    .c2-msg .c2-btn { padding: 16px 28px; border: 2px solid var(--ink); border-radius: 8px; font: 700 32px/1 var(--font-text); }
+    .c2-msg .c2-btn.first { margin-left: auto; }
+    .c2-msg .c2-btn.quiet { border-color: var(--rule-strong); color: var(--ink-muted); }
+
+    .c2-list { position: absolute; left: 200px; top: 460px; width: 1520px; }
+    .c2-item { padding: 12px 24px; margin-bottom: 18px; border-radius: 8px; font: 400 44px/1.4 var(--font-text); display: grid; grid-template-columns: 72px 1fr; }
+    .c2-item > b { color: var(--ink-muted); }
+
+    .c2-table { position: absolute; left: 96px; top: 110px; width: 1728px; font: 400 30px/1.35 var(--font-text); }
+    .c2-tr { display: grid; grid-template-columns: 360px 400px 520px 448px; }
+    .c2-tr > span { padding: 18px 20px; border-bottom: 1px solid var(--rule); }
+    .c2-tr > span:first-child { font-weight: 700; }
+    .c2-th > span { font: 700 30px/1.3 var(--font-text) !important; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    .c2-table code { font-size: 28px; }
+    #c2-climb { position: absolute; left: 96px; top: 880px; width: 1728px; font: 400 40px/1.45 var(--font-text); }
+
+    .c2-keys { position: absolute; left: 200px; top: 260px; width: 1520px; font: 400 40px/1.4 var(--font-text); }
+    .c2-keys .c2-tr { grid-template-columns: 560px 960px; }
+    .c2-keys .c2-tr > span { padding: 26px 24px; font-weight: 400; }
+    .c2-keys code { font-size: 34px; }
+
+    .c2n { box-sizing: border-box; padding: 22px 30px; text-align: center; font-size: 36px; line-height: 1; }
+    .c2n .badge { font-size: 28px; }
+    .c2-flab { white-space: nowrap; }
+    #c2-roles { position: absolute; left: 200px; top: 760px; width: 1520px; font: 400 36px/1.45 var(--font-text); }
+    #c2-roles code { font-size: 32px; }
+
+    .c2-code { box-sizing: border-box; padding: 32px 44px; font-size: 30px; line-height: 45px; }
+    .c2-code .ln { position: relative; min-height: 45px; margin: 0 -44px; padding: 0 44px; }
+    .c2-code.big { font-size: 34px; line-height: 51px; }
+    .c2-code.big .ln { min-height: 51px; }
+    .c2-wrap { white-space: pre-wrap !important; padding-left: calc(44px + 4ch) !important; text-indent: -4ch; }
+    .c2-mark { border-radius: 4px; }
+    .c2-cap { position: absolute; left: 104px; width: 1712px; font: 400 36px/1.45 var(--font-text); color: var(--ink-muted); }
+    .c2-cap code { font-size: 33px; }
+
+    .c2-browser { position: absolute; left: 120px; top: 200px; width: 1680px; height: 800px; box-sizing: border-box; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper-sunk); box-shadow: var(--shadow); overflow: hidden; }
+    .c2-bar { position: absolute; left: 0; right: 0; top: 0; height: 110px; background: var(--paper-raised); border-bottom: 1px solid var(--rule); }
+    .c2-bar i { position: absolute; top: 37px; width: 44px; height: 36px; border-radius: 6px; background: var(--rule); }
+    #c2-addr { position: absolute; left: 220px; right: 60px; top: 25px; height: 60px; border-radius: 8px; background: var(--paper-sunk); border: 2px solid var(--rule); }
+    #c2-ring { position: absolute; left: 212px; right: 52px; top: 17px; height: 76px; border: 5px solid var(--accent); border-radius: 12px; box-sizing: border-box; }
+    #c2-dlg { position: absolute; left: 440px; top: 180px; width: 800px; height: 250px; box-sizing: border-box; padding: 36px 44px; background: var(--paper-raised); border: 2px solid var(--rule-strong); border-radius: 8px; box-shadow: var(--shadow); }
+    #c2-dlg i { display: block; height: 22px; margin-top: 26px; border-radius: 6px; background: var(--rule); }
+    #c2-dlg-cap { position: absolute; left: 120px; top: 520px; width: 1440px; font: 400 38px/1.45 var(--font-text); }
+
+    .c2-col { position: absolute; top: 300px; width: 720px; }
+    .c2-col .c2-chip { position: relative; display: inline-block; font-size: 52px; padding: 24px 44px; }
+    .c2-col p { margin-top: 36px; font: 400 40px/1.45 var(--font-text); }
+    .c2-col p + p { margin-top: 28px; }
+    .c2-col code { font-size: 36px; }
+
+    .c2-grade-h { position: absolute; left: 200px; top: 130px; font: 700 34px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-grade { position: absolute; left: 200px; top: 220px; width: 1520px; font: 400 42px/1.5 var(--font-text); }
+
+    .q { font-size: 40px; margin-bottom: 30px; }
+    .q code { font-size: 36px; }
+  </style>
+
+  <div id="root" data-composition-id="c2" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c2-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">11:00</div>
+      <div class="chapter-title">Widget contracts</div>
+    </div>
+
+    <!-- c2-1: 11:00, the book page at rest -->
+    <div id="c2-desk" class="clip world sunk" data-start="3" data-duration="7.35">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">11:00</span></div>
+        <div class="app-body">
+          <div class="c2-nav">
+            <div>Members</div>
+            <div class="on">Catalogue</div>
+            <div>Shelves</div>
+            <div>Returns</div>
+          </div>
+          <div id="c2-book" class="c2-panel" data-hold>
+            <div class="label">Catalogue · book page</div>
+            <div class="c2-btitle">Kindred</div>
+            <div class="c2-author">Octavia E. Butler</div>
+            <div class="c2-tabs"><span class="on">Summary</span><span>Reviews</span><span>Availability</span></div>
+            <div class="c2-meta">
+              <div><b>Shelf</b>B · Fiction</div>
+              <div><b>Published</b>1979</div>
+              <div><b>Copies</b>3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-2: a pattern is a contract, its three parts one by one -->
+    <div id="c2-pattern" class="clip world" data-start="10.35" data-duration="8.67">
+      <div class="c2-h" data-hold>The mental model: a pattern is a contract</div>
+      <div id="c2-pat-p" class="c2-p" style="top: 290px" data-hold>The WAI-ARIA Authoring Practices Guide (APG) writes the promises down as <b>patterns</b>. Each one has three parts:</div>
+      <div class="c2-list" data-hold>
+        <div id="c2-part1" class="c2-item"><b>1.</b><span>roles and states the markup declares,</span></div>
+        <div id="c2-part2" class="c2-item"><b>2.</b><span>keys the widget handles,</span></div>
+        <div id="c2-part3" class="c2-item"><b>3.</b><span>rules for where focus goes.</span></div>
+      </div>
+    </div>
+
+    <!-- c2-3: the ladder table, cut in whole; c2-4: the "Native element" column banded -->
+    <div id="c2-ladder" class="clip world" data-start="19.02" data-duration="17.53">
+      <div class="c2-table" data-hold>
+        <div class="c2-tr c2-th"><span>Need</span><span class="c2-nat">Native element</span><span>Maintained primitive (not installed here)</span><span>Hand-rolled</span></div>
+        <div class="c2-tr"><span>Choose one option from a short list</span><span class="c2-nat"><code>&lt;select&gt;</code></span><span><code>@angular/cdk/listbox</code>, <code>@angular/aria</code></span><span>the listbox or combobox pattern, plus a contract test</span></div>
+        <div class="c2-tr"><span>Show and hide a section</span><span class="c2-nat"><code>&lt;details&gt;</code> / <code>&lt;summary&gt;</code></span><span><code>@angular/aria</code></span><span>the disclosure pattern</span></div>
+        <div class="c2-tr"><span>A modal step that blocks the page</span><span class="c2-nat"><code>&lt;dialog&gt;</code> with <code>showModal()</code></span><span><code>@angular/cdk/dialog</code>, <code>FocusTrap</code> from <code>@angular/cdk/a11y</code></span><span>the dialog pattern, plus a contract test</span></div>
+        <div class="c2-tr"><span>A date</span><span class="c2-nat"><code>&lt;input type="date"&gt;</code></span><span>a maintained date picker</span><span>the date picker pattern, one of the hardest</span></div>
+      </div>
+      <div id="c2-climb" data-hold>A design that a native element cannot meet is a real reason to climb down the ladder.</div>
+    </div>
+
+    <!-- c2-5: the tablist tree; the panel labelled by its tab; the roles line -->
+    <div id="c2-tabtree" class="clip world sunk" data-start="36.55" data-duration="7.88">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke-width="4">
+        <path id="c2-t-edges" stroke="#c4b9a6" d="M475 236 V298 H445 V360 M475 298 H1500 V360 M985 298 V360" />
+        <path id="c2-t-lab" stroke="#c4b9a6" stroke-dasharray="12 10" d="M1670 193 H1800 V530 H445 V452 M433 466 L445 450 L457 466" />
+      </svg>
+      <div id="c2-t0" class="node c2n" style="left: 175px; top: 150px; width: 600px">tablist "Book details"</div>
+      <div id="c2-t1" class="node c2n" style="left: 175px; top: 360px; width: 540px">tab "Summary"<span class="badge">[selected]</span></div>
+      <div id="c2-t2" class="node c2n" style="left: 795px; top: 360px; width: 380px">tab "Reviews"</div>
+      <div id="c2-t3" class="node c2n" style="left: 1255px; top: 360px; width: 490px">tab "Availability"</div>
+      <div id="c2-t4" class="node c2n" style="left: 1200px; top: 150px; width: 470px" data-hold>tabpanel "Summary"</div>
+      <div id="c2-t-lbl" class="flabel c2-flab" style="left: 1000px; top: 548px; font-family: var(--font-code)">aria-labelledby</div>
+      <div id="c2-roles" data-hold>Roles and states: <code>role="tablist"</code> on the container, <code>role="tab"</code> with <code>aria-selected</code> and <code>aria-controls</code> on each tab, <code>role="tabpanel"</code> with <code>aria-labelledby</code> on the panel.</div>
+    </div>
+
+    <!-- c2-6: the keys table -->
+    <div id="c2-keyst" class="clip world" data-start="44.43" data-duration="5.87">
+      <div class="c2-keys" data-hold>
+        <div class="c2-tr c2-th"><span>Key</span><span>Does</span></div>
+        <div class="c2-tr"><span><code>Tab</code></span><span>moves into the tab list (to the selected tab), then out to the panel</span></div>
+        <div class="c2-tr"><span><code>ArrowRight</code> / <code>ArrowLeft</code></span><span>moves to the next or previous tab, wrapping</span></div>
+        <div class="c2-tr"><span><code>Home</code> / <code>End</code></span><span>first or last tab</span></div>
+      </div>
+    </div>
+
+    <!-- c2-6: onKeydown cut in whole, band on the focus() line; c2-7: band on selected.set, then "manual activation" -->
+    <div id="c2-roving" class="clip world" data-start="50.3" data-duration="15.82">
+      <div class="code c2-code" style="left: 200px; top: 110px" data-hold>
+        <span class="ln"><span class="k">protected</span> onKeydown(event: KeyboardEvent, index: <span class="k">number</span>) {</span>
+        <span class="ln">  <span class="k">const</span> last = <span class="k">this</span>.tabs().length - <span class="n">1</span>;</span>
+        <span class="ln">  <span class="k">const</span> next =</span>
+        <span class="ln">    event.key === <span class="s">'ArrowRight'</span> ? (index === last ? <span class="n">0</span> : index + <span class="n">1</span>)</span>
+        <span class="ln">    : event.key === <span class="s">'ArrowLeft'</span> ? (index === <span class="n">0</span> ? last : index - <span class="n">1</span>)</span>
+        <span class="ln">    : event.key === <span class="s">'Home'</span> ? <span class="n">0</span></span>
+        <span class="ln">    : event.key === <span class="s">'End'</span> ? last</span>
+        <span class="ln">    : <span class="k">null</span>;</span>
+        <span class="ln">  <span class="k">if</span> (next === <span class="k">null</span>) <span class="k">return</span>;</span>
+        <span class="ln">  event.preventDefault(); <span class="c">// Home and End would scroll the page</span></span>
+        <span id="c2-set" class="ln">  <span class="k">this</span>.selected.set(next);</span>
+        <span id="c2-focus" class="ln">  <span class="k">this</span>.tabButtons()[next].nativeElement.focus();</span>
+        <span class="ln">}</span>
+      </div>
+      <div id="c2-manual" class="c2-chip prose" style="left: 200px; top: 880px" data-hold>manual activation</div>
+    </div>
+
+    <!-- c2-8: aria-activedescendant, then the lesson's two sentences -->
+    <div id="c2-active" class="clip world" data-start="66.12" data-duration="10.19">
+      <div id="c2-ad" class="c2-chip big" style="left: 200px; top: 170px" data-hold>aria-activedescendant</div>
+      <div id="c2-ad-p1" class="c2-p" style="top: 380px" data-hold>Some patterns more often use the other technique: real focus stays on one element, and <code>aria-activedescendant</code> names the item that is active.</div>
+      <div id="c2-ad-p2" class="c2-p" style="top: 620px" data-hold>Both are valid. What breaks is mixing them, or using neither, so find out which one the author intended and check it end to end.</div>
+    </div>
+
+    <!-- c2-9: focus is something you move on purpose -->
+    <div id="c2-purpose" class="clip world" data-start="76.31" data-duration="10.1">
+      <div class="c2-h" data-hold>Focus is something you move on purpose</div>
+      <div id="c2-pur-p" class="c2-p" style="top: 330px" data-hold>Whenever a widget removes the element that has focus, or shows new content the user must deal with first, the code decides where focus goes. If it decides nothing, focus falls back to the <code>body</code> and the next Tab starts from the top of the page.</div>
+    </div>
+
+    <!-- c2-10: the lesson's flow, arrows drawing on as each step is named -->
+    <div id="c2-flow" class="clip world sunk" data-start="86.41" data-duration="9.56">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke-width="4" stroke="#1d1b18">
+        <path id="c2-a1" pathLength="1" d="M640 500 H1236" />
+        <path id="c2-h1" d="M1224 488 L1240 500 L1224 512" />
+        <path id="c2-a2" pathLength="1" d="M1350 470 V350 H1510 V466" />
+        <path id="c2-h2" d="M1498 454 L1510 470 L1522 454" />
+        <path id="c2-a3" pathLength="1" d="M1240 545 H644" />
+        <path id="c2-h3" d="M656 533 L640 545 L656 557" />
+      </svg>
+      <div id="c2-f1" class="fbox" style="left: 200px; top: 470px; width: 440px">Edit title button</div>
+      <div id="c2-f2" class="fbox" style="left: 1240px; top: 470px; width: 380px" data-hold>Title input</div>
+      <div id="c2-l1" class="flabel c2-flab" style="left: 640px; top: 420px; width: 600px">focus moves in when editing starts</div>
+      <div id="c2-l2" class="flabel c2-flab" style="left: 1180px; top: 290px; width: 500px">Enter saves, Escape cancels</div>
+      <div id="c2-l3" class="flabel c2-flab" style="left: 640px; top: 600px; width: 600px" data-hold>focus returns when editing ends</div>
+    </div>
+
+    <!-- c2-11: stopEditing cut in whole, band on the afterNextRender line, then why the injector -->
+    <div id="c2-stop" class="clip world" data-start="95.97" data-duration="9.4">
+      <div class="code c2-code big" style="left: 104px; width: 1712px; top: 250px" data-hold>
+        <span class="ln"><span class="k">protected</span> stopEditing() {</span>
+        <span class="ln">  <span class="k">this</span>.editing.set(<span class="k">false</span>);</span>
+        <span id="c2-anr" class="ln c2-wrap">  afterNextRender({ write: () =&gt; <span class="k">this</span>.editButton()?.nativeElement.focus() }, { injector: <span class="k">this</span>.injector });</span>
+        <span class="ln">}</span>
+      </div>
+      <div id="c2-inj" class="c2-cap" style="top: 620px" data-hold>The <code>injector</code> is there because a click handler runs outside the injection context.</div>
+    </div>
+
+    <!-- c2-12: the modal paragraph, its contract sentence banded -->
+    <div id="c2-modal" class="clip world" data-start="105.37" data-duration="9.78">
+      <div class="c2-p" style="top: 300px" data-hold>A modal dialog applies the same idea at full strength. <span id="c2-contract">Its APG contract: a <code>dialog</code> role with <code>aria-modal="true"</code> and a name; focus moves inside when it opens; Tab and Shift+Tab stay inside; Escape closes it; focus returns to whatever opened it.</span></div>
+    </div>
+
+    <!-- c2-13: <dialog> and showModal() as labels, then what is left to do -->
+    <div id="c2-native" class="clip world" data-start="115.15" data-duration="10.97">
+      <div id="c2-dl" class="c2-chip big" style="left: 200px; top: 170px">&lt;dialog&gt;</div>
+      <div id="c2-sm" class="c2-chip big" style="left: 640px; top: 170px" data-hold>showModal()</div>
+      <div id="c2-nat-p1" class="c2-p" style="top: 390px" data-hold>The native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code> covers most of that, and current browsers restore focus when it closes.</div>
+      <div id="c2-nat-p2" class="c2-p" style="top: 620px" data-hold>You still name the dialog and choose where focus starts. A hand-rolled modal owes every line of the contract in code.</div>
+    </div>
+
+    <!-- c2-13b: showModal() held; Tab reaches the browser's own toolbar above the page -->
+    <div id="c2-toolbar" class="clip world" data-start="126.12" data-duration="7.82">
+      <div class="c2-chip" style="left: 120px; top: 70px" data-hold>showModal()</div>
+      <div class="c2-browser">
+        <div class="c2-bar">
+          <i style="left: 40px"></i><i style="left: 100px"></i><i style="left: 160px"></i>
+          <div id="c2-addr"></div>
+          <div id="c2-ring"></div>
+        </div>
+        <div id="c2-dlg">
+          <div class="label" style="font-family: var(--font-code)">&lt;dialog&gt;</div>
+          <i style="width: 620px"></i><i style="width: 440px"></i>
+        </div>
+        <div id="c2-dlg-cap" data-hold>With <code>showModal()</code>, Tab can leave the page for the browser's own toolbar instead of wrapping as the APG describes. That is browser behaviour and acceptable, so a reviewer should not ask for a hand-rolled trap on top of it.</div>
+      </div>
+    </div>
+
+    <!-- c2-13c: the book page with an Undo message at its foot, staying until dismissed -->
+    <div id="c2-undo" class="clip world sunk" data-start="133.94" data-duration="8.39">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">11:00</span></div>
+        <div class="app-body">
+          <div class="c2-nav">
+            <div>Members</div>
+            <div class="on">Catalogue</div>
+            <div>Shelves</div>
+            <div>Returns</div>
+          </div>
+          <div class="c2-panel">
+            <div class="label">Catalogue · book page</div>
+            <div class="c2-btitle">Kindred</div>
+            <div class="c2-author">Octavia E. Butler</div>
+            <div class="c2-tabs"><span class="on">Summary</span><span>Reviews</span><span>Availability</span></div>
+          </div>
+          <div id="c2-msg" class="c2-msg" data-hold>Loan renewed until 21 November.<span class="c2-btn first">Undo</span><span class="c2-btn quiet">Dismiss</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-14: heading, then the ISBN code, band on aria-describedby -->
+    <div id="c2-desc" class="clip world" data-start="142.33" data-duration="9.05">
+      <div class="c2-h" data-hold>Descriptions, validity and announcements</div>
+      <div class="code c2-code big" id="c2-isbn" style="left: 200px; top: 360px" data-hold>
+        <span class="ln">&lt;label <span class="k">for</span>=<span class="s">"isbn"</span>&gt;ISBN&lt;/label&gt;</span>
+        <span class="ln">&lt;input <span class="k">id</span>=<span class="s">"isbn"</span> <span id="c2-desc-b" class="c2-mark"><span class="k">aria-describedby</span>=<span class="s">"isbn-hint"</span></span> /&gt;</span>
+        <span class="ln">&lt;p <span class="k">id</span>=<span class="s">"isbn-hint"</span>&gt;13 digits, without dashes.&lt;/p&gt;</span>
+      </div>
+      <div id="c2-invalid" class="c2-chip" style="left: 200px; top: 720px" data-hold>aria-invalid="true"</div>
+    </div>
+
+    <!-- c2-15: status and alert as labels, status the accent; c2-15b: alert the accent -->
+    <div id="c2-live" class="clip world" data-start="151.38" data-duration="18.07">
+      <div class="c2-p" style="top: 140px" data-hold>A <b>live region</b> is an element whose changes are announced.</div>
+      <div class="c2-col" style="left: 200px">
+        <div id="c2-status" class="c2-chip">status</div>
+        <p id="c2-st-p1"><code>status</code> is polite and waits for a pause.</p>
+        <p id="c2-st-p2" data-hold>A <code>status</code> container is announced reliably only when it already exists before its text changes.</p>
+      </div>
+      <div class="c2-col" style="left: 1000px">
+        <div id="c2-alert" class="c2-chip">alert</div>
+        <p id="c2-al-p1"><code>alert</code> is assertive and interrupts.</p>
+        <p id="c2-al-p2" data-hold>An <code>alert</code> inserted together with its text is usually announced, which is part of why it exists.</p>
+      </div>
+    </div>
+
+    <!-- c2-16: the first graded example, blocking as the accent -->
+    <div id="c2-grade1" class="clip world" data-start="169.45" data-duration="10.61">
+      <div class="c2-grade-h">How bad is it?</div>
+      <div class="c2-grade" data-hold><b>Rearranging a shelf display only by drag and drop.</b> Who: keyboard users and people with limited fine motor control. Task: for the librarian whose job this screen is, the main one. Workaround: none in the app. It fails 2.5.7 Dragging Movements (AA). Grade: <b>blocking</b>.</div>
+      <div id="c2-blocking" class="c2-chip prose" style="left: 200px; top: 760px" data-hold>blocking</div>
+    </div>
+
+    <!-- c2-17: the second graded example, should-fix and question -->
+    <div id="c2-grade2" class="clip world" data-start="180.06" data-duration="11.51">
+      <div class="c2-grade-h">How bad is it?</div>
+      <div class="c2-grade" data-hold><b>A "Book reserved" message that disappears after three seconds.</b> Who: screen magnifier users, who may be looking at another part of the screen, and slow readers. Task: confirming a reservation. Workaround: the reservation appears in "My loans". Grade: <b>should-fix</b>, or a <b>question</b> about why it needs to disappear at all.</div>
+      <div id="c2-shouldfix" class="c2-chip prose" style="left: 200px; top: 800px">should-fix</div>
+      <div id="c2-question" class="c2-chip prose" style="left: 520px; top: 800px" data-hold>question</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c2-questions" class="clip world note" data-start="191.57" data-duration="28.4">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c2-q1" class="q">For one custom widget in the exercise, write its contract (roles and states, keys, focus) next to the template and compare line by line.</div>
+        <div id="c2-q2" class="q">What would a native element cost here? If native does not fit, why not a maintained library?</div>
+        <div id="c2-q3" class="q">A toast library announces every message assertively. When is that wrong, and for whom?</div>
+        <div id="c2-q4" class="q">Your team uses <code>&lt;dialog&gt;</code> with <code>showModal()</code>, and a reviewer asks for a hand-rolled focus trap on top. What do you answer?</div>
+        <div id="c2-q5" class="q">Whenever something appears or disappears, where is focus afterwards, and who decided?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c2-pause" class="clip world" data-start="219.97" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c2-pause-2" class="pause-2" data-hold>Now do exercise 02.</div>
+    </div>
+
+    <audio id="c2-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="20" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-bed2" class="clip" src="assets/music/bed.mp3" data-start="191.57" data-duration="28.4" data-media-start="100" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c2-1" class="clip" src="assets/vo/c2-1.wav" data-start="3.0" data-duration="6.997" data-volume="1"></audio>
+    <audio id="vo-c2-2" class="clip" src="assets/vo/c2-2.wav" data-start="10.35" data-duration="8.32" data-volume="1"></audio>
+    <audio id="vo-c2-3" class="clip" src="assets/vo/c2-3.wav" data-start="19.02" data-duration="8.491" data-volume="1"></audio>
+    <audio id="vo-c2-4" class="clip" src="assets/vo/c2-4.wav" data-start="27.86" data-duration="8.341" data-volume="1"></audio>
+    <audio id="vo-c2-5" class="clip" src="assets/vo/c2-5.wav" data-start="36.55" data-duration="7.531" data-volume="1"></audio>
+    <audio id="vo-c2-6" class="clip" src="assets/vo/c2-6.wav" data-start="44.43" data-duration="10.709" data-volume="1"></audio>
+    <audio id="vo-c2-7" class="clip" src="assets/vo/c2-7.wav" data-start="55.49" data-duration="10.283" data-volume="1"></audio>
+    <audio id="vo-c2-8" class="clip" src="assets/vo/c2-8.wav" data-start="66.12" data-duration="9.835" data-volume="1"></audio>
+    <audio id="vo-c2-9" class="clip" src="assets/vo/c2-9.wav" data-start="76.31" data-duration="9.749" data-volume="1"></audio>
+    <audio id="vo-c2-10" class="clip" src="assets/vo/c2-10.wav" data-start="86.41" data-duration="9.216" data-volume="1"></audio>
+    <audio id="vo-c2-11" class="clip" src="assets/vo/c2-11.wav" data-start="95.97" data-duration="9.045" data-volume="1"></audio>
+    <audio id="vo-c2-12" class="clip" src="assets/vo/c2-12.wav" data-start="105.37" data-duration="9.429" data-volume="1"></audio>
+    <audio id="vo-c2-13" class="clip" src="assets/vo/c2-13.wav" data-start="115.15" data-duration="10.624" data-volume="1"></audio>
+    <audio id="vo-c2-13b" class="clip" src="assets/vo/c2-13b.wav" data-start="126.12" data-duration="7.467" data-volume="1"></audio>
+    <audio id="vo-c2-13c" class="clip" src="assets/vo/c2-13c.wav" data-start="133.94" data-duration="8.043" data-volume="1"></audio>
+    <audio id="vo-c2-14" class="clip" src="assets/vo/c2-14.wav" data-start="142.33" data-duration="8.704" data-volume="1"></audio>
+    <audio id="vo-c2-15" class="clip" src="assets/vo/c2-15.wav" data-start="151.38" data-duration="9.472" data-volume="1"></audio>
+    <audio id="vo-c2-15b" class="clip" src="assets/vo/c2-15b.wav" data-start="161.21" data-duration="7.893" data-volume="1"></audio>
+    <audio id="vo-c2-16" class="clip" src="assets/vo/c2-16.wav" data-start="169.45" data-duration="10.261" data-volume="1"></audio>
+    <audio id="vo-c2-17" class="clip" src="assets/vo/c2-17.wav" data-start="180.06" data-duration="11.157" data-volume="1"></audio>
+    <audio id="vo-c2-end" class="clip" src="assets/vo/c2-end.wav" data-start="191.57" data-duration="2.155" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const RULE = "#c4b9a6";
+    const INK = "#1d1b18";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: CLEAR, duration: 0.4 }, at);
+    const draw = (sel, at, d) => tl.fromTo(sel, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+    const accentOn = (sel, at) => tl.fromTo(sel, { borderColor: RULE, color: INK }, { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c2-1: the book page at rest
+    fadeIn("#c2-book", 3.1, 0.5);
+
+    // c2-2: the heading and lead, then each part as it is named
+    fadeIn("#c2-pat-p", 10.6, 0.5);
+    fadeIn("#c2-part1", 14.4, 0.5);
+    fadeIn("#c2-part2", 16.0, 0.5);
+    fadeIn("#c2-part3", 16.9, 0.5);
+
+    // c2-3: the ladder cut in whole; c2-4: the native column banded, then the reason to climb down
+    band(".c2-nat", 29.9);
+    fadeIn("#c2-climb", 32.4, 0.5);
+
+    // c2-5: the tree, the panel and its label, then the roles line
+    fadeIn("#c2-t0, #c2-t1, #c2-t2, #c2-t3, #c2-t-edges", 36.65, 0.5);
+    fadeIn("#c2-t4, #c2-t-lab, #c2-t-lbl", 41.3, 0.5);
+    fadeIn("#c2-roles", 39.3, 0.5);
+
+    // c2-6: the code cut in whole, band on the focus() line
+    band("#c2-focus", 52.4);
+
+    // c2-7: the band moves to selected.set, then manual activation
+    unband("#c2-focus", 55.7);
+    band("#c2-set", 55.7);
+    fadeIn("#c2-manual", 61.9, 0.5);
+
+    // c2-8: the label, then the lesson's two sentences
+    fadeIn("#c2-ad-p1", 67.4, 0.5);
+    fadeIn("#c2-ad-p2", 71.2, 0.5);
+
+    // c2-9: the heading, then the paragraph
+    fadeIn("#c2-pur-p", 78.6, 0.5);
+
+    // c2-10: boxes, then each arrow as its step is named
+    [["#c2-a1", "#c2-h1", "#c2-l1", 88.6], ["#c2-a2", "#c2-h2", "#c2-l2", 91.4], ["#c2-a3", "#c2-h3", "#c2-l3", 93.0]].forEach(([a, h, l, at]) => {
+      draw(a, at, 0.6);
+      fadeIn(h, at + 0.5, 0.2);
+      fadeIn(l, at + 0.15, 0.4);
+    });
+
+    // c2-11: band on afterNextRender, then the injector line
+    band("#c2-anr", 100.4);
+    fadeIn("#c2-inj", 102.4, 0.5);
+
+    // c2-12: the contract sentence banded
+    band("#c2-contract", 106.9);
+
+    // c2-13: the labels, then the two sentences
+    fadeIn("#c2-sm", 115.9, 0.4);
+    fadeIn("#c2-nat-p1", 116.5, 0.5);
+    fadeIn("#c2-nat-p2", 120.6, 0.5);
+
+    // c2-13b: Tab lands on the browser's own toolbar, then why that is fine
+    fadeIn("#c2-ring", 128.4, 0.3);
+    fadeIn("#c2-dlg-cap", 129.8, 0.5);
+
+    // c2-13c: the Undo message arrives and stays
+    fadeIn("#c2-msg", 137.6, 0.5);
+
+    // c2-14: the code, the band on aria-describedby, then aria-invalid
+    fadeIn("#c2-isbn", 144.9, 0.4);
+    band("#c2-desc-b", 145.9);
+    fadeIn("#c2-invalid", 147.8, 0.5);
+
+    // c2-15: status, the accent; c2-15b: alert takes the accent
+    fadeIn("#c2-status, #c2-alert", 151.5, 0.4);
+    accentOn("#c2-status", 152.6);
+    fadeIn("#c2-st-p1", 153.6, 0.4);
+    fadeIn("#c2-al-p1", 153.6, 0.4);
+    fadeIn("#c2-st-p2", 156.6, 0.5);
+    tl.to("#c2-status", { borderColor: RULE, color: INK, duration: 0.3 }, 161.3);
+    accentOn("#c2-alert", 161.3);
+    fadeIn("#c2-al-p2", 163.6, 0.5);
+
+    // c2-16: the grade lands on "so it blocks"
+    fadeIn("#c2-blocking", 178.6, 0.4);
+    accentOn("#c2-blocking", 178.6);
+
+    // c2-17: should-fix, then question
+    fadeIn("#c2-shouldfix", 188.4, 0.4);
+    fadeIn("#c2-question", 189.6, 0.4);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c2-q1", "#c2-q2", "#c2-q3", "#c2-q4", "#c2-q5"].forEach((q, i) => fadeIn(q, 191.8 + i * 0.6));
+    fadeIn("#c2-pause-2", 220.4);
+
+    window.__timelines["c2"] = tl;
+  </script>
+</template>
