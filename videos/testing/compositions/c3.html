@@ -1,0 +1,380 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c3-svg { position: absolute; left: 0; top: 0; }
+    code { font-family: var(--font-code); font-size: 0.92em; }
+    .c3-h { position: absolute; left: 200px; top: 120px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+
+    #c3-badge { margin-left: auto; margin-right: 32px; padding: 12px 22px; border: 3px solid var(--caution); border-radius: 8px; background: var(--caution-soft); color: var(--caution); font: 700 30px/1 var(--font-text); }
+    .c3-shelf { position: absolute; left: 40px; top: 40px; width: 1000px; }
+    .c3-shelf .label { margin-bottom: 18px; }
+    .c3-book { height: 96px; box-sizing: border-box; padding: 0 28px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 400 38px/1 var(--font-text); }
+    .c3-book span { margin-left: auto; font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+    #c3-lane { position: absolute; left: 40px; right: 40px; top: 40px; height: 160px; }
+    #c3-lane-l { position: absolute; left: 0; top: 22px; font: 700 34px/1 var(--font-code); }
+    #c3-lane-line { position: absolute; left: 120px; right: 0; top: 40px; height: 4px; background: var(--rule-strong); }
+    .c3-commit { position: absolute; top: 28px; width: 28px; height: 28px; margin-left: -14px; border-radius: 50%; background: var(--ink-muted); }
+    #c3-merge { position: absolute; left: 0; top: 18px; width: 48px; height: 48px; margin-left: -24px; border-radius: 50%; background: var(--accent); }
+    #c3-merge-l { position: absolute; left: -60px; top: 66px; width: 168px; text-align: center; font: 700 30px/1 var(--font-text); color: var(--accent); }
+
+    .node { box-sizing: border-box; height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 40px; }
+    .node .badge { display: block; margin: 14px 0 0; padding: 2px 8px; border-radius: 4px; font-size: 30px; }
+
+    .c3-code { left: 104px; width: 1712px; box-sizing: border-box; padding: 40px 44px; font-size: 30px; line-height: 45px; }
+    .c3-code .ln { position: relative; min-height: 45px; }
+    .c3-band { position: absolute; left: 0; right: 0; top: 40px; height: 45px; background: var(--accent-soft); }
+    .c3-code.big { font-size: 34px; line-height: 51px; }
+    .c3-code.big .ln { min-height: 51px; }
+    .c3-code.small { font-size: 28px; line-height: 42px; }
+    .c3-code.small .ln { min-height: 42px; }
+    .c3-code.small .c3-band { height: 42px; }
+    .c3-wrap { white-space: pre-wrap !important; padding-left: 4ch; text-indent: -4ch; }
+
+    .c3-chip { position: absolute; box-sizing: border-box; padding: 26px 40px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 44px/1 var(--font-text); white-space: nowrap; }
+
+    #c3-prove-intro { position: absolute; left: 200px; top: 250px; width: 1520px; font: 400 40px/1.45 var(--font-text); }
+    #c3-items { position: absolute; left: 200px; top: 340px; width: 1520px; }
+    .c3-item { display: grid; grid-template-columns: 56px 1fr; margin-bottom: 30px; font: 400 38px/1.45 var(--font-text); }
+    .c3-item > b { color: var(--ink-muted); }
+    .c3-item code.nw { white-space: nowrap; }
+    #c3-treat { position: absolute; left: 200px; top: 790px; width: 1520px; font: 400 40px/1.45 var(--font-text); }
+    #c3-treat span { border-radius: 4px; }
+
+    #c3-row { position: absolute; left: 640px; top: 470px; width: 1100px; height: 120px; box-sizing: border-box; padding: 0 36px; display: flex; align-items: center; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper-raised); box-shadow: var(--shadow); font: 400 38px/1 var(--font-text); }
+    #c3-row-dot { width: 28px; height: 28px; margin-right: 28px; border-radius: 50%; border: 4px solid var(--ink-muted); box-sizing: border-box; }
+    #c3-row-track { position: absolute; left: 36px; right: 36px; bottom: 18px; height: 8px; border-radius: 4px; background: var(--rule); }
+    #c3-row-bar { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; border-radius: 4px; background: var(--ink-muted); }
+    #c3-clock { position: absolute; left: 200px; top: 380px; }
+    #c3-fake { position: absolute; left: 640px; top: 640px; font: 700 36px/1 var(--font-code); }
+
+    .c3-box { position: absolute; box-sizing: border-box; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper-raised); box-shadow: var(--shadow); }
+    .c3-box > .label { position: absolute; left: 36px; top: 28px; }
+    .c3-int { position: absolute; left: 36px; width: 588px; height: 100px; box-sizing: border-box; padding: 0 32px; display: flex; align-items: center; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper); font: 700 38px/1 var(--font-text); }
+    .c3-int span { position: absolute; left: 32px; top: 28px; }
+    .c3-pill { position: absolute; left: 36px; top: 210px; padding: 16px 28px; border-radius: 8px; font: 700 36px/1 var(--font-text); }
+    .c3-pass { background: var(--tip-soft); color: var(--tip); border: 3px solid var(--tip); }
+    .c3-fail { background: var(--caution-soft); color: var(--caution); border: 3px solid var(--caution); }
+    #c3-test-l { position: absolute; left: 36px; top: 100px; width: 640px; font: 400 36px/1.35 var(--font-text); }
+
+    #c3-obs { position: absolute; left: 200px; top: 330px; display: flex; gap: 40px; }
+    #c3-obs .c3-chip { position: relative; }
+
+    #c3-after-title { position: absolute; left: 200px; top: 150px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+    #c3-after-p { position: absolute; left: 200px; top: 340px; width: 1500px; font: 400 44px/1.5 var(--font-text); }
+    #c3-after-p span { border-radius: 4px; }
+    #c3-closed { position: absolute; left: 80px; top: 280px; font: 600 88px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c3-lights { position: absolute; inset: 0; background: var(--ink); }
+
+    .q { font-size: 40px; margin-bottom: 34px; }
+  </style>
+
+  <div id="root" data-composition-id="c3" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c3-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">15:00</div>
+      <div class="chapter-title">Suites that pass only in order</div>
+    </div>
+
+    <!-- c3-1: red build badge in the header; c3-2: a merge passes it, the badge is waved away -->
+    <div id="c3-desk" class="clip world" data-start="3" data-duration="12.9">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span id="c3-badge">build failed</span><span class="app-clock">15:00</span></div>
+        <div class="app-body">
+          <div id="c3-shelf" class="c3-shelf" data-hold>
+            <div class="label">Shelf</div>
+            <div class="c3-book">Dune<span>on loan</span></div>
+            <div class="c3-book">Foundation<span>on loan</span></div>
+            <div class="c3-book">Hyperion<span>on shelf</span></div>
+            <div class="c3-book">Solaris<span>on shelf</span></div>
+          </div>
+          <div id="c3-lane">
+            <div id="c3-lane-l">main</div>
+            <div id="c3-lane-line"></div>
+            <div class="c3-commit" style="left: 260px"></div>
+            <div class="c3-commit" style="left: 520px"></div>
+            <div class="c3-commit" style="left: 780px"></div>
+            <div id="c3-merge"><div id="c3-merge-l" data-hold>merge</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3-3, c3-5: the lesson's tree, then the fresh injector badges banded -->
+    <div id="c3-tree" class="clip world sunk" data-start="15.9" data-duration="11.4">
+      <svg class="c3-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#c4b9a6" stroke-width="4">
+        <path id="c3-t1" pathLength="1" d="M960 290 V370" />
+        <path id="c3-t2" pathLength="1" d="M960 520 V575 H410 V630" />
+        <path id="c3-t3" pathLength="1" d="M960 520 V630" />
+        <path id="c3-t4" pathLength="1" d="M960 520 V575 H1510 V630" />
+      </svg>
+      <div id="c3-n0" class="node" style="left: 620px; top: 140px; width: 680px">spec file module scope<span class="badge">[one copy for the whole file]</span></div>
+      <div id="c3-n1" class="node" style="left: 590px; top: 370px; width: 740px">describe callback<span class="badge">[runs once, while tests are collected]</span></div>
+      <div id="c3-n2" class="node" style="left: 160px; top: 630px; width: 500px">beforeEach<span class="badge">[runs before every test]</span></div>
+      <div id="c3-n3" class="node" style="left: 710px; top: 630px; width: 500px">it first test<span id="c3-f1" class="badge">[fresh TestBed injector]</span></div>
+      <div id="c3-n4" class="node" style="left: 1260px; top: 630px; width: 500px" data-hold>it second test<span id="c3-f2" class="badge">[fresh TestBed injector]</span></div>
+    </div>
+
+    <!-- c3-5 tail, c3-6: the dune leak, cut in whole -->
+    <div id="c3-leak" class="clip world" data-start="27.3" data-duration="12.82">
+      <div class="code c3-code small" style="top: 220px" data-hold>
+        <div id="c3-band1" class="c3-band"></div>
+        <span class="ln"><span class="k">const</span> dune = { id: <span class="n">1</span>, title: <span class="s">'Dune'</span>, copies: <span class="n">2</span> };</span>
+        <span class="ln"></span>
+        <span class="ln">it(<span class="s">'lends a copy'</span>, () =&gt; {</span>
+        <span class="ln">  lend(dune);</span>
+        <span class="ln">  expect(dune.copies).toBe(<span class="n">1</span>);</span>
+        <span class="ln">});</span>
+        <span class="ln"></span>
+        <span class="ln">it(<span class="s">'shows the available copies'</span>, <span class="k">async</span> () =&gt; {</span>
+        <span class="ln">  <span class="k">const</span> root = <span class="k">await</span> renderShelf([dune]);</span>
+        <span class="ln">  expect(root.textContent).toContain(<span class="s">'2 copies'</span>); <span class="c">// 1 if the first test ran before it</span></span>
+        <span class="ln">});</span>
+      </div>
+    </div>
+
+    <!-- c3-7: the aBook factory -->
+    <div id="c3-factory" class="clip world" data-start="40.12" data-duration="6.13">
+      <div class="c3-h">A fresh object for every test</div>
+      <div class="code c3-code big" style="top: 380px" data-hold>
+        <span class="ln c3-wrap"><span class="k">const</span> aBook = (overrides: Partial&lt;Book&gt; = {}): Book =&gt; ({ id: <span class="n">1</span>, title: <span class="s">'Dune'</span>, copies: <span class="n">2</span>, ...overrides });</span>
+      </div>
+    </div>
+
+    <!-- c3-8: four places state lives -->
+    <div id="c3-state" class="clip world" data-start="46.25" data-duration="10.25">
+      <div class="c3-h">Where state lives</div>
+      <div id="c3-s1" class="c3-chip" style="left: 200px; top: 360px">objects at module scope</div>
+      <div id="c3-s2" class="c3-chip" style="left: 980px; top: 360px">caches</div>
+      <div id="c3-s3" class="c3-chip" style="left: 200px; top: 560px">browser globals</div>
+      <div id="c3-s4" class="c3-chip" style="left: 980px; top: 560px" data-hold>the clock</div>
+    </div>
+
+    <!-- c3-9, c3-9c: the "Prove independence" list, then its last sentence banded -->
+    <div id="c3-prove" class="clip world" data-start="56.5" data-duration="15.89">
+      <div class="c3-h">Prove independence</div>
+      <div id="c3-prove-intro" data-hold>Two habits catch order dependence before a colleague does:</div>
+      <div id="c3-items">
+        <div id="c3-i1" class="c3-item"><b>–</b><span>Run each test alone: <code class="nw">npm test -- --watch=false --include='&lt;file&gt;' --filter="&lt;test name&gt;"</code></span></div>
+        <div id="c3-i2" class="c3-item"><b>–</b><span>Shuffle: <code>describe.shuffle('Shelf', () =&gt; { ... })</code> runs that block's tests in random order. Shuffling everything (<code>sequence.shuffle</code>) is a Vitest config option, which under this builder only reaches Vitest through the <code>runnerConfig</code> file (chapter 0).</span></div>
+      </div>
+      <div id="c3-treat" data-hold><span id="c3-treat-s">Treat "passes only in sequence" as a bug in the suite, the same way you treat a race as a bug in the code.</span></div>
+    </div>
+
+    <!-- c3-10, c3-10b, c3-10c: every assertion should be able to say no; a generated id; a clock beside a slow test -->
+    <div id="c3-sayno" class="clip world" data-start="72.39" data-duration="29.23">
+      <div class="c3-h" data-hold>Every assertion should be able to say no</div>
+      <div id="c3-gen" class="c3-chip" style="left: 200px; top: 420px" data-hold>a generated id</div>
+      <svg id="c3-clock" width="320" height="320" viewBox="0 0 320 320" fill="none">
+        <circle cx="160" cy="160" r="148" fill="#fffdf9" stroke="#1d1b18" stroke-width="6" />
+        <g stroke="#5f584d" stroke-width="6" stroke-linecap="round">
+          <path d="M160 26 V50" /><path d="M294 160 H270" /><path d="M160 294 V270" /><path d="M26 160 H50" />
+        </g>
+        <path d="M160 160 L160 92" stroke="#1d1b18" stroke-width="10" stroke-linecap="round" />
+        <g id="c3-hand"><path d="M160 178 L160 40" stroke="#b8321f" stroke-width="6" stroke-linecap="round" /></g>
+        <circle cx="160" cy="160" r="12" fill="#1d1b18" />
+      </svg>
+      <div id="c3-row"><div id="c3-row-dot"></div>waits on real time<div id="c3-row-track"><div id="c3-row-bar"></div></div></div>
+      <div id="c3-fake" data-hold>fake timers (chapter 0)</div>
+    </div>
+
+    <!-- c3-11, c3-11b, c3-12: test what someone outside can observe -->
+    <div id="c3-observe" class="clip world" data-start="101.62" data-duration="25.93">
+      <div class="c3-h" data-hold>Test what someone outside can observe</div>
+      <div id="c3-demo">
+        <div id="c3-codebox" class="c3-box" style="left: 200px; top: 300px; width: 660px; height: 420px">
+          <div class="label">the code</div>
+          <div class="c3-int" style="top: 110px"><span id="c3-fa">a field</span><span id="c3-fb">a renamed field</span></div>
+          <div id="c3-beh" class="c3-int" style="top: 260px"><span id="c3-ba">the behaviour</span><span id="c3-bb">broken behaviour</span></div>
+        </div>
+        <div id="c3-testbox" class="c3-box" style="left: 1000px; top: 300px; width: 720px; height: 420px">
+          <div class="label">the test</div>
+          <div id="c3-test-l">reaches into private members</div>
+          <div id="c3-pa" class="c3-pill c3-pass">passes</div>
+          <div id="c3-pf" class="c3-pill c3-fail">fails</div>
+        </div>
+      </div>
+      <div id="c3-obs">
+        <div id="c3-o1" class="c3-chip">rendered</div>
+        <div id="c3-o2" class="c3-chip">emitted</div>
+        <div id="c3-o3" class="c3-chip">sent</div>
+        <div id="c3-o4" class="c3-chip">stored</div>
+      </div>
+      <div id="c3-setinput" class="code c3-code small" style="top: 620px" data-hold>
+        <span class="ln">fixture.componentRef.setInput(<span class="s">'loan'</span>, { id: <span class="n">7</span>, title: <span class="s">'Dune'</span>, dueDate: <span class="s">'2026-03-01'</span> });</span>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c3-questions" class="clip world note" data-start="127.55" data-duration="19.1">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c3-q1" class="q">Where does each test get its data, and could an earlier test have changed it?</div>
+        <div id="c3-q2" class="q">Has anyone run each test alone, and the file in a random order?</div>
+        <div id="c3-q3" class="q">If you deleted this test, what bug could ship?</div>
+        <div id="c3-q4" class="q">Would this test still pass after a refactor that keeps the behaviour? Would it fail after one that breaks it?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c3-pause" class="clip world" data-start="146.65" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c3-pause-2" class="pause-2" data-hold>Now do exercise 03.</div>
+    </div>
+
+    <!-- c3-after, c3-afterb: the "After the lesson" card, its last sentence banded -->
+    <div id="c3-after" class="clip world" data-start="150.15" data-duration="13.23">
+      <div id="c3-after-title">After the lesson</div>
+      <div id="c3-after-p" data-hold><span id="c3-a1">For each exercise, read <code>SOLUTION.md</code> on the <code>solutions</code> branch and compare its table of "why this test could not fail" with your own notes.</span> <span id="c3-a2">Then write the PR comment you would leave on the test file, in two or three sentences, naming each weakness together with what would make the test able to fail.</span></div>
+    </div>
+
+    <!-- c3-close: 18:00, the desk closes, lights down to the end -->
+    <div id="c3-close" class="clip world" data-start="163.38" data-duration="6.76">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock" style="color: var(--accent)">18:00</span></div>
+        <div class="app-body">
+          <div id="c3-closed">Opens again at 09:00</div>
+        </div>
+      </div>
+      <div id="c3-lights" data-hold></div>
+    </div>
+
+    <audio id="c3-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="20" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c3-bed2" class="clip" src="assets/music/bed.mp3" data-start="127.55" data-duration="19.1" data-media-start="110" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c3-1" class="clip" src="assets/vo/c3-1.wav" data-start="3.0" data-duration="6.379" data-volume="1"></audio>
+    <audio id="vo-c3-2" class="clip" src="assets/vo/c3-2.wav" data-start="9.73" data-duration="5.824" data-volume="1"></audio>
+    <audio id="vo-c3-3" class="clip" src="assets/vo/c3-3.wav" data-start="15.9" data-duration="5.973" data-volume="1"></audio>
+    <audio id="vo-c3-5" class="clip" src="assets/vo/c3-5.wav" data-start="22.23" data-duration="7.531" data-volume="1"></audio>
+    <audio id="vo-c3-6" class="clip" src="assets/vo/c3-6.wav" data-start="30.11" data-duration="9.664" data-volume="1"></audio>
+    <audio id="vo-c3-7" class="clip" src="assets/vo/c3-7.wav" data-start="40.12" data-duration="5.781" data-volume="1"></audio>
+    <audio id="vo-c3-8" class="clip" src="assets/vo/c3-8.wav" data-start="46.25" data-duration="9.899" data-volume="1"></audio>
+    <audio id="vo-c3-9" class="clip" src="assets/vo/c3-9.wav" data-start="56.5" data-duration="9.301" data-volume="1"></audio>
+    <audio id="vo-c3-9c" class="clip" src="assets/vo/c3-9c.wav" data-start="66.15" data-duration="5.888" data-volume="1"></audio>
+    <audio id="vo-c3-10" class="clip" src="assets/vo/c3-10.wav" data-start="72.39" data-duration="8.896" data-volume="1"></audio>
+    <audio id="vo-c3-10b" class="clip" src="assets/vo/c3-10b.wav" data-start="81.64" data-duration="9.685" data-volume="1"></audio>
+    <audio id="vo-c3-10c" class="clip" src="assets/vo/c3-10c.wav" data-start="91.67" data-duration="9.6" data-volume="1"></audio>
+    <audio id="vo-c3-11" class="clip" src="assets/vo/c3-11.wav" data-start="101.62" data-duration="8.107" data-volume="1"></audio>
+    <audio id="vo-c3-11b" class="clip" src="assets/vo/c3-11b.wav" data-start="110.08" data-duration="7.296" data-volume="1"></audio>
+    <audio id="vo-c3-12" class="clip" src="assets/vo/c3-12.wav" data-start="117.72" data-duration="9.472" data-volume="1"></audio>
+    <audio id="vo-c3-end" class="clip" src="assets/vo/c3-end.wav" data-start="127.55" data-duration="2.091" data-volume="1"></audio>
+    <audio id="vo-c3-after" class="clip" src="assets/vo/c3-after.wav" data-start="150.5" data-duration="5.717" data-volume="1"></audio>
+    <audio id="vo-c3-afterb" class="clip" src="assets/vo/c3-afterb.wav" data-start="156.56" data-duration="6.464" data-volume="1"></audio>
+    <audio id="vo-c3-close" class="clip" src="assets/vo/c3-close.wav" data-start="163.38" data-duration="5.76" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: CLEAR, duration: 0.4 }, at);
+    const drawPath = (sel, at, d = 0.4) =>
+      tl.fromTo(sel, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c3-1: the shelf, then the red build badge as the build goes red
+    fadeIn("#c3-shelf", 3.2, 0.5);
+    tl.set(["#c3-lane", "#c3-merge"], { opacity: 0 }, 3);
+    fadeIn("#c3-badge", 4.3, 0.4);
+
+    // c3-2: a merge travels the main lane past the badge, which is waved away
+    fadeOut("#c3-shelf", 9.8, 0.4);
+    fadeIn("#c3-lane", 10.2, 0.5);
+    tl.set("#c3-merge", { opacity: 1, x: 120 }, 11.6);
+    tl.to("#c3-merge", { x: 1480, duration: 3.0, ease: "power2.inOut" }, 11.8);
+    tl.to("#c3-badge", { rotation: -6, x: -8, duration: 0.15, ease: "power2.inOut" }, 13.85);
+    tl.to("#c3-badge", { rotation: 4, x: 8, duration: 0.15, ease: "power2.inOut" }, 14.0);
+    tl.to("#c3-badge", { rotation: 0, x: -60, opacity: 0.2, duration: 0.4, ease: "power2.in" }, 14.15);
+
+    // c3-3: nodes top down, edges draw on between them
+    ["#c3-n0", "#c3-n1", "#c3-n2", "#c3-n3", "#c3-n4"].forEach((n) => tl.set(n, { opacity: 0 }, 15.9));
+    fadeIn("#c3-n0", 16.1, 0.5);
+    drawPath("#c3-t1", 16.9, 0.3);
+    fadeIn("#c3-n1", 17.2, 0.5);
+    drawPath("#c3-t2", 18.1, 0.4);
+    drawPath("#c3-t3", 18.1, 0.4);
+    drawPath("#c3-t4", 18.1, 0.4);
+    ["#c3-n2", "#c3-n3", "#c3-n4"].forEach((n, i) => fadeIn(n, 18.5 + i * 0.15, 0.5));
+
+    // c3-5: both fresh injector badges banded
+    band("#c3-f1", 23.0);
+    band("#c3-f2", 23.0);
+
+    // c3-6: band on const dune, then on the '2 copies' line
+    tl.fromTo("#c3-band1", { opacity: 0, y: 0 }, { opacity: 1, duration: 0.3 }, 30.3);
+    tl.to("#c3-band1", { y: 9 * 42, duration: 0.8, ease: "power2.inOut" }, 34.7);
+
+    // c3-7: the factory line cut in whole
+
+    // c3-8: the four places, as they are named
+    ["#c3-s1", "#c3-s2", "#c3-s3", "#c3-s4"].forEach((s) => tl.set(s, { opacity: 0 }, 46.25));
+    fadeIn("#c3-s1", 50.1, 0.5);
+    fadeIn("#c3-s2", 51.1, 0.5);
+    fadeIn("#c3-s3", 51.8, 0.5);
+    fadeIn("#c3-s4", 53.0, 0.5);
+
+    // c3-9: both habits; c3-9c: the last sentence, banded
+    tl.set(["#c3-i1", "#c3-i2", "#c3-treat"], { opacity: 0 }, 56.5);
+    fadeIn("#c3-i1", 59.9, 0.5);
+    fadeIn("#c3-i2", 62.8, 0.5);
+    fadeIn("#c3-treat", 66.2, 0.5);
+    band("#c3-treat-s", 66.5);
+
+    // c3-10b: the generated id label only
+    tl.set(["#c3-gen", "#c3-clock", "#c3-row", "#c3-fake"], { opacity: 0 }, 72.39);
+    fadeIn("#c3-gen", 84.2, 0.5);
+
+    // c3-10c: a clock face beside a slow test row; fake timers stop the sweep
+    fadeOut("#c3-gen", 91.7, 0.4);
+    fadeIn("#c3-clock", 92.4, 0.5);
+    fadeIn("#c3-row", 93.5, 0.5);
+    tl.fromTo("#c3-hand", { rotation: 0, svgOrigin: "160 160" }, { rotation: 300, svgOrigin: "160 160", duration: 5.3, ease: "none" }, 93.5);
+    tl.fromTo("#c3-row-bar", { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 0.55, duration: 5.3, ease: "none" }, 93.5);
+    tl.to("#c3-row-bar", { scaleX: 1, duration: 0.3, ease: "power2.inOut" }, 98.8);
+    tl.to("#c3-row-dot", { backgroundColor: "#5f584d", duration: 0.3 }, 98.8);
+    fadeIn("#c3-fake", 98.9, 0.5);
+
+    // c3-11b: rename a field, the test goes red; break the behaviour, the test stays green
+    tl.set(["#c3-demo", "#c3-fb", "#c3-bb", "#c3-pf", "#c3-o1", "#c3-o2", "#c3-o3", "#c3-o4", "#c3-setinput"], { opacity: 0 }, 101.62);
+    fadeIn("#c3-demo", 109.8, 0.5);
+    tl.to("#c3-fa", { opacity: 0, duration: 0.3 }, 110.6);
+    tl.to("#c3-fb", { opacity: 1, duration: 0.3 }, 110.6);
+    tl.to("#c3-pa", { opacity: 0, duration: 0.3 }, 111.2);
+    tl.to("#c3-pf", { opacity: 1, duration: 0.3 }, 111.2);
+    tl.to(["#c3-fb", "#c3-pf"], { opacity: 0, duration: 0.3 }, 113.4);
+    tl.to(["#c3-fa", "#c3-pa"], { opacity: 1, duration: 0.3 }, 113.4);
+    tl.to("#c3-ba", { opacity: 0, duration: 0.3 }, 114.1);
+    tl.to("#c3-bb", { opacity: 1, duration: 0.3 }, 114.1);
+    tl.to("#c3-beh", { borderColor: "#a3222c", color: "#a3222c", duration: 0.3 }, 114.1);
+    tl.to("#c3-pa", { scale: 1.08, duration: 0.2, ease: "power2.inOut", yoyo: true, repeat: 1 }, 116.3);
+
+    // c3-12: four observable effects, then setInput from chapter 0
+    fadeOut("#c3-demo", 117.75, 0.4);
+    fadeIn("#c3-o1", 121.7, 0.5);
+    fadeIn("#c3-o2", 122.5, 0.5);
+    fadeIn("#c3-o3", 123.2, 0.5);
+    fadeIn("#c3-o4", 123.6, 0.5);
+    fadeIn("#c3-setinput", 124.4, 0.5);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c3-q1", "#c3-q2", "#c3-q3", "#c3-q4"].forEach((q, i) => fadeIn(q, 127.8 + i * 0.6));
+    fadeIn("#c3-pause-2", 147.1);
+
+    // after the lesson: compare the table; then the last sentence banded
+    fadeIn("#c3-after-title", 150.3, 0.4);
+    fadeIn("#c3-a1", 150.7, 0.4);
+    tl.set("#c3-a2", { opacity: 0 }, 150.15);
+    fadeIn("#c3-a2", 156.6, 0.4);
+    band("#c3-a2", 156.7);
+
+    // close: 18:00, the lights go down and stay down to the last frame
+    fadeIn("#c3-closed", 163.6);
+    tl.fromTo("#c3-lights", { opacity: 0 }, { opacity: 0.62, duration: 2.6, ease: "power2.inOut" }, 165.4);
+
+    window.__timelines["c3"] = tl;
+  </script>
+</template>

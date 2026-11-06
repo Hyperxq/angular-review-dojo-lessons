@@ -1,0 +1,416 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c4-svg { position: absolute; left: 0; top: 0; }
+    .c4-fb { height: 120px; box-sizing: border-box; padding: 0 28px; display: grid; place-items: center; }
+    code { font-family: var(--font-code); font-size: 0.92em; }
+    .c4-h { position: absolute; left: 200px; top: 110px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c4-h code { font-size: 0.86em; }
+    .c4-hl { border-radius: 4px; }
+    .c4-text { position: absolute; left: 200px; width: 1520px; font: 400 40px/1.45 var(--font-text); }
+
+    #c4-phone { position: absolute; left: 300px; top: 70px; width: 470px; height: 940px; box-sizing: border-box; border: 14px solid var(--ink); border-radius: 56px; background: var(--paper-raised); overflow: hidden; }
+    #c4-ph-bar { height: 64px; display: flex; align-items: center; padding: 0 36px; font: 700 30px/1 var(--font-text); font-variant-numeric: tabular-nums; }
+    #c4-ph-title { padding: 16px 32px 0; font: 600 52px/1.1 var(--font-display); }
+    #c4-ph-search { margin: 22px 28px 12px; height: 72px; box-sizing: border-box; padding: 0 22px; display: flex; align-items: center; border: 2px solid var(--rule-strong); border-radius: 8px; font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+    .c4-ph-row { padding: 20px 32px; border-bottom: 1px solid var(--rule); }
+    .c4-ph-row b { display: block; font: 700 32px/1.2 var(--font-text); }
+    .c4-ph-row span { display: block; margin-top: 6px; font: 400 28px/1.2 var(--font-text); color: var(--ink-muted); }
+    #c4-costs { position: absolute; left: 900px; top: 300px; width: 860px; }
+    .c4-cost { display: grid; grid-template-columns: 70px 1fr; margin-bottom: 44px; }
+    .c4-cost b { font: 700 48px/1.1 var(--font-text); color: var(--ink-muted); }
+    .c4-cost span { font: 600 56px/1.1 var(--font-display); }
+    .c4-cost .label { display: block; margin-top: 10px; font: 400 32px/1.3 var(--font-text); }
+
+    #c4-steps { position: absolute; left: 200px; top: 250px; width: 1520px; }
+    .c4-st { display: grid; grid-template-columns: 56px 1fr; margin-bottom: 26px; font: 400 34px/1.4 var(--font-text); }
+    .c4-st > b { color: var(--ink-muted); }
+    #c4-decide { position: absolute; left: 200px; top: 820px; width: 1520px; font: 400 34px/1.4 var(--font-text); }
+
+    .c4-node { font-size: 36px; padding: 21px 30px; box-sizing: border-box; }
+    .c4-node .badge { font-size: 30px; }
+
+    .c4-tab { position: absolute; left: 120px; width: 1680px; display: grid; font: 400 30px/1.35 var(--font-text); }
+    .c4-tab > div { display: contents; }
+    .c4-tab > div > span { padding: 18px 24px; border-bottom: 1px solid var(--rule); }
+    .c4-tab > div > span:first-child { font: 400 28px/1.5 var(--font-code); white-space: pre-wrap; }
+    .c4-tab .th > span { font: 700 30px/1.3 var(--font-text) !important; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong) !important; }
+    #c4-parts > div > span { padding: 12px 24px; }
+
+    .c4-code { left: 104px; width: 1712px; box-sizing: border-box; padding: 40px 44px; font-size: 32px; line-height: 48px; }
+    .c4-code .ln { position: relative; }
+    .c4-band { position: absolute; left: 0; right: 0; top: 40px; height: 48px; background: var(--accent-soft); }
+    .c4-code.small { font-size: 28px; line-height: 42px; }
+    .c4-code.mid { font-size: 30px; line-height: 45px; }
+    .c4-file { position: absolute; left: 200px; font: 700 30px/1 var(--font-code); color: var(--ink-muted); }
+
+    #c4-para { position: absolute; left: 200px; top: 270px; width: 1520px; font: 400 42px/1.5 var(--font-text); }
+    #c4-para span { border-radius: 4px; }
+    #c4-nots { position: absolute; left: 176px; top: 270px; width: 1560px; }
+    .c4-not { display: grid; grid-template-columns: 56px 1fr; margin-bottom: 36px; font: 400 40px/1.45 var(--font-text); }
+    .c4-not > b { color: var(--ink-muted); }
+
+    #c4-chip { display: inline-block; padding: 4px 14px; border-radius: 6px; font: 400 36px/1.4 var(--font-code); }
+
+    #c4-after-title { position: absolute; left: 200px; top: 150px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+    #c4-after-p { position: absolute; left: 200px; top: 340px; width: 1500px; font: 400 44px/1.5 var(--font-text); }
+    #c4-after-p span { border-radius: 4px; }
+    #c4-closed { position: absolute; left: 80px; top: 280px; font: 600 88px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c4-lights { position: absolute; inset: 0; background: var(--ink); }
+
+    .q { font-size: 38px; margin-bottom: 22px; }
+    .q-list { top: 240px; }
+  </style>
+
+  <div id="root" data-composition-id="c4" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c4-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">16:00</div>
+      <div class="chapter-title">What goes in the first bundle</div>
+    </div>
+
+    <!-- c4-1: the catalog page in a phone frame; the three costs -->
+    <div id="c4-mobile" class="clip world" data-start="3" data-duration="10.08">
+      <div id="c4-phone">
+        <div id="c4-ph-bar">16:00</div>
+        <div id="c4-ph-title">Catalog</div>
+        <div id="c4-ph-search">Search the catalog</div>
+        <div class="c4-ph-row"><b>Middlemarch</b><span>George Eliot</span></div>
+        <div class="c4-ph-row"><b>Kokoro</b><span>Natsume Sōseki</span></div>
+        <div class="c4-ph-row"><b>Pedro Páramo</b><span>Juan Rulfo</span></div>
+        <div class="c4-ph-row"><b>Persuasion</b><span>Jane Austen</span></div>
+        <div class="c4-ph-row"><b>The Waves</b><span>Virginia Woolf</span></div>
+      </div>
+      <div id="c4-costs" data-hold>
+        <div id="c4-k1" class="c4-cost"><b>1</b><span>the download</span></div>
+        <div id="c4-k2" class="c4-cost"><b>2</b><span>the parse and compile<span class="label">which block the main thread</span></span></div>
+        <div id="c4-k3" class="c4-cost"><b>3</b><span>the execution</span></div>
+      </div>
+    </div>
+
+    <!-- c4-2: How to observe it, steps 1 to 3 -->
+    <div id="c4-observe" class="clip world" data-start="13.08" data-duration="9.69">
+      <div class="c4-h">How to observe it</div>
+      <div id="c4-steps">
+        <div id="c4-s1" class="c4-st"><b>1.</b><span>Run <code>ng build</code> and read the "Initial chunk files" and "Lazy chunk files" tables. A page or helper you expected to be lazy should have its own lazy chunk.</span></div>
+        <div id="c4-s2" class="c4-st"><b>2.</b><span>Run <code>ng build --stats-json</code>, open the generated <code>stats.json</code> in https://esbuild.github.io/analyze/, and look for the module in question: the analyzer shows which chunk it is in and which import brought it there.</span></div>
+        <div id="c4-s3" class="c4-st"><b>3.</b><span>In the browser, open the Network panel filtered to JS, reload, and check what downloads before you interact. Scroll, click, and navigate, and watch the lazy chunks arrive when they should. After the app settles, anything that keeps downloading without a click is preloading.</span></div>
+      </div>
+      <div id="c4-decide" data-hold>Then decide whether it matters: a 3 kB chunk moved out of the initial bundle will not show in any metric; <span id="c4-200" class="c4-hl">200 kB will.</span></div>
+    </div>
+
+    <!-- c4-3, c4-3b: the import graph from LESSON.md, top-down, then the lazy chunks -->
+    <div id="c4-graph" class="clip world sunk" data-start="22.77" data-duration="16.36">
+      <svg class="c4-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#c4b9a6" stroke-width="4">
+        <path id="c4-g1" pathLength="1" d="M555 290 V370" />
+        <path id="c4-g2" pathLength="1" d="M555 460 V540" />
+        <path id="c4-g3" pathLength="1" d="M555 630 V680 H320 V730" />
+        <path id="c4-g4" pathLength="1" d="M555 630 V680 H780 V730" />
+        <path id="c4-g5" pathLength="1" d="M1130 290 V355 H1180" />
+        <path id="c4-g6" pathLength="1" d="M1130 530 V595 H1180" />
+        <path id="c4-g7" pathLength="1" d="M1130 770 V835 H1180" />
+      </svg>
+      <div id="c4-n-main" class="node c4-node" style="left: 345px; top: 200px; width: 420px; text-align: center">main.js<span class="badge">[initial]</span></div>
+      <div id="c4-n-app" class="node c4-node" style="left: 375px; top: 370px; width: 360px; text-align: center">app.routes.ts</div>
+      <div id="c4-n-cat" class="node c4-node" style="left: 315px; top: 540px; width: 480px; text-align: center">catalog.routes.ts</div>
+      <div id="c4-n-page" class="node c4-node" style="left: 120px; top: 730px; width: 400px; text-align: center">catalog-page.ts</div>
+      <div id="c4-n-filt" class="node c4-node" style="left: 560px; top: 730px; width: 440px; text-align: center">shelf-filters.ts</div>
+      <div id="c4-n-l1" class="node c4-node" style="left: 1080px; top: 200px; width: 720px">chunk-members.js<span class="badge">[lazy]</span></div>
+      <div id="c4-n-l1c" class="node c4-node" style="left: 1180px; top: 310px; width: 420px">members-page.ts</div>
+      <div id="c4-n-l2" class="node c4-node" style="left: 1080px; top: 440px; width: 720px">chunk-loan-history.js<span class="badge">[lazy]</span></div>
+      <div id="c4-n-l2c" class="node c4-node" style="left: 1180px; top: 550px; width: 420px">loan-history.ts</div>
+      <div id="c4-n-l3" class="node c4-node" style="left: 1080px; top: 680px; width: 720px">chunk-receipt-printer.js<span class="badge">[lazy]</span></div>
+      <div id="c4-n-l3c" class="node c4-node" style="left: 1180px; top: 790px; width: 460px" data-hold>receipt-printer.ts</div>
+    </div>
+
+    <!-- c4-4: Tool / Splits off / Fetched, rows one by one; then printReceipts -->
+    <div id="c4-tools" class="clip world" data-start="39.13" data-duration="8.09">
+      <div id="c4-tooltab" class="c4-tab" style="top: 90px; grid-template-columns: 900px 400px 380px">
+        <div id="c4-tt0" class="th"><span>Tool</span><span>Splits off</span><span>Fetched</span></div>
+        <div id="c4-tt1"><span>loadComponent: () =&gt; import('./x').then((m) =&gt; m.Page)</span><span>one routed page</span><span>on the first navigation to it</span></div>
+        <div id="c4-tt2"><span>loadChildren: () =&gt; import('./x.routes').then((m) =&gt; m.ROUTES)</span><span>a group of routes</span><span>on the first navigation into the group</span></div>
+        <div id="c4-tt3"><span>@defer<span style="font-family: var(--font-text); font-size: 30px"> in a template</span></span><span>the components used inside the block</span><span>when a trigger fires</span></div>
+        <div id="c4-tt4"><span>await import('./x')<span style="font-family: var(--font-text); font-size: 30px"> in code</span></span><span>a module used by one action</span><span>when the code runs</span></div>
+      </div>
+      <div id="c4-print" class="code c4-code small" style="top: 720px" data-hold>
+        <span class="ln"><span class="k">protected async</span> printReceipts() {</span>
+        <span class="ln">  <span class="k">const</span> { renderReceipts } = <span class="k">await import</span>(<span class="s">'./receipt-printer'</span>);</span>
+        <span class="ln">  <span class="k">this</span>.printed.set(renderReceipts(<span class="k">this</span>.loans()).length);</span>
+        <span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c4-5: the @defer parts table -->
+    <div id="c4-defer" class="clip world" data-start="47.22" data-duration="7.35">
+      <div id="c4-parts" class="c4-tab" style="top: 110px; grid-template-columns: 760px 920px" data-hold>
+        <div class="th"><span>Part</span><span>What it does</span></div>
+        <div><span>on idle</span><span>load when the browser is idle</span></div>
+        <div><span>on viewport</span><span>load when the block (or its placeholder) scrolls into view</span></div>
+        <div><span>on interaction / on hover</span><span>load when the user clicks or hovers the trigger element</span></div>
+        <div><span>on immediate / on timer(2s)</span><span>load right after rendering, or after a delay</span></div>
+        <div><span>when condition</span><span>load when an expression becomes truthy</span></div>
+        <div id="c4-p-pre"><span class="c4-hl">prefetch on ... / prefetch when ...</span><span class="c4-hl">download the chunk earlier than it is shown</span></div>
+        <div id="c4-p-ph"><span class="c4-hl">@placeholder (minimum 500ms)</span><span class="c4-hl">shown before the trigger; optional minimum display time</span></div>
+        <div id="c4-p-ld"><span class="c4-hl">@loading (after 100ms; minimum 300ms)</span><span class="c4-hl">shown while the chunk downloads; <code>after</code> hides it for fast loads, <code>minimum</code> avoids a flash</span></div>
+        <div id="c4-p-er"><span class="c4-hl">@error</span><span class="c4-hl">shown if the download fails</span></div>
+      </div>
+    </div>
+
+    <!-- c4-6, c4-6b: the member page @defer, then the states flow -->
+    <div id="c4-states" class="clip world" data-start="54.57" data-duration="12.97">
+      <div class="code c4-code" style="top: 80px">
+        <div id="c4-band1" class="c4-band"></div>
+        <span class="ln"><span class="k">@defer</span> (on interaction) {</span>
+        <span class="ln">  &lt;app-loan-history [member]=<span class="s">"member()"</span> /&gt;</span>
+        <span class="ln">} <span class="k">@placeholder</span> (minimum <span class="n">500ms</span>) {</span>
+        <span class="ln">  &lt;button type=<span class="s">"button"</span>&gt;Show history&lt;/button&gt;</span>
+        <span class="ln">}</span>
+      </div>
+      <svg class="c4-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#1d1b18" stroke-width="4">
+        <g id="c4-e1"><path pathLength="1" d="M440 610 H762" /><polygon points="780,610 762,600 762,620" fill="#1d1b18" stroke="none" /></g>
+        <g id="c4-e2"><path pathLength="1" d="M1040 610 H1422" /><polygon points="1440,610 1422,600 1422,620" fill="#1d1b18" stroke="none" /></g>
+        <g id="c4-e3"><path pathLength="1" d="M910 670 V802" /><polygon points="910,820 900,802 920,802" fill="#1d1b18" stroke="none" /></g>
+      </svg>
+      <div id="c4-f1" class="fbox c4-fb" style="left: 120px; top: 550px; width: 320px">placeholder</div>
+      <div id="c4-f2" class="fbox c4-fb" style="left: 780px; top: 550px; width: 260px">loading</div>
+      <div id="c4-f3" class="fbox c4-fb" style="left: 1440px; top: 550px; width: 300px">complete</div>
+      <div id="c4-f4" class="fbox c4-fb" style="left: 780px; top: 820px; width: 260px">error</div>
+      <div id="c4-fl1" class="flabel" style="left: 450px; top: 470px; width: 320px">the trigger fires and the chunk is requested</div>
+      <div id="c4-fl2" class="flabel" style="left: 1050px; top: 500px; width: 380px">the chunk arrived, the main content renders</div>
+      <div id="c4-fl3" class="flabel" style="left: 940px; top: 720px; width: 480px; text-align: left" data-hold>the chunk failed to download</div>
+    </div>
+
+    <!-- c4-7: How the compiler decides -->
+    <div id="c4-compiler" class="clip world" data-start="67.54" data-duration="9.88">
+      <div class="c4-h">How the compiler decides</div>
+      <div id="c4-para" data-hold>It can move a component into a deferred chunk <span id="c4-cd1">only when the component is standalone and the <code>@defer</code> blocks of that template are its only uses.</span> <span id="c4-cd2">Any runtime reference to the class outside the block keeps the static import.</span> Type annotations do not count, but any other symbol imported in the same <code>import { ... }</code> line does.</div>
+    </div>
+
+    <!-- c4-8: When not to defer -->
+    <div id="c4-whennot" class="clip world" data-start="77.42" data-duration="7.44">
+      <div class="c4-h">When not to defer</div>
+      <div id="c4-nots">
+        <div id="c4-x1" class="c4-not"><b>·</b><span>content above the fold: deferring it delays LCP and usually causes a layout shift;</span></div>
+        <div id="c4-x2" class="c4-not"><b>·</b><span>tiny components: the extra round trip costs more than the bytes saved;</span></div>
+        <div id="c4-x3" class="c4-not" data-hold><b>·</b><span>with server-side rendering, the server renders the <code>@placeholder</code>, not the deferred content. For server-rendered content that should only become interactive later, look at <code>hydrate on ...</code> triggers (incremental hydration) instead.</span></div>
+      </div>
+    </div>
+
+    <!-- c4-9: a barrel; registerLocaleData(localeFr) banded -->
+    <div id="c4-barrel" class="clip world" data-start="84.86" data-duration="12.12">
+      <div class="c4-h">Barrels and side effects</div>
+      <div class="c4-file" style="top: 240px">index.ts</div>
+      <div class="code c4-code mid" style="left: 200px; width: 760px; top: 290px">
+        <span class="ln"><span class="k">export</span> * <span class="k">from</span> <span class="s">'./...'</span></span>
+        <span class="ln"><span class="k">export</span> * <span class="k">from</span> <span class="s">'./...'</span></span>
+        <span class="ln"><span class="k">export</span> * <span class="k">from</span> <span class="s">'./...'</span></span>
+      </div>
+      <div id="c4-b1" class="c4-text" style="left: 1040px; width: 700px; top: 290px; font-size: 38px">Import one constant from it and the bundler has to include and analyse every module it re-exports.</div>
+      <div id="c4-b2" class="c4-text" style="top: 550px; font-size: 38px">Tree shaking can drop exports nobody uses, but it must keep any module with top-level side effects: code that runs when the file is evaluated, such as <span id="c4-chip">registerLocaleData(localeFr)</span> at the top of a file, or a polyfill that patches a global.</div>
+      <div id="c4-b3" class="c4-text" style="top: 850px; font-size: 38px" data-hold>Import from the file that defines what you need, especially in code that belongs to the first screen.</div>
+    </div>
+
+    <!-- c4-10: PreloadingStrategy, then Strategy / Pro / Con -->
+    <div id="c4-preload" class="clip world" data-start="96.98" data-duration="10.72">
+      <div class="code c4-code mid" style="top: 90px">
+        <span class="ln"><span class="k">abstract class</span> PreloadingStrategy {</span>
+        <span class="ln">  <span class="k">abstract</span> preload(route: Route, fn: () =&gt; Observable&lt;any&gt;): Observable&lt;any&gt;;</span>
+        <span class="ln">}</span>
+      </div>
+      <div id="c4-strat" class="c4-tab" style="top: 400px; grid-template-columns: 480px 540px 660px; font-size: 32px" data-hold>
+        <div id="c4-sr0" class="th"><span>Strategy</span><span>Pro</span><span>Con</span></div>
+        <div id="c4-sr1"><span style="font-family: var(--font-text); font-size: 32px">none (default)</span><span>no extra traffic</span><span>the first visit to each lazy route waits for its chunk</span></div>
+        <div id="c4-sr2"><span>PreloadAllModules</span><span>instant navigation, one line</span><span>every visitor downloads every route, including ones only a few people open</span></div>
+        <div id="c4-sr3"><span style="font-family: var(--font-text); font-size: 32px">your own, per route</span><span>pay for the likely next pages only</span><span><span id="c4-keep" class="c4-hl">someone must keep the decision up to date</span></span></div>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c4-questions" class="clip world note" data-start="107.7" data-duration="36.5">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c4-q1" class="q">Which modules are in the initial chunk files? For each one, does the first screen need it?</div>
+        <div id="c4-q2" class="q">For each route: what does the Network panel download on the first navigation to it, and who uses that page?</div>
+        <div id="c4-q3" class="q">For each <code>@defer</code> block, or each place that should have one: when does it load, what does the user see before, and does the layout move when it arrives?</div>
+        <div id="c4-q4" class="q">How would you prove a deferred block really got its own chunk?</div>
+        <div id="c4-q5" class="q">Does any import go through a barrel? What else does that barrel bring along?</div>
+        <div id="c4-q6" class="q">Which routes get preloaded, for whom, and on what kind of connection?</div>
+        <div id="c4-q7" class="q">What would you measure, on what device, to show this matters?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c4-pause" class="clip world" data-start="144.2" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c4-pause-2" class="pause-2" data-hold>Now do exercise 04.</div>
+    </div>
+
+    <!-- c4-after, c4-afterb: the "After the lesson" card -->
+    <div id="c4-after" class="clip world" data-start="147.7" data-duration="13.43">
+      <div id="c4-after-title">After the lesson</div>
+      <div id="c4-after-p" data-hold><span id="c4-a1">When you finish an exercise, read its <code>SOLUTION.md</code> on the <code>solutions</code> branch and compare it with your fix.</span> <span id="c4-a2">For the problems no test can catch, take the measurement from the chapter before and after your fix.</span> <span id="c4-a3" data-hold>Then write, in two sentences, the PR comment you would leave for the author.</span></div>
+    </div>
+
+    <!-- c4-close: 18:00, the desk closes, lights down to the end -->
+    <div id="c4-close" class="clip world" data-start="161.13" data-duration="3.56">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock" style="color: var(--accent)">18:00</span></div>
+        <div class="app-body">
+          <div id="c4-closed">Opens again at 09:00</div>
+        </div>
+      </div>
+      <div id="c4-lights" data-hold></div>
+    </div>
+
+    <audio id="c4-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="60" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c4-bed2" class="clip" src="assets/music/bed.mp3" data-start="107.7" data-duration="36.5" data-media-start="68" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c4-1" class="clip" src="assets/vo/c4-1.wav" data-start="3.0" data-duration="9.728" data-volume="1"></audio>
+    <audio id="vo-c4-2" class="clip" src="assets/vo/c4-2.wav" data-start="13.08" data-duration="9.344" data-volume="1"></audio>
+    <audio id="vo-c4-3" class="clip" src="assets/vo/c4-3.wav" data-start="22.77" data-duration="7.509" data-volume="1"></audio>
+    <audio id="vo-c4-3b" class="clip" src="assets/vo/c4-3b.wav" data-start="30.63" data-duration="8.149" data-volume="1"></audio>
+    <audio id="vo-c4-4" class="clip" src="assets/vo/c4-4.wav" data-start="39.13" data-duration="7.744" data-volume="1"></audio>
+    <audio id="vo-c4-5" class="clip" src="assets/vo/c4-5.wav" data-start="47.22" data-duration="6.997" data-volume="1"></audio>
+    <audio id="vo-c4-6" class="clip" src="assets/vo/c4-6.wav" data-start="54.57" data-duration="6.08" data-volume="1"></audio>
+    <audio id="vo-c4-6b" class="clip" src="assets/vo/c4-6b.wav" data-start="61.0" data-duration="6.187" data-volume="1"></audio>
+    <audio id="vo-c4-7" class="clip" src="assets/vo/c4-7.wav" data-start="67.54" data-duration="9.536" data-volume="1"></audio>
+    <audio id="vo-c4-8" class="clip" src="assets/vo/c4-8.wav" data-start="77.42" data-duration="7.083" data-volume="1"></audio>
+    <audio id="vo-c4-9" class="clip" src="assets/vo/c4-9.wav" data-start="84.86" data-duration="11.776" data-volume="1"></audio>
+    <audio id="vo-c4-10" class="clip" src="assets/vo/c4-10.wav" data-start="96.98" data-duration="10.368" data-volume="1"></audio>
+    <audio id="vo-c4-end" class="clip" src="assets/vo/c4-end.wav" data-start="107.7" data-duration="2.325" data-volume="1"></audio>
+    <audio id="vo-c4-after" class="clip" src="assets/vo/c4-after.wav" data-start="148.05" data-duration="7.723" data-volume="1"></audio>
+    <audio id="vo-c4-afterb" class="clip" src="assets/vo/c4-afterb.wav" data-start="156.12" data-duration="4.651" data-volume="1"></audio>
+    <audio id="vo-c4-close" class="clip" src="assets/vo/c4-close.wav" data-start="161.13" data-duration="2.56" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const draw = (sel, at, d = 0.4) => {
+      tl.fromTo(sel + " path", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+      tl.fromTo(sel + " polygon", { opacity: 0 }, { opacity: 1, duration: 0.12 }, at + d - 0.08);
+    };
+    const line = (sel, at, d = 0.3) =>
+      tl.fromTo(sel, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: CLEAR, duration: 0.4 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c4-1: the phone; the three costs as they are named
+    fadeIn("#c4-phone", 3.15, 0.5);
+    fadeIn("#c4-k1", 9.6, 0.4);
+    fadeIn("#c4-k2", 10.2, 0.4);
+    fadeIn("#c4-k3", 11.4, 0.4);
+
+    // c4-2: steps 1 to 3 as they are named; then whether it matters
+    fadeIn("#c4-observe .c4-h", 13.2, 0.4);
+    fadeIn("#c4-s1", 14.9, 0.4);
+    fadeIn("#c4-s2", 16.0, 0.4);
+    fadeIn("#c4-s3", 17.1, 0.4);
+    tl.set("#c4-decide", { opacity: 0 }, 13.08);
+    fadeIn("#c4-decide", 18.4, 0.4);
+    band("#c4-200", 21.1);
+
+    // c4-3: the initial chunk draws top-down from main.js; the first cut on "dynamic import"
+    fadeIn("#c4-n-main", 23.6, 0.4);
+    line("#c4-g1", 24.2);
+    fadeIn("#c4-n-app", 24.4, 0.4);
+    line("#c4-g2", 24.9);
+    fadeIn("#c4-n-cat", 25.1, 0.4);
+    line("#c4-g3", 25.6);
+    line("#c4-g4", 25.6);
+    fadeIn("#c4-n-page", 25.8, 0.4);
+    fadeIn("#c4-n-filt", 25.95, 0.4);
+    tl.to("#c4-n-main", { borderColor: ACCENT, duration: 0.3 }, 27.2);
+    fadeIn("#c4-n-l1", 28.4, 0.4);
+    line("#c4-g5", 28.7);
+    fadeIn("#c4-n-l1c", 28.9, 0.4);
+    // c4-3b: all three lazy chunks
+    fadeIn("#c4-n-l2", 30.8, 0.4);
+    line("#c4-g6", 31.1);
+    fadeIn("#c4-n-l2c", 31.3, 0.4);
+    fadeIn("#c4-n-l3", 31.5, 0.4);
+    line("#c4-g7", 31.8);
+    fadeIn("#c4-n-l3c", 32.0, 0.4);
+
+    // c4-4: rows one by one as each tool is named; then printReceipts
+    fadeIn("#c4-tt0 span", 39.3, 0.4);
+    fadeIn("#c4-tt1 span", 40.8, 0.4);
+    fadeIn("#c4-tt2 span", 41.7, 0.4);
+    fadeIn("#c4-tt3 span", 42.8, 0.4);
+    fadeIn("#c4-tt4 span", 44.0, 0.4);
+    tl.set("#c4-print", { opacity: 0 }, 39.13);
+    fadeIn("#c4-print", 45.2, 0.4);
+
+    // c4-5: band on prefetch, then on the three blocks
+    band("#c4-p-pre span", 49.5);
+    unband("#c4-p-pre span", 51.8);
+    band(["#c4-p-ph span", "#c4-p-ld span", "#c4-p-er span"], 51.85);
+
+    // c4-6: the code; the states flow as the click is named; c4-6b: placeholder, then what replaces it
+    tl.fromTo("#c4-band1", { opacity: 0, y: 1 * 48 }, { opacity: 1, duration: 0.3 }, 56.4);
+    tl.to("#c4-band1", { opacity: 0, duration: 0.3, ease: "power2.in" }, 59.0);
+    fadeIn("#c4-f1", 59.3, 0.4);
+    draw("#c4-e1", 59.6, 0.3);
+    fadeIn("#c4-fl1", 59.7, 0.4);
+    fadeIn("#c4-f2", 59.9, 0.4);
+    draw("#c4-e3", 60.3, 0.3);
+    fadeIn("#c4-fl3", 60.4, 0.4);
+    fadeIn("#c4-f4", 60.6, 0.4);
+    tl.to("#c4-f1", { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 61.6);
+    draw("#c4-e2", 63.0, 0.3);
+    fadeIn("#c4-fl2", 63.1, 0.4);
+    fadeIn("#c4-f3", 63.3, 0.4);
+    tl.to("#c4-f3", { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 63.7);
+
+    // c4-7: the condition, then the runtime reference
+    fadeIn("#c4-compiler .c4-h", 67.65, 0.4);
+    band("#c4-cd1", 69.6);
+    unband("#c4-cd1", 73.5);
+    band("#c4-cd2", 73.55);
+
+    // c4-8: the three cases as they are named
+    fadeIn("#c4-whennot .c4-h", 77.55, 0.4);
+    fadeIn("#c4-x1", 77.7, 0.4);
+    fadeIn("#c4-x2", 78.6, 0.4);
+    fadeIn("#c4-x3", 79.5, 0.4);
+
+    // c4-9: the barrel, its cost, side effects banded, the rule
+    fadeIn("#c4-barrel .c4-h", 85.0, 0.4);
+    tl.set(["#c4-b1", "#c4-b2", "#c4-b3"], { opacity: 0 }, 84.86);
+    fadeIn("#c4-b1", 87.5, 0.5);
+    fadeIn("#c4-b2", 89.8, 0.5);
+    band("#c4-chip", 93.5);
+    fadeIn("#c4-b3", 94.4, 0.5);
+
+    // c4-10: the code; the rows as the strategies are named; the upkeep banded
+    tl.set(["#c4-sr0 span", "#c4-sr1 span", "#c4-sr2 span", "#c4-sr3 span"], { opacity: 0 }, 96.98);
+    fadeIn("#c4-sr0 span", 100.1, 0.4);
+    fadeIn("#c4-sr1 span", 101.9, 0.4);
+    fadeIn("#c4-sr2 span", 102.6, 0.4);
+    fadeIn("#c4-sr3 span", 103.3, 0.4);
+    band("#c4-keep", 105.3);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c4-q1", "#c4-q2", "#c4-q3", "#c4-q4", "#c4-q5", "#c4-q6", "#c4-q7"].forEach((q, i) => fadeIn(q, 107.95 + i * 0.6));
+    fadeIn("#c4-pause-2", 144.7);
+
+    // after the lesson: compare, measure; then the last sentence banded
+    fadeIn("#c4-after-title", 147.8, 0.4);
+    fadeIn("#c4-a1", 148.2, 0.4);
+    fadeIn("#c4-a2", 151.5, 0.4);
+    tl.set("#c4-a3", { opacity: 0 }, 147.7);
+    fadeIn("#c4-a3", 156.2, 0.4);
+    band("#c4-a3", 156.25);
+
+    // close: 18:00, the lights go down and stay down to the last frame
+    fadeIn("#c4-closed", 161.3);
+    tl.fromTo("#c4-lights", { opacity: 0 }, { opacity: 0.62, duration: 2.2, ease: "power2.inOut" }, 162.1);
+
+    window.__timelines["c4"] = tl;
+  </script>
+</template>

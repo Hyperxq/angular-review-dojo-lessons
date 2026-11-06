@@ -1,0 +1,304 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c1-h { position: absolute; left: 120px; top: 100px; width: 1680px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c1-h code { font: 600 50px/1 var(--font-code); }
+    .c1-txt { position: absolute; font: 400 38px/1.35 var(--font-text); }
+    .c1-txt code { font: 400 36px/1 var(--font-code); }
+    .c1-mut { color: var(--ink-muted); }
+
+    /* desk: waiting list */
+    #c1-list-title { position: absolute; left: 40px; top: 36px; font: 600 52px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c1-list { position: absolute; left: 40px; top: 136px; width: 1600px; }
+    .c1-wh { height: 56px; display: flex; align-items: center; border-bottom: 2px solid var(--rule-strong); font: 700 30px/1 var(--font-text); color: var(--ink-muted); }
+    .c1-wr { position: relative; height: 104px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 400 40px/1 var(--font-text); }
+    .c1-wn { width: 640px; padding-left: 28px; box-sizing: border-box; }
+    .c1-in { width: 640px; height: 68px; border: 2px solid var(--rule-strong); border-radius: 6px; background: var(--paper); box-sizing: border-box; }
+    #c1-outline { position: absolute; left: -8px; top: 158px; width: 1300px; height: 108px; border: 4px solid var(--accent); border-radius: 8px; box-sizing: border-box; }
+    #c1-li-tag { position: absolute; left: 1324px; top: 192px; font: 700 40px/1 var(--font-code); color: var(--accent); }
+
+    /* console */
+    #c1-console { position: absolute; left: 200px; top: 430px; width: 900px; height: 420px; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
+    .c1-con-head { height: 72px; padding: 0 32px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 700 32px/1 var(--font-text); }
+    .c1-cl { position: absolute; left: 32px; font: 400 38px/1 var(--font-code); }
+    .c1-cl .p { color: var(--ink-muted); margin-right: 18px; }
+    .c1-cl.r { color: var(--code-keyword); font-weight: 700; padding-left: 40px; }
+
+    /* @for code + DOM-only state */
+    #c1-for { left: 120px; top: 260px; font-size: 30px; line-height: 1.5; }
+    #c1-for .ln { position: relative; }
+    #c1-for-band { position: absolute; left: 0; right: 0; top: 85px; height: 180px; background: var(--accent-soft); }
+    #c1-brace { position: absolute; left: 1352px; top: 345px; width: 18px; height: 180px; border: 4px solid var(--rule-strong); border-right: 0; box-sizing: border-box; }
+    #c1-dom { position: absolute; left: 1392px; top: 336px; width: 428px; }
+    .c1-dl { font: 400 32px/1.3 var(--font-text); margin-bottom: 18px; }
+    .c1-dl code { font: 400 30px/1 var(--font-code); }
+
+    /* tables */
+    .c1-table { position: absolute; left: 120px; width: 1680px; }
+    .c1-tr { display: grid; border-bottom: 1px solid var(--rule); padding: 22px 0; font: 400 30px/1.3 var(--font-text); }
+    .c1-tr > div { padding-right: 28px; }
+    .c1-tr code { font: 400 30px/1.3 var(--font-code); }
+    .c1-th { font-weight: 700; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c1-track .c1-tr { grid-template-columns: 300px 310px 450px 620px; }
+    #c1-cost .c1-tr { grid-template-columns: 600px 150px 110px 200px 210px 410px; }
+
+    /* NOTE callout */
+    #c1-note { position: absolute; left: 120px; top: 730px; width: 1680px; padding: 30px 44px 34px; background: var(--note-soft); border-left: 10px solid var(--note); border-radius: 8px; box-sizing: border-box; font: 400 32px/1.4 var(--font-text); }
+    #c1-note .kind { font: 700 30px/1 var(--font-text); color: var(--note); letter-spacing: 0.06em; margin-bottom: 16px; }
+    #c1-note code { font: 400 30px/1.4 var(--font-code); }
+
+    /* views tree */
+    #c1-tree .node { padding: 0; height: 92px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; font: 700 38px/1 var(--font-text); }
+    .c1-dirty { position: absolute; font: 400 32px/1 var(--font-text); color: var(--ink-muted); }
+
+    /* feeRows code */
+    #c1-fee { left: 150px; top: 330px; font-size: 34px; line-height: 1.5; }
+    #c1-fee .ln { position: relative; }
+    #c1-fee-band { position: absolute; left: 0; right: 0; top: 40px; height: 51px; background: var(--accent-soft); }
+    .c1-ul { box-shadow: inset 0 -4px 0 rgba(29, 27, 24, 0); }
+
+    #c1-questions .q code { font: 400 40px/1 var(--font-code); }
+  </style>
+
+  <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c1-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c1-card-time" class="chapter-time">09:30</div>
+      <div id="c1-card-title" class="chapter-title">Identity in lists, and work in templates</div>
+    </div>
+
+    <!-- c1-1 the waiting list, a note input per row; c1-2 one row's <li> outlined -->
+    <div id="c1-desk" class="clip world" data-start="3" data-duration="14.59">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:30</span></div>
+        <div class="app-body">
+          <div id="c1-list-title">Waiting list</div>
+          <div id="c1-list" data-hold>
+            <div class="c1-wh"><div class="c1-wn">Member</div><div>Note</div></div>
+            <div class="c1-wr"><div class="c1-wn">Mara Lind</div><div class="c1-in"></div></div>
+            <div class="c1-wr"><div class="c1-wn">Tomás Ruiz</div><div class="c1-in"></div></div>
+            <div class="c1-wr"><div class="c1-wn">June Achebe</div><div class="c1-in"></div></div>
+            <div class="c1-wr"><div class="c1-wn">Ilse Brandt</div><div class="c1-in"></div></div>
+            <div class="c1-wr"><div class="c1-wn">Omar Haddad</div><div class="c1-in"></div></div>
+            <div id="c1-outline"></div>
+            <div id="c1-li-tag">&lt;li&gt;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-3 how to observe it: $0.isConnected in the console -->
+    <div id="c1-observe" class="clip world" data-start="17.59" data-duration="10.57">
+      <div class="c1-h">How to observe it</div>
+      <div id="c1-st1" class="c1-txt" style="left: 120px; top: 210px; width: 1680px">Select a row in the Elements panel, so the console knows it as <code>$0</code>.</div>
+      <div id="c1-st2" class="c1-txt" style="left: 120px; top: 290px; width: 1680px">Do the action (sort, filter, refresh), then run <code>$0.isConnected</code> in the console.</div>
+      <div id="c1-console" data-hold>
+        <div class="c1-con-head">Console</div>
+        <div id="c1-cmd1" class="c1-cl" style="top: 110px"><span class="p">&gt;</span>$0.isConnected</div>
+        <div id="c1-res1" class="c1-cl r" style="top: 170px">true</div>
+        <div id="c1-cmd2" class="c1-cl" style="top: 260px"><span class="p">&gt;</span>$0.isConnected</div>
+        <div id="c1-res2" class="c1-cl r" style="top: 320px">false</div>
+      </div>
+      <div id="c1-ann1" class="c1-txt" style="left: 1160px; top: 592px; width: 640px"><code>true</code> means Angular kept that node</div>
+      <div id="c1-ann2" class="c1-txt" style="left: 1160px; top: 742px; width: 640px" data-hold><code>false</code> means it destroyed it and created a new one</div>
+    </div>
+
+    <!-- c1-4 the waiting-list @for (LESSON.md); the DOM-only state beside its <li> -->
+    <div id="c1-li" class="clip world" data-start="28.16" data-duration="10.93">
+      <div class="c1-h">What <code>track</code> decides</div>
+      <div id="c1-for" class="code" data-hold>
+        <div id="c1-for-band"></div>
+        <span class="ln"><span class="k">@for</span> (member <span class="k">of</span> queue(); <span class="k">track</span> member.id) {</span>
+        <span class="ln">  &lt;<span class="k">li</span>&gt;</span>
+        <span class="ln">    {{ member.name }}</span>
+        <span class="ln">    &lt;<span class="k">input</span> [attr.aria-label]=<span class="s">"'Note for ' + member.name"</span> /&gt;</span>
+        <span class="ln">  &lt;/<span class="k">li</span>&gt;</span>
+        <span class="ln">}</span>
+      </div>
+      <div id="c1-brace"></div>
+      <div id="c1-dom" data-hold>
+        <div id="c1-d1" class="c1-dl">the text a user typed into an <code>&lt;input&gt;</code> you did not bind</div>
+        <div id="c1-d2" class="c1-dl">focus</div>
+        <div id="c1-d3" class="c1-dl">text selection</div>
+        <div id="c1-d4" class="c1-dl">scroll position</div>
+        <div id="c1-d5" class="c1-dl">a running CSS animation</div>
+      </div>
+    </div>
+
+    <!-- c1-5 the track table, rows one by one, no row accented; c1-5b the "Goes wrong when" column, then the NOTE callout (LESSON.md) -->
+    <div id="c1-trackw" class="clip world" data-start="39.09" data-duration="19.41">
+      <div class="c1-h">What <code>track</code> decides</div>
+      <div id="c1-track" class="c1-table" style="top: 210px" data-hold>
+        <div id="c1-th" class="c1-tr c1-th"><div class="c1-a"><code>track</code></div><div class="c1-a">"Same row" means</div><div class="c1-a">Fits</div><div id="c1-th4">Goes wrong when</div></div>
+        <div id="c1-r1" class="c1-tr"><div class="c1-b"><code>track book.id</code></div><div class="c1-b">same business key</div><div class="c1-b">almost every list</div><div>keys are not unique</div></div>
+        <div id="c1-r2" class="c1-tr"><div class="c1-b"><code>track $index</code></div><div class="c1-b">same position</div><div class="c1-b">static lists that never reorder or filter, with no DOM state</div><div>items move: each node keeps its DOM state but shows another item</div></div>
+        <div id="c1-r3" class="c1-tr"><div class="c1-b"><code>track book</code></div><div class="c1-b">same object reference</div><div class="c1-b">lists whose objects are kept and reused</div><div>the list is rebuilt with fresh copies: every row looks new, so every node is destroyed and created again</div></div>
+      </div>
+      <div id="c1-note" data-hold>
+        <div class="kind">NOTE</div>
+        <div>In dev mode Angular warns when tracking by identity recreated the whole collection: <code>NG0956: The configured tracking expression (track by identity) caused re-creation of the entire collection</code>. Keep the console open while you click around.</div>
+      </div>
+    </div>
+
+    <!-- c1-6 a listener marks its own view and every ancestor dirty (the NOTE holds into the clip's first 2.5 s) -->
+    <div id="c1-views" class="clip world" data-start="58.5" data-duration="6.34">
+      <div class="c1-h">When template expressions run</div>
+      <div id="c1-eval" class="c1-txt" style="left: 120px; top: 200px; width: 1680px">Everything inside <code>{{ }}</code> and <code>[binding]="..."</code> is evaluated each time Angular checks the view.</div>
+      <div id="c1-tree" data-hold>
+        <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+          <g stroke="#c4b9a6" stroke-width="4" fill="none">
+            <line x1="960" y1="452" x2="620" y2="560" />
+            <line x1="960" y1="452" x2="1380" y2="560" />
+            <line x1="620" y1="652" x2="380" y2="760" />
+            <line x1="620" y1="652" x2="860" y2="760" />
+          </g>
+        </svg>
+        <div id="c1-n-gp" class="node" style="left: 780px; top: 360px; width: 360px">grandparent</div>
+        <div id="c1-n-p" class="node" style="left: 490px; top: 560px; width: 260px">parent</div>
+        <div class="node dim" style="left: 1250px; top: 560px; width: 260px">sibling</div>
+        <div id="c1-n-c" class="node" style="left: 250px; top: 760px; width: 260px">child</div>
+        <div class="node dim" style="left: 730px; top: 760px; width: 260px">sibling</div>
+      </div>
+      <div id="c1-click" class="c1-dirty" style="left: 250px; top: 880px; font-family: var(--font-code); color: #1d1b18">(click)</div>
+      <div id="c1-dirty-c" class="c1-dirty" style="left: 530px; top: 790px">dirty</div>
+      <div id="c1-dirty-p" class="c1-dirty" style="left: 770px; top: 590px">dirty</div>
+      <div id="c1-dirty-gp" class="c1-dirty" style="left: 1160px; top: 390px">dirty</div>
+    </div>
+
+    <!-- c1-7 the cost table, rows one by one, no row accented -->
+    <div id="c1-costw" class="clip world" data-start="64.84" data-duration="7.99">
+      <div class="c1-h">When a template call is a problem</div>
+      <div id="c1-lead" class="c1-txt c1-mut" style="left: 120px; top: 190px; width: 1680px; font-size: 34px">Compare that with the frame budget (about 16 ms) and the INP target (200 ms or less):</div>
+      <div id="c1-cost" class="c1-table" style="top: 260px" data-hold>
+        <div id="c1-ch" class="c1-tr c1-th"><div>Case</div><div>Per call</div><div>Rows</div><div>Checks per click</div><div>Cost per click</div><div>Verdict</div></div>
+        <div id="c1-c1" class="c1-tr"><div><code>isOverdue(loan)</code> comparing two dates</div><div>~2 µs</div><div>12</div><div>1</div><div>~0.02 ms</div><div>irrelevant, leave it</div></div>
+        <div id="c1-c2" class="c1-tr"><div><code>formatFine(loan)</code> with <code>Intl.NumberFormat</code> created each call</div><div>~50 µs</div><div>500</div><div>2</div><div>~50 ms</div><div>visible on a slow phone</div></div>
+        <div id="c1-c3" class="c1-tr"><div>a fee rule that walks the loan history</div><div>~1 ms</div><div>200</div><div>1</div><div>~200 ms</div><div>the whole INP budget</div></div>
+      </div>
+      <div id="c1-illus" class="c1-txt c1-mut" style="left: 120px; top: 860px; width: 1680px; font-size: 34px" data-hold>The numbers are illustrations; yours come from the profiler.</div>
+    </div>
+
+    <!-- c1-8, c1-8b feeRows (LESSON.md), cut in whole; the band moves from computed to map -->
+    <div id="c1-feew" class="clip world" data-start="72.83" data-duration="18.73">
+      <div id="c1-fee" class="code" data-hold>
+        <div id="c1-fee-band"></div>
+        <span class="ln"><span class="k">protected readonly</span> feeRows = computed(() =&gt;</span>
+        <span class="ln">  <span id="c1-u-loans" class="c1-ul">this.loans()</span>.map((loan) =&gt; <span id="c1-u-wrap" class="c1-ul">({ loan, fee: this.fines.feeFor(loan) })</span>),</span>
+        <span class="ln">);</span>
+      </div>
+      <div id="c1-pipe" class="c1-txt" style="left: 150px; top: 640px; width: 1620px; font-size: 40px" data-hold>Angular calls <code>transform</code> again only when an argument changes by reference.</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c1-questions" class="clip world note" data-start="91.56" data-duration="21.8">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c1-q1" class="q">Sort, filter and refresh each list. Which DOM nodes survive (<code>$0.isConnected</code>), and does the DOM state in each row stay with the right item?</div>
+        <div id="c1-q2" class="q">For each <code>@for</code>: what does its <code>track</code> key identify?</div>
+        <div id="c1-q3" class="q">Which template expressions call a function? How long does one call take, times how many rows, times how many checks per click?</div>
+        <div id="c1-q4" class="q">What would you measure, on what device, to show this matters?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c1-pause" class="clip world" data-start="113.36" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c1-pause-2" class="pause-2">Now do exercise 01.</div>
+    </div>
+
+    <audio id="c1-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="47" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-bed2" class="clip" src="assets/music/bed.mp3" data-start="91.56" data-duration="21.8" data-media-start="62" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c1-1" class="clip" src="assets/vo/c1-1.wav" data-start="3.0" data-duration="6.528" data-volume="1"></audio>
+    <audio id="vo-c1-2" class="clip" src="assets/vo/c1-2.wav" data-start="9.88" data-duration="7.36" data-volume="1"></audio>
+    <audio id="vo-c1-3" class="clip" src="assets/vo/c1-3.wav" data-start="17.59" data-duration="10.219" data-volume="1"></audio>
+    <audio id="vo-c1-4" class="clip" src="assets/vo/c1-4.wav" data-start="28.16" data-duration="10.581" data-volume="1"></audio>
+    <audio id="vo-c1-5" class="clip" src="assets/vo/c1-5.wav" data-start="39.09" data-duration="9.387" data-volume="1"></audio>
+    <audio id="vo-c1-5b" class="clip" src="assets/vo/c1-5b.wav" data-start="48.83" data-duration="6.805" data-volume="1"></audio>
+    <audio id="vo-c1-6" class="clip" src="assets/vo/c1-6.wav" data-start="55.98" data-duration="8.512" data-volume="1"></audio>
+    <audio id="vo-c1-7" class="clip" src="assets/vo/c1-7.wav" data-start="64.84" data-duration="7.637" data-volume="1"></audio>
+    <audio id="vo-c1-8" class="clip" src="assets/vo/c1-8.wav" data-start="72.83" data-duration="8.832" data-volume="1"></audio>
+    <audio id="vo-c1-8b" class="clip" src="assets/vo/c1-8b.wav" data-start="82.01" data-duration="9.195" data-volume="1"></audio>
+    <audio id="vo-c1-end" class="clip" src="assets/vo/c1-end.wav" data-start="91.56" data-duration="2.347" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const hot = (sel, at) => tl.to(sel, { borderColor: "#b8321f", backgroundColor: "#f5e2d9", duration: 0.3 }, at);
+    const ul = (sel, at, on) => tl.to(sel, { boxShadow: on ? "inset 0 -4px 0 rgba(29,27,24,1)" : "inset 0 -4px 0 rgba(29,27,24,0)", duration: 0.3 }, at);
+
+    // chapter card: on screen from frame 0, time label static
+
+    // c1-1: the waiting list as it is named; it stays still
+    fadeIn("#c1-list", 6.4);
+    // c1-2: one row's <li>
+    fadeIn("#c1-outline", 13.5, 0.4);
+    fadeIn("#c1-li-tag", 13.65, 0.4);
+
+    // c1-3: select, act, run; true, then false
+    fadeIn("#c1-st1", 17.7);
+    fadeIn("#c1-st2", 19.9);
+    fadeIn("#c1-console", 21.0, 0.4);
+    fadeIn("#c1-cmd1", 21.2, 0.3);
+    fadeIn("#c1-res1", 23.4, 0.3);
+    fadeIn("#c1-ann1", 23.55);
+    fadeIn("#c1-cmd2", 25.1, 0.3);
+    fadeIn("#c1-res2", 25.2, 0.3);
+    fadeIn("#c1-ann2", 25.3);
+
+    // c1-4: the <li> banded, its DOM-only state beside it as named
+    fadeIn("#c1-for-band", 28.3, 0.3);
+    fadeIn("#c1-brace", 28.45, 0.3);
+    fadeIn("#c1-d1", 28.6, 0.4);
+    fadeIn("#c1-d2", 30.4, 0.4);
+    fadeIn("#c1-d3", 30.9, 0.4);
+    fadeIn("#c1-d4", 31.7, 0.4);
+    fadeIn("#c1-d5", 31.85, 0.4);
+
+    // c1-5: rows one by one, all alike
+    fadeIn("#c1-th", 39.2, 0.4);
+    fadeIn("#c1-r1", 39.3, 0.4);
+    fadeIn("#c1-r2", 43.2, 0.4);
+    fadeIn("#c1-r3", 45.6, 0.4);
+    // c1-5b: every row's first three columns step back; the "Goes wrong when" column stays in ink
+    tl.to("#c1-trackw .c1-b", { color: "#5f584d", duration: 0.4 }, 49.0);
+    tl.to("#c1-th4", { color: "#1d1b18", duration: 0.4 }, 49.0);
+    fadeIn("#c1-note", 50.0);
+
+    // c1-6: the views, then the click, then the marks up to the root
+    fadeIn("#c1-eval", 58.6);
+    fadeIn("#c1-click", 60.1, 0.3);
+    hot("#c1-n-c", 60.6);
+    fadeIn("#c1-dirty-c", 60.6, 0.3);
+    hot("#c1-n-p", 61.8);
+    fadeIn("#c1-dirty-p", 61.8, 0.3);
+    hot("#c1-n-gp", 62.4);
+    fadeIn("#c1-dirty-gp", 62.4, 0.3);
+
+    // c1-7: rows one by one, all alike; the comparison; the caveat
+    fadeIn("#c1-lead", 65.0);
+    fadeIn("#c1-ch", 65.0, 0.4);
+    fadeIn("#c1-c1", 66.3, 0.4);
+    fadeIn("#c1-c2", 67.3, 0.4);
+    fadeIn("#c1-c3", 68.3, 0.4);
+    fadeIn("#c1-illus", 69.4);
+
+    // c1-8: band on computed; loans() underlined
+    fadeIn("#c1-fee-band", 76.0, 0.3);
+    ul("#c1-u-loans", 78.1, true);
+    // c1-8b: the band moves to the map line; the wrapper per row; then the pure pipe's transform
+    ul("#c1-u-loans", 82.2, false);
+    tl.to("#c1-fee-band", { y: 51, duration: 0.8, ease: "power2.inOut" }, 82.2);
+    ul("#c1-u-wrap", 83.0, true);
+    ul("#c1-u-wrap", 88.4, false);
+    fadeIn("#c1-pipe", 88.6);
+
+    // questions 0.6 s apart, then hold; pause card
+    for (let i = 1; i <= 4; i++) fadeIn("#c1-q" + i, 91.8 + (i - 1) * 0.6);
+    fadeIn("#c1-pause-2", 113.8);
+
+    window.__timelines["c1"] = tl;
+  </script>
+</template>

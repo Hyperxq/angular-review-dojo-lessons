@@ -1,0 +1,343 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c3-svg { position: absolute; left: 0; top: 0; }
+    .c3-fb { height: 130px; box-sizing: border-box; padding: 0 28px; display: grid; place-items: center; }
+    .c3-fb.mono { font: 700 40px/1.2 var(--font-code); }
+    code { font-family: var(--font-code); font-size: 0.92em; }
+    .c3-h { position: absolute; left: 200px; top: 110px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c3-h code { font-size: 0.86em; }
+    .c3-hl { border-radius: 4px; }
+
+    #c3-status { font: 400 32px/1 var(--font-text); color: var(--ink-muted); padding: 10px 18px; border-radius: 6px; margin-right: 28px; }
+    .c3-hr { display: flex; align-items: center; }
+    #c3-day { position: absolute; left: 40px; top: 40px; width: 1600px; }
+    #c3-day-title { font: 600 56px/1.1 var(--font-display); margin-bottom: 28px; }
+    .c3-slot { display: grid; grid-template-columns: 200px 1fr; height: 104px; align-items: center; padding: 0 32px; border-bottom: 1px solid var(--rule); font: 400 38px/1 var(--font-text); }
+    .c3-slot b { font-variant-numeric: tabular-nums; }
+
+    .c3-code { left: 104px; width: 1712px; box-sizing: border-box; padding: 40px 44px; font-size: 32px; line-height: 48px; }
+    .c3-code .ln { position: relative; }
+    .c3-band { position: absolute; left: 0; right: 0; top: 40px; height: 48px; background: var(--accent-soft); }
+    .c3-code.small { font-size: 30px; line-height: 45px; }
+    .c3-code.small .c3-band { height: 45px; }
+    .c3-wrap { white-space: pre-wrap !important; padding-left: 5ch; text-indent: -5ch; }
+    .c3-text { position: absolute; left: 200px; width: 1520px; font: 400 40px/1.45 var(--font-text); }
+
+    #c3-trig { position: absolute; left: 160px; top: 250px; width: 1120px; }
+    #c3-trig .label { margin-bottom: 24px; }
+    .c3-t { display: grid; grid-template-columns: 40px 1fr; padding: 10px 16px; margin-bottom: 14px; border-radius: 8px; font: 400 38px/1.4 var(--font-text); }
+    #c3-else { position: absolute; left: 1380px; top: 380px; width: 400px; padding: 36px 36px; box-sizing: border-box; border: 3px dashed var(--rule-strong); border-radius: 8px; }
+    #c3-else code { display: block; font: 700 40px/1.6 var(--font-code); }
+    #c3-else .label { margin-top: 20px; }
+
+    #c3-dead { position: absolute; top: 760px; left: 1340px; }
+    .c3-fb.gone { border-style: dashed; color: var(--ink-muted); border-color: var(--ink-muted); }
+
+    .c3-panel { position: absolute; box-sizing: border-box; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper-raised); box-shadow: var(--shadow); overflow: hidden; }
+    .c3-tabs { height: 76px; display: flex; gap: 44px; padding: 0 40px; border-bottom: 1px solid var(--rule); font: 700 30px/1 var(--font-text); }
+    .c3-tabs span { display: flex; align-items: center; color: var(--ink-muted); border-bottom: 4px solid transparent; }
+    .c3-lrow { height: 72px; display: flex; align-items: center; padding-left: 40px; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-code); }
+
+    #c3-axis { position: absolute; left: 80px; right: 80px; top: 130px; height: 2px; background: var(--rule-strong); }
+    .c3-track { position: absolute; left: 80px; right: 80px; height: 64px; border-radius: 4px; background: var(--paper-sunk); }
+    .c3-tlabel { position: absolute; left: 80px; }
+    #c3-lcp { position: absolute; left: 1060px; top: 96px; width: 0; height: 300px; border-left: 4px dashed var(--ink); }
+    #c3-lcp-l { position: absolute; left: 1080px; top: 96px; font: 700 34px/1 var(--font-text); color: var(--ink); }
+    #c3-net { display: grid; grid-template-columns: 760px 320px 1fr; font: 400 34px/1 var(--font-text); }
+    #c3-net span { height: 76px; display: flex; align-items: center; padding: 0 40px; border-bottom: 1px solid var(--rule); }
+    #c3-net .h { font: 700 30px/1 var(--font-text); color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c3-net .f { font-family: var(--font-code); }
+
+    #c3-places { position: absolute; left: 200px; top: 420px; display: flex; gap: 28px; }
+    #c3-places span { padding: 22px 32px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 400 40px/1 var(--font-text); }
+
+    .q { font-size: 40px; margin-bottom: 30px; }
+  </style>
+
+  <div id="root" data-composition-id="c3" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c3-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">14:00</div>
+      <div class="chapter-title">Zoneless rendering, browser events, images and effect dependencies</div>
+    </div>
+
+    <!-- c3-1: the desk app, a status line beside the clock -->
+    <div id="c3-desk" class="clip world" data-start="3" data-duration="8.88">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="c3-hr"><span id="c3-status">Reading room open</span><span class="app-clock">14:00</span></span></div>
+        <div class="app-body">
+          <div id="c3-day" data-hold>
+            <div id="c3-day-title">Today at the desk</div>
+            <div class="c3-slot"><b>09:00</b><span>Desk opens</span></div>
+            <div class="c3-slot"><b>11:00</b><span>Reading lists</span></div>
+            <div class="c3-slot"><b>14:00</b><span>Shelf rounds</span></div>
+            <div class="c3-slot"><b>16:00</b><span>Catalog review</span></div>
+            <div class="c3-slot"><b>18:00</b><span>Desk closes</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3-2: provideCheckNoChangesConfig -->
+    <div id="c3-check" class="clip world" data-start="11.88" data-duration="9.46">
+      <div class="c3-h">How to observe it</div>
+      <div id="c3-check-dev" class="label" style="position: absolute; left: 200px; top: 300px">In dev mode</div>
+      <div class="code c3-code" style="left: 200px; width: 1520px; top: 370px; font-size: 34px; line-height: 51px" data-hold>
+        <span class="ln">provideCheckNoChangesConfig({ exhaustive: <span class="k">true</span>, interval: <span class="n">1000</span> })</span>
+      </div>
+      <div id="c3-check-ship" class="c3-text" style="top: 580px" data-hold><span id="c3-ship" class="c3-hl">Add it to a local dev setup, never ship it.</span></div>
+    </div>
+
+    <!-- c3-3: ShelfGrid, band on this.columns -->
+    <div id="c3-grid" class="clip world" data-start="21.34" data-duration="8.74">
+      <div class="code c3-code" style="top: 170px" data-hold>
+        <div id="c3-band1" class="c3-band"></div>
+        <span class="ln"><span class="k">export class</span> ShelfGrid {</span>
+        <span class="ln">  <span class="k">protected</span> columns = <span class="n">2</span>;</span>
+        <span class="ln"> </span>
+        <span class="ln">  <span class="k">constructor</span>() {</span>
+        <span class="ln">    <span class="k">const</span> host = inject(ElementRef).nativeElement <span class="k">as</span> HTMLElement;</span>
+        <span class="ln">    <span class="k">new</span> ResizeObserver(([entry]) =&gt; {</span>
+        <span class="ln">      <span class="k">this</span>.columns = Math.floor(entry.contentRect.width / <span class="n">240</span>);</span>
+        <span class="ln">    }).observe(host);</span>
+        <span class="ln">  }</span>
+        <span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c3-4: the five render triggers from Chapter 0; onmessage and setTimeout set apart -->
+    <div id="c3-rule" class="clip world" data-start="30.08" data-duration="6.51">
+      <div id="c3-trig">
+        <div class="label">Angular now schedules a render only when something it understands says that a view changed:</div>
+        <div id="c3-t1" class="c3-t"><b>·</b><span>a signal read by a template changes,</span></div>
+        <div class="c3-t"><b>·</b><span>a template or host event listener of that view (or of a view inside it) runs,</span></div>
+        <div class="c3-t"><b>·</b><span>an <code>async</code> pipe receives a value,</span></div>
+        <div class="c3-t"><b>·</b><span><code>ComponentRef.setInput()</code> sets an input (the router and <code>TestBed</code> use it),</span></div>
+        <div class="c3-t"><b>·</b><span>someone calls <code>markForCheck()</code>.</span></div>
+      </div>
+      <div id="c3-else" data-hold>
+        <code>onmessage</code>
+        <code>setTimeout</code>
+        <div class="label">changes data without telling anyone</div>
+      </div>
+    </div>
+
+    <!-- c3-6, c3-6b: Listeners have owners; each new instance adds another -->
+    <div id="c3-owners" class="clip world sunk" data-start="36.59" data-duration="17.27">
+      <div class="c3-h">Listeners have owners</div>
+      <svg class="c3-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#1d1b18" stroke-width="4">
+        <g id="c3-e1"><path pathLength="1" d="M440 440 H682" /><polygon points="700,440 682,430 682,450" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-e2"><path pathLength="1" d="M1000 440 H1322" /><polygon points="1340,440 1322,430 1322,450" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-e3"><path pathLength="1" d="M300 505 V700 H682" /><polygon points="700,700 682,690 682,710" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-e4"><path pathLength="1" d="M1000 700 H1322" /><polygon points="1340,700 1322,690 1322,710" fill="#1d1b18" stroke="none" /></g>
+      </svg>
+      <div id="c3-w" class="fbox c3-fb mono" style="left: 160px; top: 375px; width: 280px">window</div>
+      <div id="c3-l1" class="fbox c3-fb" style="left: 700px; top: 375px; width: 300px" data-hold>listener</div>
+      <div id="c3-c1" class="fbox c3-fb" style="left: 1340px; top: 375px; width: 360px">component</div>
+      <div id="c3-l2" class="fbox c3-fb" style="left: 700px; top: 635px; width: 300px">listener</div>
+      <div id="c3-c2" class="fbox c3-fb" style="left: 1340px; top: 635px; width: 360px">component</div>
+      <div id="c3-fl1" class="flabel" style="left: 440px; top: 340px; width: 260px">addEventListener</div>
+      <div id="c3-fl2" class="flabel" style="left: 1000px; top: 340px; width: 340px">its closure keeps</div>
+      <div id="c3-fl3" class="flabel" style="left: 1340px; top: 525px; width: 360px">destroyed</div>
+      <div id="c3-fl4" class="flabel" style="left: 1340px; top: 785px; width: 360px" data-hold>destroyed</div>
+    </div>
+
+    <!-- c3-6b: the Elements panel, Event Listeners tab -->
+    <div id="c3-elements" class="clip world sunk" data-start="53.86" data-duration="4.44">
+      <div class="c3-panel" style="left: 160px; top: 200px; width: 1600px; height: 300px">
+        <div class="c3-tabs"><span>Styles</span><span>Computed</span><span>Layout</span><span id="c3-tab-el">Event Listeners</span></div>
+        <div class="c3-lrow">▸ window</div>
+        <div class="c3-lrow">▸ document</div>
+      </div>
+      <div id="c3-el-note" class="c3-text" style="left: 160px; width: 1600px; top: 580px" data-hold>The Elements panel's "Event Listeners" tab shows what is attached to <code>window</code> and <code>document</code>. Navigate to the page and away a few times and count.</div>
+    </div>
+
+    <!-- c3-7: the LCP marker; the Network panel's Priority column -->
+    <div id="c3-lcpw" class="clip world sunk" data-start="58.3" data-duration="8.63">
+      <div id="c3-perf" class="c3-panel" style="left: 160px; top: 110px; width: 1600px; height: 420px">
+        <div class="c3-tabs"><span style="color: var(--ink)">Performance</span></div>
+        <div class="c3-track" style="top: 200px"></div>
+        <div class="c3-tlabel label" style="top: 290px">Timings</div>
+        <div id="c3-lcp"></div>
+        <div id="c3-lcp-l">LCP</div>
+        <div id="c3-lcp-el" class="label" style="position: absolute; left: 1080px; top: 290px">names the element and its timing</div>
+      </div>
+      <div id="c3-netp" class="c3-panel" style="left: 160px; top: 580px; width: 1600px; height: 380px" data-hold>
+        <div class="c3-tabs"><span style="color: var(--ink)">Network</span></div>
+        <div id="c3-net">
+          <span class="h">Name</span><span class="h">Type</span><span id="c3-prio" class="h c3-hl">Priority</span>
+          <span class="f">reading-room.jpg</span><span>jpeg</span><span id="c3-prio-v" class="c3-hl">High</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3-8, c3-8b: the ngSrc image, band on width and height, then on priority -->
+    <div id="c3-img" class="clip world" data-start="66.93" data-duration="20.26">
+      <div class="c3-h"><code>NgOptimizedImage</code></div>
+      <div class="code c3-code" style="left: 200px; width: 1400px; top: 260px; font-size: 34px; line-height: 51px">
+        <span class="ln c3-wrap">&lt;img <span id="c3-ngsrc" class="c3-hl"><span class="k">ngSrc</span>=<span class="s">"reading-room.jpg"</span></span> alt=<span class="s">"The main reading room"</span> <span id="c3-wh1" class="c3-hl">width=<span class="s">"1600"</span></span> <span id="c3-wh2" class="c3-hl">height=<span class="s">"700"</span></span> <span id="c3-pr" class="c3-hl">priority</span> /&gt;</span>
+      </div>
+      <div id="c3-i1" class="c3-text" style="top: 560px" data-hold><code>width</code> and <code>height</code> are required (or <code>fill</code>), so the browser reserves space and the layout does not shift.</div>
+      <div id="c3-i2" class="c3-text" style="top: 740px" data-hold>Images are <code>loading="lazy"</code> by default. <code>priority</code> marks the LCP image instead: it gets <code>fetchpriority="high"</code> and <code>loading="eager"</code>.</div>
+    </div>
+
+    <!-- c3-9: What an effect depends on -->
+    <div id="c3-deps" class="clip world" data-start="87.19" data-duration="6.99">
+      <div class="c3-h" style="top: 200px; font-size: 80px">What an effect depends on</div>
+      <div id="c3-places" data-hold>
+        <span id="c3-p1">in a condition</span>
+        <span id="c3-p2">in a variable</span>
+        <span id="c3-p3">inside a function it calls</span>
+      </div>
+    </div>
+
+    <!-- c3-10: dueLabel, band on the untracked line; the tradeoff -->
+    <div id="c3-due" class="clip world" data-start="94.18" data-duration="8.35">
+      <div class="code c3-code small" style="top: 170px">
+        <div id="c3-band2" class="c3-band"></div>
+        <span class="ln"><span class="k">readonly</span> dueLabel = computed(() =&gt; {</span>
+        <span class="ln">  <span class="k">const</span> due = <span class="k">this</span>.loan().dueDate;               <span class="c">// tracked</span></span>
+        <span class="ln">  <span class="k">const</span> locale = untracked(<span class="k">this</span>.settings.locale); <span class="c">// read, not tracked</span></span>
+        <span class="ln">  <span class="k">return new</span> Intl.DateTimeFormat(locale, { dateStyle: <span class="s">'medium'</span> }).format(due);</span>
+        <span class="ln">});</span>
+      </div>
+      <div id="c3-trade" class="c3-text" style="left: 104px; width: 1712px; top: 590px" data-hold>The tradeoff is explicit: if the locale changes, <code>dueLabel</code> stays in the old locale until <code>loan</code> changes.</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c3-questions" class="clip world note" data-start="102.53" data-duration="27.5">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c3-q1" class="q">Change the data from outside Angular (resize, a server message, a timer firing). Does the screen follow without a click?</div>
+        <div id="c3-q2" class="q">For every listener, timer or observer: who removes it, and when?</div>
+        <div id="c3-q3" class="q">Which image is the largest thing on the first screen? Does the browser fetch it as High priority?</div>
+        <div id="c3-q4" class="q">For each <code>effect</code>: list every signal it reads, directly or through the functions it calls. Which of those reads should be allowed to re-run it?</div>
+        <div id="c3-q5" class="q">What would you measure, on what device, to show this matters?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c3-pause" class="clip world" data-start="130.03" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c3-pause-2" class="pause-2" data-hold>Now do exercise 03.</div>
+    </div>
+
+    <audio id="c3-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="45" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c3-bed2" class="clip" src="assets/music/bed.mp3" data-start="102.53" data-duration="27.5" data-media-start="53" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c3-1" class="clip" src="assets/vo/c3-1.wav" data-start="3.0" data-duration="8.533" data-volume="1"></audio>
+    <audio id="vo-c3-2" class="clip" src="assets/vo/c3-2.wav" data-start="11.88" data-duration="9.109" data-volume="1"></audio>
+    <audio id="vo-c3-3" class="clip" src="assets/vo/c3-3.wav" data-start="21.34" data-duration="8.384" data-volume="1"></audio>
+    <audio id="vo-c3-4" class="clip" src="assets/vo/c3-4.wav" data-start="30.08" data-duration="6.165" data-volume="1"></audio>
+    <audio id="vo-c3-6" class="clip" src="assets/vo/c3-6.wav" data-start="36.59" data-duration="9.664" data-volume="1"></audio>
+    <audio id="vo-c3-6b" class="clip" src="assets/vo/c3-6b.wav" data-start="46.61" data-duration="11.349" data-volume="1"></audio>
+    <audio id="vo-c3-7" class="clip" src="assets/vo/c3-7.wav" data-start="58.3" data-duration="8.277" data-volume="1"></audio>
+    <audio id="vo-c3-8" class="clip" src="assets/vo/c3-8.wav" data-start="66.93" data-duration="9.045" data-volume="1"></audio>
+    <audio id="vo-c3-8b" class="clip" src="assets/vo/c3-8b.wav" data-start="76.33" data-duration="10.517" data-volume="1"></audio>
+    <audio id="vo-c3-9" class="clip" src="assets/vo/c3-9.wav" data-start="87.19" data-duration="6.635" data-volume="1"></audio>
+    <audio id="vo-c3-10" class="clip" src="assets/vo/c3-10.wav" data-start="94.18" data-duration="8.0" data-volume="1"></audio>
+    <audio id="vo-c3-end" class="clip" src="assets/vo/c3-end.wav" data-start="102.53" data-duration="2.197" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const MUTED = "#5f584d";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const draw = (sel, at, d = 0.4) => {
+      tl.fromTo(sel + " path", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+      tl.fromTo(sel + " polygon", { opacity: 0 }, { opacity: 1, duration: 0.12 }, at + d - 0.08);
+    };
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: CLEAR, duration: 0.4 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c3-1: the day's list; the status line beside the clock marked as it is named
+    fadeIn("#c3-day", 3.15, 0.5);
+    band("#c3-status", 3.9);
+
+    // c3-2: the call, dev mode only; never ship it
+    fadeIn("#c3-check .c3-h", 12.0, 0.4);
+    fadeIn("#c3-check-dev", 12.1, 0.4);
+    tl.set("#c3-check-ship", { opacity: 0 }, 11.88);
+    fadeIn("#c3-check-ship", 18.5, 0.4);
+    band("#c3-ship", 19.7);
+
+    // c3-3: band on the plain field
+    tl.fromTo("#c3-band1", { opacity: 0, y: 6 * 48 }, { opacity: 1, duration: 0.3 }, 24.1);
+
+    // c3-4: the triggers, the signal one banded; the two callbacks set apart
+    fadeIn("#c3-trig", 30.2, 0.4);
+    band("#c3-t1", 30.5);
+    fadeIn("#c3-else", 33.3, 0.5);
+
+    // c3-6: window holds a listener that keeps a component; the component is destroyed, the listener stays
+    fadeIn("#c3-owners .c3-h", 36.7, 0.4);
+    fadeIn("#c3-w", 37.9, 0.4);
+    draw("#c3-e1", 38.3, 0.3);
+    fadeIn("#c3-fl1", 38.4, 0.4);
+    fadeIn("#c3-l1", 38.6, 0.4);
+    draw("#c3-e2", 40.9, 0.3);
+    fadeIn("#c3-fl2", 41.0, 0.4);
+    fadeIn("#c3-c1", 41.2, 0.4);
+    tl.to("#c3-c1", { borderColor: MUTED, color: MUTED, borderStyle: "dashed", duration: 0.3 }, 41.9);
+    fadeIn("#c3-fl3", 42.0, 0.4);
+    tl.to("#c3-l1", { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 43.2);
+    // c3-6b: each new instance adds another
+    draw("#c3-e3", 47.3, 0.5);
+    fadeIn("#c3-l2", 47.7, 0.4);
+    draw("#c3-e4", 47.9, 0.3);
+    fadeIn("#c3-c2", 48.1, 0.4);
+    tl.to("#c3-c2", { borderColor: MUTED, color: MUTED, borderStyle: "dashed", duration: 0.3 }, 49.6);
+    fadeIn("#c3-fl4", 49.7, 0.4);
+
+    // c3-6b: the Elements panel, its Event Listeners tab named
+    tl.to("#c3-tab-el", { color: ACCENT, borderBottomColor: ACCENT, duration: 0.3 }, 55.1);
+    fadeIn("#c3-el-note", 54.1, 0.5);
+
+    // c3-7: the LCP marker, then the Priority column
+    fadeIn("#c3-perf", 58.4, 0.4);
+    tl.set(["#c3-lcp", "#c3-lcp-l", "#c3-lcp-el"], { opacity: 0 }, 58.3);
+    fadeIn("#c3-lcp", 61.1, 0.3);
+    fadeIn("#c3-lcp-l", 61.2, 0.4);
+    fadeIn("#c3-lcp-el", 61.5, 0.4);
+    fadeIn("#c3-netp", 62.1, 0.4);
+    band("#c3-prio", 63.2);
+    band("#c3-prio-v", 63.2);
+
+    // c3-8: band on width and height, then their rule; c3-8b: band to priority, then its rule
+    fadeIn("#c3-img .c3-h", 67.05, 0.4);
+    band("#c3-ngsrc", 70.0);
+    unband("#c3-ngsrc", 71.3);
+    band("#c3-wh1", 71.5);
+    band("#c3-wh2", 71.5);
+    tl.set(["#c3-i1", "#c3-i2"], { opacity: 0 }, 66.93);
+    fadeIn("#c3-i1", 72.3, 0.5);
+    unband("#c3-wh1", 78.5);
+    unband("#c3-wh2", 78.5);
+    band("#c3-pr", 78.55);
+    fadeIn("#c3-i2", 77.4, 0.5);
+
+    // c3-9: the heading; the places a read can hide
+    fadeIn("#c3-deps .c3-h", 87.3, 0.4);
+    fadeIn("#c3-p1", 89.7, 0.4);
+    fadeIn("#c3-p2", 90.0, 0.4);
+    fadeIn("#c3-p3", 90.6, 0.4);
+    tl.to("#c3-p3", { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 92.0);
+
+    // c3-10: band on untracked; the tradeoff
+    tl.fromTo("#c3-band2", { opacity: 0, y: 2 * 45 }, { opacity: 1, duration: 0.3 }, 94.3);
+    tl.set("#c3-trade", { opacity: 0 }, 94.18);
+    fadeIn("#c3-trade", 97.0, 0.5);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c3-q1", "#c3-q2", "#c3-q3", "#c3-q4", "#c3-q5"].forEach((q, i) => fadeIn(q, 102.8 + i * 0.6));
+    fadeIn("#c3-pause-2", 130.53);
+
+    window.__timelines["c3"] = tl;
+  </script>
+</template>

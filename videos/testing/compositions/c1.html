@@ -1,0 +1,298 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c1-hgroup { display: flex; align-items: center; gap: 32px; }
+    .c1-badge { padding: 10px 20px; border-radius: 6px; background: var(--tip-soft); color: var(--tip); font: 700 30px/1 var(--font-text); }
+    .c1-panel-h { font: 700 36px/1 var(--font-text); margin-bottom: 24px; }
+    .c1-tr { display: grid; align-items: center; height: 96px; padding: 0 24px; border-bottom: 1px solid var(--rule); font: 400 36px/1 var(--font-text); }
+    .c1-th { height: 64px; font: 700 30px/1 var(--font-text); color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    .c1-loans .c1-tr { grid-template-columns: 560px 520px 1fr; }
+    #c1-spec-app .c1-loans .c1-tr { grid-template-columns: 420px 1fr; }
+    #c1-feature { position: absolute; left: 40px; top: 40px; right: 40px; bottom: 40px; }
+    #c1-empty { position: absolute; left: 40px; top: 40px; right: 40px; bottom: 40px; border: 3px dashed var(--rule-strong); border-radius: 8px; }
+
+    #c1-spec-app { width: 1040px; }
+    #c1-spec { position: absolute; left: 1200px; top: 80px; width: 600px; height: 920px; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
+    .c1-spec-row { display: flex; align-items: center; gap: 28px; height: 96px; padding: 0 40px; border-bottom: 1px solid var(--rule); }
+    .c1-dot { width: 32px; height: 32px; border-radius: 50%; background: var(--tip); flex: none; }
+    .c1-bar { height: 16px; border-radius: 8px; background: var(--rule); }
+
+    .c1-small { position: absolute; left: 200px; font: 400 32px/1.3 var(--font-text); color: var(--ink-muted); }
+    .c1-big { position: absolute; left: 200px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c1-paren { position: absolute; left: 200px; font: 400 36px/1.3 var(--font-text); color: var(--ink-muted); }
+    #c1-test-word { border-radius: 6px; padding: 0 8px; margin: 0 -8px; }
+    #c1-unprot { position: absolute; left: 200px; top: 360px; font: 600 120px/1 var(--font-display); letter-spacing: -0.015em; color: var(--accent); }
+    #c1-stryker { position: absolute; left: 200px; top: 600px; font: 400 40px/1.3 var(--font-text); color: var(--ink-muted); }
+
+    .c1-code .ln { position: relative; }
+    #c1-try { left: 200px; top: 290px; }
+    #c1-band { position: absolute; left: 0; right: 0; top: 193px; height: 153px; background: var(--accent-soft); transform-origin: left top; }
+    #c1-direct { left: 200px; top: 330px; }
+    #c1-assert { left: 200px; top: 590px; }
+
+    #c1-rule { font: 400 36px/1.3 var(--font-text); color: var(--ink-muted); margin-bottom: 36px; }
+    .c1-members .c1-tr { grid-template-columns: 640px 1fr; }
+    .c1-members .c1-tr span:last-child { font-variant-numeric: tabular-nums; font-weight: 700; }
+
+    #c1-axis-label { position: absolute; left: 200px; top: 290px; font: 700 36px/1 var(--font-text); }
+    .c1-num { position: absolute; top: 610px; width: 120px; margin-left: -60px; text-align: center; font: 700 48px/1 var(--font-text); font-variant-numeric: tabular-nums; }
+    .c1-mark { position: absolute; top: 528px; width: 64px; height: 64px; margin-left: -32px; border-radius: 50%; background: var(--ink); }
+    .c1-nband { position: absolute; top: 470px; width: 200px; height: 230px; margin-left: -100px; border-radius: 8px; background: var(--accent-soft); }
+    .c1-side { position: absolute; top: 730px; width: 200px; margin-left: -100px; text-align: center; font: 400 30px/1.2 var(--font-text); color: var(--ink-muted); }
+    #c1-edge-label { position: absolute; left: 850px; top: 390px; width: 200px; margin-left: -100px; text-align: center; font: 700 32px/1 var(--font-text); color: var(--accent); }
+
+    #c1-questions .q { font-size: 44px; }
+  </style>
+
+  <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c1-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c1-card-time" class="chapter-time">09:30</div>
+      <div id="c1-card-title" class="chapter-title">A test that cannot fail</div>
+    </div>
+
+    <!-- c1-1 the desk app, the build badge turns up in its header -->
+    <div id="c1-desk" class="clip world" data-start="3" data-duration="8.9">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="c1-hgroup"><span id="c1-badge" class="c1-badge">Build passed</span><span class="app-clock">09:30</span></span></div>
+        <div class="app-body">
+          <div class="c1-panel-h">Loans</div>
+          <div class="c1-loans" data-hold>
+            <div class="c1-tr c1-th"><span>Title</span><span>Member</span><span>Due</span></div>
+            <div class="c1-tr"><span>Middlemarch</span><span>Ana Ruiz</span><span>12 Mar</span></div>
+            <div class="c1-tr"><span>Persuasion</span><span>Tom Hale</span><span>14 Mar</span></div>
+            <div class="c1-tr"><span>Kindred</span><span>Mei Chen</span><span>15 Mar</span></div>
+            <div class="c1-tr"><span>Dune</span><span>Leo Park</span><span>18 Mar</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-2 a spec tab beside the app stays green while the feature's panel empties -->
+    <div id="c1-specs" class="clip world" data-start="11.9" data-duration="7.99">
+      <div id="c1-spec-app" class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="c1-hgroup"><span class="c1-badge">Build passed</span><span class="app-clock">09:30</span></span></div>
+        <div class="app-body" style="padding: 0">
+          <div id="c1-empty"></div>
+          <div id="c1-feature">
+            <div class="c1-panel-h">Loans</div>
+            <div class="c1-loans">
+              <div class="c1-tr c1-th"><span>Title</span><span>Member</span></div>
+              <div class="c1-tr"><span>Middlemarch</span><span>Ana Ruiz</span></div>
+              <div class="c1-tr"><span>Persuasion</span><span>Tom Hale</span></div>
+              <div class="c1-tr"><span>Kindred</span><span>Mei Chen</span></div>
+              <div class="c1-tr"><span>Dune</span><span>Leo Park</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="c1-spec" data-hold>
+        <div class="app-header"><span>Spec</span><span class="c1-badge">All passed</span></div>
+        <div class="c1-spec-row"><span class="c1-dot"></span><span class="c1-bar" style="width: 360px"></span></div>
+        <div class="c1-spec-row"><span class="c1-dot"></span><span class="c1-bar" style="width: 300px"></span></div>
+        <div class="c1-spec-row"><span class="c1-dot"></span><span class="c1-bar" style="width: 400px"></span></div>
+        <div class="c1-spec-row"><span class="c1-dot"></span><span class="c1-bar" style="width: 260px"></span></div>
+        <div class="c1-spec-row"><span class="c1-dot"></span><span class="c1-bar" style="width: 340px"></span></div>
+      </div>
+    </div>
+
+    <!-- c1-4 the method's heading -->
+    <div id="c1-method" class="clip world" data-start="19.89" data-duration="8.05">
+      <div id="c1-method-h" class="line" style="top: 440px" data-hold>The method: break one line, see what goes <span id="c1-red">red</span></div>
+    </div>
+
+    <!-- c1-5 the three changes, one by one -->
+    <div id="c1-changes" class="clip world" data-start="27.94" data-duration="7.69">
+      <div class="c1-small" style="top: 200px">The method: break one line, see what goes red</div>
+      <div id="c1-ch1" class="c1-big" style="top: 360px">flip a comparison</div>
+      <div id="c1-ch2" class="c1-big" style="top: 490px">return a constant</div>
+      <div id="c1-ch3" class="c1-big" style="top: 620px" data-hold>delete a branch</div>
+    </div>
+
+    <!-- c1-5b unprotected, and Stryker as a label -->
+    <div id="c1-unprotected" class="clip world" data-start="35.63" data-duration="9.89">
+      <div id="c1-unprot">unprotected</div>
+      <div id="c1-stryker" data-hold>Mutation testing tools (Stryker, for example)</div>
+    </div>
+
+    <!-- c1-6 the method applied to the test -->
+    <div id="c1-ontest" class="clip world" data-start="45.52" data-duration="7.5">
+      <div class="c1-small" style="top: 340px">The method: break one line, see what goes red</div>
+      <div class="c1-big" style="top: 420px" data-hold>Run the method on the <span id="c1-test-word">test</span> as well as on the code.</div>
+    </div>
+
+    <!-- c1-7 three places a claim goes missing -->
+    <div id="c1-places" class="clip world" data-start="53.02" data-duration="9.92">
+      <div id="c1-pl1" class="c1-big" style="top: 230px">the matcher</div>
+      <div id="c1-pp1" class="c1-paren" style="top: 312px">(it accepts almost anything)</div>
+      <div id="c1-pl2" class="c1-big" style="top: 450px">the timing</div>
+      <div id="c1-pp2" class="c1-paren" style="top: 532px">(it reads a result before it exists)</div>
+      <div id="c1-pl3" class="c1-big" style="top: 670px">the control flow</div>
+      <div id="c1-pp3" class="c1-paren" style="top: 752px" data-hold>(the assertion is skipped)</div>
+    </div>
+
+    <!-- c1-8, c1-8b the try/catch test, cut in whole; the band moves from the catch to the call -->
+    <div id="c1-trycatch" class="clip world" data-start="62.94" data-duration="11.65">
+      <div id="c1-try" class="code c1-code" data-hold>
+        <div id="c1-band"></div>
+        <span class="ln">it(<span class="s">'rejects a renewal past the limit'</span>, () =&gt; {</span>
+        <span class="ln">  <span class="k">try</span> {</span>
+        <span class="ln">    renew(loanAtLimit);</span>
+        <span class="ln">  } <span class="k">catch</span> (error) {</span>
+        <span class="ln">    expect((error <span class="k">as</span> Error).message).toContain(<span class="s">'limit'</span>);</span>
+        <span class="ln">  }</span>
+        <span class="ln">});</span>
+      </div>
+    </div>
+
+    <!-- c1-9 the direct form, then expect.assertions(n) -->
+    <div id="c1-directform" class="clip world" data-start="74.59" data-duration="9.24">
+      <div id="c1-direct" class="code"><span class="ln">expect(() =&gt; renew(loanAtLimit)).toThrow(<span class="s">/limit/</span>)</span></div>
+      <div id="c1-assert" class="code" data-hold><span class="ln">expect.assertions(n)</span></div>
+    </div>
+
+    <!-- c1-10 the member list gains a late returns column -->
+    <div id="c1-members" class="clip world" data-start="83.83" data-duration="7.52">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:30</span></div>
+        <div class="app-body">
+          <div id="c1-rule">"members with three or more late returns pay a deposit"</div>
+          <div class="c1-members" data-hold>
+            <div class="c1-tr c1-th"><span>Member</span><span id="c1-lr-h">Late returns</span></div>
+            <div class="c1-tr"><span>Ana Ruiz</span><span id="c1-lr1">2</span></div>
+            <div class="c1-tr"><span>Tom Hale</span><span id="c1-lr2">3</span></div>
+            <div class="c1-tr"><span>Mei Chen</span><span id="c1-lr3">4</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-11 the number line: 4 proves the rule exists, 2 and 3 prove where the edge is -->
+    <div id="c1-edge" class="clip world sunk" data-start="91.35" data-duration="9.12">
+      <div id="c1-axis-label">late returns</div>
+      <div id="c1-nb2" class="c1-nband" style="left: 740px"></div>
+      <div id="c1-nb3" class="c1-nband" style="left: 960px"></div>
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <line x1="300" y1="560" x2="1620" y2="560" stroke="#c4b9a6" stroke-width="4" />
+        <line id="c1-edge-line" x1="850" y1="440" x2="850" y2="700" stroke="#b8321f" stroke-width="6" stroke-dasharray="260" />
+      </svg>
+      <div id="c1-mk4" class="c1-mark" style="left: 1180px"></div>
+      <div id="c1-mk2" class="c1-mark" style="left: 740px"></div>
+      <div id="c1-mk3" class="c1-mark" style="left: 960px"></div>
+      <div class="c1-num" style="left: 300px">0</div>
+      <div class="c1-num" style="left: 520px">1</div>
+      <div id="c1-n2" class="c1-num" style="left: 740px">2</div>
+      <div id="c1-n3" class="c1-num" style="left: 960px">3</div>
+      <div id="c1-n4" class="c1-num" style="left: 1180px">4</div>
+      <div class="c1-num" style="left: 1400px">5</div>
+      <div class="c1-num" style="left: 1620px">6</div>
+      <div id="c1-below" class="c1-side" style="left: 740px">last without</div>
+      <div id="c1-above" class="c1-side" style="left: 960px" data-hold>first with</div>
+      <div id="c1-edge-label">the edge</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c1-questions" class="clip world note" data-start="100.47" data-duration="17">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c1-q1" class="q">Pick the line of production code most likely to break next quarter: which test names it?</div>
+        <div id="c1-q2" class="q">If you deleted this test, what bug could ship?</div>
+        <div id="c1-q3" class="q">What is the most wrong behaviour that would still pass this test?</div>
+        <div id="c1-q4" class="q">Does the test name read as a requirement a product owner would sign?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c1-pause" class="clip world" data-start="117.47" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c1-pause-2" class="pause-2" data-hold>Now do exercise 01.</div>
+    </div>
+
+    <audio id="c1-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="62" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-bed2" class="clip" src="assets/music/bed.mp3" data-start="100.47" data-duration="17" data-media-start="72" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c1-1" class="clip" src="assets/vo/c1-1.wav" data-start="3" data-duration="8.555" data-volume="1"></audio>
+    <audio id="vo-c1-2" class="clip" src="assets/vo/c1-2.wav" data-start="11.9" data-duration="7.637" data-volume="1"></audio>
+    <audio id="vo-c1-4" class="clip" src="assets/vo/c1-4.wav" data-start="19.89" data-duration="7.701" data-volume="1"></audio>
+    <audio id="vo-c1-5" class="clip" src="assets/vo/c1-5.wav" data-start="27.94" data-duration="7.339" data-volume="1"></audio>
+    <audio id="vo-c1-5b" class="clip" src="assets/vo/c1-5b.wav" data-start="35.63" data-duration="9.536" data-volume="1"></audio>
+    <audio id="vo-c1-6" class="clip" src="assets/vo/c1-6.wav" data-start="45.52" data-duration="7.147" data-volume="1"></audio>
+    <audio id="vo-c1-7" class="clip" src="assets/vo/c1-7.wav" data-start="53.02" data-duration="9.579" data-volume="1"></audio>
+    <audio id="vo-c1-8" class="clip" src="assets/vo/c1-8.wav" data-start="62.94" data-duration="5.845" data-volume="1"></audio>
+    <audio id="vo-c1-8b" class="clip" src="assets/vo/c1-8b.wav" data-start="69.14" data-duration="5.099" data-volume="1"></audio>
+    <audio id="vo-c1-9" class="clip" src="assets/vo/c1-9.wav" data-start="74.59" data-duration="8.896" data-volume="1"></audio>
+    <audio id="vo-c1-10" class="clip" src="assets/vo/c1-10.wav" data-start="83.83" data-duration="7.168" data-volume="1"></audio>
+    <audio id="vo-c1-11" class="clip" src="assets/vo/c1-11.wav" data-start="91.35" data-duration="8.768" data-volume="1"></audio>
+    <audio id="vo-c1-end" class="clip" src="assets/vo/c1-end.wav" data-start="100.47" data-duration="2.347" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const enter = (sel, at) => tl.fromTo(sel, { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, at);
+    const box = (sel, at) => tl.fromTo(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, at);
+    const draw = (sel, len, at, d = 0.5) =>
+      tl.fromTo(sel, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0, time label static
+
+    // c1-1: the build badge lands on "build passed"
+    box("#c1-badge", 6.6);
+
+    // c1-2: the spec tab slides in whole beside the app; the feature's panel empties on "deleted"
+    tl.fromTo("#c1-spec", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 12.2);
+    tl.to("#c1-feature", { opacity: 0, duration: 0.4, ease: "power2.in" }, 18.1);
+
+    // c1-4: the heading, then "red" as the accent on "turn red"
+    enter("#c1-method-h", 20.0);
+    tl.to("#c1-red", { color: "#b8321f", duration: 0.3 }, 23.2);
+
+    // c1-5: the three changes as they are named
+    enter("#c1-ch1", 29.8);
+    enter("#c1-ch2", 30.9);
+    enter("#c1-ch3", 32.0);
+
+    // c1-5b: the accent word, then the label
+    enter("#c1-unprot", 38.3);
+    fadeIn("#c1-stryker", 41.2);
+
+    // c1-6: the method's sentence, then "test" banded
+    tl.to("#c1-test-word", { backgroundColor: "#f5e2d9", duration: 0.3 }, 48.8);
+
+    // c1-7: the three places, each with the lesson's gloss 0.15 s later
+    [[56.1, 1], [58.5, 2], [60.7, 3]].forEach(([at, i]) => {
+      enter("#c1-pl" + i, at);
+      fadeIn("#c1-pp" + i, at + 0.15, 0.5);
+    });
+
+    // c1-8: band on the catch block; c1-8b: the band moves to the call that stopped throwing
+    fadeIn("#c1-band", 67.3, 0.3);
+    tl.to("#c1-band", { y: -51, scaleY: 1 / 3, duration: 0.8, ease: "power2.inOut" }, 69.5);
+
+    // c1-9: the direct form is there from the cut; expect.assertions(n) on its name
+    enter("#c1-assert", 81.2);
+
+    // c1-10: the rule, then the late returns column
+    fadeIn("#c1-rule", 85.1);
+    ["#c1-lr-h", "#c1-lr1", "#c1-lr2", "#c1-lr3"].forEach((s, i) => fadeIn(s, 86.7 + i * 0.1, 0.4));
+
+    // c1-11: a value from the middle; then 2 and 3 banded, 4 dimmed, the edge drawn between them
+    box("#c1-mk4", 92.4);
+    tl.to(["#c1-mk4", "#c1-n4"], { opacity: 0.3, duration: 0.4, ease: "power2.inOut" }, 94.5);
+    fadeIn("#c1-nb2", 94.5, 0.4);
+    box("#c1-mk2", 94.5);
+    fadeIn("#c1-nb3", 94.9, 0.4);
+    box("#c1-mk3", 94.9);
+    fadeIn("#c1-below", 95.5, 0.4);
+    fadeIn("#c1-above", 97.6, 0.4);
+    draw("#c1-edge-line", 260, 98.8, 0.5);
+    fadeIn("#c1-edge-label", 99.0, 0.4);
+
+    // questions 0.6 s apart, then hold; pause card
+    for (let i = 1; i <= 4; i++) fadeIn("#c1-q" + i, 100.6 + (i - 1) * 0.6);
+    fadeIn("#c1-pause-2", 117.9);
+
+    window.__timelines["c1"] = tl;
+  </script>
+</template>

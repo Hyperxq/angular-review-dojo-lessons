@@ -1,0 +1,345 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c0-head { position: absolute; left: 200px; top: 130px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c0-head code { font: 600 58px/1 var(--font-code); }
+    .c0-txt { position: absolute; left: 200px; width: 1520px; font: 400 40px/1.35 var(--font-text); }
+    .c0-txt code { font: 400 38px/1 var(--font-code); }
+    .c0-mut { color: var(--ink-muted); }
+
+    /* desk */
+    #c0-desk-title { position: absolute; left: 48px; top: 120px; width: 620px; font: 600 72px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c0-desk-opens { position: absolute; left: 48px; top: 360px; font: 400 36px/1 var(--font-text); color: var(--ink-muted); }
+    .c0-name { position: absolute; left: 900px; padding: 22px 28px; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow); font: 400 40px/1 var(--font-code); }
+
+    /* measure */
+    .c0-row { position: absolute; left: 200px; width: 1100px; padding: 24px 0; border-bottom: 1px solid var(--rule); font: 400 44px/1 var(--font-text); }
+
+    /* numbers */
+    #c0-fbar { position: absolute; left: 200px; top: 300px; width: 96px; height: 56px; background: var(--ink); border-radius: 4px; transform-origin: left center; }
+    #c0-fms { position: absolute; left: 320px; top: 308px; font: 700 40px/1 var(--font-text); }
+    .c0-term { position: absolute; left: 200px; width: 1520px; font: 700 44px/1.2 var(--font-text); }
+    #c0-ibar { position: absolute; left: 200px; top: 690px; width: 1200px; height: 56px; background: var(--paper-sunk); border: 2px solid var(--rule-strong); border-radius: 4px; box-sizing: border-box; transform-origin: left center; }
+    #c0-thr { position: absolute; left: 1398px; top: 666px; width: 6px; height: 104px; background: var(--accent); }
+    #c0-thr-l { position: absolute; left: 1424px; top: 696px; font: 700 40px/1 var(--font-text); color: var(--accent); }
+    .c0-def { position: absolute; left: 200px; width: 1520px; padding-bottom: 40px; border-bottom: 1px solid var(--rule); }
+    .c0-def .t { font: 700 48px/1.2 var(--font-text); margin-bottom: 18px; }
+    .c0-def .d { font: 400 40px/1.35 var(--font-text); }
+
+    /* build + panel */
+    .c0-chip { position: absolute; padding: 18px 26px; background: var(--paper-raised); border: 1px solid rgb(221 212 197 / 0.7); border-radius: 8px; box-shadow: var(--shadow); font: 400 44px/1 var(--font-code); }
+    .c0-panel { position: absolute; left: 200px; width: 1520px; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
+    .c0-tabs { height: 76px; display: flex; align-items: stretch; gap: 44px; padding: 0 36px; border-bottom: 1px solid var(--rule); font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+    .c0-tabs span { display: flex; align-items: center; }
+    .c0-tabs .on { color: var(--ink); font-weight: 700; box-shadow: inset 0 -4px 0 var(--ink); }
+    .c0-set { height: 100px; display: flex; align-items: center; gap: 20px; padding: 0 36px; border-bottom: 1px solid var(--rule); font: 400 32px/1 var(--font-text); }
+    .c0-sel { padding: 12px 20px; border: 2px solid var(--rule-strong); border-radius: 6px; }
+    #c0-cpu { margin-right: 60px; }
+    .c0-ghost { height: 26px; margin: 34px 36px 0; border-radius: 6px; background: var(--paper-sunk); }
+    .c0-track { position: relative; height: 128px; border-bottom: 1px solid var(--rule); }
+    .c0-track .tn { position: absolute; left: 36px; top: 46px; font: 700 32px/1 var(--font-text); }
+    .c0-blk { position: absolute; top: 34px; height: 60px; border-radius: 4px; background: var(--rule); }
+    .c0-ablk { position: absolute; top: 34px; height: 60px; border-radius: 4px; background: var(--accent-soft); border: 2px solid var(--accent); box-sizing: border-box; font: 400 30px/56px var(--font-text); padding-left: 14px; white-space: nowrap; overflow: hidden; }
+    #c0-ep { position: absolute; left: 200px; top: 130px; font: 700 64px/1 var(--font-code); }
+    #c0-ep-from { position: absolute; left: 200px; top: 226px; font: 400 40px/1 var(--font-text); color: var(--ink-muted); }
+    #c0-ep-from code { font: 400 38px/1 var(--font-code); color: var(--ink); }
+
+    /* who triggers a render */
+    #c0-zone { position: absolute; left: 200px; top: 290px; font: 700 80px/1 var(--font-code); }
+    #c0-strike { position: absolute; left: 190px; top: 326px; width: 380px; height: 8px; background: var(--accent); transform-origin: left center; }
+    #c0-trig { position: absolute; left: 200px; top: 270px; width: 1020px; }
+    .c0-tr { padding: 20px 0; border-bottom: 1px solid var(--rule); font: 400 38px/1.3 var(--font-text); }
+    .c0-tr code { font: 400 35px/1 var(--font-code); }
+    #c0-else { position: absolute; left: 1300px; top: 290px; width: 520px; padding: 32px 28px; border: 3px dashed var(--rule-strong); border-radius: 8px; box-sizing: border-box; }
+    #c0-else .label { font-weight: 700; margin-bottom: 26px; }
+    #c0-else div.cd { font: 400 32px/1 var(--font-code); margin-bottom: 22px; }
+
+    /* onpush */
+    .c0-q { position: absolute; left: 200px; width: 1520px; font: 400 52px/1.25 var(--font-text); }
+
+    /* signals code */
+    #c0-sig { left: 120px; top: 330px; font-size: 28px; line-height: 1.5; padding: 40px 44px; }
+    #c0-sig .ln { margin: 0 -44px; padding: 0 44px; }
+
+    /* template syntax */
+    #c0-err { position: absolute; left: 200px; top: 290px; padding: 28px 36px; background: var(--caution-soft); border-left: 8px solid var(--caution); border-radius: 8px; font: 400 40px/1 var(--font-code); color: var(--caution); }
+    #c0-defer { position: absolute; left: 200px; top: 620px; font: 700 64px/1 var(--font-code); }
+
+    /* build tables */
+    .c0-bt { position: absolute; left: 200px; width: 1400px; padding-bottom: 18px; border-bottom: 2px solid var(--rule-strong); font: 700 48px/1 var(--font-code); }
+  </style>
+
+  <div id="root" data-composition-id="c0" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c0-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c0-card-time" class="chapter-time">08:55</div>
+      <div id="c0-card-title" class="chapter-title">What moved since Angular 17</div>
+    </div>
+
+    <!-- c0-1, c0-1b the desk before opening; the v17 vocabulary stacked beside the title -->
+    <div id="c0-desk" class="clip world" data-start="3" data-duration="15.87">
+      <div id="c0-app" class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div id="c0-desk-title">What moved since Angular 17</div>
+          <div id="c0-desk-opens">Opens at 09:00</div>
+        </div>
+      </div>
+      <div id="c0-n1" class="c0-name" style="top: 330px">trackBy</div>
+      <div id="c0-n2" class="c0-name" style="top: 450px">ChangeDetectionStrategy.OnPush</div>
+      <div id="c0-n3" class="c0-name" style="top: 570px" data-hold>runOutsideAngular</div>
+    </div>
+
+    <!-- c0-2 first principle: what to write down -->
+    <div id="c0-measure" class="clip world" data-start="18.87" data-duration="8.2">
+      <div id="c0-measure-head" class="c0-head" data-hold>First principle: measure before and after</div>
+      <div id="c0-num-lead" class="c0-txt c0-mut" style="top: 320px">a number:</div>
+      <div id="c0-u1" class="c0-row" style="top: 390px">milliseconds for a click</div>
+      <div id="c0-u2" class="c0-row" style="top: 490px">kilobytes for a bundle</div>
+      <div id="c0-u3" class="c0-row" style="top: 590px" data-hold>a Lighthouse metric for a page load</div>
+    </div>
+
+    <!-- c0-3 a 16 ms frame on the same scale as the 200 ms INP threshold -->
+    <div id="c0-numbers" class="clip world" data-start="27.07" data-duration="10.52">
+      <div class="c0-head">Numbers worth knowing</div>
+      <div id="c0-fbar"></div>
+      <div id="c0-fms">16 ms</div>
+      <div id="c0-fcap" class="c0-txt" style="top: 390px">A frame at 60 Hz lasts about 16 ms.</div>
+      <div id="c0-inp-t" class="c0-term" style="top: 530px">Interaction to Next Paint (INP)</div>
+      <div id="c0-inp-d" class="c0-txt c0-mut" style="top: 596px">the delay between a click, tap or key press and the next frame the user sees</div>
+      <div id="c0-ibar"></div>
+      <div id="c0-thr"></div>
+      <div id="c0-thr-l">200 ms</div>
+      <div id="c0-inp-c" class="c0-txt" style="top: 810px" data-hold>Google's Core Web Vitals call an INP of 200 ms or less good.</div>
+    </div>
+
+    <!-- c0-3b LCP and CLS -->
+    <div id="c0-vitals" class="clip world" data-start="37.59" data-duration="11.19">
+      <div class="c0-head">Numbers worth knowing</div>
+      <div id="c0-lcp" class="c0-def" style="top: 300px" data-hold>
+        <div class="t">Largest Contentful Paint (LCP)</div>
+        <div class="d">measures when the biggest element of the first screen has rendered.</div>
+      </div>
+      <div id="c0-cls" class="c0-def" style="top: 560px" data-hold>
+        <div class="t">Cumulative Layout Shift (CLS)</div>
+        <div class="d">measures how much the page jumps while it loads.</div>
+      </div>
+    </div>
+
+    <!-- c0-4 a production build, then the Performance panel with the CPU throttled -->
+    <div id="c0-honest" class="clip world" data-start="48.78" data-duration="10.29">
+      <div id="c0-ngb" class="c0-chip" style="left: 200px; top: 140px">ng build</div>
+      <div id="c0-ngb-l" class="c0-txt c0-mut" style="left: 500px; top: 158px; width: 1220px" data-hold>uses the production configuration by default</div>
+      <div id="c0-dev" class="c0-txt" style="top: 236px; font-size: 36px">Development mode runs extra work on purpose, such as the <code>checkNoChanges</code> pass after every change detection, so its timings are inflated.</div>
+      <div id="c0-perf" class="c0-panel" style="top: 370px; height: 540px" data-hold>
+        <div class="c0-tabs"><span>Elements</span><span>Console</span><span>Sources</span><span>Network</span><span class="on">Performance</span></div>
+        <div class="c0-set">
+          <span>CPU:</span><span id="c0-cpu" class="c0-sel">4x slowdown</span>
+          <span>Network:</span><span class="c0-sel">No throttling</span>
+        </div>
+        <div class="c0-ghost" style="width: 62%"></div>
+        <div class="c0-ghost" style="width: 48%"></div>
+        <div class="c0-ghost" style="width: 71%"></div>
+      </div>
+    </div>
+
+    <!-- c0-5 enableProfiling(): an Angular track under the browser's own -->
+    <div id="c0-prof" class="clip world" data-start="59.07" data-duration="10.98">
+      <div id="c0-ep">enableProfiling()</div>
+      <div id="c0-ep-from">from <code>@angular/core</code></div>
+      <div class="c0-panel" style="top: 330px; height: 390px">
+        <div class="c0-tabs"><span class="on">Performance</span></div>
+        <div class="c0-track">
+          <div class="tn">Main</div>
+          <div class="c0-blk" style="left: 260px; width: 220px"></div>
+          <div class="c0-blk" style="left: 520px; width: 90px"></div>
+          <div class="c0-blk" style="left: 660px; width: 380px"></div>
+          <div class="c0-blk" style="left: 1090px; width: 140px"></div>
+          <div class="c0-blk" style="left: 1280px; width: 180px"></div>
+        </div>
+        <div id="c0-ng-track" class="c0-track" style="border-bottom: 0">
+          <div class="tn">Angular</div>
+          <div class="c0-ablk" style="left: 660px; width: 300px">change detection</div>
+          <div class="c0-ablk" style="left: 1280px; width: 150px"></div>
+        </div>
+      </div>
+      <div id="c0-ep-dev" class="c0-txt" style="top: 790px" data-hold>It only works in development mode (it is a no-op in production)</div>
+    </div>
+
+    <!-- c0-6 zone.js struck through; c0-6b the five render triggers, everything else set apart -->
+    <div id="c0-render" class="clip world" data-start="70.05" data-duration="18.62">
+      <div class="c0-head">Who triggers a render</div>
+      <div id="c0-zone-g">
+        <div id="c0-zone">zone.js</div>
+        <div id="c0-strike"></div>
+        <div id="c0-z1" class="c0-txt" style="top: 430px">In v17, Zone.js patched almost every async browser API.</div>
+        <div id="c0-z2" class="c0-txt" style="top: 510px"><code>zone.js</code> is not installed, and since v21 zoneless is Angular's default</div>
+      </div>
+      <div id="c0-trig" data-hold>
+        <div id="c0-t1" class="c0-tr">a signal read by a template changes,</div>
+        <div id="c0-t2" class="c0-tr">a template or host event listener of that view (or of a view inside it) runs,</div>
+        <div id="c0-t3" class="c0-tr">an <code>async</code> pipe receives a value,</div>
+        <div id="c0-t4" class="c0-tr"><code>ComponentRef.setInput()</code> sets an input (the router and <code>TestBed</code> use it),</div>
+        <div id="c0-t5" class="c0-tr">someone calls <code>markForCheck()</code>.</div>
+      </div>
+      <div id="c0-else" data-hold>
+        <div class="label">Everything else</div>
+        <div class="cd">setTimeout</div>
+        <div class="cd" style="margin-bottom: 0">window.addEventListener</div>
+      </div>
+    </div>
+
+    <!-- c0-7 OnPush is the default: the two questions -->
+    <div id="c0-onpush" class="clip world" data-start="88.67" data-duration="9.01">
+      <div class="c0-head">OnPush is the default</div>
+      <div id="c0-eager" class="c0-txt c0-mut" style="top: 250px">the old behaviour is called <code>Eager</code> (<code>Default</code> is a deprecated alias)</div>
+      <div id="c0-q1" class="c0-q" style="top: 420px">"does the component get told when its data changes?"</div>
+      <div id="c0-q2" class="c0-q" style="top: 560px" data-hold>"how much work does each check do?"</div>
+    </div>
+
+    <!-- c0-8 signals code, cut in whole; band on the computed line -->
+    <div id="c0-signals" class="clip world" data-start="97.68" data-duration="9.26">
+      <div class="c0-head">Signals carry the change</div>
+      <div id="c0-sig" class="code" data-hold>
+        <span class="ln"><span class="k">const</span> loans = signal&lt;Loan[]&gt;([]);                               <span class="c">// state</span></span>
+        <span id="c0-sig-2" class="ln"><span class="k">const</span> overdue = computed(() =&gt; loans().filter(isOverdue));      <span class="c">// derived, lazy, memoized</span></span>
+        <span class="ln">effect(() =&gt; localStorage.setItem(<span class="s">'loans'</span>, JSON.stringify(loans()))); <span class="c">// side effect</span></span>
+      </div>
+    </div>
+
+    <!-- c0-9 the @for compile error, then @defer -->
+    <div id="c0-syntax" class="clip world" data-start="106.94" data-duration="9.96">
+      <div class="c0-head">New template syntax, new defaults</div>
+      <div id="c0-err">@for loop must have a "track" expression</div>
+      <div id="c0-err-l" class="c0-txt" style="top: 410px">leaving it out is a compile error</div>
+      <div id="c0-key" class="c0-txt c0-mut" style="top: 470px">The choice of key is yours to get right</div>
+      <div id="c0-defer">@defer</div>
+      <div id="c0-defer-l" class="c0-txt" style="top: 710px" data-hold>(new in v17, stable since v18) lazy-loads a piece of a template</div>
+    </div>
+
+    <!-- c0-10 the two build tables by name (the syntax shot holds into the clip's first second) -->
+    <div id="c0-build" class="clip world" data-start="116.9" data-duration="5.6">
+      <div class="c0-chip" style="left: 200px; top: 140px">ng build</div>
+      <div id="c0-bt1" class="c0-bt" style="top: 340px">Initial chunk files</div>
+      <div id="c0-bt1-l" class="c0-txt c0-mut" style="top: 420px">what every visitor downloads before the first screen</div>
+      <div id="c0-bt2" class="c0-bt" style="top: 600px">Lazy chunk files</div>
+      <div id="c0-bt2-l" class="c0-txt c0-mut" style="top: 680px" data-hold>what is fetched later</div>
+    </div>
+
+    <!-- c0-10 end: the desk opens -->
+    <div id="c0-open" class="clip world" data-start="122.5" data-duration="2.69">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span id="c0-open-clock" class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div id="c0-open-title" style="position: absolute; left: 48px; top: 120px; width: 620px; font: 600 72px/1.1 var(--font-display); letter-spacing: -0.01em">What moved since Angular 17</div>
+          <div id="c0-open-l" style="position: absolute; left: 48px; top: 360px; font: 400 36px/1 var(--font-text); color: var(--ink-muted)" data-hold>Opens at 09:00</div>
+        </div>
+      </div>
+    </div>
+
+    <audio id="c0-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="31" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c0-1" class="clip" src="assets/vo/c0-1.wav" data-start="3.0" data-duration="11.008" data-volume="1"></audio>
+    <audio id="vo-c0-1b" class="clip" src="assets/vo/c0-1b.wav" data-start="14.36" data-duration="4.16" data-volume="1"></audio>
+    <audio id="vo-c0-2" class="clip" src="assets/vo/c0-2.wav" data-start="18.87" data-duration="7.851" data-volume="1"></audio>
+    <audio id="vo-c0-3" class="clip" src="assets/vo/c0-3.wav" data-start="27.07" data-duration="10.176" data-volume="1"></audio>
+    <audio id="vo-c0-3b" class="clip" src="assets/vo/c0-3b.wav" data-start="37.59" data-duration="10.837" data-volume="1"></audio>
+    <audio id="vo-c0-4" class="clip" src="assets/vo/c0-4.wav" data-start="48.78" data-duration="9.941" data-volume="1"></audio>
+    <audio id="vo-c0-5" class="clip" src="assets/vo/c0-5.wav" data-start="59.07" data-duration="10.624" data-volume="1"></audio>
+    <audio id="vo-c0-6" class="clip" src="assets/vo/c0-6.wav" data-start="70.05" data-duration="9.28" data-volume="1"></audio>
+    <audio id="vo-c0-6b" class="clip" src="assets/vo/c0-6b.wav" data-start="79.68" data-duration="8.64" data-volume="1"></audio>
+    <audio id="vo-c0-7" class="clip" src="assets/vo/c0-7.wav" data-start="88.67" data-duration="8.661" data-volume="1"></audio>
+    <audio id="vo-c0-8" class="clip" src="assets/vo/c0-8.wav" data-start="97.68" data-duration="8.917" data-volume="1"></audio>
+    <audio id="vo-c0-9" class="clip" src="assets/vo/c0-9.wav" data-start="106.94" data-duration="8.512" data-volume="1"></audio>
+    <audio id="vo-c0-10" class="clip" src="assets/vo/c0-10.wav" data-start="115.81" data-duration="8.384" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at) => tl.to(sel, { opacity: 0, duration: 0.4, ease: "power2.in" }, at);
+    const grow = (sel, at, d = 0.6) => tl.fromTo(sel, { scaleX: 0 }, { scaleX: 1, duration: d, ease: "power3.out" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: "rgba(245,226,217,0)" }, { backgroundColor: "rgba(245,226,217,1)", duration: 0.3 }, at);
+
+    // chapter card: on screen from frame 0, time label static
+
+    // c0-1: the title in the desk, then the three v17 names as they are spoken
+    fadeIn("#c0-desk-title", 3.4);
+    fadeIn("#c0-desk-opens", 5.5, 0.4);
+    fadeIn("#c0-n1", 9.2);
+    fadeIn("#c0-n2", 10.4);
+    fadeIn("#c0-n3", 12.3);
+    // c0-1b: the desk steps back behind the names
+    tl.to("#c0-app", { opacity: 0.35, duration: 0.8, ease: "power2.inOut" }, 14.5);
+
+    // c0-2: heading, then the number to write down
+    fadeIn("#c0-measure-head", 19.0);
+    fadeIn("#c0-num-lead", 23.1, 0.4);
+    fadeIn("#c0-u1", 23.3, 0.4);
+    fadeIn("#c0-u2", 23.6, 0.4);
+    fadeIn("#c0-u3", 23.9, 0.4);
+
+    // c0-3: the 16 ms frame; INP; its 200 ms threshold
+    grow("#c0-fbar", 27.4, 0.4);
+    fadeIn("#c0-fms", 27.6, 0.4);
+    fadeIn("#c0-fcap", 27.75);
+    fadeIn("#c0-inp-t", 30.6);
+    fadeIn("#c0-inp-d", 32.7);
+    grow("#c0-ibar", 33.4, 0.8);
+    fadeIn("#c0-thr", 35.1, 0.3);
+    fadeIn("#c0-thr-l", 35.1, 0.3);
+    fadeIn("#c0-inp-c", 33.1);
+
+    // c0-3b: LCP, then CLS
+    fadeIn("#c0-lcp", 37.7);
+    fadeIn("#c0-cls", 43.8);
+
+    // c0-4: the production build, then the panel with the CPU throttled
+    fadeIn("#c0-ngb", 48.9, 0.4);
+    fadeIn("#c0-ngb-l", 49.5);
+    fadeIn("#c0-dev", 50.6);
+    fadeIn("#c0-perf", 53.9);
+    tl.fromTo("#c0-cpu", { borderColor: "#c4b9a6", color: "#1d1b18" }, { borderColor: "#b8321f", color: "#b8321f", duration: 0.3 }, 54.9);
+
+    // c0-5: enableProfiling(), its Angular track, then development mode only
+    fadeIn("#c0-ep", 59.2, 0.4);
+    fadeIn("#c0-ep-from", 59.35, 0.4);
+    fadeIn("#c0-ng-track", 60.5);
+    fadeIn("#c0-ep-dev", 62.9);
+
+    // c0-6: Zone.js in v17, then struck through
+    fadeIn("#c0-z1", 70.4);
+    grow("#c0-strike", 75.8, 0.4);
+    fadeIn("#c0-z2", 76.6);
+    // c0-6b: the five triggers one by one; everything else set apart
+    fadeOut("#c0-zone-g", 79.7);
+    for (let i = 1; i <= 5; i++) fadeIn("#c0-t" + i, 80.1 + (i - 1) * 0.7, 0.4);
+    fadeIn("#c0-else", 84.9);
+
+    // c0-7: the old name, then the two questions
+    fadeIn("#c0-eager", 89.6);
+    fadeIn("#c0-q1", 92.4);
+    fadeIn("#c0-q2", 95.0);
+
+    // c0-8: band on the computed line
+    band("#c0-sig-2", 97.9);
+
+    // c0-9: the compile error, the key, then @defer
+    fadeIn("#c0-err", 108.3, 0.4);
+    fadeIn("#c0-err-l", 108.45, 0.4);
+    fadeIn("#c0-key", 110.5);
+    fadeIn("#c0-defer", 112.3, 0.4);
+    fadeIn("#c0-defer-l", 112.45);
+
+    // c0-10: initial, then lazy; the clock turns to 09:00 as the desk opens
+    fadeIn("#c0-bt1", 117.1, 0.4);
+    fadeIn("#c0-bt1-l", 117.25);
+    fadeIn("#c0-bt2", 120.9, 0.4);
+    fadeIn("#c0-bt2-l", 121.05);
+    tl.set("#c0-open-clock", { textContent: "09:00" }, 123.0);
+    tl.set("#c0-open-l", { textContent: "Open" }, 123.0);
+
+    window.__timelines["c0"] = tl;
+  </script>
+</template>

@@ -1,0 +1,374 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c2-col { position: absolute; top: 40px; }
+    .c2-panel-h { font: 700 36px/1 var(--font-text); margin-bottom: 24px; }
+    #c2-search { height: 96px; padding: 0 28px; display: flex; align-items: center; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper); font: 400 36px/1 var(--font-text); color: var(--ink-muted); box-sizing: border-box; }
+    .c2-res { height: 96px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--rule); font: 400 36px/1 var(--font-text); }
+    .c2-res span:last-child { font-size: 30px; color: var(--ink-muted); }
+    .c2-loan { height: 120px; padding: 0 24px; display: grid; grid-template-columns: 1fr auto; align-items: center; border-bottom: 1px solid var(--rule); font: 400 36px/1.2 var(--font-text); }
+    .c2-loan small { display: block; font-size: 30px; color: var(--ink-muted); }
+    .c2-chip { padding: 8px 16px; border: 2px solid var(--rule-strong); border-radius: 6px; font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-seam { position: absolute; background: var(--accent); }
+    .c2-seam-l { position: absolute; font: 700 30px/1 var(--font-text); color: var(--accent); white-space: nowrap; }
+
+    .c2-table { position: absolute; left: 120px; width: 1680px; }
+    .c2-tr { position: relative; display: grid; border-bottom: 1px solid var(--rule); padding: 18px 0; font: 400 30px/1.3 var(--font-text); }
+    .c2-tr > div { padding-right: 28px; }
+    .c2-tr code { font: 400 30px/1.3 var(--font-code); }
+    .c2-th { font: 700 30px/1 var(--font-text); color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c2-doubles .c2-tr { grid-template-columns: 220px 640px 820px; padding: 22px 0; }
+    #c2-colband { position: absolute; left: 220px; top: 0; bottom: 0; width: 640px; margin-left: -20px; background: var(--accent-soft); border-radius: 8px; }
+    #c2-methods .c2-tr { grid-template-columns: 860px 820px; padding: 26px 0; }
+    #c2-methods .c2-tr code { font-size: 28px; }
+
+    .c2-head { position: absolute; left: 120px; top: 70px; width: 1680px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c2-head code { font: 600 52px/1.1 var(--font-code); }
+
+    #c2-crop { position: absolute; left: 200px; top: 380px; width: 1100px; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow); }
+    #c2-crop .c2-loan { border-bottom: 0; padding: 0 36px; height: 150px; }
+    #c2-today { border-radius: 6px; }
+    #c2-newdate { position: absolute; left: 1380px; top: 430px; font: 400 40px/1 var(--font-code); color: var(--ink-muted); }
+
+    .c2-code .ln { position: relative; }
+    .c2-code .cont { padding-left: 2ch; }
+    #c2-clock { left: 120px; top: 230px; font-size: 30px; line-height: 1.5; }
+    #c2-band { position: absolute; left: 0; right: 0; top: 220px; height: 45px; background: var(--accent-soft); }
+
+    .c2-ss { position: absolute; top: 200px; width: 720px; }
+    .c2-ss-h { font: 600 64px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c2-ss-d { margin-top: 16px; font: 400 32px/1.3 var(--font-text); color: var(--ink-muted); min-height: 84px; }
+    .c2-ss .fbox { position: relative; display: inline-block; margin-top: 60px; }
+    .c2-ss-n { margin-top: 28px; font: 400 32px/1.3 var(--font-text); color: var(--ink-muted); }
+
+    .c2-chip-code { position: absolute; left: 200px; padding: 16px 28px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 400 44px/1 var(--font-code); }
+    #c2-hand { position: absolute; left: 960px; top: 400px; width: 720px; height: 220px; display: grid; place-items: center; border: 3px solid var(--ink); border-radius: 8px; background: var(--paper-raised); font: 700 44px/1 var(--font-text); }
+
+    .c2-flow .fbox { height: 120px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .c2-flow .flabel { width: 380px; }
+
+    #c2-sel { left: 200px; top: 180px; font-size: 48px; }
+    #c2-bookcard { position: absolute; left: 200px; top: 460px; width: 900px; height: 380px; padding: 56px 64px; box-sizing: border-box; background: var(--paper-raised); border: 3px dashed var(--rule-strong); border-radius: 8px; }
+    #c2-titlebox { position: relative; height: 96px; width: 520px; border: 3px dashed var(--rule-strong); border-radius: 6px; padding: 8px 20px; box-sizing: border-box; }
+    #c2-title-txt { font: 600 64px/1.15 var(--font-display); }
+    .c2-tag { position: absolute; font: 400 30px/1 var(--font-code); color: var(--ink-muted); white-space: nowrap; }
+    #c2-bookcard .label { margin-top: 32px; font-size: 32px; }
+
+    #c2-book { position: absolute; left: 40px; top: 40px; width: 900px; height: 600px; padding: 56px 64px; box-sizing: border-box; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; }
+    #c2-book-h { display: inline-block; font: 600 80px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c2-book .label { margin-top: 16px; font-size: 34px; }
+    #c2-reserve { position: absolute; left: 64px; bottom: 64px; padding: 24px 44px; border-radius: 8px; background: var(--ink); color: var(--paper); font: 700 36px/1 var(--font-text); }
+    #c2-book-h, #c2-reserve { outline: 4px solid rgb(184 50 31 / 0); outline-offset: 10px; border-radius: 8px; }
+    .c2-role { position: absolute; left: 1020px; font: 400 34px/1.3 var(--font-code); }
+
+    #c2-gbr { left: 200px; top: 300px; }
+    #c2-testid { position: absolute; left: 200px; top: 600px; width: 1520px; font: 400 40px/1.4 var(--font-text); }
+    #c2-testid code { font: 400 38px/1 var(--font-code); }
+
+    #c2-questions .q { font-size: 40px; margin-bottom: 30px; }
+  </style>
+
+  <div id="root" data-composition-id="c2" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c2-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c2-card-time" class="chapter-time">12:00</div>
+      <div id="c2-card-title" class="chapter-title">Test doubles and where to put them</div>
+    </div>
+
+    <!-- c2-1, c2-2 the desk app at noon: catalog search and due labels; then three seams -->
+    <div id="c2-desk" class="clip world" data-start="3" data-duration="16.38">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">12:00</span></div>
+        <div class="app-body">
+          <div class="c2-col" style="left: 40px; width: 720px">
+            <div class="c2-panel-h">Catalog</div>
+            <div id="c2-search">Search the catalog</div>
+            <div style="height: 24px"></div>
+            <div class="c2-res"><span>Dune</span><span>Frank Herbert</span></div>
+            <div class="c2-res"><span>Kindred</span><span>Octavia E. Butler</span></div>
+            <div class="c2-res"><span>Persuasion</span><span>Jane Austen</span></div>
+          </div>
+          <div class="c2-col" style="left: 840px; width: 720px">
+            <div class="c2-panel-h">Loans</div>
+            <div class="c2-loan"><span>Middlemarch<small>Ana Ruiz</small></span><span id="c2-due" class="c2-chip">due today</span></div>
+            <div class="c2-loan"><span>Kindred<small>Mei Chen</small></span><span class="c2-chip">due 15 Mar</span></div>
+            <div class="c2-loan"><span>Persuasion<small>Tom Hale</small></span><span class="c2-chip">due 14 Mar</span></div>
+          </div>
+        </div>
+      </div>
+      <div id="c2-s1" class="c2-seam" style="left: 1440px; top: 319px; width: 4px; height: 100px"></div>
+      <div id="c2-s1l" class="c2-seam-l" style="left: 1000px; top: 820px">your code and a library</div>
+      <div id="c2-s2" class="c2-seam" style="left: 1000px; top: 288px; width: 720px; height: 4px"></div>
+      <div id="c2-s2t" class="c2-seam-l" style="left: 1000px; top: 760px">a component and its services</div>
+      <div id="c2-s3" class="c2-seam" style="left: 200px; top: 412px; width: 720px; height: 4px"></div>
+      <div id="c2-s3l" class="c2-seam-l" style="left: 200px; top: 760px" data-hold>the app and the network</div>
+    </div>
+
+    <!-- c2-3 the kinds of double -->
+    <div id="c2-doubles" class="clip world" data-start="19.38" data-duration="9.35">
+      <div class="c2-table" style="top: 110px" data-hold>
+        <div id="c2-colband"></div>
+        <div id="c2-dh" class="c2-tr c2-th"><div>Double</div><div>What it does</div><div>Example</div></div>
+        <div id="c2-d1" class="c2-tr"><div>Dummy</div><div>Fills a parameter nobody uses.</div><div><code>null</code> for a logger the code path never touches.</div></div>
+        <div id="c2-d2" class="c2-tr"><div>Stub</div><div>Returns canned answers.</div><div>A clock that always says "Friday 10:00".</div></div>
+        <div id="c2-d3" class="c2-tr"><div>Spy</div><div>Records how it was called.</div><div><code>vi.fn()</code> checked with <code>toHaveBeenCalledWith(...)</code>.</div></div>
+        <div id="c2-d4" class="c2-tr"><div>Mock</div><div>A spy with expectations set up front.</div><div>Rare in Vitest style; usually a spy plus assertions.</div></div>
+        <div id="c2-d5" class="c2-tr"><div>Fake</div><div>A working, simplified implementation.</div><div>An in-memory repository; <code>provideHttpClientTesting()</code>.</div></div>
+      </div>
+    </div>
+
+    <!-- c2-4 the seam is the injector; the due today label -->
+    <div id="c2-providers" class="clip world" data-start="28.73" data-duration="8.76">
+      <div class="line" style="top: 160px">Angular's seams are providers</div>
+      <div id="c2-crop">
+        <div class="c2-loan"><span>Middlemarch<small>Ana Ruiz</small></span><span id="c2-today" class="c2-chip">due today</span></div>
+      </div>
+      <div id="c2-newdate" data-hold>new Date()</div>
+    </div>
+
+    <!-- c2-5 the CLOCK token (LESSON.md), cut in whole; band on inject(CLOCK), then on useValue -->
+    <div id="c2-clockcode" class="clip world" data-start="37.49" data-duration="7.47">
+      <div id="c2-clock" class="code c2-code" data-hold>
+        <div id="c2-band"></div>
+        <span class="ln"><span class="k">export const</span> CLOCK = <span class="k">new</span> InjectionToken&lt;() =&gt; Date&gt;(<span class="s">'CLOCK'</span>,</span>
+        <span class="ln cont"> { factory: () =&gt; () =&gt; <span class="k">new</span> Date() });</span>
+        <span class="ln"> </span>
+        <span class="ln"><span class="c">// in the component</span></span>
+        <span class="ln"><span class="k">private readonly</span> now = inject(CLOCK);</span>
+        <span class="ln"> </span>
+        <span class="ln"><span class="c">// in the test</span></span>
+        <span class="ln">TestBed.configureTestingModule({</span>
+        <span class="ln">  providers: [{ provide: CLOCK, useValue: () =&gt; <span class="k">new</span> Date(<span class="s">'2026-03-06T10:00:00'</span>) }],</span>
+        <span class="ln">});</span>
+      </div>
+    </div>
+
+    <!-- c2-6 solitary and sociable, a store under each -->
+    <div id="c2-solsoc" class="clip world" data-start="44.96" data-duration="7.86">
+      <div id="c2-sol" class="c2-ss" style="left: 200px">
+        <div class="c2-ss-h">solitary</div>
+        <div class="c2-ss-d">every collaborator replaced</div>
+        <div id="c2-sol-box" class="fbox" style="border-style: dashed">store (stub)</div>
+        <div id="c2-sol-n" class="c2-ss-n">fine when the store has its own tests</div>
+      </div>
+      <div id="c2-soc" class="c2-ss" style="left: 1000px">
+        <div class="c2-ss-h">sociable</div>
+        <div class="c2-ss-d">real collaborators you own, only the outside world replaced</div>
+      </div>
+      <div id="c2-soc-box" class="fbox" style="left: 1000px; top: 432px" data-hold>store (real)</div>
+    </div>
+
+    <!-- c2-7 types you don't own; a hand-written copy, struck through -->
+    <div id="c2-own" class="clip world" data-start="52.82" data-duration="10.21">
+      <div class="line" style="top: 140px">Don't hand-roll fakes of types you don't own</div>
+      <div id="c2-http" class="c2-chip-code" style="top: 420px">HttpClient</div>
+      <div id="c2-router" class="c2-chip-code" style="top: 540px">Router</div>
+      <div id="c2-hand" data-hold>hand-written HttpClient</div>
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <line id="c2-strike" x1="930" y1="510" x2="1710" y2="510" stroke="#b8321f" stroke-width="6" stroke-dasharray="780" />
+      </svg>
+    </div>
+
+    <!-- c2-8 the HTTP flow (LESSON.md), arrows drawing on as each step is named -->
+    <div id="c2-flow" class="clip world sunk c2-flow" data-start="63.03" data-duration="10.46">
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <g stroke="#1d1b18" stroke-width="4" fill="none">
+          <line id="c2-e1" x1="380" y1="300" x2="702" y2="300" stroke-dasharray="322" />
+          <line id="c2-e2" x1="1120" y1="300" x2="1482" y2="300" stroke-dasharray="362" />
+          <line id="c2-e3" x1="1650" y1="360" x2="1650" y2="702" stroke-dasharray="342" />
+          <line id="c2-e4" x1="1500" y1="780" x2="718" y2="780" stroke-dasharray="782" />
+          <line id="c2-e5" x1="260" y1="720" x2="260" y2="378" stroke-dasharray="342" />
+        </g>
+        <g fill="#1d1b18">
+          <polygon id="c2-a1" points="700,288 720,300 700,312" />
+          <polygon id="c2-a2" points="1480,288 1500,300 1480,312" />
+          <polygon id="c2-a3" points="1638,700 1650,720 1662,700" />
+          <polygon id="c2-a4" points="720,768 700,780 720,792" />
+          <polygon id="c2-a5" points="248,380 260,360 272,380" />
+        </g>
+      </svg>
+      <div id="c2-l1" class="flabel" style="left: 360px; top: 180px; width: 360px">calls a public method</div>
+      <div id="c2-l2" class="flabel" style="left: 1120px; top: 180px">the real client from provideHttpClient</div>
+      <div id="c2-l3" class="flabel" style="left: 1230px; top: 490px; text-align: right">everything registered with withInterceptors</div>
+      <div id="c2-l4" class="flabel" style="left: 740px; top: 690px; width: 740px">the owner's fake replaces only the network</div>
+      <div id="c2-l5" class="flabel" style="left: 300px; top: 490px; text-align: left">lets the test inspect and answer each request</div>
+      <div id="c2-b1" class="fbox" style="left: 140px; top: 240px; width: 240px">Test</div>
+      <div id="c2-b2" class="fbox" style="left: 720px; top: 240px; width: 400px">CatalogService</div>
+      <div id="c2-b3" class="fbox" style="left: 1500px; top: 240px; width: 300px">HttpClient</div>
+      <div id="c2-b4" class="fbox" style="left: 1500px; top: 720px; width: 300px">Interceptors</div>
+      <div id="c2-b5" class="fbox" style="left: 140px; top: 720px; width: 560px" data-hold>HttpTestingController</div>
+    </div>
+
+    <!-- c2-9 HttpTestingController's methods; c2-9b each row shown as it is named, equal windows, no band -->
+    <div id="c2-methods" class="clip world" data-start="73.49" data-duration="22.7">
+      <div class="c2-head"><code>HttpTestingController</code> as a tool</div>
+      <div class="c2-table" style="top: 210px" data-hold>
+        <div id="c2-mh" class="c2-tr c2-th"><div>Method</div><div>What it gives you</div></div>
+        <div id="c2-m1" class="c2-tr"><div><code>expectOne(url | { method, url } | predicate)</code></div><div>Asserts exactly one matching request (fails on zero and on two) and returns a <code>TestRequest</code>.</div></div>
+        <div id="c2-m2" class="c2-tr"><div><code>expectNone(...)</code></div><div>Asserts no matching request was made.</div></div>
+        <div id="c2-m3" class="c2-tr"><div><code>match(...)</code></div><div>Returns every matching request, without asserting.</div></div>
+        <div id="c2-m4" class="c2-tr"><div><code>verify()</code></div><div>Asserts nothing is left outstanding (by default it also fails on cancelled requests you did not match).</div></div>
+      </div>
+    </div>
+
+    <!-- c2-11 a stylesheet selector, and the heading that loses its text -->
+    <div id="c2-selector" class="clip world" data-start="96.19" data-duration="8.73">
+      <div id="c2-sel" class="code"><span class="ln">.card &gt; .title-lg</span></div>
+      <div id="c2-bookcard">
+        <div class="c2-tag" style="left: 0; top: -44px">.card</div>
+        <div id="c2-titlebox"><span id="c2-title-txt">Dune</span><span class="c2-tag" style="left: 540px; top: 32px">.title-lg</span></div>
+        <div class="label">Frank Herbert</div>
+      </div>
+    </div>
+
+    <!-- c2-12 the book card queried by role and accessible name -->
+    <div id="c2-roles" class="clip world" data-start="104.92" data-duration="9.69">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">12:00</span></div>
+        <div class="app-body">
+          <div id="c2-book">
+            <div id="c2-book-h">Dune</div>
+            <div class="label">Frank Herbert</div>
+            <div id="c2-reserve">Reserve</div>
+          </div>
+          <div id="c2-role1" class="c2-role" style="top: 116px">heading "Dune"</div>
+          <div id="c2-role2" class="c2-role" style="top: 526px" data-hold>button "Reserve"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-12b the dojo's getByRole helper; data-testid for decorative details -->
+    <div id="c2-helper" class="clip world" data-start="114.61" data-duration="10.89">
+      <div id="c2-gbr" class="code"><span class="ln">getByRole(root, <span class="s">'heading'</span>, { name: <span class="s">'Dune'</span> })</span></div>
+      <div id="c2-testid" data-hold>Decorative details have no role; for those, a rare <code>data-testid</code> is acceptable.</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c2-questions" class="clip world note" data-start="125.5" data-duration="19.4">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c2-q1" class="q">For each double: which real behaviour does it remove, and is that the behaviour the test's name promises?</div>
+        <div id="c2-q2" class="q">Is any double a hand-written copy of a type the team does not own?</div>
+        <div id="c2-q3" class="q">If the real dependency misbehaved in the way it usually does in production, which test would notice?</div>
+        <div id="c2-q4" class="q">Would the selectors in this file survive a redesign?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c2-pause" class="clip world" data-start="144.9" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c2-pause-2" class="pause-2" data-hold>Now do exercise 02.</div>
+    </div>
+
+    <audio id="c2-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="100" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-bed2" class="clip" src="assets/music/bed.mp3" data-start="125.5" data-duration="19.4" data-media-start="110" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c2-1" class="clip" src="assets/vo/c2-1.wav" data-start="3" data-duration="7.701" data-volume="1"></audio>
+    <audio id="vo-c2-2" class="clip" src="assets/vo/c2-2.wav" data-start="11.05" data-duration="7.979" data-volume="1"></audio>
+    <audio id="vo-c2-3" class="clip" src="assets/vo/c2-3.wav" data-start="19.38" data-duration="9.003" data-volume="1"></audio>
+    <audio id="vo-c2-4" class="clip" src="assets/vo/c2-4.wav" data-start="28.73" data-duration="8.405" data-volume="1"></audio>
+    <audio id="vo-c2-5" class="clip" src="assets/vo/c2-5.wav" data-start="37.49" data-duration="7.125" data-volume="1"></audio>
+    <audio id="vo-c2-6" class="clip" src="assets/vo/c2-6.wav" data-start="44.96" data-duration="7.509" data-volume="1"></audio>
+    <audio id="vo-c2-7" class="clip" src="assets/vo/c2-7.wav" data-start="52.82" data-duration="9.856" data-volume="1"></audio>
+    <audio id="vo-c2-8" class="clip" src="assets/vo/c2-8.wav" data-start="63.03" data-duration="10.112" data-volume="1"></audio>
+    <audio id="vo-c2-9" class="clip" src="assets/vo/c2-9.wav" data-start="73.49" data-duration="10.219" data-volume="1"></audio>
+    <audio id="vo-c2-9b" class="clip" src="assets/vo/c2-9b.wav" data-start="84.06" data-duration="11.776" data-volume="1"></audio>
+    <audio id="vo-c2-11" class="clip" src="assets/vo/c2-11.wav" data-start="96.19" data-duration="8.384" data-volume="1"></audio>
+    <audio id="vo-c2-12" class="clip" src="assets/vo/c2-12.wav" data-start="104.92" data-duration="9.344" data-volume="1"></audio>
+    <audio id="vo-c2-12b" class="clip" src="assets/vo/c2-12b.wav" data-start="114.61" data-duration="10.539" data-volume="1"></audio>
+    <audio id="vo-c2-end" class="clip" src="assets/vo/c2-end.wav" data-start="125.5" data-duration="2.027" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const enter = (sel, at) => tl.fromTo(sel, { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, at);
+    const box = (sel, at) => tl.fromTo(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, at);
+    const draw = (sel, len, at, d = 0.5) =>
+      tl.fromTo(sel, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+    const grow = (sel, axis, at) =>
+      tl.fromTo(sel, { [axis]: 0, opacity: 1 }, { [axis]: 1, opacity: 1, duration: 0.5, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0, time label static
+
+    // c2-1: the due today label, then the catalog search box
+    tl.to("#c2-due", { color: "#1d1b18", borderColor: "#1d1b18", duration: 0.3 }, 6.3);
+    tl.to("#c2-search", { borderColor: "#1d1b18", color: "#1d1b18", duration: 0.3 }, 7.7);
+
+    // c2-2: three seams, one at a time, each as it is named
+    tl.set("#c2-s1", { transformOrigin: "50% 0%" }, 0);
+    tl.set(["#c2-s2", "#c2-s3"], { transformOrigin: "0% 50%" }, 0);
+    grow("#c2-s1", "scaleY", 15.0);
+    fadeIn("#c2-s1l", 15.15, 0.4);
+    grow("#c2-s2", "scaleX", 15.8);
+    fadeIn("#c2-s2t", 15.95, 0.4);
+    grow("#c2-s3", "scaleX", 17.6);
+    fadeIn("#c2-s3l", 17.75, 0.4);
+
+    // c2-3: rows one by one, then the "What it does" column banded
+    fadeIn("#c2-dh", 19.5, 0.4);
+    for (let i = 1; i <= 5; i++) fadeIn("#c2-d" + i, 20.8 + (i - 1) * 0.45, 0.4);
+    fadeIn("#c2-colband", 24.4, 0.4);
+
+    // c2-4: the due today label as the accent, then its new Date()
+    tl.to("#c2-today", { color: "#b8321f", borderColor: "#b8321f", backgroundColor: "#f5e2d9", duration: 0.3 }, 32.7);
+    fadeIn("#c2-newdate", 34.3, 0.5);
+
+    // c2-5: band on inject(CLOCK), then on the useValue line
+    fadeIn("#c2-band", 37.6, 0.3);
+    tl.to("#c2-band", { y: 4 * 45, duration: 0.8, ease: "power2.inOut" }, 40.8);
+
+    // c2-6: both columns from the cut; the stub under solitary, the note, then the real store under sociable
+    box("#c2-sol-box", 45.5);
+    fadeIn("#c2-sol-n", 47.9, 0.5);
+    box("#c2-soc-box", 50.2);
+
+    // c2-7: the plain hand-written box, the two types you don't own, then the strike
+    box("#c2-hand", 54.6);
+    fadeIn("#c2-http", 56.0, 0.4);
+    fadeIn("#c2-router", 57.2, 0.4);
+    draw("#c2-strike", 780, 59.2, 0.5);
+
+    // c2-8: the flow, each arrow drawing on as its step is named; HttpTestingController is the accent
+    [[64.6, 1], [67.8, 2], [68.9, 3], [71.2, 4], [72.4, 5]].forEach(([at, i]) => {
+      draw("#c2-e" + i, i === 4 ? 782 : 362, at, i === 4 ? 0.6 : 0.4);
+      fadeIn("#c2-a" + i, at + (i === 4 ? 0.55 : 0.35), 0.1);
+      fadeIn("#c2-l" + i, at + 0.15, 0.4);
+      if (i < 5) box("#c2-b" + (i + 1), at + (i === 4 ? 0.6 : 0.4));
+    });
+    box("#c2-b1", 63.2);
+    tl.to("#c2-b5", { borderColor: "#b8321f", backgroundColor: "#f5e2d9", color: "#b8321f", duration: 0.3 }, 71.9);
+
+    // c2-9: rows one by one once the controller is named
+    fadeIn("#c2-mh", 73.7, 0.4);
+    for (let i = 1; i <= 4; i++) fadeIn("#c2-m" + i, 75.5 + (i - 1) * 0.6, 0.4);
+
+    // c2-9b: each row shown as it is named for the same 2.4 s window; the others step back, nothing banded
+    const rows = ["#c2-m1", "#c2-m2", "#c2-m3", "#c2-m4"];
+    [84.2, 86.7, 90.0, 92.7].forEach((at, i) => {
+      const others = rows.filter((_, j) => j !== i);
+      tl.to(others, { opacity: 0.3, duration: 0.3, ease: "power2.inOut" }, at);
+      tl.to(others, { opacity: 1, duration: 0.3, ease: "power2.inOut" }, at + 2.4);
+    });
+
+    // c2-11: the heading loses its text, the selector still matches its box
+    tl.to("#c2-titlebox", { borderColor: "#b8321f", duration: 0.3 }, 102.6);
+    tl.to("#c2-title-txt", { opacity: 0, duration: 0.4, ease: "power2.in" }, 102.6);
+
+    // c2-12: the heading named Dune, then the button named Reserve
+    tl.to("#c2-book-h", { outlineColor: "rgb(184 50 31 / 1)", duration: 0.3 }, 108.2);
+    fadeIn("#c2-role1", 108.35, 0.4);
+    tl.to("#c2-reserve", { outlineColor: "rgb(184 50 31 / 1)", duration: 0.3 }, 109.8);
+    fadeIn("#c2-role2", 109.95, 0.4);
+
+    // c2-12b: the helper is there from the cut; data-testid on "decorative details"
+    fadeIn("#c2-testid", 121.7);
+
+    // questions 0.6 s apart, then hold; pause card
+    for (let i = 1; i <= 4; i++) fadeIn("#c2-q" + i, 125.7 + (i - 1) * 0.6);
+    fadeIn("#c2-pause-2", 145.3);
+
+    window.__timelines["c2"] = tl;
+  </script>
+</template>

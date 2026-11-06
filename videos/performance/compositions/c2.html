@@ -1,0 +1,302 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c2-svg { position: absolute; left: 0; top: 0; }
+    code { font-family: var(--font-code); font-size: 0.92em; }
+    .c2-h { position: absolute; left: 200px; top: 110px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c2-h code { font-size: 0.86em; }
+
+    #c2-rl { position: absolute; left: 40px; top: 32px; width: 1600px; }
+    #c2-rl-title { font: 600 56px/1.1 var(--font-display); margin-bottom: 8px; }
+    .c2-rl-head, .c2-rl-row { display: grid; grid-template-columns: 720px 560px 320px; align-items: center; padding: 0 32px; }
+    .c2-rl-head { height: 64px; margin-top: 28px; border-bottom: 2px solid var(--rule-strong); font: 700 30px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-rl-row { height: 100px; border-bottom: 1px solid var(--rule); font: 400 36px/1 var(--font-text); }
+    .c2-rl-row b { font-weight: 700; }
+    .c2-rl-row span:last-child { font-family: var(--font-code); font-size: 32px; color: var(--ink-muted); }
+
+    #c2-dt { position: absolute; left: 160px; top: 150px; width: 1600px; height: 640px; box-sizing: border-box; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper-raised); box-shadow: var(--shadow); overflow: hidden; }
+    #c2-dt-bar { height: 76px; display: flex; gap: 48px; align-items: stretch; padding: 0 40px; border-bottom: 1px solid var(--rule); font: 700 30px/1 var(--font-text); }
+    #c2-dt-bar span { display: flex; align-items: center; color: var(--ink-muted); border-bottom: 4px solid transparent; }
+    #c2-dt-bar #c2-tab1 { color: var(--ink); border-bottom-color: var(--ink); }
+    #c2-dt-name { position: absolute; right: 40px; top: 24px; font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+    #c2-dt-tree { position: absolute; left: 0; top: 77px; width: 620px; bottom: 0; border-right: 1px solid var(--rule); padding-top: 24px; }
+    .c2-dt-n { height: 72px; display: flex; align-items: center; font: 400 34px/1 var(--font-code); }
+    .c2-dt-n.sel { background: var(--paper-sunk); font-weight: 700; }
+    #c2-dt-props { position: absolute; left: 660px; top: 110px; width: 900px; }
+    .c2-dt-sec { font: 700 30px/1 var(--font-text); color: var(--ink-muted); margin: 0 0 20px; }
+    .c2-dt-p { display: grid; grid-template-columns: 300px 1fr; height: 64px; align-items: center; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-code); margin-bottom: 44px; }
+    #c2-dt-note { position: absolute; left: 160px; top: 840px; width: 1600px; }
+
+    #c2-table { position: absolute; left: 120px; top: 280px; width: 1680px; display: grid; grid-template-columns: 1160px 520px; font: 400 34px/1.35 var(--font-text); }
+    #c2-table > div { display: contents; }
+    #c2-table > div > span { padding: 26px 24px; border-bottom: 1px solid var(--rule); }
+    #c2-table > div > span:first-child { font: 400 30px/1.5 var(--font-code); }
+    #c2-thead > span { font: 700 30px/1.3 var(--font-text) !important; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong) !important; }
+
+    .c2-chip { position: absolute; padding: 24px 40px; }
+    .c2-tn { height: 140px; box-sizing: border-box; padding: 22px 32px; }
+    .c2-tn .badge { display: block; margin: 12px 0 0; }
+    .c2-col { position: absolute; top: 690px; width: 700px; }
+    .c2-col .label { margin-bottom: 18px; }
+    .c2-col-items { display: flex; flex-wrap: wrap; gap: 18px 18px; }
+    .c2-col-items span { padding: 14px 24px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 400 34px/1 var(--font-text); }
+    .c2-col-items code { font-size: 34px; }
+
+    .c2-code { left: 104px; width: 1712px; box-sizing: border-box; padding: 40px 44px; }
+    .c2-code .ln { position: relative; }
+    .c2-band { position: absolute; left: 0; right: 0; top: 40px; height: 51px; background: var(--accent-soft); }
+    .c2-code.small { font-size: 30px; line-height: 45px; }
+    .c2-code.small .c2-band { height: 45px; }
+    .c2-hl { border-radius: 4px; }
+
+    #c2-bul { position: absolute; left: 160px; top: 690px; width: 1600px; }
+    #c2-bul .label { margin-bottom: 16px; }
+    .c2-b { display: grid; grid-template-columns: 40px 1fr; font: 400 34px/1.4 var(--font-text); margin-bottom: 14px; }
+
+    #c2-jobs { position: absolute; left: 200px; top: 360px; width: 1520px; display: flex; flex-wrap: wrap; gap: 24px; }
+    #c2-jobs span { padding: 22px 32px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 400 40px/1 var(--font-text); }
+    #c2-jobs code { font-size: 38px; }
+    #c2-linked { position: absolute; left: 200px; top: 620px; width: 1520px; }
+    #c2-linked-k { display: inline-block; padding: 18px 28px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 40px/1 var(--font-code); }
+    #c2-linked-t { margin-top: 26px; font: 400 40px/1.4 var(--font-text); }
+
+    .q { font-size: 40px; margin-bottom: 30px; }
+  </style>
+
+  <div id="root" data-composition-id="c2" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c2-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">11:00</div>
+      <div class="chapter-title">References, OnPush inputs, and derived state</div>
+    </div>
+
+    <!-- c2-1: the reading list view -->
+    <div id="c2-desk" class="clip world" data-start="3" data-duration="5.32">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk · Reading lists</span><span class="app-clock">11:00</span></div>
+        <div class="app-body">
+          <div id="c2-rl" data-hold>
+            <div id="c2-rl-title">Hana Sato's reading list</div>
+            <div class="c2-rl-head"><span>Book</span><span>Author</span><span>Shelf</span></div>
+            <div class="c2-rl-row"><b>Middlemarch</b><span>George Eliot</span><span>F-ELI</span></div>
+            <div class="c2-rl-row"><b>Kokoro</b><span>Natsume Sōseki</span><span>F-NAT</span></div>
+            <div class="c2-rl-row"><b>Pedro Páramo</b><span>Juan Rulfo</span><span>F-RUL</span></div>
+            <div class="c2-rl-row"><b>The Remains of the Day</b><span>Kazuo Ishiguro</span><span>F-ISH</span></div>
+            <div class="c2-rl-row"><b>Persuasion</b><span>Jane Austen</span><span>F-AUS</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-2: Angular DevTools, a component selected, its inputs and signals -->
+    <div id="c2-devtools" class="clip world sunk" data-start="8.32" data-duration="7.95">
+      <div id="c2-dt">
+        <div id="c2-dt-bar"><span id="c2-tab1">Components</span><span id="c2-tab2">Profiler</span></div>
+        <div id="c2-dt-name">Angular DevTools</div>
+        <div id="c2-dt-tree">
+          <div class="c2-dt-n" style="padding-left: 40px">app-root</div>
+          <div class="c2-dt-n" style="padding-left: 80px">ShelfPage</div>
+          <div class="c2-dt-n sel" style="padding-left: 120px">BookList</div>
+          <div class="c2-dt-n" style="padding-left: 120px">ShelfStats</div>
+        </div>
+        <div id="c2-dt-props">
+          <div id="c2-dt-in">
+            <div class="c2-dt-sec">Inputs</div>
+            <div class="c2-dt-p"><span>shelf</span><span>{…}</span></div>
+          </div>
+          <div id="c2-dt-sig">
+            <div class="c2-dt-sec">Signals</div>
+            <div class="c2-dt-p"><span>expanded</span><span>false</span></div>
+          </div>
+        </div>
+      </div>
+      <div id="c2-dt-note" class="label" data-hold>The profiler shows whether that component was checked at all during the click.</div>
+    </div>
+
+    <!-- c2-3: Code / Consumers notified?, the push row last -->
+    <div id="c2-notify" class="clip world" data-start="16.27" data-duration="9.82">
+      <div class="c2-h">A signal notifies on a new value</div>
+      <div id="c2-table" data-hold>
+        <div id="c2-thead"><span>Code</span><span>Consumers notified?</span></div>
+        <div id="c2-tr1"><span>shelf.set({ ...shelf(), books: [...shelf().books, book] })</span><span>yes, new reference</span></div>
+        <div id="c2-tr2"><span>shelf.update((s) =&gt; ({ ...s, label }))</span><span>yes, new reference</span></div>
+        <div id="c2-tr3"><span>shelf.set(shelf())</span><span>no, same reference</span></div>
+        <div id="c2-tr4"><span class="c2-hl">shelf().books.push(book)</span><span class="c2-hl">no, the signal was never set</span></div>
+      </div>
+    </div>
+
+    <!-- c2-4, c2-4b: the binding, the OnPush tree, then the two columns -->
+    <div id="c2-tree" class="clip world sunk" data-start="26.09" data-duration="22.1">
+      <div id="c2-bind" class="code c2-chip" style="left: 120px; top: 90px">[shelf]=<span class="s">"shelf()"</span></div>
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#c4b9a6" stroke-width="4">
+        <path id="c2-t1" pathLength="1" d="M960 348 V410 H590 V470" />
+        <path id="c2-t2" pathLength="1" d="M960 348 V410 H1330 V470" />
+      </svg>
+      <div id="c2-n0" class="node" style="left: 800px; top: 250px; width: 320px; box-sizing: border-box; text-align: center" data-hold>ShelfPage</div>
+      <div id="c2-n1" class="node c2-tn" style="left: 360px; top: 470px; width: 460px">BookList<span class="badge">[OnPush]</span></div>
+      <div id="c2-n2" class="node c2-tn" style="left: 1100px; top: 470px; width: 460px">ShelfStats<span class="badge">[OnPush]</span></div>
+      <div id="c2-col1" class="c2-col" style="left: 200px">
+        <div class="label">new references</div>
+        <div class="c2-col-items"><span>Spread</span><span><code>map</code></span><span><code>filter</code></span><span><code>concat</code></span></div>
+      </div>
+      <div id="c2-col2" class="c2-col" style="left: 1000px; width: 760px" data-hold>
+        <div class="label">same reference</div>
+        <div class="c2-col-items"><span><code>push</code></span><span><code>splice</code></span><span><code>sort</code> (in place)</span><span>property assignment</span></div>
+      </div>
+    </div>
+
+    <!-- c2-5: the overdueBooks getter and its template, both reads banded -->
+    <div id="c2-getter" class="clip world" data-start="48.19" data-duration="7.66">
+      <div class="c2-h">Count the work per check</div>
+      <div class="code c2-code" style="top: 250px">
+        <span class="ln"><span class="k">get</span> overdueBooks() {</span>
+        <span class="ln">  <span class="k">return this</span>.loans().filter(isOverdue);   <span class="c">// runs on every read</span></span>
+        <span class="ln">}</span>
+      </div>
+      <div class="code c2-code" style="top: 560px" data-hold>
+        <span class="ln">&lt;p&gt;{{ <span id="c2-read1" class="c2-hl">overdueBooks</span>.length }} overdue&lt;/p&gt;</span>
+        <span class="ln"><span class="k">@for</span> (loan of <span id="c2-read2" class="c2-hl">overdueBooks</span>; track loan.id) { ... }</span>
+      </div>
+    </div>
+
+    <!-- c2-6, c2-6b: the heading code, band on effect, then on computed; the three costs -->
+    <div id="c2-heading" class="clip world" data-start="55.85" data-duration="15.19">
+      <div class="code c2-code small" style="top: 110px">
+        <div id="c2-band1" class="c2-band"></div>
+        <span class="ln"><span class="c">// derived state copied by an effect</span></span>
+        <span class="ln"><span class="k">readonly</span> heading = signal(<span class="s">''</span>);</span>
+        <span class="ln"><span class="k">constructor</span>() {</span>
+        <span class="ln">  effect(() =&gt; <span class="k">this</span>.heading.set(<span class="s">`${<span class="k">this</span>.shelf().label} (${<span class="k">this</span>.shelf().room})`</span>));</span>
+        <span class="ln">}</span>
+        <span class="ln"> </span>
+        <span class="ln"><span class="c">// the same value, derived</span></span>
+        <span class="ln"><span class="k">readonly</span> heading = computed(() =&gt; <span class="s">`${<span class="k">this</span>.shelf().label} (${<span class="k">this</span>.shelf().room})`</span>);</span>
+      </div>
+      <div id="c2-bul" data-hold>
+        <div id="c2-bul-h" class="label">The effect version costs more and is easier to break:</div>
+        <div id="c2-b1" class="c2-b"><b>·</b><span>the value is copied in a separate step that Angular has to schedule, instead of being computed at the moment it is read;</span></div>
+        <div id="c2-b2" class="c2-b"><b>·</b><span>there is a second writable signal that something else could set to a wrong value;</span></div>
+        <div id="c2-b3" class="c2-b"><b>·</b><span>the effect runs even when nobody reads <code>heading</code>, while a <code>computed</code> is lazy.</span></div>
+      </div>
+    </div>
+
+    <!-- c2-7: the jobs an effect keeps; linkedSignal -->
+    <div id="c2-effects" class="clip world" data-start="71.04" data-duration="10.61">
+      <div class="c2-h">Keep <code>effect</code> for work that leaves the reactive graph:</div>
+      <div id="c2-jobs">
+        <span id="c2-j1"><code>localStorage</code></span>
+        <span id="c2-j2">logging</span>
+        <span id="c2-j3">analytics</span>
+        <span id="c2-j4">an imperative chart or map library</span>
+      </div>
+      <div id="c2-linked" data-hold>
+        <div id="c2-linked-k">linkedSignal</div>
+        <div id="c2-linked-t">when the derived value must also accept writes, like a selection that resets when its list changes</div>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c2-questions" class="clip world note" data-start="81.65" data-duration="28.1">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c2-q1" class="q">For each signal holding an object or array: is it ever changed in place instead of being set to a new value?</div>
+        <div id="c2-q2" class="q">For each OnPush child: when its parent's state changes, does the child receive a new reference?</div>
+        <div id="c2-q3" class="q">How many times does each expensive function or getter run for one check of the template, counting calls from other methods?</div>
+        <div id="c2-q4" class="q">For each <code>effect</code>, what does it write to, and could the value be derived at read time?</div>
+        <div id="c2-q5" class="q">What would you measure, on what device, to show this matters?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c2-pause" class="clip world" data-start="109.75" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c2-pause-2" class="pause-2" data-hold>Now do exercise 02.</div>
+    </div>
+
+    <audio id="c2-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="30" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-bed2" class="clip" src="assets/music/bed.mp3" data-start="81.65" data-duration="28.1" data-media-start="38" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c2-1" class="clip" src="assets/vo/c2-1.wav" data-start="3.0" data-duration="4.971" data-volume="1"></audio>
+    <audio id="vo-c2-2" class="clip" src="assets/vo/c2-2.wav" data-start="8.32" data-duration="7.595" data-volume="1"></audio>
+    <audio id="vo-c2-3" class="clip" src="assets/vo/c2-3.wav" data-start="16.27" data-duration="9.472" data-volume="1"></audio>
+    <audio id="vo-c2-4" class="clip" src="assets/vo/c2-4.wav" data-start="26.09" data-duration="9.771" data-volume="1"></audio>
+    <audio id="vo-c2-4b" class="clip" src="assets/vo/c2-4b.wav" data-start="36.21" data-duration="11.627" data-volume="1"></audio>
+    <audio id="vo-c2-5" class="clip" src="assets/vo/c2-5.wav" data-start="48.19" data-duration="7.317" data-volume="1"></audio>
+    <audio id="vo-c2-6" class="clip" src="assets/vo/c2-6.wav" data-start="55.85" data-duration="7.189" data-volume="1"></audio>
+    <audio id="vo-c2-6b" class="clip" src="assets/vo/c2-6b.wav" data-start="63.39" data-duration="7.296" data-volume="1"></audio>
+    <audio id="vo-c2-7" class="clip" src="assets/vo/c2-7.wav" data-start="71.04" data-duration="10.261" data-volume="1"></audio>
+    <audio id="vo-c2-end" class="clip" src="assets/vo/c2-end.wav" data-start="81.65" data-duration="2.155" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const line = (sel, at, d = 0.4) =>
+      tl.fromTo(sel, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const bandTo = (sel, row, h, at) => tl.to(sel, { y: row * h, duration: 0.8, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c2-1: the reading list
+    fadeIn("#c2-rl", 3.15, 0.5);
+
+    // c2-2: the panel; the profiler named, and its tab marked
+    fadeIn("#c2-dt", 8.4, 0.4);
+    fadeIn("#c2-dt-in", 10.6, 0.4);
+    fadeIn("#c2-dt-sig", 10.75, 0.4);
+    tl.to("#c2-tab2", { color: ACCENT, borderBottomColor: ACCENT, duration: 0.3 }, 12.0);
+    fadeIn("#c2-dt-note", 12.1, 0.5);
+
+    // c2-3: rows one by one, the push row last, on "Pushing"
+    fadeIn("#c2-notify .c2-h", 16.4, 0.4);
+    fadeIn("#c2-thead span", 16.7, 0.4);
+    ["#c2-tr1 span", "#c2-tr2 span", "#c2-tr3 span"].forEach((r, i) => fadeIn(r, 17.3 + i * 0.6, 0.4));
+    fadeIn("#c2-tr4 span", 23.0, 0.4);
+    band("#c2-tr4 span", 23.5);
+
+    // c2-4: the binding, then the tree; c2-4b: ShelfPage hot, then the two columns
+    fadeIn("#c2-bind", 26.2, 0.4);
+    fadeIn("#c2-n0", 28.5, 0.4);
+    line("#c2-t1", 28.8, 0.4);
+    line("#c2-t2", 28.8, 0.4);
+    fadeIn("#c2-n1", 29.1, 0.4);
+    fadeIn("#c2-n2", 29.25, 0.4);
+    tl.fromTo("#c2-bind", { backgroundColor: "#fffdf9" }, { backgroundColor: SOFT, duration: 0.4 }, 32.7);
+    tl.to("#c2-bind", { backgroundColor: "#fffdf9", duration: 0.4 }, 36.0);
+    tl.to("#c2-n0", { borderColor: ACCENT, duration: 0.3 }, 36.4);
+    fadeIn("#c2-col1", 42.0, 0.5);
+    fadeIn("#c2-col2", 45.3, 0.5);
+
+    // c2-5: both reads of the getter banded together
+    fadeIn("#c2-getter .c2-h", 48.3, 0.4);
+    band("#c2-read1", 52.2);
+    band("#c2-read2", 52.2);
+
+    // c2-6: band on the effect line; c2-6b: band to the computed version, the costs one by one
+    tl.fromTo("#c2-band1", { opacity: 0, y: 3 * 45 }, { opacity: 1, duration: 0.3 }, 56.1);
+    bandTo("#c2-band1", 7, 45, 63.5);
+    fadeIn("#c2-bul-h", 63.6, 0.4);
+    fadeIn("#c2-b1", 64.0, 0.4);
+    fadeIn("#c2-b2", 65.9, 0.4);
+    fadeIn("#c2-b3", 67.7, 0.4);
+
+    // c2-7: the jobs as they are named; linkedSignal
+    fadeIn("#c2-effects .c2-h", 71.2, 0.4);
+    fadeIn("#c2-j1", 74.8, 0.4);
+    fadeIn("#c2-j2", 75.6, 0.4);
+    fadeIn("#c2-j3", 75.75, 0.4);
+    fadeIn("#c2-j4", 76.4, 0.4);
+    fadeIn("#c2-linked", 77.2, 0.4);
+    tl.to("#c2-linked-k", { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 77.7);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c2-q1", "#c2-q2", "#c2-q3", "#c2-q4", "#c2-q5"].forEach((q, i) => fadeIn(q, 81.9 + i * 0.6));
+    fadeIn("#c2-pause-2", 110.25);
+
+    window.__timelines["c2"] = tl;
+  </script>
+</template>

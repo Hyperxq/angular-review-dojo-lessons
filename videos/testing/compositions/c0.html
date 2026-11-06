@@ -1,0 +1,476 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    #c0-d-title { position: absolute; left: 40px; top: 60px; width: 1040px; font: 600 72px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c0-d-para { position: absolute; left: 40px; top: 300px; width: 1060px; font: 400 40px/1.4 var(--font-text); }
+    #c0-d-para b { font-weight: 700; }
+    #c0-tests { color: var(--accent); padding: 0 6px; border-radius: 6px; }
+    #c0-run { position: absolute; left: 1220px; top: 60px; width: 340px; }
+    #c0-run-cmd { font: 700 40px/1 var(--font-code); padding-bottom: 28px; border-bottom: 1px solid var(--rule); }
+    .c0-dot { width: 40px; height: 40px; margin: 30px 0 0 8px; border-radius: 50%; background: var(--tip); }
+
+    .c0-h { position: absolute; left: 200px; top: 120px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c0-tag { position: absolute; left: 200px; padding: 26px 0 26px 36px; border-left: 6px solid var(--ink); font: 700 48px/1 var(--font-text); }
+    #c0-cost-para { position: absolute; left: 200px; top: 400px; width: 1400px; font: 400 48px/1.45 var(--font-text); }
+    #c0-worth { border-radius: 6px; box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: 2px 4px; }
+
+    .c0-big { position: absolute; top: 250px; font: 600 160px/1 var(--font-display); letter-spacing: -0.015em; }
+    .c0-big-note { position: absolute; top: 450px; width: 640px; font: 400 36px/1.3 var(--font-text); color: var(--ink-muted); }
+    #c0-create { position: absolute; left: 200px; top: 700px; font: 700 56px/1 var(--font-code); white-space: nowrap; }
+
+    .c0-tbl { position: absolute; }
+    .c0-tr { position: relative; display: grid; border-bottom: 1px solid var(--rule); font: 400 32px/1.3 var(--font-text); }
+    .c0-tr > div { position: relative; padding: 18px 32px 18px 0; }
+    .c0-tr code { font: 400 30px/1.3 var(--font-code); }
+    .c0-th { font: 700 36px/1.2 var(--font-text); border-bottom: 2px solid var(--rule-strong); }
+    .c0-tr > .c0-bg { position: absolute; left: -24px; right: -24px; top: 0; bottom: 0; padding: 0; background: var(--accent-soft); border-radius: 8px; opacity: 0; }
+
+    #c0-level-h { top: 90px; font-size: 56px; }
+    #c0-level { left: 160px; top: 230px; width: 1600px; }
+    #c0-level .c0-tr { grid-template-columns: 860px 740px; font-size: 38px; }
+    #c0-level .c0-tr > div { padding-top: 26px; padding-bottom: 26px; }
+
+    .c0-col { position: absolute; top: 150px; width: 720px; border-top: 6px solid var(--ink); padding-top: 36px; }
+    .c0-col-h { font: 600 80px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-col-def { margin-top: 28px; font: 700 40px/1.3 var(--font-text); }
+    .c0-col-cost { margin-top: 60px; font: 400 40px/1.35 var(--font-text); color: var(--ink-muted); }
+
+    #c0-run-h { top: 140px; }
+    #c0-target { position: absolute; left: 200px; top: 470px; }
+    #c0-builder { position: absolute; left: 200px; top: 530px; padding: 28px 40px; border: 3px solid var(--accent); border-radius: 8px; background: var(--paper-raised); font: 700 56px/1 var(--font-code); }
+    #c0-vitest { position: absolute; left: 200px; top: 720px; font: 400 40px/1.3 var(--font-text); }
+
+    #c0-def { left: 140px; top: 100px; width: 1640px; }
+    #c0-def .c0-tr { grid-template-columns: 380px 1260px; }
+    #c0-file { border-radius: 4px; }
+
+    #c0-dict { left: 120px; top: 110px; width: 1680px; }
+    #c0-dict .c0-tr { grid-template-columns: 800px 880px; font-size: 30px; }
+    #c0-dict .c0-tr > div { padding-top: 14px; padding-bottom: 14px; }
+    #c0-dict .c0-th { font-size: 34px; }
+
+    .c0-mono { position: absolute; left: 200px; font: 700 64px/1 var(--font-code); white-space: nowrap; }
+    #c0-un { position: absolute; left: 200px; top: 560px; }
+    #c0-err { position: absolute; left: 200px; top: 720px; width: 1400px; font: 400 40px/1.3 var(--font-text); }
+
+    #c0-vimock { position: absolute; left: 200px; top: 380px; font: 700 96px/1 var(--font-code); }
+    .c0-strike { position: absolute; left: -12px; right: -12px; top: 50%; height: 8px; margin-top: -4px; background: var(--ink); transform-origin: left center; }
+    #c0-vimock-note { position: absolute; left: 200px; top: 530px; font: 400 40px/1.3 var(--font-text); color: var(--ink-muted); }
+    #c0-prov { position: absolute; left: 820px; top: 368px; font: 600 112px/1 var(--font-display); letter-spacing: -0.015em; color: var(--accent); }
+
+    #c0-ft-h { position: absolute; left: 160px; top: 100px; width: 1600px; font: 600 60px/1.15 var(--font-display); letter-spacing: -0.01em; text-wrap: balance; }
+    #c0-ft-code { position: absolute; left: 160px; top: 360px; padding: 28px 40px; background: var(--paper-raised); border: 1px solid rgb(221 212 197 / 0.7); border-radius: 8px; box-shadow: var(--shadow); font: 400 40px/1 var(--font-code); }
+    #c0-ft-note { position: absolute; left: 160px; top: 500px; width: 720px; font: 400 36px/1.35 var(--font-text); color: var(--ink-muted); }
+    #c0-ft-note code { font: 400 34px/1.35 var(--font-code); }
+    #c0-rows { position: absolute; left: 1000px; top: 330px; width: 760px; }
+    .c0-trow { position: relative; height: 62px; display: flex; align-items: center; gap: 28px; }
+    .c0-trow.gap { margin-top: 34px; }
+    .c0-tdot { width: 28px; height: 28px; border-radius: 50%; background: var(--tip); flex: none; }
+    .c0-tbar { height: 18px; border-radius: 9px; background: var(--rule-strong); }
+    #c0-late-label { font: 700 32px/1 var(--font-text); color: var(--caution); }
+
+    .c0-code { position: absolute; left: 134px; background: var(--paper-raised); border: 1px solid rgb(221 212 197 / 0.7); border-radius: 8px; padding: 40px 48px; box-shadow: var(--shadow); font: 400 30px/1.5 var(--font-code); }
+    .c0-code .ln { display: block; white-space: pre; margin: 0 -48px; padding: 0 48px; }
+
+    #c0-zone-h { top: 140px; }
+    #c0-zone-apis { position: absolute; left: 200px; top: 340px; display: flex; gap: 96px; }
+    .c0-zapi { position: relative; font: 700 64px/1 var(--font-code); }
+    #c0-zone-q { position: absolute; left: 200px; top: 500px; width: 1400px; font: 400 40px/1.35 var(--font-text); color: var(--ink-muted); }
+
+    #c0-flow .fbox { box-sizing: border-box; height: 104px; display: flex; align-items: center; justify-content: center; }
+    #c0-flow .code-box { font: 700 36px/1.15 var(--font-code); }
+
+    #c0-tool { left: 160px; top: 140px; width: 1600px; }
+    #c0-tool .c0-tr { grid-template-columns: 640px 960px; }
+    #c0-tofake { position: absolute; left: 160px; top: 760px; padding: 32px 48px; background: var(--paper-raised); border: 1px solid rgb(221 212 197 / 0.7); border-radius: 8px; box-shadow: var(--shadow); font: 400 34px/1.5 var(--font-code); white-space: pre; }
+
+    #c0-input-code { top: 400px; font-size: 28px; }
+
+    #c0-old { position: absolute; left: 40px; top: 60px; display: flex; align-items: baseline; gap: 28px; }
+    #c0-old-name { position: relative; font: 700 40px/1 var(--font-code); color: var(--ink-muted); }
+    #c0-old-name .c0-strike { height: 5px; margin-top: -2px; background: var(--ink-muted); }
+    #c0-http-code { position: absolute; left: 40px; top: 240px; background: var(--paper); border: 1px solid rgb(221 212 197 / 0.7); border-radius: 8px; padding: 40px 48px; font: 400 34px/1.5 var(--font-code); }
+    #c0-http-code .ln { display: block; white-space: pre; }
+    .c0-clock { position: relative; display: inline-block; width: 120px; height: 40px; }
+    .c0-clock span { position: absolute; right: 0; top: 0; }
+  </style>
+
+  <div id="root" data-composition-id="c0" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c0-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c0-card-time" class="chapter-time">08:55</div>
+      <div id="c0-card-title" class="chapter-title">What moved since Angular 17</div>
+    </div>
+
+    <!-- c0-1, c0-1b the desk before opening; green dots, then the lesson's opening -->
+    <div id="c0-desk" class="clip world" data-start="3" data-duration="19.92">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div id="c0-d-title" data-hold>What moved since Angular 17</div>
+          <div id="c0-d-para" data-hold>These three exercises start from the opposite situation: the build was green and the feature was broken in production. The defect lives in the <b id="c0-tests">tests</b>. The production code has bugs too, but your first job is to explain why the suite let them through.</div>
+          <div id="c0-run">
+            <div id="c0-run-cmd">ng test</div>
+            <div id="c0-dots">
+              <div class="c0-dot"></div><div class="c0-dot"></div><div class="c0-dot"></div><div class="c0-dot"></div>
+              <div class="c0-dot"></div><div class="c0-dot"></div><div class="c0-dot"></div><div class="c0-dot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-2 what a suite buys -->
+    <div id="c0-cost" class="clip world" data-start="22.92" data-duration="9.14">
+      <div class="c0-h" data-hold>What tests are for, and what they cost</div>
+      <div id="c0-buy1" class="c0-tag" style="top: 400px">confidence to change code</div>
+      <div id="c0-buy2" class="c0-tag" style="top: 560px">early warning</div>
+    </div>
+
+    <!-- c0-2b the "worth writing" sentence of the lesson paragraph, banded -->
+    <div id="c0-cost2" class="clip world" data-start="32.06" data-duration="6.73">
+      <div class="c0-h">What tests are for, and what they cost</div>
+      <div id="c0-cost-para" data-hold><span id="c0-worth">A test is worth writing when the behaviour it protects would hurt someone if it broke and is likely to be touched again.</span></div>
+    </div>
+
+    <!-- c0-3 ran versus checked, then should create -->
+    <div id="c0-cov" class="clip world" data-start="38.79" data-duration="9.71">
+      <div id="c0-ran" class="c0-big" style="left: 200px">ran</div>
+      <div id="c0-ran-note" class="c0-big-note" style="left: 200px">which lines ran during the tests</div>
+      <div id="c0-checked" class="c0-big" style="left: 960px; color: var(--accent)">checked</div>
+      <div id="c0-checked-note" class="c0-big-note" style="left: 960px">which behaviour was checked</div>
+      <div id="c0-create">it(<span class="s">'should create'</span>)</div>
+    </div>
+
+    <!-- c0-4 the cheapest test that can see the risk (LESSON.md table) -->
+    <div id="c0-lvl" class="clip world" data-start="48.5" data-duration="9.4">
+      <div id="c0-level-h" class="c0-h">Pick the level that matches the risk</div>
+      <div id="c0-level" class="c0-tbl">
+        <div id="c0-lv-h" class="c0-tr c0-th"><div>What can break</div><div>Cheapest test that can see it</div></div>
+        <div id="c0-lv1" class="c0-tr"><div>A rule in a pure function (a fee, a date calculation)</div><div>A plain unit test, no TestBed.</div></div>
+        <div id="c0-lv2" class="c0-tr"><div>A template binding, an input, what a user reads on one component</div><div>A component test with the TestBed.</div></div>
+        <div id="c0-lv3" class="c0-tr"><div>A flow across pages, the router, a real server</div><div>An end-to-end test.</div></div>
+      </div>
+    </div>
+
+    <!-- c0-5 solitary and sociable -->
+    <div id="c0-sol" class="clip world" data-start="57.9" data-duration="13.28">
+      <div id="c0-col1" class="c0-col" style="left: 160px">
+        <div class="c0-col-h">solitary</div>
+        <div class="c0-col-def">every collaborator replaced</div>
+        <div id="c0-cost1" class="c0-col-cost">point at the failing unit precisely but break when internals move</div>
+      </div>
+      <div id="c0-col2" class="c0-col" style="left: 1040px">
+        <div class="c0-col-h">sociable</div>
+        <div class="c0-col-def">real collaborators you own, only the outside world replaced</div>
+        <div id="c0-costb" class="c0-col-cost">survive refactors but a failure can come from several places</div>
+      </div>
+    </div>
+
+    <!-- c0-6 the runner moved -->
+    <div id="c0-runner" class="clip world" data-start="71.18" data-duration="9.12">
+      <div id="c0-run-h" class="c0-h" data-hold>Karma and Jasmine are gone; Vitest runs through the Angular builder</div>
+      <div id="c0-target" class="label"><code style="font-family: var(--font-code)">test</code> target</div>
+      <div id="c0-builder">@angular/build:unit-test</div>
+      <div id="c0-vitest">Vitest 5 running in jsdom</div>
+    </div>
+
+    <!-- c0-7, c0-7b, c0-8 runner defaults (LESSON.md table) -->
+    <div id="c0-defaults" class="clip world" data-start="80.3" data-duration="27.26">
+      <div id="c0-def" class="c0-tbl" data-hold>
+        <div id="c0-df-h" class="c0-tr c0-th"><div>Default</div><div>What it means for you</div></div>
+        <div id="c0-df1" class="c0-tr"><div id="c0-df1-bg" class="c0-bg"></div><div><code>globals: true</code></div><div><code>describe</code>, <code>it</code>, <code>expect</code> and <code>vi</code> exist without imports, as Jasmine's did.</div></div>
+        <div id="c0-df2" class="c0-tr"><div id="c0-df2-bg" class="c0-bg"></div><div><code>isolate: false</code></div><div>Spec files share one environment per worker "to align with the Karma/Jasmine experience". A value left in <code>localStorage</code>, a cookie, or a stubbed global can be seen by the next <b id="c0-file">file</b>, not only the next test.</div></div>
+        <div id="c0-df3" class="c0-tr"><div id="c0-df3-bg" class="c0-bg"></div><div>TestBed cleanup hooks</div><div>The builder registers <code>beforeEach</code>/<code>afterEach</code> hooks that reset the TestBed around every test. Each test gets a fresh injector, but only for what it gets <b>from</b> the TestBed.</div></div>
+        <div id="c0-df4" class="c0-tr"><div id="c0-df4-bg" class="c0-bg"></div><div>Mocks between files</div><div>Vitest calls <code>vi.restoreAllMocks()</code> after each file, which restores <code>vi.spyOn</code> spies. Nothing restores fake timers.</div></div>
+        <div id="c0-df5" class="c0-tr"><div>Advanced options</div><div>Anything else (shuffling, custom reporters) goes into a Vitest config file passed with the builder's <code>runnerConfig</code> option; <code>ng test</code> has no flag for it.</div></div>
+      </div>
+    </div>
+
+    <!-- c0-9 Jasmine to Vitest, the short dictionary (LESSON.md table) -->
+    <div id="c0-dictionary" class="clip world" data-start="107.56" data-duration="8.63">
+      <div id="c0-dict" class="c0-tbl" data-hold>
+        <div id="c0-dc-h" class="c0-tr c0-th"><div>Jasmine (v17)</div><div>Vitest (now)</div></div>
+        <div id="c0-dc1" class="c0-tr"><div><code>jasmine.createSpy()</code></div><div><code>vi.fn()</code></div></div>
+        <div id="c0-dc2" class="c0-tr"><div><code>jasmine.createSpyObj('Api', ['get'])</code></div><div>an object literal: <code>{ get: vi.fn() }</code></div></div>
+        <div id="c0-dc3" class="c0-tr"><div><code>spyOn(obj, 'm').and.returnValue(x)</code></div><div><code>vi.spyOn(obj, 'm').mockReturnValue(x)</code></div></div>
+        <div id="c0-dc4" class="c0-tr"><div><code>.and.callFake(fn)</code></div><div><code>.mockImplementation(fn)</code></div></div>
+        <div id="c0-dc5" class="c0-tr"><div><code>jasmine.clock().install()</code> / <code>tick(ms)</code></div><div><code>vi.useFakeTimers()</code> / <code>vi.advanceTimersByTime(ms)</code></div></div>
+        <div id="c0-dc6" class="c0-tr"><div><code>jasmine.clock().uninstall()</code></div><div><code>vi.useRealTimers()</code></div></div>
+        <div id="c0-dc7" class="c0-tr"><div><code>jasmine.objectContaining({...})</code></div><div><code>expect.objectContaining({...})</code></div></div>
+        <div id="c0-dc8" class="c0-tr"><div><code>expectAsync(p).toBeResolved()</code></div><div><code>await expect(p).resolves...</code></div></div>
+        <div id="c0-dc9" class="c0-tr"><div id="c0-dc9-bg" class="c0-bg"></div><div><code>it('...', done =&gt; { ...; done(); })</code></div><div>an <code>async</code> test; Vitest throws "done() callback is deprecated, use promise instead"</div></div>
+      </div>
+    </div>
+
+    <!-- c0-10 two additions -->
+    <div id="c0-adds" class="clip world" data-start="116.19" data-duration="10.85">
+      <div class="c0-h" data-hold>Two Vitest additions you did not have</div>
+      <div id="c0-assertions" class="c0-mono" style="top: 340px">expect.assertions(n)</div>
+      <div id="c0-un" class="label">un-awaited</div>
+      <div id="c0-resolves" class="c0-mono" style="top: 610px">expect(...).resolves</div>
+      <div id="c0-err">is reported as an error instead of passing silently</div>
+    </div>
+
+    <!-- c0-10c one limit of this builder -->
+    <div id="c0-limit" class="clip world" data-start="127.04" data-duration="6.96">
+      <div id="c0-vimock">vi.mock<div id="c0-vimock-x" class="c0-strike"></div></div>
+      <div id="c0-vimock-note">of relative imports is not supported</div>
+      <div id="c0-prov">providers</div>
+    </div>
+
+    <!-- c0-11 fake timers outlive the file -->
+    <div id="c0-timers" class="clip world" data-start="134" data-duration="10.8">
+      <div id="c0-ft-h" data-hold>Fake timers: spies are cleaned up between files, clocks are not</div>
+      <div id="c0-ft-code">vi.useFakeTimers()</div>
+      <div id="c0-ft-note"><code>setTimeout</code>, <code>setInterval</code>, <code>Date</code> and friends for the whole environment</div>
+      <div id="c0-rows">
+        <div class="c0-trow"><div class="c0-tdot"></div><div class="c0-tbar" style="width: 420px"></div></div>
+        <div class="c0-trow"><div class="c0-tdot"></div><div class="c0-tbar" style="width: 340px"></div></div>
+        <div class="c0-trow"><div class="c0-tdot"></div><div class="c0-tbar" style="width: 480px"></div></div>
+        <div class="c0-trow gap"><div class="c0-tdot"></div><div class="c0-tbar" style="width: 380px"></div></div>
+        <div class="c0-trow"><div class="c0-tdot"></div><div class="c0-tbar" style="width: 300px"></div></div>
+        <div class="c0-trow"><div class="c0-tdot"></div><div class="c0-tbar" style="width: 440px"></div></div>
+        <div class="c0-trow gap"><div class="c0-tdot"></div><div class="c0-tbar" style="width: 360px"></div></div>
+        <div class="c0-trow"><div class="c0-tdot"></div><div class="c0-tbar" style="width: 400px"></div></div>
+        <div class="c0-trow"><div id="c0-late-dot" class="c0-tdot"></div><div id="c0-late-bar" class="c0-tbar" style="width: 320px"></div><div id="c0-late-label">timeout</div></div>
+      </div>
+    </div>
+
+    <!-- c0-11c tie the undo to the test (LESSON.md code) -->
+    <div id="c0-undo" class="clip world" data-start="144.8" data-duration="3.94">
+      <div class="c0-code" style="top: 420px">
+        <span class="ln">vi.useFakeTimers();</span>
+        <span id="c0-undo-ln" class="ln">onTestFinished(() =&gt; vi.useRealTimers()); <span class="c">// or vi.useRealTimers() in an afterEach</span></span>
+      </div>
+    </div>
+
+    <!-- c0-12 zoneless TestBed -->
+    <div id="c0-zone" class="clip world" data-start="148.74" data-duration="8.11">
+      <div id="c0-zone-h" class="c0-h" data-hold>Zoneless TestBed</div>
+      <div id="c0-zone-apis">
+        <div id="c0-za1" class="c0-zapi">fakeAsync<div id="c0-zx1" class="c0-strike"></div></div>
+        <div id="c0-za2" class="c0-zapi">tick<div id="c0-zx2" class="c0-strike"></div></div>
+        <div id="c0-za3" class="c0-zapi">flush<div id="c0-zx3" class="c0-strike"></div></div>
+      </div>
+      <div id="c0-zone-q">"This API requires Zone.js and cannot be used with the Vitest test runner"</div>
+    </div>
+
+    <!-- c0-12b rendering is scheduled (LESSON.md flow) -->
+    <div id="c0-sched" class="clip world sunk" data-start="156.85" data-duration="9.53">
+      <div id="c0-flow">
+        <div id="c0-fa" class="fbox code-box" style="left: 160px; top: 170px; width: 600px">setInput or signal.set</div>
+        <div id="c0-fb" class="fbox" style="left: 1180px; top: 170px; width: 320px">Scheduler</div>
+        <div id="c0-fc" class="fbox" style="left: 1180px; top: 500px; width: 320px">Rendering</div>
+        <div id="c0-fd" class="fbox code-box" style="left: 160px; top: 800px; width: 640px">await fixture.whenStable</div>
+        <div id="c0-fe" class="fbox" style="left: 1180px; top: 800px; width: 320px">Assertion</div>
+        <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+          <line id="c0-a1" x1="780" y1="222" x2="1140" y2="222" stroke="#1d1b18" stroke-width="4" stroke-dasharray="360" />
+          <polygon id="c0-a1h" points="1140,210 1162,222 1140,234" fill="#1d1b18" />
+          <line id="c0-a2" x1="1340" y1="292" x2="1460" y2="292" stroke="none" />
+          <line id="c0-a2l" x1="1340" y1="294" x2="1340" y2="476" stroke="#1d1b18" stroke-width="4" stroke-dasharray="182" />
+          <polygon id="c0-a2h" points="1328,476 1340,498 1352,476" fill="#1d1b18" />
+          <line id="c0-a3" x1="820" y1="852" x2="1140" y2="852" stroke="#b8321f" stroke-width="4" stroke-dasharray="320" />
+          <polygon id="c0-a3h" points="1140,840 1162,852 1140,864" fill="#b8321f" />
+        </svg>
+        <div id="c0-l1" class="flabel" style="left: 780px; top: 166px; width: 380px">marks the view dirty</div>
+        <div id="c0-l2" class="flabel" style="left: 1370px; top: 340px; width: 440px; text-align: left">runs on a later timer or animation frame</div>
+        <div id="c0-l3" class="flabel" style="left: 820px; top: 762px; width: 340px; color: var(--accent)">the DOM now reflects the change</div>
+      </div>
+    </div>
+
+    <!-- c0-13 tool table, then fake only Date -->
+    <div id="c0-tools" class="clip world" data-start="166.38" data-duration="10.05">
+      <div id="c0-tool" class="c0-tbl" data-hold>
+        <div class="c0-tr c0-th"><div>Tool</div><div>Use it when</div></div>
+        <div id="c0-tl1" class="c0-tr"><div><code>await fixture.whenStable()</code></div><div>The default. Waits for scheduled rendering and pending work such as resources.</div></div>
+        <div id="c0-tl2" class="c0-tr"><div id="c0-tl2-bg" class="c0-bg"></div><div><code>fixture.detectChanges()</code></div><div>You need a synchronous render, for example while fake timers are active.</div></div>
+        <div id="c0-tl3" class="c0-tr"><div><code>TestBed.tick()</code></div><div>Run pending effects and synchronize the UI (it replaces the deprecated <code>TestBed.flushEffects()</code>).</div></div>
+      </div>
+      <div id="c0-tofake">vi.useFakeTimers({ toFake: [<span class="s">'Date'</span>] })</div>
+    </div>
+
+    <!-- c0-14 signal inputs (LESSON.md code) -->
+    <div id="c0-input" class="clip world" data-start="176.43" data-duration="8.44">
+      <div id="c0-input-code" class="c0-code" data-hold>
+        <span class="ln"><span class="k">const</span> fixture = TestBed.createComponent(LoanCard);</span>
+        <span id="c0-setinput" class="ln">fixture.componentRef.setInput(<span class="s">'loan'</span>, { id: <span class="n">7</span>, title: <span class="s">'Dune'</span>, dueDate: <span class="s">'2026-03-01'</span> });</span>
+        <span class="ln"><span class="k">await</span> fixture.whenStable();</span>
+      </div>
+    </div>
+
+    <!-- c0-14b HTTP testing, then the desk opens -->
+    <div id="c0-http" class="clip world" data-start="184.87" data-duration="10.9">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock c0-clock"><span id="c0-t855">08:55</span><span id="c0-t900">09:00</span></span></div>
+        <div class="app-body">
+          <div id="c0-old"><span id="c0-old-name">HttpClientTestingModule<span id="c0-old-x" class="c0-strike"></span></span><span class="label">is deprecated</span></div>
+          <div id="c0-http-code" data-hold>
+            <span class="ln">TestBed.configureTestingModule({ providers: [provideHttpClient(), </span>
+            <span class="ln">provideHttpClientTesting()] });</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <audio id="c0-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="0" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c0-1" class="clip" src="assets/vo/c0-1.wav" data-start="3.0" data-duration="9.6" data-volume="1"></audio>
+    <audio id="vo-c0-1b" class="clip" src="assets/vo/c0-1b.wav" data-start="12.95" data-duration="9.621" data-volume="1"></audio>
+    <audio id="vo-c0-2" class="clip" src="assets/vo/c0-2.wav" data-start="22.92" data-duration="8.789" data-volume="1"></audio>
+    <audio id="vo-c0-2b" class="clip" src="assets/vo/c0-2b.wav" data-start="32.06" data-duration="6.379" data-volume="1"></audio>
+    <audio id="vo-c0-3" class="clip" src="assets/vo/c0-3.wav" data-start="38.79" data-duration="9.365" data-volume="1"></audio>
+    <audio id="vo-c0-4" class="clip" src="assets/vo/c0-4.wav" data-start="48.5" data-duration="9.045" data-volume="1"></audio>
+    <audio id="vo-c0-5" class="clip" src="assets/vo/c0-5.wav" data-start="57.9" data-duration="12.928" data-volume="1"></audio>
+    <audio id="vo-c0-6" class="clip" src="assets/vo/c0-6.wav" data-start="71.18" data-duration="8.768" data-volume="1"></audio>
+    <audio id="vo-c0-7" class="clip" src="assets/vo/c0-7.wav" data-start="80.3" data-duration="10.112" data-volume="1"></audio>
+    <audio id="vo-c0-7b" class="clip" src="assets/vo/c0-7b.wav" data-start="90.76" data-duration="6.72" data-volume="1"></audio>
+    <audio id="vo-c0-8" class="clip" src="assets/vo/c0-8.wav" data-start="97.83" data-duration="9.387" data-volume="1"></audio>
+    <audio id="vo-c0-9" class="clip" src="assets/vo/c0-9.wav" data-start="107.56" data-duration="8.277" data-volume="1"></audio>
+    <audio id="vo-c0-10" class="clip" src="assets/vo/c0-10.wav" data-start="116.19" data-duration="10.496" data-volume="1"></audio>
+    <audio id="vo-c0-10c" class="clip" src="assets/vo/c0-10c.wav" data-start="127.04" data-duration="6.613" data-volume="1"></audio>
+    <audio id="vo-c0-11" class="clip" src="assets/vo/c0-11.wav" data-start="134.0" data-duration="10.453" data-volume="1"></audio>
+    <audio id="vo-c0-11c" class="clip" src="assets/vo/c0-11c.wav" data-start="144.8" data-duration="3.584" data-volume="1"></audio>
+    <audio id="vo-c0-12" class="clip" src="assets/vo/c0-12.wav" data-start="148.74" data-duration="7.765" data-volume="1"></audio>
+    <audio id="vo-c0-12b" class="clip" src="assets/vo/c0-12b.wav" data-start="156.85" data-duration="9.173" data-volume="1"></audio>
+    <audio id="vo-c0-13" class="clip" src="assets/vo/c0-13.wav" data-start="166.38" data-duration="9.707" data-volume="1"></audio>
+    <audio id="vo-c0-14" class="clip" src="assets/vo/c0-14.wav" data-start="176.43" data-duration="8.085" data-volume="1"></audio>
+    <audio id="vo-c0-14b" class="clip" src="assets/vo/c0-14b.wav" data-start="184.87" data-duration="9.899" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: "rgba(245,226,217,0)" }, { backgroundColor: "rgba(245,226,217,1)", duration: 0.3 }, at);
+    const bandOn = (sel, at) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: 0.3 }, at);
+    const bandOff = (sel, at) => tl.to(sel, { opacity: 0, duration: 0.3 }, at);
+    const draw = (sel, len, at, d = 0.5) =>
+      tl.fromTo(sel, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+    const strike = (sel, at) => tl.fromTo(sel, { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0
+
+    // c0-1: the title, ng test, then the green dots printed down the column
+    fadeIn("#c0-d-title", 3.3, 0.6);
+    fadeIn("#c0-run-cmd", 7.0, 0.4);
+    tl.fromTo("#c0-dots .c0-dot", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out", stagger: 0.12 }, 9.8);
+
+    // c0-1b: the lesson's opening paragraph; "tests" gets its band on the word
+    fadeIn("#c0-d-para", 12.3, 0.5);
+    band("#c0-tests", 21.2);
+
+    // c0-2: the heading, then what a suite buys
+    fadeIn("#c0-buy1", 24.2);
+    fadeIn("#c0-buy2", 26.6);
+
+    // c0-2b: the paragraph cut in whole, the "worth writing" sentence banded
+    band("#c0-worth", 32.4);
+
+    // c0-3: ran, checked, then should create
+    fadeIn("#c0-ran", 40.7);
+    fadeIn("#c0-ran-note", 40.85);
+    fadeIn("#c0-checked", 43.1);
+    fadeIn("#c0-checked-note", 43.25);
+    fadeIn("#c0-create", 44.6);
+
+    // c0-4: header, then the rows one by one
+    fadeIn("#c0-lv-h", 48.8, 0.4);
+    fadeIn("#c0-lv1", 51.3, 0.4);
+    fadeIn("#c0-lv2", 52.6, 0.4);
+    fadeIn("#c0-lv3", 53.9, 0.4);
+
+    // c0-5: solitary, sociable, their tradeoffs; the lean goes to sociable
+    fadeIn("#c0-col1", 59.6);
+    fadeIn("#c0-col2", 62.4);
+    fadeIn("#c0-cost1", 66.0);
+    fadeIn("#c0-costb", 67.0);
+    tl.to("#c0-col2", { borderTopColor: "#b8321f", duration: 0.3 }, 68.9);
+
+    // c0-6: the builder the test target points at, then where specs run
+    fadeIn("#c0-target", 73.6, 0.4);
+    fadeIn("#c0-builder", 73.8);
+    fadeIn("#c0-vitest", 77.9);
+
+    // c0-7: globals row banded, then isolate
+    bandOn("#c0-df1-bg", 82.2);
+    bandOff("#c0-df1-bg", 86.2);
+    bandOn("#c0-df2-bg", 86.2);
+    // c0-7b: the other rows step back; "file" becomes the accent
+    tl.to(["#c0-df-h", "#c0-df1", "#c0-df3", "#c0-df4", "#c0-df5"], { opacity: 0.4, duration: 0.4 }, 90.9);
+    tl.to("#c0-file", { color: "#b8321f", duration: 0.3 }, 95.7);
+    // c0-8: cleanup hooks, then mocks between files
+    tl.to(["#c0-df-h", "#c0-df1", "#c0-df3", "#c0-df4", "#c0-df5"], { opacity: 1, duration: 0.4 }, 97.9);
+    tl.to("#c0-file", { color: "#1d1b18", duration: 0.3 }, 97.9);
+    bandOff("#c0-df2-bg", 98.0);
+    bandOn("#c0-df3-bg", 98.0);
+    bandOff("#c0-df3-bg", 104.0);
+    bandOn("#c0-df4-bg", 104.0);
+
+    // c0-9: header, then the rows one by one; the done row banded
+    fadeIn("#c0-dc-h", 107.7, 0.4);
+    for (let i = 1; i <= 8; i++) fadeIn("#c0-dc" + i, 107.95 + (i - 1) * 0.33, 0.35);
+    fadeIn("#c0-dc9", 110.9, 0.35);
+    bandOn("#c0-dc9-bg", 111.3);
+
+    // c0-10: expect.assertions, then the un-awaited resolves
+    fadeIn("#c0-assertions", 117.3);
+    fadeIn("#c0-un", 123.4, 0.4);
+    fadeIn("#c0-resolves", 123.6);
+    fadeIn("#c0-err", 124.1);
+
+    // c0-10c: vi.mock struck, providers beside it
+    strike("#c0-vimock-x", 129.2);
+    fadeIn("#c0-vimock-note", 129.5);
+    fadeIn("#c0-prov", 132.4);
+
+    // c0-11: the call, what it replaces, then the rows; one far down times out
+    fadeIn("#c0-ft-code", 134.7);
+    fadeIn("#c0-ft-note", 135.6);
+    tl.fromTo("#c0-rows .c0-trow", { opacity: 0 }, { opacity: 1, duration: 0.27, ease: "power3.out", stagger: 0.08 }, 139.0);
+    tl.fromTo("#c0-late-label", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 142.6);
+    tl.to("#c0-late-dot", { backgroundColor: "#a3222c", duration: 0.3 }, 142.6);
+    tl.to("#c0-late-bar", { backgroundColor: "#a3222c", duration: 0.3 }, 142.6);
+
+    // c0-11c: the code cut in whole, the onTestFinished line banded
+    band("#c0-undo-ln", 145.0);
+
+    // c0-12: the zone APIs, struck, and why
+    fadeIn("#c0-zone-apis", 150.5);
+    strike("#c0-zx1", 151.8);
+    strike("#c0-zx2", 151.95);
+    strike("#c0-zx3", 152.1);
+    fadeIn("#c0-zone-q", 152.6);
+
+    // c0-12b: the flow drawn arrow by arrow; the whenStable arrow is the accent
+    fadeIn("#c0-fa", 157.1);
+    draw("#c0-a1", 360, 159.2);
+    fadeIn("#c0-a1h", 159.65, 0.1);
+    fadeIn("#c0-l1", 159.4, 0.4);
+    fadeIn("#c0-fb", 159.6, 0.4);
+    draw("#c0-a2l", 182, 161.8);
+    fadeIn("#c0-a2h", 162.25, 0.1);
+    fadeIn("#c0-l2", 162.0, 0.4);
+    fadeIn("#c0-fc", 162.2, 0.4);
+    fadeIn("#c0-fd", 163.4, 0.4);
+    draw("#c0-a3", 320, 163.7);
+    fadeIn("#c0-a3h", 164.15, 0.1);
+    fadeIn("#c0-l3", 163.9, 0.4);
+    fadeIn("#c0-fe", 164.1, 0.4);
+
+    // c0-13: the table cut in whole, detectChanges banded, then fake only Date
+    bandOn("#c0-tl2-bg", 172.2);
+    fadeIn("#c0-tofake", 173.9);
+
+    // c0-14: the code cut in whole, the setInput line banded
+    band("#c0-setinput", 179.4);
+
+    // c0-14b: the deprecated module struck, the modern providers, then 09:00
+    strike("#c0-old-x", 185.6);
+    fadeIn("#c0-http-code", 187.6);
+    tl.fromTo("#c0-t900", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 193.6);
+    tl.to("#c0-t855", { opacity: 0, duration: 0.4 }, 193.6);
+
+    window.__timelines["c0"] = tl;
+  </script>
+</template>
