@@ -1,0 +1,435 @@
+{
+  "total": 608.27,
+  "scenes": [
+    {
+      "id": "c0",
+      "start": 0.0,
+      "duration": 180.73,
+      "clips": [
+        {
+          "id": "c0-1",
+          "start": 3.0,
+          "duration": 6.549
+        },
+        {
+          "id": "c0-1b",
+          "start": 9.9,
+          "duration": 5.675
+        },
+        {
+          "id": "c0-2",
+          "start": 15.92,
+          "duration": 8.341
+        },
+        {
+          "id": "c0-2b",
+          "start": 24.61,
+          "duration": 7.659
+        },
+        {
+          "id": "c0-2c",
+          "start": 32.62,
+          "duration": 7.872
+        },
+        {
+          "id": "c0-2d",
+          "start": 40.85,
+          "duration": 8.277
+        },
+        {
+          "id": "c0-3",
+          "start": 49.47,
+          "duration": 7.701
+        },
+        {
+          "id": "c0-3b",
+          "start": 57.52,
+          "duration": 7.147
+        },
+        {
+          "id": "c0-4",
+          "start": 65.02,
+          "duration": 7.403
+        },
+        {
+          "id": "c0-4b",
+          "start": 72.77,
+          "duration": 9.664
+        },
+        {
+          "id": "c0-5",
+          "start": 82.79,
+          "duration": 5.589
+        },
+        {
+          "id": "c0-5b",
+          "start": 88.73,
+          "duration": 7.765
+        },
+        {
+          "id": "c0-5c",
+          "start": 96.84,
+          "duration": 9.579
+        },
+        {
+          "id": "c0-6",
+          "start": 106.77,
+          "duration": 8.363
+        },
+        {
+          "id": "c0-6b",
+          "start": 115.48,
+          "duration": 10.347
+        },
+        {
+          "id": "c0-7",
+          "start": 126.18,
+          "duration": 9.707
+        },
+        {
+          "id": "c0-8",
+          "start": 136.24,
+          "duration": 7.979
+        },
+        {
+          "id": "c0-8b",
+          "start": 144.57,
+          "duration": 8.491
+        },
+        {
+          "id": "c0-9",
+          "start": 153.41,
+          "duration": 8.085
+        },
+        {
+          "id": "c0-10",
+          "start": 161.84,
+          "duration": 8.875
+        },
+        {
+          "id": "c0-10b",
+          "start": 171.07,
+          "duration": 8.661
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        }
+      }
+    },
+    {
+      "id": "c1",
+      "start": 180.73,
+      "duration": 139.99,
+      "clips": [
+        {
+          "id": "c1-1",
+          "start": 3.0,
+          "duration": 6.101
+        },
+        {
+          "id": "c1-2",
+          "start": 9.45,
+          "duration": 7.381
+        },
+        {
+          "id": "c1-3",
+          "start": 17.18,
+          "duration": 7.253
+        },
+        {
+          "id": "c1-4",
+          "start": 24.79,
+          "duration": 7.275
+        },
+        {
+          "id": "c1-5",
+          "start": 32.41,
+          "duration": 8.512
+        },
+        {
+          "id": "c1-6",
+          "start": 41.27,
+          "duration": 7.765
+        },
+        {
+          "id": "c1-7",
+          "start": 49.39,
+          "duration": 8.064
+        },
+        {
+          "id": "c1-8",
+          "start": 57.8,
+          "duration": 7.168
+        },
+        {
+          "id": "c1-9",
+          "start": 65.32,
+          "duration": 10.923
+        },
+        {
+          "id": "c1-10",
+          "start": 76.59,
+          "duration": 7.083
+        },
+        {
+          "id": "c1-11",
+          "start": 84.03,
+          "duration": 7.872
+        },
+        {
+          "id": "c1-12",
+          "start": 92.25,
+          "duration": 8.832
+        },
+        {
+          "id": "c1-13",
+          "start": 101.43,
+          "duration": 5.973
+        },
+        {
+          "id": "c1-14",
+          "start": 107.75,
+          "duration": 7.189
+        },
+        {
+          "id": "c1-end",
+          "start": 115.29,
+          "duration": 2.133
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 115.29,
+          "duration": 21.2,
+          "items": [
+            "If you deleted this stored value, could you compute it from what remains? If yes, what is it doing in state?",
+            "What hidden non-signal inputs does each `computed` read?",
+            "Is this server state or client state? If it is server state, who invalidates it?",
+            "Would this value belong in the URL?",
+            "What is the worst value any component could put into this service's state?"
+          ]
+        },
+        "pause": {
+          "start": 136.49,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c2",
+      "start": 320.72,
+      "duration": 148.96,
+      "clips": [
+        {
+          "id": "c2-1",
+          "start": 3.0,
+          "duration": 7.552
+        },
+        {
+          "id": "c2-2",
+          "start": 10.9,
+          "duration": 9.088
+        },
+        {
+          "id": "c2-3",
+          "start": 20.34,
+          "duration": 6.912
+        },
+        {
+          "id": "c2-4",
+          "start": 27.6,
+          "duration": 8.96
+        },
+        {
+          "id": "c2-5",
+          "start": 36.91,
+          "duration": 3.755
+        },
+        {
+          "id": "c2-6",
+          "start": 41.02,
+          "duration": 6.123
+        },
+        {
+          "id": "c2-7",
+          "start": 47.49,
+          "duration": 7.808
+        },
+        {
+          "id": "c2-8",
+          "start": 55.65,
+          "duration": 8.789
+        },
+        {
+          "id": "c2-9",
+          "start": 64.79,
+          "duration": 9.579
+        },
+        {
+          "id": "c2-10",
+          "start": 74.72,
+          "duration": 9.344
+        },
+        {
+          "id": "c2-11",
+          "start": 84.41,
+          "duration": 7.232
+        },
+        {
+          "id": "c2-12",
+          "start": 91.99,
+          "duration": 7.893
+        },
+        {
+          "id": "c2-14",
+          "start": 100.23,
+          "duration": 5.696
+        },
+        {
+          "id": "c2-15",
+          "start": 106.28,
+          "duration": 6.187
+        },
+        {
+          "id": "c2-16",
+          "start": 112.82,
+          "duration": 6.592
+        },
+        {
+          "id": "c2-end",
+          "start": 119.76,
+          "duration": 2.027
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 119.76,
+          "duration": 25.7,
+          "items": [
+            "Does this need a store at all, or would a component signal or a service do?",
+            "Where does each entity live? If it appears in more than one place, which copy wins when it changes, and is that intended?",
+            "For each `effect` or hook: does its output leave the signal graph, or does it write signals that something else reads?",
+            "After any write, is there a window in which two values disagree? Who could read them in that window?"
+          ]
+        },
+        "pause": {
+          "start": 145.46,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c3",
+      "start": 469.68,
+      "duration": 138.59,
+      "clips": [
+        {
+          "id": "c3-1",
+          "start": 3.0,
+          "duration": 9.088
+        },
+        {
+          "id": "c3-3",
+          "start": 12.44,
+          "duration": 9.856
+        },
+        {
+          "id": "c3-4",
+          "start": 22.64,
+          "duration": 6.357
+        },
+        {
+          "id": "c3-5",
+          "start": 29.35,
+          "duration": 6.571
+        },
+        {
+          "id": "c3-6",
+          "start": 36.27,
+          "duration": 6.635
+        },
+        {
+          "id": "c3-7",
+          "start": 43.26,
+          "duration": 7.104
+        },
+        {
+          "id": "c3-8",
+          "start": 50.71,
+          "duration": 9.643
+        },
+        {
+          "id": "c3-9",
+          "start": 60.7,
+          "duration": 4.992
+        },
+        {
+          "id": "c3-10",
+          "start": 66.05,
+          "duration": 9.707
+        },
+        {
+          "id": "c3-11",
+          "start": 76.1,
+          "duration": 8.555
+        },
+        {
+          "id": "c3-12",
+          "start": 85.01,
+          "duration": 7.061
+        },
+        {
+          "id": "c3-end",
+          "start": 92.42,
+          "duration": 2.091
+        },
+        {
+          "id": "c3-after",
+          "start": 118.37,
+          "duration": 7.659
+        },
+        {
+          "id": "c3-afterb",
+          "start": 126.38,
+          "duration": 8.896
+        },
+        {
+          "id": "c3-close",
+          "start": 135.62,
+          "duration": 1.963
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 92.42,
+          "duration": 22.1,
+          "items": [
+            "Put one operation on a timeline and add a second request. What does each response or failure write, and when?",
+            "If this request's response arrived last, what would the server hold, and what would the screen show?",
+            "Name the owner of every slice the operation touches. What happens to each slice when the owner changes?",
+            "Which of these timings could a unit test reproduce, and does one?"
+          ]
+        },
+        "pause": {
+          "start": 114.52,
+          "duration": 3.5
+        }
+      }
+    }
+  ]
+}
