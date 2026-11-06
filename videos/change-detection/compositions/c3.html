@@ -1,0 +1,487 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c3-title { position: absolute; left: 48px; top: 24px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c3-wall { position: absolute; left: 48px; top: 130px; width: 960px; height: 620px; box-sizing: border-box; background: var(--paper); border: 3px solid var(--ink); border-radius: 8px; overflow: hidden; }
+    .c3-wrow { display: flex; justify-content: space-between; align-items: center; height: 150px; padding: 0 40px; border-bottom: 1px solid var(--rule); font: 700 48px/1 var(--font-text); }
+    .c3-wrow .label { font-variant-numeric: tabular-nums; }
+    #c3-queue { position: absolute; left: 1080px; top: 130px; width: 520px; }
+    .c3-chip { margin-top: 20px; padding: 22px 30px; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; font: 700 38px/1 var(--font-text); }
+    #c3-search { position: absolute; left: 1080px; top: 660px; padding: 22px 32px; border: 3px solid var(--ink); border-radius: 8px; font: 700 36px/1 var(--font-text); }
+
+    .c3-win { position: absolute; width: 1100px; height: 560px; box-sizing: border-box; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; box-shadow: var(--shadow); }
+    .c3-win-head { display: flex; justify-content: space-between; height: 96px; align-items: center; padding: 0 36px; border-bottom: 1px solid var(--rule); font: 700 36px/1 var(--font-text); }
+    .c3-win-head b { font-variant-numeric: tabular-nums; color: var(--accent); }
+    .c3-win-body { padding: 40px 36px; font: 600 56px/1.2 var(--font-display); }
+
+    .c3-zrow { position: absolute; left: 200px; display: flex; align-items: center; gap: 48px; }
+    .c3-zcall { width: 900px; padding: 32px 40px; box-sizing: border-box; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; font: 700 44px/1 var(--font-code); }
+    .c3-zfn { width: auto; }
+    .c3-zarrow { font: 700 64px/1 var(--font-text); }
+    #c3-zcap { position: absolute; left: 200px; top: 680px; padding: 20px 32px; background: var(--accent-soft); border-radius: 8px; font: 700 44px/1.2 var(--font-text); }
+
+    .c3-bind { position: absolute; left: 200px; width: 1520px; height: 120px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 400 40px/1 var(--font-code); }
+    .c3-tag { position: absolute; left: 1100px; width: 420px; height: 76px; box-sizing: border-box; border: 3px dashed var(--rule-strong); border-radius: 8px; }
+    .c3-colhead { position: absolute; top: 170px; font: 700 36px/1 var(--font-text); color: var(--ink-muted); }
+
+    #c3-dots { position: absolute; left: 160px; top: 330px; width: 616px; display: grid; grid-template-columns: repeat(10, 40px); gap: 24px; }
+    #c3-dots i { width: 40px; height: 40px; border-radius: 50%; background: var(--ink); }
+    #c3-tick { position: absolute; left: 1240px; top: 360px; width: 480px; height: 240px; box-sizing: border-box; padding: 40px 48px; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; }
+    #c3-tick b { display: block; font: 700 72px/1 var(--font-text); }
+    #c3-tick .label { display: block; margin-top: 20px; }
+    #c3-1r { color: var(--accent); }
+    #c3-work { position: absolute; left: 160px; top: 760px; }
+
+    .c3-sm { width: 44px; height: 44px; margin: -21px 0 0 -22px; }
+    #c3-gate { position: absolute; left: 440px; right: 120px; top: 62px; height: 20px; background: var(--accent); border-radius: 4px; transform-origin: left center; }
+
+    #c3-feed .node { left: 400px; }
+    #c3-feed #c3-root { left: 960px; transform: translateX(-50%); }
+
+    .c3-res { position: absolute; left: 200px; font: 700 44px/1 var(--font-text); }
+    .c3-pair { position: absolute; padding: 20px 36px; border: 3px solid var(--ink); border-radius: 8px; background: var(--paper-raised); font: 700 36px/1 var(--font-text); }
+    .c3-stop { left: 1360px; border-color: var(--accent); color: var(--accent); }
+    .c3-link { position: absolute; left: 760px; width: 600px; height: 4px; background: var(--rule-strong); transform-origin: left center; }
+
+    .c3-test { top: 220px; width: 840px; box-sizing: border-box; font-size: 32px; }
+    .c3-thead { position: absolute; top: 150px; font: 700 34px/1 var(--font-code); color: var(--ink-muted); }
+    .c3-pass { position: absolute; top: 600px; padding: 16px 28px; background: var(--tip-soft); border: 3px solid var(--tip); border-radius: 8px; color: var(--tip); font: 700 36px/1 var(--font-text); }
+    #c3-never { position: absolute; left: 984px; top: 700px; }
+
+    #c3-questions .q-list { top: 240px; }
+    #c3-questions .q { font-size: 40px; margin-bottom: 28px; }
+    #c3-questions code { font-family: var(--font-code); font-size: 0.92em; }
+
+    #c3-after-title { position: absolute; left: 200px; top: 150px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+    #c3-sol { position: absolute; left: 200px; top: 320px; padding: 20px 32px; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; font: 700 40px/1 var(--font-code); }
+    #c3-comment { position: absolute; left: 200px; top: 440px; width: 1520px; height: 360px; padding: 36px 48px; box-sizing: border-box; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; }
+    .c3-cline { display: flex; align-items: flex-end; gap: 28px; height: 100px; font: 700 40px/1 var(--font-text); color: var(--ink-muted); }
+    .c3-cline i { flex: 1; height: 3px; margin-bottom: 8px; background: var(--rule-strong); transform-origin: left center; }
+    #c3-reread { position: absolute; left: 200px; top: 850px; font-size: 36px; }
+
+    #c3-closed { position: absolute; left: 1060px; top: 300px; width: 520px; font: 600 72px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c3-lights { position: absolute; inset: 0; background: var(--ink); }
+  </style>
+
+  <div id="root" data-composition-id="c3" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c3-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">16:00</div>
+      <div class="chapter-title">Migrating a component to zoneless</div>
+    </div>
+
+    <!-- c3-1 the wall display stands still while returns queue up -->
+    <div id="c3-desk" class="clip world" data-start="3" data-duration="10.91">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">16:00</span></div>
+        <div class="app-body">
+          <div class="c3-title">Returns wall display</div>
+          <div class="c3-wall">
+            <div class="c3-wrow"><span id="c3-r1">Middlemarch</span><span class="label">15:52</span></div>
+            <div class="c3-wrow"><span id="c3-r2">Kindred</span><span class="label">15:54</span></div>
+            <div class="c3-wrow"><span id="c3-r3">Piranesi</span><span class="label">15:55</span></div>
+          </div>
+          <div id="c3-queue">
+            <div class="label">checked in, not shown</div>
+            <div id="c3-q1" class="c3-chip">The Dispossessed</div>
+            <div id="c3-q2" class="c3-chip">Beloved</div>
+            <div id="c3-q3" class="c3-chip">Ficciones</div>
+          </div>
+          <div id="c3-search" data-hold>Search catalogue</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3-2 opened and closed three times; old instances keep running -->
+    <div id="c3-reopen" class="clip world" data-start="13.91" data-duration="7.05">
+      <div id="c3-w1" class="c3-win" style="left: 200px; top: 150px"><div class="c3-win-head"><span>Wall display · instance 1</span><span>messages <b id="c3-n1">0</b></span></div></div>
+      <div id="c3-w2" class="c3-win" style="left: 340px; top: 250px"><div class="c3-win-head"><span>Wall display · instance 2</span><span>messages <b id="c3-n2">0</b></span></div></div>
+      <div id="c3-w3" class="c3-win" style="left: 480px; top: 350px"><div class="c3-win-head"><span>Wall display · instance 3</span><span>messages <b id="c3-n3">0</b></span></div><div class="c3-win-body" data-hold>Returns</div></div>
+    </div>
+
+    <!-- c3-3 the zone wrappers dissolve into plain calls -->
+    <div id="c3-calls" class="clip world" data-start="20.96" data-duration="11.66">
+      <div id="c3-zh" class="label" style="position: absolute; left: 200px; top: 200px">NgZone without zone.js</div>
+      <div id="c3-zr1" class="c3-zrow" style="top: 290px"><div class="c3-zcall">zone.runOutsideAngular(fn)</div><div id="c3-za1" class="c3-zarrow">→</div><div id="c3-zf1" class="c3-zcall c3-zfn">fn()</div></div>
+      <div id="c3-zr2" class="c3-zrow" style="top: 470px"><div class="c3-zcall">zone.run(fn)</div><div id="c3-za2" class="c3-zarrow">→</div><div id="c3-zf2" class="c3-zcall c3-zfn">fn()</div></div>
+      <div id="c3-zcap" data-hold>around one field assignment: nobody is told</div>
+    </div>
+
+    <!-- c3-4 nobody hears the assignment -->
+    <div id="c3-marbles" class="clip world sunk" data-start="32.62" data-duration="6.06">
+      <div class="marbles" style="top: 260px; --fw: 68px">
+        <div class="mrow" style="height: 170px"><div class="mlabel">feed</div><div class="mtrack">
+          <div id="c3-fa" class="m" style="--f: 0">a</div><div id="c3-fb" class="m" style="--f: 4">b</div><div id="c3-fc" class="m" style="--f: 8">c</div><div id="c3-fd" class="m" style="--f: 12">d</div><div id="c3-fe" class="m" style="--f: 16">e</div>
+        </div></div>
+        <div class="mrow" style="height: 170px"><div class="mlabel">clicks</div><div class="mtrack">
+          <div id="c3-k1" class="m" style="--f: 6">k</div><div id="c3-k2" class="m" style="--f: 14">k</div>
+        </div><div id="c3-kn" class="mnote" style="top: 122px">// unrelated clicks elsewhere on the page</div></div>
+        <div class="mrow" style="height: 170px"><div class="mlabel">screen</div><div class="mtrack">
+          <div id="c3-sb" class="m hot" style="--f: 6">b</div><div id="c3-sd" class="m" style="--f: 14">d</div>
+        </div><div id="c3-sn" class="mnote" style="top: 122px" data-hold>// the view only catches up when something else renders</div></div>
+      </div>
+    </div>
+
+    <!-- c3-5 every binding needs a notifier -->
+    <div id="c3-binds" class="clip world" data-start="38.68" data-duration="9.12">
+      <div class="c3-colhead" style="left: 200px">binding</div>
+      <div id="c3-nh" class="c3-colhead" style="left: 1100px">what tells Angular?</div>
+      <div class="c3-bind" style="top: 240px">{{ latest.title }}<div class="c3-tag" style="top: 22px"></div></div>
+      <div class="c3-bind" style="top: 380px">{{ latest.member }}<div class="c3-tag" style="top: 22px"></div></div>
+      <div class="c3-bind" style="top: 520px">{{ latest.returnedAt }}<div class="c3-tag" style="top: 22px"></div></div>
+      <div class="c3-bind" style="top: 660px">[class.late]="latest.overdue"<div class="c3-tag" style="top: 22px" data-hold></div></div>
+    </div>
+
+    <!-- c3-6 fifty writes, one tick -->
+    <div id="c3-batch" class="clip world sunk" data-start="47.8" data-duration="10.34">
+      <div id="c3-fifty" class="label" style="position: absolute; left: 160px; top: 250px">50 signal writes</div>
+      <div id="c3-dots">
+        <i id="c3-d1"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <svg width="1920" height="1080" style="position: absolute; inset: 0">
+        <path id="c3-funnel" d="M840 330 L1220 440 M840 626 L1220 520" fill="none" stroke="#c4b9a6" stroke-width="4" />
+      </svg>
+      <div id="c3-tick"><b>1 tick</b><span id="c3-sched" class="label">scheduled by the first write</span></div>
+      <div id="c3-1r" class="label" style="position: absolute; left: 1240px; top: 640px; font-weight: 700; color: var(--accent)">1 render</div>
+      <div id="c3-work" class="label" data-hold>per message: your own work, 50 times</div>
+    </div>
+
+    <!-- c3-7 sample at the edge -->
+    <div id="c3-edge" class="clip world sunk" data-start="58.14" data-duration="7.77">
+      <div class="marbles" style="top: 250px; --fw: 97.14px">
+        <div class="mrow" style="height: 190px"><div class="mlabel">messages</div><div class="mtrack">
+          <div class="m c3-sm c3-dm" style="--f: 0"></div><div class="m c3-sm c3-dm" style="--f: 1"></div><div class="m c3-sm c3-dm" style="--f: 2"></div><div class="m c3-sm c3-dm" style="--f: 3"></div><div class="m c3-sm c3-dm" style="--f: 4"></div>
+          <div class="m c3-sm c3-dm" style="--f: 5"></div><div class="m c3-sm c3-dm" style="--f: 6"></div><div class="m c3-sm c3-dm" style="--f: 7"></div><div class="m c3-sm c3-dm" style="--f: 8"></div><div class="m c3-sm c3-dm" style="--f: 9"></div>
+          <div class="m c3-sm c3-dm" style="--f: 10"></div><div class="m c3-sm c3-dm" style="--f: 11"></div><div class="m c3-sm c3-dm" style="--f: 12"></div><div class="m c3-sm c3-dm" style="--f: 13"></div>
+        </div></div>
+        <div class="mrow" style="height: 190px"><div class="mlabel">edge</div><div id="c3-gate"></div><div id="c3-gn" class="mnote" style="top: 112px">auditTime, sampleTime, or a buffer flushed on a timer</div></div>
+        <div class="mrow" style="height: 190px"><div class="mlabel">signal</div><div class="mtrack">
+          <div id="c3-o1" class="m" style="--f: 3"></div><div id="c3-o2" class="m" style="--f: 7"></div><div id="c3-o3" class="m" style="--f: 11"></div>
+        </div><div id="c3-on" class="mnote" style="top: 122px" data-hold>only the state the screen shows</div></div>
+      </div>
+    </div>
+
+    <!-- c3-8 ngDoCheck follows the parent, computed follows the data -->
+    <div id="c3-docheck" class="clip world sunk" data-start="65.91" data-duration="10.38">
+      <div class="marbles" style="top: 190px; --fw: 68px">
+        <div class="mrow" style="height: 170px"><div class="mlabel">data</div><div class="mtrack">
+          <div id="c3-da" class="m" style="--f: 0">a</div><div id="c3-db" class="m" style="--f: 3">b</div><div id="c3-dc" class="m" style="--f: 6">c</div><div id="c3-dd" class="m" style="--f: 9">d</div><div id="c3-de" class="m" style="--f: 12">e</div><div id="c3-df" class="m" style="--f: 15">f</div>
+        </div></div>
+        <div class="mrow" style="height: 170px"><div class="mlabel">parent check</div><div class="mtrack">
+          <div id="c3-p7" class="m-done" style="--f: 7"></div><div id="c3-p17" class="m-done" style="--f: 17"></div>
+        </div></div>
+        <div class="mrow" style="height: 170px"><div class="mlabel" style="color: var(--accent)">ngDoCheck</div><div class="mtrack">
+          <div id="c3-gc" class="m" style="--f: 7">c</div><div id="c3-gf" class="m" style="--f: 17">f</div>
+        </div></div>
+        <div class="mrow" style="height: 170px"><div class="mlabel">computed</div><div class="mtrack">
+          <div id="c3-ca" class="m" style="--f: 0">a</div><div id="c3-cb" class="m" style="--f: 3">b</div><div id="c3-cc" class="m" style="--f: 6">c</div><div id="c3-cd" class="m" style="--f: 9">d</div><div id="c3-ce" class="m" style="--f: 12">e</div><div id="c3-cf" class="m" style="--f: 15" data-hold>f</div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- c3-9 a root client keeps destroyed handlers alive -->
+    <div id="c3-feed" class="clip world sunk" data-start="76.29" data-duration="10.41">
+      <svg width="1920" height="1080" style="position: absolute; inset: 0" fill="none" stroke="#c4b9a6" stroke-width="4">
+        <path id="c3-spine" d="M960 268 V340 H330 V799" />
+        <path id="c3-br1" d="M330 479 H400" /><path id="c3-br2" d="M330 639 H400" /><path id="c3-br3" d="M330 799 H400" />
+      </svg>
+      <div id="c3-root" class="node" style="top: 170px">ReturnsFeed<span class="badge">(root injector, lives for the whole session)</span></div>
+      <div id="c3-h1" class="node c3-h" style="top: 430px">handler from display instance 1<span class="badge">[destroyed, still referenced]</span></div>
+      <div id="c3-h2" class="node c3-h" style="top: 590px">handler from display instance 2<span class="badge">[destroyed, still referenced]</span></div>
+      <div id="c3-h3" class="node c3-h" style="top: 750px" data-hold>handler from display instance 3<span class="badge">[alive]</span></div>
+    </div>
+
+    <!-- c3-10 every start has its stop -->
+    <div id="c3-stops" class="clip world" data-start="86.7" data-duration="8.65">
+      <div id="c3-hs" class="c3-colhead" style="left: 560px">starts</div>
+      <div id="c3-he" class="c3-colhead" style="left: 1360px">stops</div>
+      <div class="c3-res" style="top: 288px">a handler</div><div class="c3-pair" style="left: 560px; top: 270px">start</div><div class="c3-link" style="top: 308px"></div><div class="c3-pair c3-stop" style="top: 270px">stop</div>
+      <div class="c3-res" style="top: 448px">a listener</div><div class="c3-pair" style="left: 560px; top: 430px">start</div><div class="c3-link" style="top: 468px"></div><div class="c3-pair c3-stop" style="top: 430px">stop</div>
+      <div class="c3-res" style="top: 608px">a connection</div><div class="c3-pair" style="left: 560px; top: 590px">start</div><div class="c3-link" style="top: 628px"></div><div class="c3-pair c3-stop" style="top: 590px">stop</div>
+      <div class="c3-res" style="top: 768px">a timer</div><div class="c3-pair" style="left: 560px; top: 750px">start</div><div class="c3-link" style="top: 788px"></div><div class="c3-pair c3-stop" style="top: 750px" data-hold>stop</div>
+    </div>
+
+    <!-- c3-11 two green tests -->
+    <div id="c3-tests" class="clip world" data-start="95.35" data-duration="11.4">
+      <div class="c3-thead" style="left: 96px">waits for stability</div>
+      <div id="c3-ta" class="code c3-test" style="left: 96px">
+        <span class="ln">button.click();</span>
+        <span id="c3-ws" class="ln"><span class="k">await</span> fixture.whenStable();</span>
+        <span class="ln">expect(rows()).toHaveLength(<span class="n">3</span>);</span>
+      </div>
+      <div id="c3-tbh" class="c3-thead" style="left: 984px">forces a render after every step</div>
+      <div id="c3-tb" class="code c3-test" style="left: 984px">
+        <span id="c3-dc1" class="ln">fixture.detectChanges();</span>
+        <span class="ln">button.click();</span>
+        <span id="c3-dc2" class="ln">fixture.detectChanges();</span>
+        <span class="ln">expect(rows()).toHaveLength(<span class="n">3</span>);</span>
+      </div>
+      <div id="c3-pa" class="c3-pass" style="left: 96px">passes</div>
+      <div id="c3-pb" class="c3-pass" style="left: 984px">passes</div>
+      <div id="c3-never" class="label" data-hold>even if nothing ever notifies Angular</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c3-questions" class="clip world note" data-start="106.75" data-duration="21.8">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c3-q1" class="q">For each binding in the template, what notifies Angular when its value changes?</div>
+        <div id="c3-q2" class="q">What does each <code>NgZone</code> call do in an app without zone.js?</div>
+        <div id="c3-q3" class="q">Which hook runs this calculation, and does that hook run when the data changes?</div>
+        <div id="c3-q4" class="q">What does the external client hold on to after this component is destroyed? Who stops it?</div>
+        <div id="c3-q5" class="q">Which settings or calls exist only because zone.js used to be there?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c3-pause" class="clip world" data-start="128.56" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c3-pause-2" class="pause-2" data-hold>Now do exercise 03.</div>
+    </div>
+
+    <!-- c3-after -->
+    <div id="c3-after" class="clip world" data-start="132.06" data-duration="9.61">
+      <div id="c3-after-title">After the lesson</div>
+      <div id="c3-sol">SOLUTION.md · solutions branch</div>
+      <div id="c3-comment">
+        <div class="label">Your review comment for the author</div>
+        <div class="c3-cline">1<i id="c3-cl1"></i></div>
+        <div class="c3-cline">2<i id="c3-cl2"></i></div>
+      </div>
+      <div id="c3-reread" class="label" data-hold>can't write it? reread the chapter</div>
+    </div>
+
+    <!-- c3-close: 18:00, the desk and the wall display go dark -->
+    <div id="c3-close" class="clip world" data-start="141.67" data-duration="5.12">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock" style="color: var(--accent)">18:00</span></div>
+        <div class="app-body">
+          <div class="c3-title">Returns wall display</div>
+          <div id="c3-wall2" class="c3-wall">
+            <div class="c3-wrow"><span>Orlando</span><span class="label">17:58</span></div>
+            <div class="c3-wrow"><span>Ficciones</span><span class="label">17:51</span></div>
+            <div class="c3-wrow"><span>Beloved</span><span class="label">17:44</span></div>
+          </div>
+          <div id="c3-closed">Opens again at 09:00</div>
+        </div>
+      </div>
+      <div id="c3-lights" data-hold></div>
+    </div>
+
+    <audio id="c3-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="45" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c3-bed2" class="clip" src="assets/music/bed.mp3" data-start="106.75" data-duration="21.8" data-media-start="53" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c3-bed3" class="clip" src="assets/music/bed.mp3" data-start="141.67" data-duration="5.12" data-media-start="61" data-volume="0.12" data-fade-in="0.6" data-fade-out="1.5"></audio>
+    <audio id="c3-vo1" class="clip" src="assets/vo/c3-1.wav" data-start="3" data-duration="10.56" data-volume="1"></audio>
+    <audio id="c3-vo2" class="clip" src="assets/vo/c3-2.wav" data-start="13.91" data-duration="6.699" data-volume="1"></audio>
+    <audio id="c3-vo3" class="clip" src="assets/vo/c3-3.wav" data-start="20.96" data-duration="11.307" data-volume="1"></audio>
+    <audio id="c3-vo4" class="clip" src="assets/vo/c3-4.wav" data-start="32.62" data-duration="5.717" data-volume="1"></audio>
+    <audio id="c3-vo5" class="clip" src="assets/vo/c3-5.wav" data-start="38.68" data-duration="8.768" data-volume="1"></audio>
+    <audio id="c3-vo6" class="clip" src="assets/vo/c3-6.wav" data-start="47.8" data-duration="9.984" data-volume="1"></audio>
+    <audio id="c3-vo7" class="clip" src="assets/vo/c3-7.wav" data-start="58.14" data-duration="7.424" data-volume="1"></audio>
+    <audio id="c3-vo8" class="clip" src="assets/vo/c3-8.wav" data-start="65.91" data-duration="10.027" data-volume="1"></audio>
+    <audio id="c3-vo9" class="clip" src="assets/vo/c3-9.wav" data-start="76.29" data-duration="10.069" data-volume="1"></audio>
+    <audio id="c3-vo10" class="clip" src="assets/vo/c3-10.wav" data-start="86.7" data-duration="8.299" data-volume="1"></audio>
+    <audio id="c3-vo11" class="clip" src="assets/vo/c3-11.wav" data-start="95.35" data-duration="11.051" data-volume="1"></audio>
+    <audio id="c3-vo12" class="clip" src="assets/vo/c3-end.wav" data-start="106.75" data-duration="2.325" data-volume="1"></audio>
+    <audio id="c3-vo13" class="clip" src="assets/vo/c3-after.wav" data-start="132.41" data-duration="8.917" data-volume="1"></audio>
+    <audio id="c3-vo14" class="clip" src="assets/vo/c3-close.wav" data-start="141.67" data-duration="4.117" data-volume="1"></audio>
+    <audio id="c3-tick1" class="clip" src="assets/sfx/tick-a.wav" data-start="32.9" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick2" class="clip" src="assets/sfx/tick-b.wav" data-start="33.62" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick3" class="clip" src="assets/sfx/tick-a.wav" data-start="33.98" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick4" class="clip" src="assets/sfx/tick-b.wav" data-start="34.03" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick5" class="clip" src="assets/sfx/tick-a.wav" data-start="34.34" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick6" class="clip" src="assets/sfx/tick-b.wav" data-start="35.06" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick7" class="clip" src="assets/sfx/tick-a.wav" data-start="35.42" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick8" class="clip" src="assets/sfx/tick-b.wav" data-start="35.47" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick9" class="clip" src="assets/sfx/tick-a.wav" data-start="35.78" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick10" class="clip" src="assets/sfx/tick-b.wav" data-start="58.4" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick11" class="clip" src="assets/sfx/tick-a.wav" data-start="58.58" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick12" class="clip" src="assets/sfx/tick-b.wav" data-start="58.76" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick13" class="clip" src="assets/sfx/tick-a.wav" data-start="58.94" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick14" class="clip" src="assets/sfx/tick-b.wav" data-start="59.12" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick15" class="clip" src="assets/sfx/tick-a.wav" data-start="59.3" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick16" class="clip" src="assets/sfx/tick-b.wav" data-start="59.48" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick17" class="clip" src="assets/sfx/tick-a.wav" data-start="59.66" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick18" class="clip" src="assets/sfx/tick-b.wav" data-start="59.84" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick19" class="clip" src="assets/sfx/tick-a.wav" data-start="60.02" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick20" class="clip" src="assets/sfx/tick-b.wav" data-start="60.2" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick21" class="clip" src="assets/sfx/tick-a.wav" data-start="60.38" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick22" class="clip" src="assets/sfx/tick-b.wav" data-start="60.56" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick23" class="clip" src="assets/sfx/tick-a.wav" data-start="60.74" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick24" class="clip" src="assets/sfx/tick-b.wav" data-start="61.9" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick25" class="clip" src="assets/sfx/tick-a.wav" data-start="62.4" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick26" class="clip" src="assets/sfx/tick-b.wav" data-start="62.9" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick27" class="clip" src="assets/sfx/tick-a.wav" data-start="66.3" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick28" class="clip" src="assets/sfx/tick-b.wav" data-start="66.84" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick29" class="clip" src="assets/sfx/tick-a.wav" data-start="67.38" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick30" class="clip" src="assets/sfx/tick-b.wav" data-start="67.92" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick31" class="clip" src="assets/sfx/tick-a.wav" data-start="68.46" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick32" class="clip" src="assets/sfx/tick-b.wav" data-start="69.0" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick33" class="clip" src="assets/sfx/tick-a.wav" data-start="71.26" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick34" class="clip" src="assets/sfx/tick-b.wav" data-start="73.0" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick35" class="clip" src="assets/sfx/tick-a.wav" data-start="73.06" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick36" class="clip" src="assets/sfx/tick-b.wav" data-start="73.54" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick37" class="clip" src="assets/sfx/tick-a.wav" data-start="74.08" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick38" class="clip" src="assets/sfx/tick-b.wav" data-start="74.62" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick39" class="clip" src="assets/sfx/tick-a.wav" data-start="75.16" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick40" class="clip" src="assets/sfx/tick-b.wav" data-start="75.7" data-duration="0.3" data-volume="0.25"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fade = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const print = (sel, at) =>
+      tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out" }, at);
+    const pulse = (sel, at) =>
+      tl.to(sel, { keyframes: [{ scale: 1.12, duration: 0.15, ease: "power2.out" }, { scale: 1, duration: 0.15, ease: "power2.in" }] }, at);
+    const band = (sel, at, on) =>
+      tl.fromTo(sel, { backgroundColor: on ? "rgba(245,226,217,0)" : "rgba(245,226,217,1)" },
+        { backgroundColor: on ? "rgba(245,226,217,1)" : "rgba(245,226,217,0)", duration: 0.3, immediateRender: on }, at);
+    const ticker = (sel, from, to, count, start) => {
+      for (let i = 1; i <= count; i++) tl.set(sel, { textContent: String(from + i) }, start + ((to - start) * i) / count);
+    };
+
+    // c3-1: the list stands still, returns queue beside it; a click elsewhere jumps it forward
+    print("#c3-q1", 8.2);
+    print("#c3-q2", 9.0);
+    print("#c3-q3", 9.8);
+    tl.to("#c3-search", { backgroundColor: "#1d1b18", color: "#f7f4ee", duration: 0.12 }, 11.9);
+    tl.to("#c3-search", { backgroundColor: "rgba(0,0,0,0)", color: "#1d1b18", duration: 0.2 }, 12.15);
+    tl.set("#c3-r1", { textContent: "Ficciones" }, 12.2);
+    tl.set("#c3-r2", { textContent: "Beloved" }, 12.2);
+    tl.set("#c3-r3", { textContent: "The Dispossessed" }, 12.2);
+    tl.to(".c3-chip", { opacity: 0, duration: 0.2, ease: "power2.in" }, 12.2);
+
+    // c3-2: three opens, two closes; the closed ones keep counting messages
+    fade("#c3-w1", 14.0, 0.3);
+    tl.to("#c3-w1", { opacity: 0.45, duration: 0.3 }, 14.9);
+    fade("#c3-w2", 15.1, 0.3);
+    tl.to("#c3-w2", { opacity: 0.45, duration: 0.3 }, 16.0);
+    fade("#c3-w3", 16.2, 0.3);
+    ticker("#c3-n1", 0, 20.6, 14, 15.0);
+    ticker("#c3-n2", 0, 20.6, 11, 16.2);
+    ticker("#c3-n3", 0, 20.6, 9, 17.0);
+
+    // c3-3: the callback first, then the zone wrappers, which dissolve into plain calls
+    tl.set(["#c3-za1", "#c3-za2", "#c3-zf1", "#c3-zf2", "#c3-zcap"], { opacity: 0 }, 20.96);
+    tl.fromTo(["#c3-zr1", "#c3-zr2"], { opacity: 0 }, { opacity: 0.3, duration: 0.5, ease: "power3.out" }, 21.3);
+    tl.to("#c3-zr1", { opacity: 1, duration: 0.5, ease: "power3.out" }, 25.4);
+    tl.to("#c3-zr2", { opacity: 1, duration: 0.5, ease: "power3.out" }, 27.6);
+    fade(["#c3-za1", "#c3-za2"], 29.5, 0.4);
+    fade(["#c3-zf1", "#c3-zf2"], 29.65, 0.4);
+    fade("#c3-zcap", 29.9, 0.3);
+
+    // c3-4: printed by frame across rows; the screen's b is the late one
+    print("#c3-fa", 32.9);
+    print("#c3-fb", 33.62);
+    print("#c3-k1", 33.98);
+    print("#c3-sb", 34.03);
+    fade("#c3-kn", 34.2);
+    print("#c3-fc", 34.34);
+    fade("#c3-sn", 34.6);
+    print("#c3-fd", 35.06);
+    print("#c3-k2", 35.42);
+    print("#c3-sd", 35.47);
+    print("#c3-fe", 35.78);
+    pulse("#c3-sb", 36.1);
+
+    // c3-5: each binding gets an empty notifier slot
+    fade(".c3-bind", 39.0, 0.4);
+    fade("#c3-nh", 40.8);
+    tl.fromTo(".c3-tag", { opacity: 0 }, { opacity: 1, duration: 0.4, stagger: 0.3, ease: "power3.out" }, 41.1);
+    tl.to(".c3-tag", { borderColor: "#b8321f", duration: 0.4 }, 45.4);
+
+    // c3-6: the first write schedules the tick, the rest join it, all fifty become one render
+    tl.set(["#c3-dots i", "#c3-tick", "#c3-1r", "#c3-work", "#c3-funnel", "#c3-fifty"], { opacity: 0 }, 47.8);
+    print("#c3-d1", 48.2);
+    fade("#c3-tick", 49.3);
+    fade("#c3-funnel", 49.5);
+    tl.fromTo("#c3-dots i:not(#c3-d1)", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, stagger: 0.03, ease: "power3.out" }, 50.4);
+    fade("#c3-fifty", 51.6, 0.3);
+    tl.to("#c3-dots", { x: 760, scale: 0.12, opacity: 0, transformOrigin: "100% 50%", duration: 1.0, ease: "power2.in" }, 52.3);
+    fade("#c3-1r", 53.4);
+    fade("#c3-work", 55.2);
+
+    // c3-7: the dense row, the edge gate, the thin signal row
+    tl.fromTo(".c3-dm", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, stagger: 0.18, ease: "power3.out" }, 58.4);
+    tl.fromTo("#c3-gate", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 61.0);
+    fade("#c3-gn", 61.4);
+    print("#c3-o1", 61.9);
+    print("#c3-o2", 62.4);
+    print("#c3-o3", 62.9);
+    fade("#c3-on", 63.8);
+
+    // c3-8: data and parent checks, then ngDoCheck on the parent's schedule, then computed on the data's
+    print("#c3-da", 66.3);
+    print("#c3-db", 66.84);
+    print("#c3-dc", 67.38);
+    print("#c3-p7", 67.56);
+    print("#c3-dd", 67.92);
+    print("#c3-de", 68.46);
+    print("#c3-df", 69.0);
+    print("#c3-p17", 69.36);
+    print("#c3-gc", 71.26);
+    print("#c3-ca", 73.0);
+    print("#c3-gf", 73.06);
+    print("#c3-cb", 73.54);
+    print("#c3-cc", 74.08);
+    print("#c3-cd", 74.62);
+    print("#c3-ce", 75.16);
+    print("#c3-cf", 75.7);
+
+    // c3-9: the handlers hang off the root client; two are destroyed but held; a message runs them all
+    tl.set([".c3-h", "#c3-spine", "#c3-br1", "#c3-br2", "#c3-br3"], { opacity: 0 }, 76.29);
+    fade("#c3-spine", 80.2, 0.4);
+    ["#c3-h1", "#c3-h2", "#c3-h3"].forEach((h, i) => {
+      fade(`#c3-br${i + 1}`, 80.4 + i * 0.4, 0.3);
+      fade(h, 80.4 + i * 0.4);
+    });
+    tl.to(["#c3-h1", "#c3-h2"], { borderColor: "#b8321f", duration: 0.3 }, 82.8);
+    tl.to(".c3-h", { keyframes: [{ backgroundColor: "#f5e2d9", duration: 0.2 }, { backgroundColor: "#fffdf9", duration: 0.4 }], stagger: 0.12 }, 85.0);
+
+    // c3-10: each start gets its stop, then every stop moves right next to its start
+    fade(["#c3-hs", "#c3-he"], 87.0);
+    [".c3-res", ".c3-pair:not(.c3-stop)", ".c3-link", ".c3-stop"].forEach((sel, k) =>
+      tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: 0.4, stagger: 0.7, ease: "power3.out" }, 89.6 + k * 0.15));
+    tl.to([".c3-stop", "#c3-he"], { x: -560, duration: 0.8, ease: "power2.inOut" }, 92.8);
+    tl.to(".c3-link", { scaleX: 0.05, duration: 0.8, ease: "power2.inOut" }, 92.8);
+
+    // c3-11: the waiting test, then the forcing test; both pass
+    tl.set(["#c3-tbh", "#c3-tb", "#c3-pa", "#c3-pb", "#c3-never"], { opacity: 0 }, 95.35);
+    band("#c3-ws", 97.0, true);
+    fade(["#c3-tbh", "#c3-tb"], 99.0);
+    band("#c3-ws", 99.6, false);
+    band("#c3-dc1", 99.6, true);
+    band("#c3-dc2", 99.6, true);
+    fade("#c3-pa", 102.6, 0.4);
+    fade("#c3-pb", 102.8, 0.4);
+    fade("#c3-never", 104.0);
+
+    // questions, 0.6 s apart
+    ["#c3-q1", "#c3-q2", "#c3-q3", "#c3-q4", "#c3-q5"].forEach((q, i) => fade(q, 107.2 + i * 0.6));
+
+    // pause
+    fade("#c3-pause-2", 129.1);
+
+    // after the lesson: compare, then write the comment
+    tl.fromTo("#c3-after-title", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 132.5);
+    fade("#c3-sol", 134.3);
+    fade("#c3-comment", 136.2);
+    tl.fromTo("#c3-cl1", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 136.7);
+    tl.fromTo("#c3-cl2", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 137.1);
+    fade("#c3-reread", 139.4);
+
+    // close: 18:00, the wall display goes dark, then the lights go down and stay down
+    fade("#c3-closed", 142.3);
+    tl.to("#c3-wall2", { backgroundColor: "#1d1b18", duration: 0.8, ease: "power2.inOut" }, 144.0);
+    tl.fromTo("#c3-lights", { opacity: 0 }, { opacity: 0.62, duration: 2.0, ease: "power2.inOut" }, 144.6);
+
+    window.__timelines["c3"] = tl;
+  </script>
+</template>

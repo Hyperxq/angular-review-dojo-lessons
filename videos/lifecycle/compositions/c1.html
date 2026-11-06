@@ -1,0 +1,335 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c1-nav { position: absolute; left: 48px; top: 40px; width: 340px; }
+    .c1-nav div { font: 400 40px/1 var(--font-text); color: var(--ink-muted); padding: 26px 0; border-bottom: 1px solid var(--rule); }
+    .c1-nav .on { color: var(--ink); font-weight: 700; }
+
+    #c1-picker { position: absolute; left: 480px; top: 40px; width: 520px; }
+    #c1-picker .label { font-weight: 700; margin-bottom: 20px; }
+    #c1-rows { position: relative; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+    #c1-sel { position: absolute; left: 0; top: 0; width: 100%; height: 110px; background: var(--paper-sunk); border-left: 8px solid var(--ink); box-sizing: border-box; }
+    .c1-member { position: relative; height: 110px; padding-left: 40px; display: flex; align-items: center; font: 400 40px/1 var(--font-text); border-bottom: 1px solid var(--rule); box-sizing: border-box; }
+    #c1-loan { position: absolute; left: 1060px; top: 40px; width: 580px; }
+    #c1-loan-title { font: 600 56px/1.1 var(--font-display); margin-bottom: 36px; }
+    #c1-banner { padding: 36px 40px; background: var(--warning-soft); border: 3px solid var(--warning); border-radius: 8px; font: 700 40px/1.25 var(--font-text); }
+
+    #c1-ctor { left: 160px; top: 280px; width: 820px; height: 480px; display: block; padding: 48px; text-align: left; box-sizing: border-box; }
+    #c1-first { left: 1140px; top: 280px; width: 620px; height: 480px; display: block; padding: 48px; text-align: left; box-sizing: border-box; }
+    .c1-ftitle { font: 700 48px/1.1 var(--font-text); }
+    #c1-field { margin-top: 90px; font: 700 44px/1 var(--font-code); }
+    #c1-undef { margin-top: 30px; font: 700 64px/1 var(--font-code); color: var(--accent); }
+    #c1-nothing { position: absolute; left: 160px; top: 800px; font: 700 40px/1.2 var(--font-text); color: var(--ink-muted); }
+
+    .c1-node { position: absolute; padding: 40px 48px; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; box-sizing: border-box; }
+    .c1-node-title { font: 700 44px/1 var(--font-code); }
+    .c1-node .badge { font: 400 32px/1 var(--font-text); color: var(--ink-muted); margin-left: 14px; }
+    .c1-obj { margin-top: 44px; font: 400 40px/1.5 var(--font-code); }
+    #c1-edit { margin-top: 40px; font: 700 40px/1 var(--font-code); }
+    #c1-lamp { width: 200px; height: 200px; margin: 50px auto 28px; border-radius: 50%; border: 8px solid var(--rule-strong); background: var(--paper-sunk); box-sizing: border-box; }
+    #c1-lamp-label { text-align: center; font: 700 40px/1 var(--font-code); }
+    #c1-silent { text-align: center; margin-top: 20px; }
+    #c1-ref-label { position: absolute; left: 930px; top: 430px; width: 300px; }
+
+    #c1-stale { margin-top: 40px; font: 700 44px/1 var(--font-code); color: var(--accent); }
+    #c1-console { position: absolute; left: 160px; top: 760px; width: 1600px; height: 220px; background: var(--paper-raised); border: 2px solid var(--rule); border-radius: 8px; }
+    #c1-console-head { height: 70px; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--rule); font: 700 32px/1 var(--font-text); }
+    #c1-console-head span:last-child { font-weight: 400; color: var(--ink-muted); }
+
+    .c1-code { left: 110px; top: 110px; width: 1700px; box-sizing: border-box; }
+    .c1-code .ln { position: relative; }
+    .c1-code .wrap { white-space: pre-wrap; padding-left: 4ch; text-indent: -4ch; }
+    .c1-band { position: absolute; left: 0; right: 0; top: 40px; height: 102px; background: var(--accent-soft); }
+    .c1-anno { position: absolute; left: 110px; width: 1700px; font: 400 40px/1.25 var(--font-text); }
+    .c1-anno code { font-family: var(--font-code); }
+
+    #c1-decide .fbox { height: 140px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    #c1-ask { border-color: var(--accent); }
+    .c1-target { font-family: var(--font-code); font-size: 44px; }
+    #c1-decide .flabel { width: 470px; }
+
+    #c1-questions .q { font-size: 40px; }
+  </style>
+
+  <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c1-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c1-card-time" class="chapter-time">09:00</div>
+      <div id="c1-card-title" class="chapter-title">When an input exists, and how often you hear about it</div>
+    </div>
+
+    <!-- c1-1, c1-2 the loans desk: a member picked, then another; the banner stays -->
+    <div id="c1-desk" class="clip world" data-start="3" data-duration="13.88">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-nav"><div>Members</div><div class="on">Loans</div><div>Returns</div><div>Holds</div></div>
+          <div id="c1-picker">
+            <div class="label">Member</div>
+            <div id="c1-rows">
+              <div id="c1-sel"></div>
+              <div class="c1-member">Ada Okafor</div>
+              <div class="c1-member">Bruno Silva</div>
+              <div class="c1-member" style="border-bottom: 0">Carmen Ruiz</div>
+            </div>
+          </div>
+          <div id="c1-loan">
+            <div id="c1-loan-title">New loan</div>
+            <div id="c1-banner" data-hold>Ada Okafor owes $4.50</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-3 inputs arrive after construction (chapter 0 flow, first two boxes) -->
+    <div id="c1-early" class="clip world sunk" data-start="16.88" data-duration="11.06">
+      <div id="c1-ctor" class="fbox">
+        <div class="c1-ftitle">constructor</div>
+        <div id="c1-field">@Input()</div>
+        <div id="c1-undef">undefined</div>
+      </div>
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <line id="c1-arrow" x1="990" y1="520" x2="1112" y2="520" stroke="#1d1b18" stroke-width="4" stroke-dasharray="122" />
+        <polygon id="c1-arrow-head" points="1112,508 1132,520 1112,532" fill="#1d1b18" />
+      </svg>
+      <div id="c1-first" class="fbox"><div class="c1-ftitle">first input values set</div></div>
+      <div id="c1-nothing" data-hold>anything derived there is derived from nothing</div>
+    </div>
+
+    <!-- c1-4 ngOnInit runs once (LESSON.md marbles, 21 frames) -->
+    <div id="c1-once" class="clip world sunk" data-start="27.94" data-duration="9.7">
+      <div class="marbles" style="top: 260px; --fw: 64.762px">
+        <div class="mrow" style="height: 200px">
+          <div class="mlabel">member input</div>
+          <div class="mtrack">
+            <div id="c1-m-a" class="m" style="--f: 0">a</div>
+            <div id="c1-m-b" class="m" style="--f: 7">b</div>
+            <div id="c1-m-c" class="m" style="--f: 16">c</div>
+          </div>
+        </div>
+        <div class="mrow" style="height: 200px">
+          <div class="mlabel">ngOnInit</div>
+          <div class="mtrack"><div id="c1-i-a" class="m hot" style="--f: 0">a</div></div>
+          <div id="c1-note1" class="mnote">// computed once, from the first member</div>
+        </div>
+        <div class="mrow" style="height: 200px">
+          <div class="mlabel">computed</div>
+          <div class="mtrack">
+            <div id="c1-c-a" class="m" style="--f: 0">a</div>
+            <div id="c1-c-b" class="m" style="--f: 7">b</div>
+            <div id="c1-c-c" class="m" style="--f: 16">c</div>
+          </div>
+          <div id="c1-note2" class="mnote" data-hold>// follows every new member</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-5 a property edited in place: same reference, no ngOnChanges -->
+    <div id="c1-ref" class="clip world" data-start="37.64" data-duration="10.99">
+      <div id="c1-parent" class="c1-node" style="left: 160px; top: 220px; width: 760px; height: 560px">
+        <div class="c1-node-title">parent</div>
+        <div class="c1-obj">member<br />&nbsp;&nbsp;name: <span class="s">'Ada Okafor'</span><br />&nbsp;&nbsp;loanWeeks: <span id="c1-weeks" class="n">2</span></div>
+        <div id="c1-edit">member.loanWeeks = <span class="n">3</span>;</div>
+      </div>
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <line id="c1-pass" x1="930" y1="500" x2="1206" y2="500" stroke="#1d1b18" stroke-width="4" stroke-dasharray="276" />
+        <polygon id="c1-pass-head" points="1206,488 1226,500 1206,512" fill="#1d1b18" />
+      </svg>
+      <div id="c1-ref-label" class="flabel">same reference</div>
+      <div id="c1-child" class="c1-node" style="left: 1240px; top: 220px; width: 520px; height: 560px">
+        <div class="c1-node-title">child</div>
+        <div id="c1-lamp"></div>
+        <div id="c1-lamp-label">ngOnChanges</div>
+        <div id="c1-silent" class="label" data-hold>not called</div>
+      </div>
+    </div>
+
+    <!-- c1-6 OnPush: the child keeps its old render; the console stays empty -->
+    <div id="c1-push" class="clip world" data-start="48.63" data-duration="8.63">
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <path d="M510,370 V450 H1056" stroke="#c4b9a6" stroke-width="4" fill="none" />
+      </svg>
+      <div class="c1-node" style="left: 160px; top: 80px; width: 700px; height: 290px">
+        <div class="c1-node-title">parent</div>
+        <div class="c1-obj">loanWeeks: <span class="n">3</span></div>
+      </div>
+      <div id="c1-pchild" class="c1-node" style="left: 1060px; top: 300px; width: 700px; height: 300px">
+        <div class="c1-node-title">child<span id="c1-badge" class="badge">[OnPush]</span></div>
+        <div id="c1-stale" data-hold>loanWeeks: 2</div>
+      </div>
+      <div id="c1-console" data-hold>
+        <div id="c1-console-head"><span>Console</span><span>0 errors</span></div>
+      </div>
+    </div>
+
+    <!-- c1-7, c1-8 LoanForm (LESSON.md, the class part) -->
+    <div id="c1-form" class="clip world" data-start="57.26" data-duration="20.22">
+      <div class="code c1-code">
+        <div id="c1-band" class="c1-band"></div>
+        <span class="ln"><span class="k">export class</span> LoanForm {</span>
+        <span class="ln">  <span class="k">readonly</span> member = input.required&lt;Member&gt;();</span>
+        <span class="ln">  <span class="k">readonly</span> today = input.required&lt;string&gt;();</span>
+        <span class="ln"> </span>
+        <span class="ln wrap">  <span class="k">protected readonly</span> fines = computed(() =&gt; <span class="k">this</span>.member().loans.reduce((sum, l) =&gt; sum + l.fine, <span class="n">0</span>));</span>
+        <span class="ln wrap">  <span class="k">protected readonly</span> returnDate = linkedSignal(() =&gt; addWeeks(<span class="k">this</span>.today(), <span class="k">this</span>.member().loanWeeks));</span>
+        <span class="ln">}</span>
+      </div>
+      <div id="c1-n1" class="c1-anno" style="top: 720px"><code>fines</code> is derived: nobody writes it, so it is a <code>computed</code></div>
+      <div id="c1-n2" class="c1-anno" style="top: 800px">recalculated only when <code>member</code> changes and someone reads it</div>
+      <div id="c1-n3" class="c1-anno" style="top: 720px"><code>returnDate</code> is a suggestion the librarian may overwrite, so it must be writable</div>
+      <div id="c1-n4" class="c1-anno" style="top: 800px">recomputed whenever a signal it read changes (another member, another day)</div>
+      <div id="c1-n5" class="c1-anno" style="top: 880px" data-hold>and keeps her edit otherwise</div>
+    </div>
+
+    <!-- c1-9 one question decides it -->
+    <div id="c1-decide" class="clip world sunk" data-start="77.48" data-duration="10.99">
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <g stroke="#1d1b18" stroke-width="4" fill="none">
+          <path id="c1-p1" d="M704,540 H800 V240 H1276" stroke-dasharray="900" />
+          <path id="c1-p2" d="M704,540 H1276" stroke-dasharray="900" />
+          <path id="c1-p3" d="M704,540 H800 V840 H1276" stroke-dasharray="900" />
+        </g>
+        <g fill="#1d1b18">
+          <polygon id="c1-h1" points="1276,228 1296,240 1276,252" />
+          <polygon id="c1-h2" points="1276,528 1296,540 1276,552" />
+          <polygon id="c1-h3" points="1276,828 1296,840 1276,852" />
+        </g>
+      </svg>
+      <div id="c1-ask" class="fbox" style="left: 140px; top: 470px; width: 560px">does anything need to write this value?</div>
+      <div id="c1-l1" class="flabel" style="left: 810px; top: 186px">nobody writes</div>
+      <div id="c1-l2" class="flabel" style="left: 810px; top: 486px">written, resets</div>
+      <div id="c1-l3" class="flabel" style="left: 810px; top: 786px">written, survives</div>
+      <div id="c1-t1" class="fbox c1-target" style="left: 1300px; top: 170px; width: 480px">computed</div>
+      <div id="c1-t2" class="fbox c1-target" style="left: 1300px; top: 470px; width: 480px">linkedSignal</div>
+      <div id="c1-t3" class="fbox c1-target" style="left: 1300px; top: 770px; width: 480px" data-hold>signal</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c1-questions" class="clip world note" data-start="88.47" data-duration="21.8">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c1-q1" class="q">At the moment each value is computed, what do the inputs hold?</div>
+        <div id="c1-q2" class="q">Which values are computed once, and can the input change after that?</div>
+        <div id="c1-q3" class="q">How does this component learn that its input changed? What does it miss?</div>
+        <div id="c1-q4" class="q">When the parent updates the data, does it send a new reference or change the old one?</div>
+        <div id="c1-q5" class="q">Which local state belongs to one input value, and what resets it?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c1-pause" class="clip world" data-start="110.27" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c1-pause-2" class="pause-2">Now do exercise 01.</div>
+    </div>
+
+    <audio id="c1-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="15" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-bed2" class="clip" src="assets/music/bed.mp3" data-start="88.47" data-duration="21.8" data-media-start="23" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-vo1" class="clip" src="assets/vo/c1-1.wav" data-start="3" data-duration="6.699" data-volume="1"></audio>
+    <audio id="c1-vo2" class="clip" src="assets/vo/c1-2.wav" data-start="10.05" data-duration="6.485" data-volume="1"></audio>
+    <audio id="c1-vo3" class="clip" src="assets/vo/c1-3.wav" data-start="16.88" data-duration="10.709" data-volume="1"></audio>
+    <audio id="c1-vo4" class="clip" src="assets/vo/c1-4.wav" data-start="27.94" data-duration="9.344" data-volume="1"></audio>
+    <audio id="c1-vo5" class="clip" src="assets/vo/c1-5.wav" data-start="37.64" data-duration="10.645" data-volume="1"></audio>
+    <audio id="c1-vo6" class="clip" src="assets/vo/c1-6.wav" data-start="48.63" data-duration="8.277" data-volume="1"></audio>
+    <audio id="c1-vo7" class="clip" src="assets/vo/c1-7.wav" data-start="57.26" data-duration="10.133" data-volume="1"></audio>
+    <audio id="c1-vo8" class="clip" src="assets/vo/c1-8.wav" data-start="67.74" data-duration="9.387" data-volume="1"></audio>
+    <audio id="c1-vo9" class="clip" src="assets/vo/c1-9.wav" data-start="77.48" data-duration="10.645" data-volume="1"></audio>
+    <audio id="c1-vo10" class="clip" src="assets/vo/c1-end.wav" data-start="88.47" data-duration="2.368" data-volume="1"></audio>
+    <audio id="c1-tick1" class="clip" src="assets/sfx/tick-a.wav" data-start="28.6" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick2" class="clip" src="assets/sfx/tick-b.wav" data-start="28.7" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick3" class="clip" src="assets/sfx/tick-a.wav" data-start="28.8" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick4" class="clip" src="assets/sfx/tick-b.wav" data-start="29.86" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick5" class="clip" src="assets/sfx/tick-a.wav" data-start="30.06" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick6" class="clip" src="assets/sfx/tick-b.wav" data-start="31.48" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick7" class="clip" src="assets/sfx/tick-a.wav" data-start="31.68" data-duration="0.3" data-volume="0.25"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at) => tl.to(sel, { opacity: 0, duration: 0.3, ease: "power2.in" }, at);
+    const print = (sel, at) =>
+      tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out" }, at);
+    const pulse = (sel, at) => {
+      tl.fromTo(sel, { scale: 1 }, { scale: 1.12, duration: 0.15, ease: "power2.out" }, at);
+      tl.to(sel, { scale: 1, duration: 0.15, ease: "power2.in" }, at + 0.15);
+    };
+    const draw = (sel, len, at, d = 0.5) =>
+      tl.fromTo(sel, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0
+
+    // c1-1: she picks a member, the banner shows the fines
+    tl.fromTo("#c1-sel", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 6.0);
+    fadeIn("#c1-banner", 7.9);
+
+    // c1-2: she switches; the banner does not follow
+    tl.fromTo("#c1-sel", { y: 0 }, { y: 110, duration: 0.8, ease: "power2.inOut" }, 11.3);
+    tl.to("#c1-banner", { borderColor: "#b8321f", backgroundColor: "#f5e2d9", duration: 0.4 }, 13.8);
+
+    // c1-3: instance first, inputs after; the field is still undefined
+    fadeIn("#c1-ctor", 17.1, 0.4);
+    draw("#c1-arrow", 122, 19.6, 0.4);
+    fadeIn("#c1-arrow-head", 19.95, 0.15);
+    fadeIn("#c1-first", 20.1, 0.4);
+    fadeIn("#c1-field", 22.4, 0.4);
+    fadeIn("#c1-undef", 23.2, 0.4);
+    fadeIn("#c1-nothing", 25.8);
+
+    // c1-4: printed at 0.18 s per frame, rows 0.1 s apart; ngOnInit's a is the one pointed at
+    print("#c1-m-a", 28.6);
+    print("#c1-i-a", 28.7);
+    print("#c1-c-a", 28.8);
+    print("#c1-m-b", 29.86);
+    print("#c1-c-b", 30.06);
+    print("#c1-m-c", 31.48);
+    print("#c1-c-c", 31.68);
+    pulse("#c1-i-a", 33.4);
+    fadeIn("#c1-note1", 33.7, 0.4);
+    fadeIn("#c1-note2", 35.9, 0.4);
+
+    // c1-5: the object passes once, is edited in place, the lamp stays dark
+    fadeIn("#c1-parent", 37.8, 0.4);
+    fadeIn("#c1-child", 38.5, 0.4);
+    draw("#c1-pass", 276, 41.0, 0.5);
+    fadeIn("#c1-pass-head", 41.45, 0.15);
+    fadeIn("#c1-edit", 43.8, 0.4);
+    tl.set("#c1-weeks", { textContent: "3", color: "#b8321f" }, 44.4);
+    pulse("#c1-weeks", 44.4);
+    fadeIn("#c1-ref-label", 46.0);
+    fadeIn("#c1-silent", 47.8, 0.4);
+
+    // c1-6: the badge on "OnPush", the stale render, the empty console
+    fadeIn("#c1-badge", 49.6, 0.4);
+    tl.fromTo("#c1-stale", { color: "#1d1b18" }, { color: "#b8321f", duration: 0.4 }, 52.0);
+    fadeIn("#c1-console", 55.3);
+
+    // c1-7: code cut in whole; band on fines
+    tl.fromTo("#c1-band", { opacity: 0, y: 4 * 51 }, { opacity: 1, duration: 0.3 }, 60.4);
+    fadeIn("#c1-n1", 63.0);
+    fadeIn("#c1-n2", 65.6);
+
+    // c1-8: the band moves to returnDate
+    fadeOut("#c1-n1", 67.9);
+    fadeOut("#c1-n2", 67.9);
+    tl.to("#c1-band", { y: 6 * 51, duration: 0.8, ease: "power2.inOut" }, 68.3);
+    fadeIn("#c1-n3", 69.6);
+    fadeIn("#c1-n4", 72.6);
+    fadeIn("#c1-n5", 75.2);
+
+    // c1-9: the question, then each branch on its answer
+    fadeIn("#c1-ask", 77.7, 0.4);
+    [[81.0, 1], [84.4, 2], [86.8, 3]].forEach(([at, i]) => {
+      draw("#c1-p" + i, 900, at, 0.5);
+      fadeIn("#c1-h" + i, at + 0.45, 0.1);
+      fadeIn("#c1-l" + i, at + 0.15, 0.4);
+      fadeIn("#c1-t" + i, at + 0.5, 0.4);
+    });
+
+    // questions 0.6 s apart, then hold; pause card
+    for (let i = 1; i <= 5; i++) fadeIn("#c1-q" + i, 88.8 + (i - 1) * 0.6);
+    fadeIn("#c1-pause-2", 110.8);
+
+    window.__timelines["c1"] = tl;
+  </script>
+</template>
