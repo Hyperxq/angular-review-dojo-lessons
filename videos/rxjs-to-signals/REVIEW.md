@@ -31,3 +31,9 @@
 ## Weakest shot
 
 - Scenes open on paper for about 0.2 s while their first objects enter (for example c0-5 at 48.4 s).
+
+## Delivery
+
+- `renders/rxjs-to-signals-lesson.mp4` (gitignored): 1920x1080, 30 fps, 10:00, about 29 MB.
+- Mix normalized with ffmpeg `loudnorm` (I=-16, TP=-1.5): -16.4 LUFS integrated, true peak -1.4 dBTP, no clipping.
+- Frame 0 is chapter 0's card, which serves as the thumbnail.

@@ -23,3 +23,9 @@
 
 - Sound was not heard; loudness is measured after render.
 - Code at 28-34 px is not readable at phone width; the video targets a desktop screen.
+
+## Delivery
+
+- `renders/lifecycle-lesson.mp4` (gitignored): 1920x1080, 30 fps, 8:22, about 24 MB.
+- Mix normalized with ffmpeg `loudnorm` (I=-16, TP=-1.5): -16.6 LUFS integrated, true peak -1.4 dBTP, no clipping.
+- Frame 0 is chapter 0's card, which serves as the thumbnail.
