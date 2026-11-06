@@ -1,0 +1,229 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c4-svg { position: absolute; left: 0; top: 0; }
+    code { font-family: var(--font-code); font-size: 0.92em; }
+    .c4-h { position: absolute; left: 200px; top: 130px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+
+    #c4-bar { position: absolute; left: 40px; right: 40px; top: 32px; height: 84px; box-sizing: border-box; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper); }
+    .c4-url { position: absolute; left: 32px; top: 0; height: 80px; display: flex; align-items: center; font: 400 40px/1 var(--font-code); }
+    .c4-url b { font-weight: 400; color: var(--accent); }
+    .c4-rows { position: absolute; left: 40px; right: 40px; top: 170px; }
+    .c4-row { height: 96px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; gap: 32px; }
+    .c4-row i { display: block; height: 26px; border-radius: 4px; background: var(--rule); }
+
+    .c4-node { box-sizing: border-box; height: 80px; padding: 0 28px; display: flex; align-items: center; justify-content: center; font-size: 34px; }
+    .c4-node .badge { font-size: 30px; }
+    #c4-path { position: absolute; left: 110px; top: 880px; font: 400 36px/1 var(--font-code); color: var(--ink-muted); }
+
+    .c4-table { position: absolute; display: grid; font: 400 34px/1.35 var(--font-text); }
+    .c4-table > div { display: contents; }
+    .c4-table span { padding: 24px 24px; border-bottom: 1px solid var(--rule); }
+    .c4-table span:first-child { font: 400 30px/1.4 var(--font-code); }
+    .c4-table code { font: 400 31px/1 var(--font-code); }
+    .c4-table .th span { font: 700 30px/1.3 var(--font-text) !important; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c4-api { left: 150px; top: 250px; width: 1620px; grid-template-columns: 1000px 620px; }
+    #c4-runs { left: 160px; top: 190px; width: 1600px; grid-template-columns: 460px 1140px; }
+
+    .c4-code { left: 104px; width: 1712px; box-sizing: border-box; padding: 40px 44px; font-size: 28px; line-height: 42px; }
+    .c4-code .ln { position: relative; }
+    .c4-band { position: absolute; left: 0; right: 0; top: 40px; height: 42px; background: var(--accent-soft); }
+    .c4-mark { border-radius: 4px; }
+
+    #c4-one { left: 200px; top: 400px; font-size: 40px; line-height: 60px; padding: 44px 56px; }
+    #c4-parent { position: absolute; left: 200px; top: 640px; padding: 14px 24px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 36px/1 var(--font-code); color: var(--ink-muted); }
+
+    #c4-para { position: absolute; left: 200px; top: 230px; width: 1520px; font: 400 42px/1.55 var(--font-text); }
+    #c4-para span { border-radius: 4px; }
+    #c4-para code { font-size: 38px; }
+
+    .q { font-size: 40px; margin-bottom: 30px; }
+    .q code { font: 400 37px/1 var(--font-code); }
+  </style>
+
+  <div id="root" data-composition-id="c4" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c4-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">14:00</div>
+      <div class="chapter-title">Nested routes and relative navigation</div>
+    </div>
+
+    <!-- c4-1: the address bar, before and after the branches -->
+    <div id="c4-desk" class="clip world" data-start="3" data-duration="7.58">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">14:00</span></div>
+        <div class="app-body">
+          <div id="c4-bar">
+            <div id="c4-u1" class="c4-url">/members/12</div>
+            <div id="c4-u2" class="c4-url" data-hold><b>/branches/3</b>/members/12</div>
+          </div>
+          <div class="c4-rows">
+            <div class="c4-row"><i style="width: 420px"></i><i style="width: 200px"></i></div>
+            <div class="c4-row"><i style="width: 320px"></i><i style="width: 260px"></i><i style="width: 140px"></i></div>
+            <div class="c4-row"><i style="width: 380px"></i><i style="width: 180px"></i></div>
+            <div class="c4-row"><i style="width: 300px"></i><i style="width: 240px"></i><i style="width: 160px"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c4-2: the route tree; the accent walks MemberLayout, LoansPage, LoanDetail -->
+    <div id="c4-tree" class="clip world sunk" data-start="10.58" data-duration="8.31">
+      <svg class="c4-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#c4b9a6" stroke-width="4">
+        <path d="M960 190 V290" />
+        <path d="M960 370 V430 H370 V490" />
+        <path d="M960 370 V490" />
+        <path d="M960 430 H1560 V490" />
+        <path d="M960 570 V690" />
+      </svg>
+      <div id="c4-n0" class="node c4-node" style="left: 760px; top: 110px; width: 400px">AppShell<span class="badge">[outlet]</span></div>
+      <div id="c4-n1" class="node c4-node" style="left: 520px; top: 290px; width: 880px">members/:memberId MemberLayout<span class="badge">[outlet]</span></div>
+      <div id="c4-n2" class="node c4-node dim" style="left: 110px; top: 490px; width: 520px">'' redirect to loans</div>
+      <div id="c4-n3" class="node c4-node" style="left: 680px; top: 490px; width: 560px">loans LoansPage<span class="badge">[outlet]</span></div>
+      <div id="c4-n4" class="node c4-node" style="left: 1310px; top: 490px; width: 500px">profile ProfilePage</div>
+      <div id="c4-n5" class="node c4-node" style="left: 720px; top: 690px; width: 480px" data-hold>:loanId LoanDetail</div>
+      <div id="c4-path">/members/12/loans/5</div>
+    </div>
+
+    <!-- c4-3, c4-4: API / Relative to -->
+    <div id="c4-apiw" class="clip world" data-start="18.89" data-duration="16.29">
+      <div id="c4-api" class="c4-table" data-hold>
+        <div class="th"><span>API</span><span>Relative to</span></div>
+        <div id="c4-ar1"><span>[routerLink]="['5']"</span><span>the <code>ActivatedRoute</code> of the component whose template holds the link</span></div>
+        <div id="c4-ar2"><span>router.navigate(['5'])</span><span>the root, because <code>relativeTo</code> defaults to <code>null</code></span></div>
+        <div id="c4-ar3"><span>router.navigate(['5'], { relativeTo: this.route })</span><span>the route you pass</span></div>
+      </div>
+    </div>
+
+    <!-- c4-5: the commands code, band on the ../profile link -->
+    <div id="c4-cmdw" class="clip world" data-start="35.18" data-duration="7.61">
+      <div class="code c4-code" style="top: 250px" data-hold>
+        <div id="c4-band1" class="c4-band"></div>
+        <span class="ln c">// in LoansPage, at /members/12/loans</span>
+        <span class="ln">[routerLink]=<span class="s">"[loan.id]"</span>               <span class="c">// /members/12/loans/5</span></span>
+        <span class="ln">[routerLink]=<span class="s">"['../profile']"</span>          <span class="c">// /members/12/profile</span></span>
+        <span class="ln"> </span>
+        <span class="ln c">// also in LoansPage, after a save</span>
+        <span class="ln"><span class="k">private readonly</span> route = inject(ActivatedRoute);</span>
+        <span class="ln">openProfile() {</span>
+        <span class="ln">  <span class="k">this</span>.router.navigate([<span class="s">'../profile'</span>], { relativeTo: <span class="k">this</span>.route }); <span class="c">// /members/12/profile</span></span>
+        <span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c4-6: the memberId input; route.parent as a label -->
+    <div id="c4-inw" class="clip world" data-start="42.79" data-duration="9.61">
+      <div class="c4-h">Params from the parent</div>
+      <div id="c4-one" class="code c4-code" style="width: auto" data-hold>
+        <span class="ln"><span class="k">readonly</span> <span id="c4-mid" class="c4-mark">memberId</span> = input&lt;string&gt;()</span>
+      </div>
+      <div id="c4-parent" data-hold>route.parent</div>
+    </div>
+
+    <!-- c4-7: Guard on the parent / Runs, rows one by one -->
+    <div id="c4-runsw" class="clip world" data-start="52.4" data-duration="11.29">
+      <div id="c4-runs" class="c4-table" data-hold>
+        <div id="c4-rh" class="th"><span>Guard on the parent</span><span>Runs</span></div>
+        <div id="c4-rr1"><span>canActivate</span><span>when the parent route is entered (and when its own params change); not when the user moves between its children</span></div>
+        <div id="c4-rr2"><span>canActivateChild</span><span>before every navigation to any of its children, including moves between them</span></div>
+        <div id="c4-rr3"><span>canMatch</span><span>on every navigation that matches through the route; a <code>false</code> makes the URL fall through to later routes (Chapter 3)</span></div>
+      </div>
+    </div>
+
+    <!-- c4-8: the paragraph after the table, the suspension sentence banded -->
+    <div id="c4-paraw" class="clip world" data-start="63.69" data-duration="6.99">
+      <div id="c4-para" data-hold><span id="c4-p1">So ask what can change while the user is inside the area.</span> <span id="c4-p2">A rule that holds for the whole visit (the member record exists) is checked once.</span> <span id="c4-p3">A rule that can stop holding mid-visit (a librarian suspends the membership while the member is browsing) needs to be checked on every move inside the area.</span> <span id="c4-p4"><code>CanActivateChildFn</code> has the signature <code>(childRoute, state) =&gt; MaybeAsync&lt;GuardResult&gt;</code>.</span></div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c4-questions" class="clip world note" data-start="70.68" data-duration="23.9">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c4-q1" class="q">Open the deepest URL of the feature directly in a new tab. Which components render, and where on the page?</div>
+        <div id="c4-q2" class="q">Click every link and button in the feature and read the address bar. Does each one stay under the feature's prefix?</div>
+        <div id="c4-q3" class="q">Imagine the feature mounted under another prefix. Which links and <code>navigate</code> calls would break?</div>
+        <div id="c4-q4" class="q">Suspend the user's access while they are inside the area, then click a sibling link. Which guard runs?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c4-pause" class="clip world" data-start="94.58" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c4-pause-2" class="pause-2" data-hold>Now do exercise 04.</div>
+    </div>
+
+    <audio id="c4-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="60" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c4-bed2" class="clip" src="assets/music/bed.mp3" data-start="70.68" data-duration="23.9" data-media-start="68" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c4-1" class="clip" src="assets/vo/c4-1.wav" data-start="3.0" data-duration="7.232" data-volume="1"></audio>
+    <audio id="vo-c4-2" class="clip" src="assets/vo/c4-2.wav" data-start="10.58" data-duration="7.957" data-volume="1"></audio>
+    <audio id="vo-c4-3" class="clip" src="assets/vo/c4-3.wav" data-start="18.89" data-duration="6.72" data-volume="1"></audio>
+    <audio id="vo-c4-4" class="clip" src="assets/vo/c4-4.wav" data-start="25.96" data-duration="8.875" data-volume="1"></audio>
+    <audio id="vo-c4-5" class="clip" src="assets/vo/c4-5.wav" data-start="35.18" data-duration="7.253" data-volume="1"></audio>
+    <audio id="vo-c4-6" class="clip" src="assets/vo/c4-6.wav" data-start="42.79" data-duration="9.259" data-volume="1"></audio>
+    <audio id="vo-c4-7" class="clip" src="assets/vo/c4-7.wav" data-start="52.4" data-duration="10.944" data-volume="1"></audio>
+    <audio id="vo-c4-8" class="clip" src="assets/vo/c4-8.wav" data-start="63.69" data-duration="6.635" data-volume="1"></audio>
+    <audio id="vo-c4-end" class="clip" src="assets/vo/c4-end.wav" data-start="70.68" data-duration="2.133" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const RULE = "#c4b9a6";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: CLEAR, duration: 0.4 }, at);
+    const hot = (sel, at) => tl.to(sel, { borderColor: ACCENT, duration: 0.3 }, at);
+    const cool = (sel, at) => tl.to(sel, { borderColor: RULE, duration: 0.3 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c4-1: the same feature, mounted under a branch
+    tl.set("#c4-u2", { opacity: 0 }, 3);
+    tl.to("#c4-u1", { opacity: 0, duration: 0.2, ease: "power2.in" }, 4.4);
+    fadeIn("#c4-u2", 4.6, 0.4);
+
+    // c4-2: the tree, then the accent one level at a time
+    fadeIn("#c4-tree svg, #c4-tree .node", 10.65, 0.4);
+    fadeIn("#c4-path", 11.4, 0.4);
+    hot("#c4-n1", 13.6);
+    cool("#c4-n1", 15.3);
+    hot("#c4-n3", 15.35);
+    cool("#c4-n3", 16.6);
+    hot("#c4-n5", 16.65);
+
+    // c4-3: the table; c4-4: the routerLink row, then the two navigate rows
+    fadeIn("#c4-api", 19.0, 0.4);
+    band("#c4-ar1 span", 26.1);
+    unband("#c4-ar1 span", 29.2);
+    band("#c4-ar2 span", 29.25);
+    unband("#c4-ar2 span", 33.0);
+    band("#c4-ar3 span", 33.05);
+
+    // c4-5: band on the ../profile link
+    tl.fromTo("#c4-band1", { opacity: 0, y: 2 * 42 }, { opacity: 1, duration: 0.3 }, 37.4);
+
+    // c4-6: the input; memberId banded; then the old walk as a label
+    fadeIn("#c4-one", 43.0, 0.4);
+    band("#c4-mid", 47.8);
+    fadeIn("#c4-parent", 48.6, 0.4);
+
+    // c4-7: rows one by one as each guard is named
+    tl.set(["#c4-rr1 span", "#c4-rr2 span", "#c4-rr3 span"], { opacity: 0 }, 52.4);
+    fadeIn("#c4-rh span", 52.5, 0.4);
+    fadeIn("#c4-rr1 span", 55.1, 0.4);
+    fadeIn("#c4-rr2 span", 58.0, 0.4);
+    fadeIn("#c4-rr3 span", 58.7, 0.4);
+
+    // c4-8: the suspension sentence banded
+    band("#c4-p3", 66.1);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c4-q1", "#c4-q2", "#c4-q3", "#c4-q4"].forEach((q, i) => fadeIn(q, 70.94 + i * 0.6));
+    fadeIn("#c4-pause-2", 95.06);
+
+    window.__timelines["c4"] = tl;
+  </script>
+</template>

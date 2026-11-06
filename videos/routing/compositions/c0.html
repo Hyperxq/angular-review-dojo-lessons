@@ -1,0 +1,255 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c0-h { position: absolute; left: 140px; top: 84px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-h code { font: 600 50px/1 var(--font-code); }
+    .c0-code { left: 120px; padding: 40px 44px; font-size: 28px; line-height: 1.5; }
+    .c0-code .ln { margin: 0 -44px; padding: 0 44px; }
+    .c0-mk { border-radius: 4px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+    .c0-ul { box-shadow: inset 0 -4px 0 rgba(29, 27, 24, 0); }
+    .c0-prose code { font-family: var(--font-code); font-size: 0.92em; }
+    .c0-chip { position: absolute; padding: 10px 20px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 34px/1 var(--font-code); white-space: nowrap; }
+    .c0-chip.err { border: 3px solid var(--caution); background: var(--caution-soft); color: var(--caution); }
+
+    /* desk */
+    #c0-page-title, #c0-page-title2 { font: 600 52px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-status { position: absolute; left: 40px; top: 130px; display: flex; align-items: center; gap: 18px; }
+    .c0-pill { position: relative; width: 150px; height: 52px; }
+    .c0-pill > span { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 26px; font: 700 30px/1 var(--font-text); }
+    .c0-closed { background: var(--paper-sunk); color: var(--ink-muted); border: 2px solid var(--rule-strong); }
+    .c0-open { background: var(--tip-soft); color: var(--tip); border: 2px solid var(--tip); }
+    .c0-members { position: absolute; left: 40px; top: 230px; width: 860px; }
+    .c0-mem { display: flex; justify-content: space-between; padding: 22px 0; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c0-mem b { font-weight: 700; }
+    .c0-mem span:last-child { color: var(--ink-muted); }
+    .c0-stack { position: absolute; left: 980px; top: 230px; width: 620px; }
+    .c0-stack .label { margin-bottom: 10px; }
+    .c0-api { font: 700 30px/1 var(--font-code); padding: 24px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+    .c0-clock { position: relative; display: inline-block; }
+    #c0-t9 { position: absolute; right: 0; top: 0; }
+
+    /* functions */
+    #c0-fn-code { top: 200px; }
+    #c0-dep { left: 120px; top: 520px; }
+    #c0-canload { left: 120px; top: 610px; }
+    #c0-canload-old { position: relative; color: var(--ink-muted); }
+    #c0-canload-strike { position: absolute; left: -6px; right: -6px; top: 50%; height: 4px; margin-top: -2px; background: var(--ink-muted); }
+    #c0-ng0203 { left: 120px; top: 730px; }
+
+    /* table */
+    .c0-table { position: absolute; left: 120px; top: 200px; width: 1680px; font: 400 34px/1.35 var(--font-text); }
+    .c0-table code { font: 400 30px/1.3 var(--font-code); }
+    .c0-tr { display: flex; border-bottom: 1px solid var(--rule); border-radius: 6px; padding: 22px 32px; background-color: rgba(245, 226, 217, 0); }
+    .c0-tr > div:first-child { width: 400px; flex: none; }
+    .c0-tr > div:last-child { flex: 1; }
+    .c0-th { font-weight: 700; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c0-rc { left: 120px; top: 800px; }
+
+    /* inputs */
+    #c0-in-code { top: 220px; }
+    #c0-wcib { left: 120px; top: 560px; }
+
+    /* defaults list as ruled rows */
+    .c0-list { position: absolute; left: 120px; top: 200px; width: 1680px; }
+    .c0-row { padding: 22px 32px; border-bottom: 1px solid var(--rule); border-radius: 6px; font: 400 34px/1.4 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c0-row code { font: 400 31px/1 var(--font-code); }
+    .c0-row.later { color: var(--ink-muted); }
+
+    /* NOTE callout */
+    #c0-note { position: absolute; left: 200px; top: 300px; width: 1520px; box-sizing: border-box; padding: 44px 56px 48px; border-radius: 8px; background: var(--note-soft); border-left: 10px solid var(--note); font: 400 44px/1.45 var(--font-text); }
+    #c0-note .kind { font: 700 32px/1 var(--font-text); letter-spacing: 0.06em; margin-bottom: 26px; color: var(--note); }
+    #c0-note code { font-family: var(--font-code); font-size: 0.9em; }
+
+    /* zoneless */
+    #c0-zone-para { position: absolute; left: 140px; top: 210px; width: 1640px; font: 400 38px/1.5 var(--font-text); }
+    #c0-eager { left: 140px; top: 820px; }
+  </style>
+
+  <div id="root" data-composition-id="c0" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c0-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c0-card-time" class="chapter-time">08:55</div>
+      <div id="c0-card-title" class="chapter-title">What moved since Angular 17</div>
+    </div>
+
+    <!-- c0-1 the desk before opening; the v17 router APIs from the lesson's intro beside it -->
+    <div id="c0-desk" class="clip world" data-start="3" data-duration="9.39">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div id="c0-page-title">What moved since Angular 17</div>
+          <div class="c0-status"><span class="label">Desk</span><span class="c0-pill"><span class="c0-closed">Closed</span></span></div>
+          <div class="c0-members">
+            <div class="c0-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div class="c0-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div class="c0-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div class="c0-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+          <div id="c0-old" class="c0-stack" data-hold>
+            <div class="label">Angular 17</div>
+            <div id="c0-old1" class="c0-api">RouterModule.forRoot(routes)</div>
+            <div id="c0-old2" class="c0-api">implements CanActivate</div>
+            <div id="c0-old3" class="c0-api">this.route.params.subscribe(...)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-2, c0-3 functions replaced classes (LESSON.md code) -->
+    <div id="c0-fn" class="clip world" data-start="12.39" data-duration="16.88">
+      <div class="c0-h">Functions replaced classes</div>
+      <div id="c0-fn-code" class="code c0-code" data-hold>
+<span class="ln"><span class="k">export const</span> isLibrarian: CanMatchFn = () =&gt; <span id="c0-inj1" class="c0-ul">inject(StaffSession)</span>.role() === <span class="s">'librarian'</span>;</span>
+<span class="ln"> </span>
+<span class="ln"><span class="k">export const</span> bookResolver: ResolveFn&lt;Book&gt; = (route) =&gt;</span>
+<span class="ln">  <span id="c0-inj2" class="c0-ul c0-mk">inject(BookApi)</span>.get(route.paramMap.get(<span class="s">'isbn'</span>)!);</span>
+      </div>
+      <div id="c0-dep" class="c0-chip">DeprecatedGuard</div>
+      <div id="c0-canload" class="c0-chip"><span id="c0-canload-old">canLoad<span id="c0-canload-strike"></span></span><span id="c0-canload-new"> → canMatch</span></div>
+      <div id="c0-ng0203" class="c0-chip err">NG0203</div>
+    </div>
+
+    <!-- c0-4 what a guard may return (LESSON.md table), then RedirectCommand -->
+    <div id="c0-ret" class="clip world" data-start="29.27" data-duration="11.08">
+      <div class="c0-h">What a guard may return</div>
+      <div class="c0-table" data-hold>
+        <div id="c0-r0" class="c0-tr c0-th"><div>Type</div><div>Shape</div></div>
+        <div id="c0-r1" class="c0-tr"><div><code>GuardResult</code></div><div><code>boolean | UrlTree | RedirectCommand</code></div></div>
+        <div id="c0-r2" class="c0-tr"><div><code>MaybeAsync&lt;T&gt;</code></div><div><code>T | Observable&lt;T&gt; | Promise&lt;T&gt;</code></div></div>
+        <div id="c0-r3" class="c0-tr"><div><code>CanActivateFn</code></div><div><code>(route, state) =&gt; MaybeAsync&lt;GuardResult&gt;</code></div></div>
+        <div id="c0-r4" class="c0-tr"><div><code>CanMatchFn</code></div><div><code>(route, segments, currentSnapshot) =&gt; MaybeAsync&lt;GuardResult&gt;</code></div></div>
+        <div id="c0-r5" class="c0-tr"><div><code>ResolveFn&lt;T&gt;</code></div><div><code>(route, state) =&gt; MaybeAsync&lt;T | RedirectCommand&gt;</code></div></div>
+      </div>
+      <div id="c0-rc" class="c0-chip">new RedirectCommand(tree, { replaceUrl: true })</div>
+    </div>
+
+    <!-- c0-5 route data flows into inputs (LESSON.md code) -->
+    <div id="c0-in" class="clip world" data-start="40.35" data-duration="10.18">
+      <div class="c0-h">Route data flows into inputs</div>
+      <div id="c0-in-code" class="code c0-code" style="font-size: 32px" data-hold>
+<span class="ln"><span class="k">export class</span> BookPage {</span>
+<span id="c0-l-isbn" class="ln">  <span class="k">readonly</span> isbn = input.required&lt;string&gt;();   <span class="c">// from the path books/:isbn</span></span>
+<span class="ln">}</span>
+      </div>
+      <div id="c0-wcib" class="c0-chip">withComponentInputBinding()</div>
+    </div>
+
+    <!-- c0-6 defaults that changed (LESSON.md list), the first item in front -->
+    <div id="c0-def" class="clip world" data-start="50.53" data-duration="10.93">
+      <div class="c0-h">Defaults that changed</div>
+      <div class="c0-list c0-prose" data-hold>
+        <div id="c0-d1" class="c0-row"><code>paramsInheritanceStrategy</code> now defaults to <code>'always'</code>: a child route sees all of its parents' params. In v17 the default was <code>'emptyOnly'</code>, which is why old code walks <code id="c0-parent" class="c0-ul">route.parent.params</code>. <code>withRouterConfig({ paramsInheritanceStrategy: 'emptyOnly' })</code> brings the old behaviour back.</div>
+        <div class="c0-row later"><code>Router.getCurrentNavigation()</code> is deprecated since 20.2 in favour of the <code>router.currentNavigation</code> signal.</div>
+        <div class="c0-row later"><code>withNavigationErrorHandler(handler)</code> lets you decide what happens when a navigation throws, and the handler may return a <code>RedirectCommand</code>.</div>
+      </div>
+    </div>
+
+    <!-- c0-7 the NOTE callout -->
+    <div id="c0-notew" class="clip world" data-start="61.46" data-duration="7.29">
+      <div id="c0-note" data-hold>
+        <div class="kind">NOTE</div>
+        Angular 22.2 adds <code>withRouterResources()</code> and <code>nonBlocking()</code> as developer previews, so routes can declare resources. <span id="c0-none" class="c0-ul">None of the exercises use them</span>, and the API may still change.
+      </div>
+    </div>
+
+    <!-- c0-8 zoneless and OnPush (LESSON.md paragraph) -->
+    <div id="c0-zone" class="clip world" data-start="68.75" data-duration="8.49">
+      <div class="c0-h">Zoneless and OnPush</div>
+      <div id="c0-zone-para" class="c0-prose" data-hold>This app is zoneless and every component is OnPush by default (Angular 22's default; the old strategy is now called <code>Eager</code>). <span id="c0-m-sets" class="c0-mk">The router plays well with that: it sets bound inputs through the framework, which marks the view for check.</span> <span id="c0-m-plain" class="c0-mk">A plain field you assign from a router callback gets no such treatment</span>, the same trap you will meet in the RxJS and performance lessons.</div>
+      <div id="c0-eager" class="c0-chip">Eager</div>
+    </div>
+
+    <!-- c0-9 the desk again; the clock turns to 09:00 and the desk opens -->
+    <div id="c0-desk2" class="clip world" data-start="77.24" data-duration="7.47">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock c0-clock"><span id="c0-t8">08:59</span><span id="c0-t9">09:00</span></span></div>
+        <div class="app-body">
+          <div id="c0-page-title2">Returns today</div>
+          <div class="c0-status"><span class="label">Desk</span><span class="c0-pill"><span id="c0-closed2" class="c0-closed">Closed</span><span id="c0-open2" class="c0-open">Open</span></span></div>
+          <div class="c0-members" data-hold>
+            <div class="c0-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div class="c0-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div class="c0-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div class="c0-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <audio id="c0-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="0" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c0-1" class="clip" src="assets/vo/c0-1.wav" data-start="3" data-duration="9.045" data-volume="1"></audio>
+    <audio id="vo-c0-2" class="clip" src="assets/vo/c0-2.wav" data-start="12.39" data-duration="10.133" data-volume="1"></audio>
+    <audio id="vo-c0-3" class="clip" src="assets/vo/c0-3.wav" data-start="22.88" data-duration="6.037" data-volume="1"></audio>
+    <audio id="vo-c0-4" class="clip" src="assets/vo/c0-4.wav" data-start="29.27" data-duration="10.731" data-volume="1"></audio>
+    <audio id="vo-c0-5" class="clip" src="assets/vo/c0-5.wav" data-start="40.35" data-duration="9.835" data-volume="1"></audio>
+    <audio id="vo-c0-6" class="clip" src="assets/vo/c0-6.wav" data-start="50.53" data-duration="10.581" data-volume="1"></audio>
+    <audio id="vo-c0-7" class="clip" src="assets/vo/c0-7.wav" data-start="61.46" data-duration="6.933" data-volume="1"></audio>
+    <audio id="vo-c0-8" class="clip" src="assets/vo/c0-8.wav" data-start="68.75" data-duration="8.149" data-volume="1"></audio>
+    <audio id="vo-c0-9" class="clip" src="assets/vo/c0-9.wav" data-start="77.24" data-duration="6.464" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "#f5e2d9", SOFT0 = "rgba(245, 226, 217, 0)";
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+    const ul = (sel, at) => tl.to(sel, { boxShadow: "inset 0 -4px 0 rgba(29, 27, 24, 1)", duration: 0.3, ease: "power2.inOut" }, at);
+    const unul = (sel, at) => tl.to(sel, { boxShadow: "inset 0 -4px 0 rgba(29, 27, 24, 0)", duration: 0.3, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0
+
+    // c0-1: the v17 APIs stack in on "router concepts you remember"
+    fadeIn("#c0-old .label", 5.9, 0.5);
+    for (let i = 1; i <= 3; i++) fadeIn("#c0-old" + i, 6.0 + (i - 1) * 0.15, 0.5);
+
+    // c0-2: both inject() calls underlined on "call inject"; the deprecated forms as labels
+    ul(["#c0-inj1", "#c0-inj2"], 15.6);
+    fadeIn("#c0-dep", 18.6, 0.5);
+    fadeIn("#c0-canload", 20.0, 0.5);
+    tl.fromTo("#c0-canload-strike", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.4, ease: "power2.inOut" }, 20.4);
+    fadeIn("#c0-canload-new", 21.2, 0.5);
+
+    // c0-3: band on inject(BookApi) on "injection context"; NG0203 on "only synchronously"
+    unul(["#c0-inj1", "#c0-inj2"], 23.0);
+    band("#c0-inj2", 23.9);
+    tl.fromTo("#c0-ng0203", { opacity: 0, scale: 0.9, transformOrigin: "left center" }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 25.5);
+
+    // c0-4: rows one by one; GuardResult banded; the RedirectCommand constructor; then the ResolveFn row
+    fadeIn("#c0-r0", 29.4, 0.4);
+    [30.4, 31.2, 32.0, 32.8].forEach((at, i) => fadeIn("#c0-r" + (i + 1), at, 0.4));
+    band("#c0-r1", 30.8);
+    fadeIn("#c0-rc", 34.2, 0.5);
+    unband("#c0-r1", 36.7);
+    fadeIn("#c0-r5", 36.8, 0.4);
+    band("#c0-r5", 37.2);
+
+    // c0-5: the binding feature named; band on the signal input line
+    fadeIn("#c0-wcib", 40.8, 0.5);
+    band("#c0-l-isbn", 46.1);
+
+    // c0-6: the first item banded; route.parent.params underlined on "walks route dot parent"
+    band("#c0-d1", 50.8);
+    ul("#c0-parent", 57.7);
+
+    // c0-7: the sentence about the exercises underlined
+    ul("#c0-none", 66.2);
+
+    // c0-8: Eager as a label; band on the router's inputs, then on the plain field
+    fadeIn("#c0-eager", 70.3, 0.5);
+    band("#c0-m-sets", 71.5);
+    unband("#c0-m-sets", 73.7);
+    band("#c0-m-plain", 73.7);
+
+    // c0-9: the clock turns to 09:00 and the desk opens on "Then the desk opens"
+    fadeOut("#c0-t8", 82.3, 0.2);
+    fadeIn("#c0-t9", 82.4, 0.3);
+    fadeOut("#c0-closed2", 82.7, 0.3);
+    fadeIn("#c0-open2", 82.8, 0.5);
+
+    window.__timelines["c0"] = tl;
+  </script>
+</template>

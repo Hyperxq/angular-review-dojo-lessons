@@ -1,0 +1,317 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c1-h { position: absolute; left: 140px; top: 84px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c1-h code { font: 600 50px/1 var(--font-code); }
+    .c1-code { left: 120px; padding: 40px 48px; font-size: 32px; line-height: 1.5; }
+    .c1-code .ln { margin: 0 -48px; padding: 0 48px; }
+    .c1-mk { border-radius: 4px; }
+    .c1-ul { box-shadow: inset 0 -4px 0 rgba(29, 27, 24, 0); }
+    .c1-prose code { font-family: var(--font-code); font-size: 0.92em; }
+    .c1-chip { position: absolute; padding: 10px 20px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 34px/1 var(--font-code); white-space: nowrap; }
+    .c1-chip.err { border: 3px solid var(--caution); background: var(--caution-soft); color: var(--caution); }
+
+    /* desk with an empty console */
+    #c1-page-title { font: 600 52px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c1-members { position: absolute; left: 40px; top: 140px; width: 760px; }
+    .c1-mem { display: flex; justify-content: space-between; padding: 22px 0; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c1-mem b { font-weight: 700; }
+    .c1-mem span:last-child { color: var(--ink-muted); }
+    #c1-console { position: absolute; left: 880px; top: 0; right: 0; bottom: 0; border-left: 1px solid var(--rule); background: var(--paper); }
+    .c1-con-tabs { height: 72px; display: flex; align-items: center; gap: 36px; padding: 0 32px; border-bottom: 1px solid var(--rule); font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+    .c1-con-tabs b { color: var(--ink); font-weight: 700; box-shadow: inset 0 -3px 0 var(--ink); padding: 22px 0; }
+    .c1-con-filter { margin: 20px 32px; height: 56px; border: 1px solid var(--rule-strong); border-radius: 6px; padding: 0 18px; display: flex; align-items: center; font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+
+    /* LIBRARY_ROUTES */
+    #c1-routes-code { top: 190px; }
+    #c1-reach-code { top: 170px; }
+    #c1-question { position: absolute; left: 120px; top: 680px; width: 1680px; font: 600 44px/1.3 var(--font-display); }
+    .c1-srcs { position: absolute; left: 120px; top: 830px; display: flex; gap: 20px; }
+    .c1-src { padding: 12px 22px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 400 32px/1 var(--font-text); }
+
+    /* tables */
+    .c1-table { position: absolute; left: 120px; top: 200px; width: 1680px; font: 400 34px/1.35 var(--font-text); }
+    .c1-table code { font: 400 32px/1.3 var(--font-code); }
+    .c1-tr { display: flex; border-bottom: 1px solid var(--rule); border-radius: 6px; padding: 24px 32px; background-color: rgba(245, 226, 217, 0); }
+    .c1-tr > div { flex: none; }
+    .c1-th { font-weight: 700; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c1-seg-tbl .c1-tr > div:first-child { width: 420px; }
+    #c1-search { left: 120px; top: 760px; }
+    #c1-isbn { left: 920px; top: 760px; }
+    #c1-guard-tbl .c1-tr > div:nth-child(1) { width: 420px; }
+    #c1-guard-tbl .c1-tr > div:nth-child(2) { width: 520px; }
+    #c1-guard-tbl .c1-tr > div:nth-child(3) { width: 676px; }
+    #c1-card-code { top: 770px; font-size: 30px; padding: 32px 48px; }
+
+    /* walk by hand (LESSON.md flow) */
+    .c1-flow .fbox { height: 120px; display: flex; gap: 14px; align-items: center; justify-content: center; box-sizing: border-box; white-space: nowrap; }
+    .c1-flow .fbox code { font: 700 38px/1 var(--font-code); }
+    .c1-flow .fbox.hot { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+    /* pathMatch and the empty path */
+    #c1-pm-para { position: absolute; left: 140px; top: 200px; width: 1640px; font: 400 38px/1.5 var(--font-text); }
+    #c1-bad { position: absolute; left: 140px; top: 440px; font: 400 40px/1 var(--font-code); }
+    #c1-bad-strike { position: absolute; left: -10px; right: -10px; top: 50%; height: 5px; margin-top: -2px; background: var(--ink); }
+    #c1-full { left: 140px; top: 560px; }
+    #c1-ng { left: 140px; top: 660px; }
+    #c1-redir { position: absolute; left: 140px; top: 260px; font: 400 44px/1 var(--font-code); }
+    .c1-url { position: absolute; top: 520px; font: 700 52px/1 var(--font-code); }
+  </style>
+
+  <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c1-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c1-card-time" class="chapter-time">09:00</div>
+      <div id="c1-card-title" class="chapter-title">How the router matches a URL</div>
+    </div>
+
+    <!-- c1-1 the desk at rest, an empty console beside it -->
+    <div id="c1-desk" class="clip world" data-start="3" data-duration="7.18">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div id="c1-page-title">Returns today</div>
+          <div class="c1-members">
+            <div class="c1-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div class="c1-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div class="c1-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div class="c1-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+        </div>
+        <div id="c1-console" style="top: 89px" data-hold>
+          <div class="c1-con-tabs"><span>Elements</span><b>Console</b><span>Network</span></div>
+          <div class="c1-con-filter">Filter</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-2 LIBRARY_ROUTES, the band stepping down the entries -->
+    <div id="c1-routes" class="clip world" data-start="10.18" data-duration="8.65">
+      <div class="c1-h">The mental model</div>
+      <div id="c1-routes-code" class="code c1-code" data-hold>
+<span class="ln"><span class="k">export const</span> LIBRARY_ROUTES: Routes = [</span>
+<span id="c1-e-1" class="ln">  { path: <span class="s">''</span>, redirectTo: <span class="s">'books'</span>, pathMatch: <span class="s">'full'</span> },</span>
+<span id="c1-e-2" class="ln">  { path: <span class="s">'books'</span>, component: CatalogPage },</span>
+<span id="c1-e-3" class="ln">  { path: <span class="s">'books/search'</span>, component: SearchPage },</span>
+<span id="c1-e-4" class="ln">  { path: <span class="s">'books/:isbn'</span>, component: BookPage },</span>
+<span id="c1-e-5" class="ln">  { path: <span class="s">'loans'</span>, component: LoansPage, canActivate: [hasLibraryCard] },</span>
+<span id="c1-e-6" class="ln">  { path: <span class="s">'**'</span>, component: NotFoundPage },</span>
+<span class="ln">];</span>
+      </div>
+    </div>
+
+    <!-- c1-3 path segments (LESSON.md table) -->
+    <div id="c1-seg" class="clip world" data-start="18.83" data-duration="10.56">
+      <div class="c1-h">What a path segment matches</div>
+      <div id="c1-seg-tbl" class="c1-table" data-hold>
+        <div class="c1-tr c1-th"><div>Path segment</div><div>Matches</div></div>
+        <div id="c1-s1" class="c1-tr"><div><code>books</code></div><div>exactly the segment <code>books</code></div></div>
+        <div id="c1-s2" class="c1-tr"><div><code>:isbn</code></div><div>any one segment, captured as the param <code>isbn</code></div></div>
+        <div id="c1-s3" class="c1-tr"><div><code>**</code></div><div>anything, including nothing</div></div>
+        <div id="c1-s4" class="c1-tr"><div><code>''</code></div><div>nothing, with prefix matching by default</div></div>
+      </div>
+      <div id="c1-search" class="c1-chip">/books/search against books/:isbn</div>
+      <div id="c1-isbn" class="c1-chip">isbn = 'search'</div>
+    </div>
+
+    <!-- c1-4 the walk for /books/search (LESSON.md flow) -->
+    <div id="c1-walk" class="clip world sunk c1-flow" data-start="29.39" data-duration="9.49">
+      <div class="c1-h">The walk for <code>/books/search</code></div>
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <g stroke="#1d1b18" stroke-width="4" fill="none">
+          <line id="c1-w1" x1="560" y1="360" x2="742" y2="360" stroke-dasharray="182" />
+          <line id="c1-w2" x1="1180" y1="360" x2="1442" y2="360" stroke-dasharray="262" />
+          <path id="c1-w3" d="M1620,420 V560 H460 V664" stroke-dasharray="1404" />
+          <line id="c1-w4" x1="800" y1="740" x2="1182" y2="740" stroke-dasharray="382" />
+        </g>
+        <g fill="#1d1b18">
+          <polygon id="c1-wa1" points="740,348 760,360 740,372" />
+          <polygon id="c1-wa2" points="1440,348 1460,360 1440,372" />
+          <polygon id="c1-wa3" points="448,662 460,682 472,662" />
+          <polygon id="c1-wa4" points="1180,728 1200,740 1180,752" />
+        </g>
+      </svg>
+      <div id="c1-wl2" class="flabel" style="left: 1180px; top: 222px; width: 262px">pathMatch full needs an empty URL</div>
+      <div id="c1-wl3" class="flabel" style="left: 560px; top: 500px; width: 960px">one segment is left over and books has no children</div>
+      <div id="c1-wl4" class="flabel" style="left: 810px; top: 640px; width: 370px">both segments match, the walk stops here</div>
+      <div id="c1-wb1" class="fbox" style="left: 120px; top: 300px; width: 440px">URL <code>/books/search</code></div>
+      <div id="c1-wb2" class="fbox" style="left: 760px; top: 300px; width: 420px">try the empty path</div>
+      <div id="c1-wb3" class="fbox" style="left: 1460px; top: 300px; width: 320px">try books</div>
+      <div id="c1-wb4" class="fbox" style="left: 140px; top: 680px; width: 660px">try <code>books/search</code></div>
+      <div id="c1-wb5" class="fbox" style="left: 1200px; top: 680px; width: 400px" data-hold>SearchPage</div>
+    </div>
+
+    <!-- c1-5 LIBRARY_ROUTES again, the walk's question beside it -->
+    <div id="c1-reach" class="clip world" data-start="38.88" data-duration="9.95">
+      <div id="c1-reach-code" class="code c1-code">
+<span class="ln"><span class="k">export const</span> LIBRARY_ROUTES: Routes = [</span>
+<span class="ln">  { path: <span class="s">''</span>, redirectTo: <span class="s">'books'</span>, pathMatch: <span class="s">'full'</span> },</span>
+<span class="ln">  { path: <span class="s">'books'</span>, component: CatalogPage },</span>
+<span class="ln">  { path: <span class="s">'books/search'</span>, component: SearchPage },</span>
+<span class="ln">  { path: <span class="s">'books/:isbn'</span>, component: BookPage },</span>
+<span class="ln">  { path: <span class="s">'loans'</span>, component: LoansPage, canActivate: [hasLibraryCard] },</span>
+<span class="ln">  { path: <span class="s">'**'</span>, component: NotFoundPage },</span>
+<span class="ln">];</span>
+      </div>
+      <div id="c1-question" data-hold>Do this entry's segments match the start of what is left of the URL?</div>
+      <div class="c1-srcs">
+        <div id="c1-src1" class="c1-src">links in the navigation</div>
+        <div id="c1-src2" class="c1-src">links inside pages</div>
+        <div id="c1-src3" class="c1-src">bookmarks</div>
+        <div id="c1-src4" class="c1-src">links in emails</div>
+      </div>
+    </div>
+
+    <!-- c1-6 pathMatch and the empty path -->
+    <div id="c1-pm" class="clip world" data-start="48.83" data-duration="11.91">
+      <div class="c1-h"><code>pathMatch</code> and the empty path</div>
+      <div id="c1-pm-para" class="c1-prose" data-hold><code>pathMatch: 'prefix'</code> (the default) means "my segments match the start of the URL". <code>'full'</code> means "my segments are the whole URL".</div>
+      <div id="c1-bad">{ path: '', redirectTo: 'books' }<span id="c1-bad-strike"></span></div>
+      <div id="c1-full" class="c1-chip">pathMatch: 'full'</div>
+      <div id="c1-ng" class="c1-chip err" data-hold>NG04014 (dev mode)</div>
+    </div>
+
+    <!-- c1-7 a non-empty redirect carries the rest of the URL -->
+    <div id="c1-rd" class="clip world" data-start="60.74" data-duration="6.3">
+      <div class="c1-h">A non-empty redirect keeps prefix matching</div>
+      <div id="c1-redir">{ path: <span class="s">'catalogue'</span>, redirectTo: <span class="s">'books'</span> }</div>
+      <div id="c1-u1" class="c1-url" style="left: 140px">/catalogue/42</div>
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <line id="c1-rd-e" x1="640" y1="546" x2="982" y2="546" stroke="#1d1b18" stroke-width="4" stroke-dasharray="342" />
+        <polygon id="c1-rd-a" points="980,534 1000,546 980,558" fill="#1d1b18" />
+      </svg>
+      <div id="c1-u2" class="c1-url" style="left: 1040px; color: var(--accent)" data-hold>/books/42</div>
+    </div>
+
+    <!-- c1-8, c1-9 what a guard's answer means (LESSON.md table), then hasLibraryCard -->
+    <div id="c1-guard" class="clip world" data-start="67.04" data-duration="18.62">
+      <div class="c1-h">What a guard's answer means</div>
+      <div id="c1-guard-tbl" class="c1-table" style="top: 180px" data-hold>
+        <div class="c1-tr c1-th"><div>Guard returns</div><div>The router</div><div>The user sees</div></div>
+        <div id="c1-g1" class="c1-tr"><div><code>true</code></div><div>continues the navigation</div><div>the target page</div></div>
+        <div id="c1-g2" class="c1-tr"><div><code>false</code></div><div>cancels the navigation</div><div>the page they were on; on a first load from a bookmark, an empty outlet</div></div>
+        <div id="c1-g3" class="c1-tr"><div><code>UrlTree</code> or <code>RedirectCommand</code></div><div>cancels this navigation and starts one to the tree</div><div>the page you pointed to</div></div>
+      </div>
+      <div id="c1-card-code" class="code c1-code">
+<span class="ln"><span class="k">export const</span> hasLibraryCard: CanActivateFn = () =&gt;</span>
+<span id="c1-l-tree" class="ln">  inject(MemberSession).hasCard() || inject(Router).createUrlTree([<span class="s">'/join'</span>]);</span>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c1-questions" class="clip world note" data-start="85.66" data-duration="21.2">
+      <div class="q-head">Review questions</div>
+      <div class="q-list c1-prose" data-hold>
+        <div id="c1-q1" class="q">For each URL a user can reach, walk the <code>Routes</code> array top to bottom. Which entry does it hit first, and is that the page the link promises?</div>
+        <div id="c1-q2" class="q">Type each URL into a fresh tab instead of clicking. Does every one land where it should?</div>
+        <div id="c1-q3" class="q">When each guard says no, where does the user end up, both from a click and from a bookmark?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c1-pause" class="clip world" data-start="106.86" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c1-pause-2" class="pause-2">Now do exercise 01.</div>
+    </div>
+
+    <audio id="c1-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="20" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-bed2" class="clip" src="assets/music/bed.mp3" data-start="85.66" data-duration="21.2" data-media-start="52" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c1-1" class="clip" src="assets/vo/c1-1.wav" data-start="3" data-duration="6.827" data-volume="1"></audio>
+    <audio id="vo-c1-2" class="clip" src="assets/vo/c1-2.wav" data-start="10.18" data-duration="8.299" data-volume="1"></audio>
+    <audio id="vo-c1-3" class="clip" src="assets/vo/c1-3.wav" data-start="18.83" data-duration="10.219" data-volume="1"></audio>
+    <audio id="vo-c1-4" class="clip" src="assets/vo/c1-4.wav" data-start="29.39" data-duration="9.131" data-volume="1"></audio>
+    <audio id="vo-c1-5" class="clip" src="assets/vo/c1-5.wav" data-start="38.88" data-duration="9.6" data-volume="1"></audio>
+    <audio id="vo-c1-6" class="clip" src="assets/vo/c1-6.wav" data-start="48.83" data-duration="11.563" data-volume="1"></audio>
+    <audio id="vo-c1-7" class="clip" src="assets/vo/c1-7.wav" data-start="60.74" data-duration="5.952" data-volume="1"></audio>
+    <audio id="vo-c1-8" class="clip" src="assets/vo/c1-8.wav" data-start="67.04" data-duration="9.024" data-volume="1"></audio>
+    <audio id="vo-c1-9" class="clip" src="assets/vo/c1-9.wav" data-start="76.41" data-duration="8.896" data-volume="1"></audio>
+    <audio id="vo-c1-end" class="clip" src="assets/vo/c1-end.wav" data-start="85.66" data-duration="2.091" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "#f5e2d9", SOFT0 = "rgba(245, 226, 217, 0)";
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+    const box = (sel, at) => tl.fromTo(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, at);
+    const draw = (sel, len, at, d = 0.5) =>
+      tl.fromTo(sel, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0
+
+    // c1-1: the console opens beside the desk on "console warning", and stays empty
+    fadeIn("#c1-console", 6.9, 0.6);
+
+    // c1-2: the band steps down the entries from "from the top", then leaves
+    [12.5, 12.95, 13.4, 13.85, 14.3, 14.75].forEach((at, i) => {
+      if (i > 0) unband("#c1-e-" + i, at);
+      band("#c1-e-" + (i + 1), at);
+    });
+    unband("#c1-e-6", 15.3);
+
+    // c1-3: band on the param row; the example match; band moves to **
+    band("#c1-s2", 19.3);
+    fadeIn("#c1-search", 23.2, 0.5);
+    fadeIn("#c1-isbn", 24.4, 0.5);
+    unband("#c1-s2", 26.8);
+    band("#c1-s3", 26.8);
+
+    // c1-4: the URL, then each entry tried in turn; SearchPage takes the accent
+    box("#c1-wb1", 31.5);
+    draw("#c1-w1", 182, 32.9, 0.4);
+    fadeIn("#c1-wa1", 33.25, 0.1);
+    box("#c1-wb2", 33.0);
+    draw("#c1-w2", 262, 34.4, 0.4);
+    fadeIn("#c1-wa2", 34.75, 0.1);
+    fadeIn("#c1-wl2", 34.55, 0.4);
+    box("#c1-wb3", 34.8);
+    draw("#c1-w3", 1404, 35.6, 0.7);
+    fadeIn("#c1-wa3", 36.25, 0.1);
+    fadeIn("#c1-wl3", 35.75, 0.4);
+    box("#c1-wb4", 36.3);
+    draw("#c1-w4", 382, 36.6, 0.4);
+    fadeIn("#c1-wa4", 36.95, 0.1);
+    fadeIn("#c1-wl4", 36.7, 0.4);
+    box("#c1-wb5", 37.0);
+    tl.to("#c1-wb5", { borderColor: "#b8321f", color: "#b8321f", backgroundColor: "#f5e2d9", duration: 0.3 }, 37.2);
+
+    // c1-5: the question for every entry; then where URLs come from, on "bookmarks and links in emails"
+    fadeIn("#c1-question", 39.4, 0.6);
+    [41.0, 41.6, 42.1, 43.5].forEach((at, i) => fadeIn("#c1-src" + (i + 1), at, 0.4));
+
+    // c1-6: the prefix definition; the empty redirect struck; pathMatch full; NG04014
+    fadeIn("#c1-bad", 49.1, 0.5);
+    tl.fromTo("#c1-bad-strike", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.4, ease: "power2.inOut" }, 53.7);
+    tl.fromTo("#c1-full", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 55.1);
+    tl.fromTo("#c1-ng", { opacity: 0, scale: 0.9, transformOrigin: "left center" }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 57.8);
+
+    // c1-7: the rest of the URL carried along
+    fadeIn("#c1-u1", 61.4, 0.5);
+    draw("#c1-rd-e", 342, 64.4, 0.5);
+    fadeIn("#c1-rd-a", 64.85, 0.1);
+    fadeIn("#c1-u2", 64.95, 0.5);
+
+    // c1-8: the first two rows on "True" and "False"; the empty outlet row banded on "bookmark"
+    fadeIn("#c1-guard-tbl .c1-th", 67.3, 0.4);
+    fadeIn("#c1-g1", 69.9, 0.4);
+    fadeIn("#c1-g2", 70.9, 0.4);
+    band("#c1-g2", 73.4);
+
+    // c1-9: the third row on "U R L Tree"; then hasLibraryCard on "arrive directly"
+    unband("#c1-g2", 76.6);
+    fadeIn("#c1-g3", 76.7, 0.4);
+    band("#c1-g3", 77.3);
+    unband("#c1-g3", 80.0);
+    fadeIn("#c1-card-code", 80.0, 0.6);
+    band("#c1-l-tree", 81.9);
+
+    // questions 0.6 s apart, then hold; pause card
+    for (let i = 1; i <= 3; i++) fadeIn("#c1-q" + i, 86.0 + (i - 1) * 0.6);
+    fadeIn("#c1-pause-2", 107.4);
+
+    window.__timelines["c1"] = tl;
+  </script>
+</template>

@@ -1,0 +1,255 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c3-svg { position: absolute; left: 0; top: 0; }
+    code { font-family: var(--font-code); font-size: 0.92em; }
+    .c3-h { position: absolute; left: 200px; top: 110px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+
+    .c3-rows { position: absolute; left: 40px; right: 40px; top: 40px; }
+    .c3-row { height: 92px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; gap: 32px; }
+    .c3-row i { display: block; height: 26px; border-radius: 4px; background: var(--rule); }
+
+    .c3-call { position: absolute; left: 160px; top: 210px; width: 1600px; box-sizing: border-box; padding: 48px 60px 56px; border-radius: 8px; border-left: 10px solid var(--note); background: var(--note-soft); font: 400 46px/1.5 var(--font-text); }
+    .c3-call .kind { font: 700 32px/1 var(--font-text); letter-spacing: 0.06em; color: var(--note); margin-bottom: 28px; }
+    .c3-call span { border-radius: 4px; }
+
+    .c3-fb { height: 84px; box-sizing: border-box; padding: 0 24px; display: grid; place-items: center; font-size: 36px; }
+    .c3-fb.mono { font: 700 34px/1 var(--font-code); }
+    .c3-fl { position: absolute; font: 400 30px/1.2 var(--font-text); color: var(--ink-muted); text-align: left; }
+    .c3-fl code { font-size: 28px; }
+
+    #c3-facts-h { position: absolute; left: 180px; top: 110px; font: 700 40px/1 var(--font-text); color: var(--ink-muted); }
+    #c3-facts-h code { font: 700 38px/1 var(--font-code); }
+    #c3-facts { position: absolute; left: 160px; top: 190px; width: 1600px; }
+    .c3-fact { padding: 18px 24px; margin-bottom: 18px; border-radius: 8px; font: 400 38px/1.42 var(--font-text); display: grid; grid-template-columns: 56px 1fr; }
+    .c3-fact > b { color: var(--ink-muted); }
+    .c3-fact code { font-size: 34px; }
+
+    .c3-table { position: absolute; display: grid; font: 400 34px/1.35 var(--font-text); }
+    .c3-table > div { display: contents; }
+    .c3-table span { padding: 22px 24px; border-bottom: 1px solid var(--rule); }
+    .c3-table span:first-child { font: 400 32px/1.35 var(--font-code); }
+    .c3-table code { font: 400 30px/1 var(--font-code); }
+    .c3-table .th span { font: 700 30px/1.3 var(--font-text) !important; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c3-cancel { left: 200px; top: 230px; width: 1520px; grid-template-columns: 720px 800px; }
+    #c3-recv { left: 140px; top: 120px; width: 1640px; grid-template-columns: 1000px 640px; font-size: 32px; }
+    #c3-recv span:first-child { font-size: 30px; white-space: pre-wrap; }
+
+    .c3-code { left: 104px; width: 1712px; box-sizing: border-box; padding: 40px 44px; font-size: 30px; line-height: 45px; }
+    .c3-wrap { white-space: pre-wrap !important; padding-left: 4ch; text-indent: -4ch; }
+    .c3-mark { border-radius: 4px; }
+
+    .q { font-size: 40px; margin-bottom: 30px; }
+    .q code { font: 400 37px/1 var(--font-code); }
+  </style>
+
+  <div id="root" data-composition-id="c3" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c3-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">12:00</div>
+      <div class="chapter-title">When each guard runs, and lazy loading</div>
+    </div>
+
+    <!-- c3-1: the desk at noon -->
+    <div id="c3-desk" class="clip world" data-start="3" data-duration="1.9">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">12:00</span></div>
+        <div class="app-body">
+          <div class="c3-rows" data-hold>
+            <div class="c3-row"><i style="width: 380px"></i><i style="width: 220px"></i><i style="width: 160px"></i></div>
+            <div class="c3-row"><i style="width: 300px"></i><i style="width: 260px"></i><i style="width: 120px"></i></div>
+            <div class="c3-row"><i style="width: 420px"></i><i style="width: 180px"></i><i style="width: 200px"></i></div>
+            <div class="c3-row"><i style="width: 340px"></i><i style="width: 240px"></i><i style="width: 140px"></i></div>
+            <div class="c3-row"><i style="width: 280px"></i><i style="width: 300px"></i><i style="width: 180px"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3-1: the IMPORTANT callout -->
+    <div id="c3-imp" class="clip world" data-start="4.9" data-duration="10.55">
+      <div class="c3-call" data-hold>
+        <div class="kind">IMPORTANT</div>
+        <span id="c3-i1">Client-side guards are a user-experience and bandwidth boundary.</span> <span id="c3-i2">They are not authorization: anyone can change JavaScript in their own browser.</span> <span id="c3-i3">The API must check the user's role on every request.</span> <span id="c3-i4">A guard decides what the user sees and what the browser downloads.</span>
+      </div>
+    </div>
+
+    <!-- c3-2, c3-3, c3-4: the navigation pipeline -->
+    <div id="c3-pipe" class="clip world sunk" data-start="15.45" data-duration="26.94">
+      <svg class="c3-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#1d1b18" stroke-width="4">
+        <g id="c3-e1"><path pathLength="1" d="M200 164 V272" /><polygon points="200,290 190,272 210,272" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-e2"><path pathLength="1" d="M200 374 V482" /><polygon points="200,500 190,482 210,482" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-e3"><path pathLength="1" d="M200 584 V692" /><polygon points="200,710 190,692 210,692" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-e4"><path pathLength="1" d="M660 752 H960 V110 H1120 V182" /><polygon points="1120,200 1110,182 1130,182" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-e5"><path pathLength="1" d="M1120 280 V328" /><polygon points="1120,346 1110,328 1130,328" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-e6"><path pathLength="1" d="M1120 426 V474" /><polygon points="1120,492 1110,474 1130,474" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-e7"><path pathLength="1" d="M1120 572 V620" /><polygon points="1120,638 1110,620 1130,620" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-e8"><path pathLength="1" d="M1120 718 V766" /><polygon points="1120,784 1110,766 1130,766" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-e9"><path pathLength="1" d="M1120 864 V912" /><polygon points="1120,930 1110,912 1130,912" fill="#1d1b18" stroke="none" /></g>
+      </svg>
+      <div id="c3-b1" class="fbox c3-fb" style="left: 140px; top: 80px; width: 520px">navigation starts</div>
+      <div id="c3-b2" class="fbox c3-fb" style="left: 140px; top: 290px; width: 520px">recognize the URL</div>
+      <div id="c3-b3" class="fbox c3-fb mono" style="left: 140px; top: 500px; width: 520px">canMatch</div>
+      <div id="c3-b4" class="fbox c3-fb mono" style="left: 140px; top: 710px; width: 520px">loadChildren</div>
+      <div id="c3-b5" class="fbox c3-fb mono" style="left: 1060px; top: 200px; width: 720px; height: 80px">canDeactivate</div>
+      <div id="c3-b6" class="fbox c3-fb mono" style="left: 1060px; top: 346px; width: 720px; height: 80px; font-size: 32px" data-hold>canActivateChild and canActivate</div>
+      <div id="c3-b7" class="fbox c3-fb" style="left: 1060px; top: 492px; width: 720px; height: 80px">resolvers</div>
+      <div id="c3-b8" class="fbox c3-fb mono" style="left: 1060px; top: 638px; width: 720px; height: 80px">loadComponent</div>
+      <div id="c3-b9" class="fbox c3-fb" style="left: 1060px; top: 784px; width: 720px; height: 80px">activate components</div>
+      <div id="c3-b10" class="fbox c3-fb mono" style="left: 1060px; top: 930px; width: 720px; height: 80px" data-hold>NavigationEnd</div>
+      <div id="c3-l2" class="c3-fl" style="left: 232px; top: 395px; width: 700px">tried on each candidate route while matching</div>
+      <div id="c3-l3" class="c3-fl" style="left: 232px; top: 600px; width: 700px">only for a route that matched, still during recognition</div>
+      <div id="c3-l4" class="c3-fl" style="left: 1150px; top: 130px; width: 660px">on the routes being left</div>
+      <div id="c3-l5" class="c3-fl" style="left: 1150px; top: 288px; width: 660px">on the routes being entered, parent first</div>
+      <div id="c3-l7" class="c3-fl" style="left: 1150px; top: 580px; width: 660px">for the lazy pages about to be shown</div>
+    </div>
+
+    <!-- c3-5, c3-6, c3-7: facts about canMatch, banded one by one -->
+    <div id="c3-factsw" class="clip world" data-start="42.39" data-duration="24.63">
+      <div id="c3-facts-h">Facts about <code>canMatch</code> to carry along:</div>
+      <div id="c3-facts" data-hold>
+        <div id="c3-f1" class="c3-fact"><b>1.</b><span>It runs during matching, on every navigation whose URL passes through the route, including moves between the children of an area the user is already in.</span></div>
+        <div id="c3-f2" class="c3-fact"><b>2.</b><span>When it returns <code>false</code>, the route does not match and the router tries the next entries in the array. The URL may end at <code>**</code>, so the user sees "not found" instead of a redirect. Return a <code>UrlTree</code> when you want a redirect.</span></div>
+        <div id="c3-f3" class="c3-fact"><b>3.</b><span>It does not stop preloading. The preloader skips lazy children (<code>loadChildren</code>) only when <code>canLoad</code> is defined, so <code>withPreloading(PreloadAllModules)</code> still downloads bundles guarded by <code>canMatch</code>.</span></div>
+        <div id="c3-f4" class="c3-fact"><b>4.</b><span>Like every guard, it only runs when a navigation happens. If the state it checks changes while the user sits on a page, nothing reacts until the next navigation, unless your code navigates.</span></div>
+      </div>
+    </div>
+
+    <!-- c3-8: NavigationCancellationCode table, the Redirect row banded -->
+    <div id="c3-cancelw" class="clip world" data-start="67.02" data-duration="10.76">
+      <div id="c3-cancel" class="c3-table" data-hold>
+        <div class="th"><span><code>NavigationCancellationCode</code></span><span>Meaning</span></div>
+        <div id="c3-cr1"><span>Redirect</span><span>a guard returned a <code>UrlTree</code> (or <code>RedirectCommand</code>)</span></div>
+        <div id="c3-cr2"><span>GuardRejected</span><span>a guard returned <code>false</code></span></div>
+        <div id="c3-cr3"><span>SupersededByNewNavigation</span><span>a newer navigation started</span></div>
+        <div id="c3-cr4"><span>NoDataFromResolver</span><span>a resolver completed without a value</span></div>
+      </div>
+    </div>
+
+    <!-- c3-9: Guard / Receives table -->
+    <div id="c3-recvw" class="clip world" data-start="77.78" data-duration="2.72">
+      <div id="c3-recv" class="c3-table" data-hold>
+        <div class="th"><span>Guard</span><span>Receives</span></div>
+        <div><span>canActivate(route, state)</span><span><code>route</code>: the target route snapshot (params, data); <code>state.url</code>: the target URL</span></div>
+        <div><span>canActivateChild(childRoute, state)</span><span>the child being entered, and the target URL</span></div>
+        <div><span>canMatch(route, segments, currentSnapshot)</span><span>the <code>Route</code> config, the URL segments being matched, and a snapshot of the match so far</span></div>
+        <div><span>canDeactivate(component, currentRoute, currentState, nextState)</span><span>the component being left, and where the user is going</span></div>
+      </div>
+    </div>
+
+    <!-- c3-9: the hasRole code, band on route.data['role'] -->
+    <div id="c3-rolew" class="clip world" data-start="80.5" data-duration="3.22">
+      <div class="code c3-code" style="top: 330px" data-hold>
+        <span class="ln"><span class="k">export const</span> hasRole: CanActivateFn = (route) =&gt;</span>
+        <span class="ln c3-wrap">  inject(StaffSession).roles().includes(<span id="c3-rd" class="c3-mark">route.data[<span class="s">'role'</span>]</span>) || inject(Router).createUrlTree([<span class="s">'/staff'</span>]);</span>
+        <span class="ln"> </span>
+        <span class="ln c3-wrap">{ path: <span class="s">'acquisitions'</span>, component: AcquisitionsPage, canActivate: [hasRole], data: { role: <span class="s">'buyer'</span> } }</span>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c3-questions" class="clip world note" data-start="83.72" data-duration="24.5">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c3-q1" class="q">As an anonymous visitor, open each protected URL in a fresh tab with the Network panel open. Which chunks download before you are turned away?</div>
+        <div id="c3-q2" class="q">Subscribe to <code>router.events</code> and deny a navigation. Which <code>NavigationCancel</code> code does it report?</div>
+        <div id="c3-q3" class="q">After signing in, where does the user land, compared with the URL they typed?</div>
+        <div id="c3-q4" class="q">If preloading were turned on, which guarded chunks would download anyway?</div>
+        <div id="c3-q5" class="q">What does the API return when the same user calls it directly?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c3-pause" class="clip world" data-start="108.22" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c3-pause-2" class="pause-2" data-hold>Now do exercise 03.</div>
+    </div>
+
+    <audio id="c3-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="45" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c3-bed2" class="clip" src="assets/music/bed.mp3" data-start="83.72" data-duration="24.5" data-media-start="53" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c3-1" class="clip" src="assets/vo/c3-1.wav" data-start="3.0" data-duration="12.096" data-volume="1"></audio>
+    <audio id="vo-c3-2" class="clip" src="assets/vo/c3-2.wav" data-start="15.45" data-duration="8.448" data-volume="1"></audio>
+    <audio id="vo-c3-3" class="clip" src="assets/vo/c3-3.wav" data-start="24.24" data-duration="10.005" data-volume="1"></audio>
+    <audio id="vo-c3-4" class="clip" src="assets/vo/c3-4.wav" data-start="34.6" data-duration="7.445" data-volume="1"></audio>
+    <audio id="vo-c3-5" class="clip" src="assets/vo/c3-5.wav" data-start="42.39" data-duration="9.515" data-volume="1"></audio>
+    <audio id="vo-c3-6" class="clip" src="assets/vo/c3-6.wav" data-start="52.26" data-duration="6.187" data-volume="1"></audio>
+    <audio id="vo-c3-7" class="clip" src="assets/vo/c3-7.wav" data-start="58.8" data-duration="7.872" data-volume="1"></audio>
+    <audio id="vo-c3-8" class="clip" src="assets/vo/c3-8.wav" data-start="67.02" data-duration="10.411" data-volume="1"></audio>
+    <audio id="vo-c3-9" class="clip" src="assets/vo/c3-9.wav" data-start="77.78" data-duration="5.589" data-volume="1"></audio>
+    <audio id="vo-c3-end" class="clip" src="assets/vo/c3-end.wav" data-start="83.72" data-duration="2.197" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const draw = (sel, at, d = 0.4) => {
+      tl.fromTo(sel + " path", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+      tl.fromTo(sel + " polygon", { opacity: 0 }, { opacity: 1, duration: 0.12 }, at + d - 0.08);
+    };
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: CLEAR, duration: 0.4 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c3-1: the desk at noon, then the callout; "not authorization", then the API check
+    fadeIn("#c3-desk .c3-row", 3.2, 0.5);
+    band("#c3-i2", 7.9);
+    unband("#c3-i2", 11.8);
+    band("#c3-i3", 11.85);
+
+    // c3-2: the pipeline draws on to loadChildren
+    fadeIn("#c3-b1", 15.6, 0.4);
+    draw("#c3-e1", 16.2, 0.3);
+    fadeIn("#c3-b2", 16.4, 0.4);
+    draw("#c3-e2", 17.5, 0.3);
+    fadeIn("#c3-l2", 17.6, 0.4);
+    fadeIn("#c3-b3", 17.7, 0.4);
+    draw("#c3-e3", 20.6, 0.3);
+    fadeIn("#c3-l3", 20.7, 0.4);
+    fadeIn("#c3-b4", 20.8, 0.4);
+
+    // c3-3: the remaining steps to NavigationEnd
+    draw("#c3-e4", 24.4, 0.6);
+    fadeIn("#c3-l4", 24.6, 0.4);
+    fadeIn("#c3-b5", 24.8, 0.4);
+    draw("#c3-e5", 27.0, 0.3);
+    fadeIn("#c3-l5", 27.1, 0.4);
+    fadeIn("#c3-b6", 27.2, 0.4);
+    draw("#c3-e6", 31.9, 0.3);
+    fadeIn("#c3-b7", 32.0, 0.4);
+    draw("#c3-e7", 32.8, 0.3);
+    fadeIn("#c3-l7", 32.9, 0.4);
+    fadeIn("#c3-b8", 33.0, 0.4);
+    draw("#c3-e8", 33.4, 0.3);
+    fadeIn("#c3-b9", 33.5, 0.4);
+    draw("#c3-e9", 33.8, 0.3);
+    fadeIn("#c3-b10", 33.9, 0.4);
+    // c3-4: the full pipeline holds
+
+    // c3-5, c3-6, c3-7: the band steps through items 2, 3 and 4
+    fadeIn("#c3-facts-h", 42.5, 0.4);
+    ["#c3-f1", "#c3-f2", "#c3-f3", "#c3-f4"].forEach((f, i) => fadeIn(f, 42.7 + i * 0.15, 0.4));
+    band("#c3-f2", 43.6);
+    unband("#c3-f2", 52.3);
+    band("#c3-f3", 52.35);
+    unband("#c3-f3", 58.85);
+    band("#c3-f4", 58.9);
+
+    // c3-8: the table, then the Redirect row banded
+    fadeIn("#c3-cancel", 67.1, 0.4);
+    band("#c3-cr1 span", 71.4);
+
+    // c3-9: the table, then hasRole with route.data['role'] banded
+    fadeIn("#c3-recv", 77.85, 0.4);
+    band("#c3-rd", 80.9);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c3-q1", "#c3-q2", "#c3-q3", "#c3-q4", "#c3-q5"].forEach((q, i) => fadeIn(q, 83.98 + i * 0.6));
+    fadeIn("#c3-pause-2", 108.7);
+
+    window.__timelines["c3"] = tl;
+  </script>
+</template>

@@ -1,0 +1,313 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c5-svg { position: absolute; left: 0; top: 0; }
+    code { font-family: var(--font-code); font-size: 0.92em; }
+    .c5-h { position: absolute; left: 200px; top: 110px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+
+    #c5-topics { position: absolute; left: 80px; top: 70px; }
+    .c5-topic { font: 600 64px/1 var(--font-display); letter-spacing: -0.01em; margin-bottom: 64px; }
+
+    .c5-node { box-sizing: border-box; height: 84px; padding: 0 28px; display: flex; align-items: center; justify-content: center; font-size: 30px; }
+    .c5-node .badge { font-size: 28px; }
+
+    .c5-table { position: absolute; display: grid; font: 400 34px/1.35 var(--font-text); }
+    .c5-table > div { display: contents; }
+    .c5-table span { padding: 24px 24px; border-bottom: 1px solid var(--rule); }
+    .c5-table code { font: 400 31px/1 var(--font-code); }
+    .c5-table .th span { font: 700 30px/1.3 var(--font-text) !important; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c5-life { left: 140px; top: 240px; width: 1640px; grid-template-columns: 560px 520px 560px; }
+
+    .c5-code { left: 104px; width: 1712px; box-sizing: border-box; padding: 40px 44px; font-size: 30px; line-height: 45px; }
+    .c5-code .ln { position: relative; }
+    .c5-band { position: absolute; left: 0; right: 0; top: 40px; height: 45px; background: var(--accent-soft); }
+    .c5-wrap { white-space: pre-wrap !important; padding-left: 4ch; text-indent: -4ch; }
+    .c5-mark { border-radius: 4px; }
+
+    #c5-limits-h { position: absolute; left: 180px; top: 170px; font: 700 40px/1 var(--font-text); color: var(--ink-muted); }
+    #c5-limits { position: absolute; left: 160px; top: 250px; width: 1600px; }
+    .c5-item { padding: 18px 24px; margin-bottom: 30px; border-radius: 8px; font: 400 42px/1.45 var(--font-text); display: grid; grid-template-columns: 60px 1fr; }
+    .c5-item > b { color: var(--ink-muted); }
+    .c5-item code { font-size: 38px; }
+
+    .c5-chip { position: absolute; padding: 16px 26px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 36px/1 var(--font-code); }
+    #c5-url { left: 160px; top: 800px; font-size: 44px; }
+
+    #c5-titles-p { position: absolute; left: 200px; top: 250px; width: 1520px; font: 400 40px/1.55 var(--font-text); }
+    #c5-titles-p span { border-radius: 4px; }
+    #c5-titles-p code { font-size: 36px; }
+
+    #c5-browser { position: absolute; left: 120px; top: 120px; width: 1680px; height: 820px; box-sizing: border-box; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper-raised); box-shadow: var(--shadow); overflow: hidden; }
+    #c5-strip { position: absolute; left: 0; right: 0; top: 0; height: 110px; background: var(--paper-sunk); border-bottom: 1px solid var(--rule); }
+    .c5-tab { position: absolute; top: 22px; height: 88px; width: 460px; box-sizing: border-box; padding: 0 32px; display: flex; align-items: center; border-radius: 8px 8px 0 0; font: 400 34px/1 var(--font-text); color: var(--ink-muted); white-space: nowrap; }
+    .c5-tab.on { background: var(--paper-raised); border: 1px solid var(--rule); border-bottom: none; color: var(--ink); font-weight: 700; }
+    .c5-tt { position: absolute; left: 32px; top: 27px; }
+    .c5-page { position: absolute; left: 60px; right: 60px; top: 180px; }
+    .c5-row { height: 100px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; gap: 32px; }
+    .c5-row i { display: block; height: 26px; border-radius: 4px; background: var(--rule); }
+
+    .q { font-size: 38px; margin-bottom: 28px; }
+    .q code { font: 400 35px/1 var(--font-code); }
+
+    #c5-after-title { position: absolute; left: 200px; top: 150px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+    #c5-after-p { position: absolute; left: 200px; top: 340px; width: 1500px; font: 400 44px/1.5 var(--font-text); }
+    #c5-after-p span { border-radius: 4px; }
+    #c5-closed { position: absolute; left: 80px; top: 280px; font: 600 88px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c5-lights { position: absolute; inset: 0; background: var(--ink); }
+  </style>
+
+  <div id="root" data-composition-id="c5" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c5-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">16:00</div>
+      <div class="chapter-title">Route providers, leave guards, named outlets and titles</div>
+    </div>
+
+    <!-- c5-1: 16:00, the four headings -->
+    <div id="c5-desk" class="clip world" data-start="3" data-duration="8.65">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">16:00</span></div>
+        <div class="app-body">
+          <div id="c5-topics" data-hold>
+            <div id="c5-t1" class="c5-topic">Providers on a route</div>
+            <div id="c5-t2" class="c5-topic">Leave guards</div>
+            <div id="c5-t3" class="c5-topic">Named outlets</div>
+            <div id="c5-t4" class="c5-topic">Titles</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c5-2: the injector tree, the climb from ProfilePage to the root injector -->
+    <div id="c5-tree" class="clip world sunk" data-start="11.65" data-duration="8.14">
+      <svg class="c5-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke-width="4">
+        <g stroke="#c4b9a6">
+          <path d="M1232 184 V237 H825 V290" />
+          <path d="M1232 237 H1640 V290" />
+          <path d="M1640 374 V480" />
+          <path d="M825 374 V427 H510 V480" />
+          <path d="M825 427 H1140 V480" />
+          <path d="M510 564 V670" />
+          <path d="M1140 564 V670" />
+        </g>
+        <path id="c5-climb" pathLength="1" stroke="#b8321f" d="M1140 670 V427 H825 V237 H1232 V184" />
+      </svg>
+      <div id="c5-n0" class="node c5-node" style="left: 932px; top: 100px; width: 600px">root injector<span class="badge">[providedIn root]</span></div>
+      <div id="c5-n1" class="node c5-node" style="left: 575px; top: 290px; width: 500px">members route injector</div>
+      <div id="c5-n2" class="node c5-node" style="left: 1470px; top: 290px; width: 340px">catalog route</div>
+      <div id="c5-n3" class="node c5-node" style="left: 110px; top: 480px; width: 800px">loans route injector<span class="badge">[provides LoanFilters]</span></div>
+      <div id="c5-n4" class="node c5-node" style="left: 970px; top: 480px; width: 340px">profile route</div>
+      <div id="c5-n5" class="node c5-node" style="left: 1490px; top: 480px; width: 300px">CatalogPage</div>
+      <div id="c5-n6" class="node c5-node" style="left: 380px; top: 670px; width: 260px">LoansPage</div>
+      <div id="c5-n7" class="node c5-node" style="left: 990px; top: 670px; width: 300px" data-hold>ProfilePage</div>
+    </div>
+
+    <!-- c5-3: Where / Shared by / Lives, rows one by one -->
+    <div id="c5-lifew" class="clip world" data-start="19.79" data-duration="8.01">
+      <div id="c5-life" class="c5-table" data-hold>
+        <div id="c5-lh" class="th"><span>Where</span><span>Shared by</span><span>Lives</span></div>
+        <div id="c5-lr1"><span><code>providedIn: 'root'</code></span><span>the whole app</span><span>as long as the app</span></div>
+        <div id="c5-lr2"><span><code>Route.providers</code></span><span>the route and its children</span><span>from first match; cleanup is opt-in</span></div>
+        <div id="c5-lr3"><span><code>Component.providers</code></span><span>that component and its view children</span><span>as long as that component instance</span></div>
+        <div id="c5-lr4"><span>a root store keyed by entity id</span><span>everyone who asks for that id</span><span>until you evict the entry</span></div>
+      </div>
+    </div>
+
+    <!-- c5-4: stayInCirculation, band on nextState.url.startsWith('/circulation') -->
+    <div id="c5-leavew" class="clip world" data-start="27.8" data-duration="7.77">
+      <div class="c5-h">Leave guards</div>
+      <div class="code c5-code" style="top: 340px" data-hold>
+        <span class="ln c5-wrap"><span class="k">const</span> stayInCirculation: CanDeactivateFn&lt;CheckoutDesk&gt; = (_desk, _route, _state, nextState) =&gt;</span>
+        <span class="ln">  <span id="c5-next" class="c5-mark">nextState.url.startsWith(<span class="s">'/circulation'</span>)</span> || confirm(<span class="s">'Leave the checkout desk?'</span>);</span>
+      </div>
+    </div>
+
+    <!-- c5-5: "Limits to know", both items -->
+    <div id="c5-limitsw" class="clip world" data-start="35.57" data-duration="10.25">
+      <div id="c5-limits-h">Limits to know:</div>
+      <div id="c5-limits" data-hold>
+        <div id="c5-li1" class="c5-item"><b>1.</b><span>A leave guard covers router navigations only. Reloading the page or closing the tab skips it; the browser's <code>beforeunload</code> event is the tool for those.</span></div>
+        <div id="c5-li2" class="c5-item"><b>2.</b><span><code>confirm()</code> is a native dialog that blocks the main thread and cannot be styled. A guard may return an <code>Observable</code> or <code>Promise</code> of the answer, so an app dialog works too.</span></div>
+      </div>
+    </div>
+
+    <!-- c5-6: the named outlet link, outlet and route; the URL -->
+    <div id="c5-namedw" class="clip world" data-start="45.82" data-duration="9.63">
+      <div class="code c5-code" style="left: 160px; width: 1600px; top: 110px" data-hold>
+        <div id="c5-band1" class="c5-band"></div>
+        <span class="ln c">&lt;!-- the link --&gt;</span>
+        <span class="ln">&lt;a [routerLink]=<span class="s">"[{ outlets: { notes: ['history'] } }]"</span>&gt;History&lt;/a&gt;</span>
+        <span class="ln"> </span>
+        <span class="ln c">&lt;!-- the outlet in the template --&gt;</span>
+        <span class="ln">&lt;router-outlet name=<span class="s">"notes"</span> /&gt;</span>
+      </div>
+      <div class="code c5-code" style="left: 160px; width: 1600px; top: 520px">
+        <span class="ln c">// the route</span>
+        <span class="ln">{ path: <span class="s">'history'</span>, outlet: <span class="s">'notes'</span>, component: LoanHistory }</span>
+      </div>
+      <div id="c5-url" class="c5-chip" data-hold>/books(notes:history)</div>
+    </div>
+
+    <!-- c5-7: closing the outlet; @if -->
+    <div id="c5-closew" class="clip world" data-start="55.45" data-duration="4.36">
+      <div class="code c5-code" style="left: 200px; width: auto; top: 380px; font-size: 34px; line-height: 51px; padding: 44px 56px">
+        <span class="ln">{ outlets: { notes: <span class="k">null</span> } }</span>
+      </div>
+      <div id="c5-if" class="c5-chip" style="left: 200px; top: 620px" data-hold>@if</div>
+    </div>
+
+    <!-- c5-8: the Titles paragraph; TitleStrategy, updateTitle, buildTitle -->
+    <div id="c5-titlesw" class="clip world" data-start="59.81" data-duration="9.37">
+      <div class="c5-h">Titles</div>
+      <div id="c5-titles-p"><span id="c5-tp1">A route's <code>title</code> is a string, or a <code>ResolveFn&lt;string&gt;</code> for dynamic titles.</span> <span id="c5-tp2">The default strategy sets <code>document.title</code> to the title of the deepest primary route that has one, so a <code>title</code> on a parent covers its untitled children.</span> <span id="c5-tp3">To change how titles are built (append the app name, for example), extend <code>TitleStrategy</code>: implement <code>updateTitle(snapshot)</code>, use the inherited <code>buildTitle(snapshot)</code> to get the route's title, and register it with <code>{ provide: TitleStrategy, useExisting: YourStrategy }</code>.</span></div>
+      <div id="c5-ch1" class="c5-chip" style="left: 200px; top: 860px">TitleStrategy</div>
+      <div id="c5-ch2" class="c5-chip" style="left: 600px; top: 860px">updateTitle(snapshot)</div>
+      <div id="c5-ch3" class="c5-chip" style="left: 1180px; top: 860px" data-hold>buildTitle(snapshot)</div>
+    </div>
+
+    <!-- c5-9: the browser's tab strip; the new title is the accent -->
+    <div id="c5-tabsw" class="clip world sunk" data-start="69.18" data-duration="8.1">
+      <div id="c5-browser">
+        <div id="c5-strip">
+          <div class="c5-tab on" style="left: 24px"><span id="c5-tt1" class="c5-tt">Circulation desk</span><span id="c5-tt2" class="c5-tt" style="color: var(--accent)" data-hold>Opening hours</span></div>
+          <div class="c5-tab" style="left: 500px">Reading room</div>
+          <div class="c5-tab" style="left: 976px">Book returns</div>
+        </div>
+        <div class="c5-page">
+          <div class="c5-row"><i style="width: 460px"></i><i style="width: 220px"></i></div>
+          <div class="c5-row"><i style="width: 340px"></i><i style="width: 280px"></i><i style="width: 140px"></i></div>
+          <div class="c5-row"><i style="width: 400px"></i><i style="width: 200px"></i></div>
+          <div class="c5-row"><i style="width: 300px"></i><i style="width: 260px"></i><i style="width: 180px"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c5-questions" class="clip world note" data-start="77.28" data-duration="28.7">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c5-q1" class="q">Type into the editor, switch to a sibling tab and back. Is the data still there? How many instances of the state exist (Angular DevTools shows the injector tree)?</div>
+        <div id="c5-q2" class="q">Leave the editor in every way you can: a sibling tab, another page, after saving, without changes. When does the confirmation appear, and does that match when something could be lost?</div>
+        <div id="c5-q3" class="q">Follow each link to a named outlet. Which component ends up in which outlet?</div>
+        <div id="c5-q4" class="q">Visit every page and read the browser tab. What does it say on each one?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c5-pause" class="clip world" data-start="105.98" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c5-pause-2" class="pause-2" data-hold>Now do exercise 05.</div>
+    </div>
+
+    <!-- c5-after: the "After the lesson" card -->
+    <div id="c5-after" class="clip world" data-start="109.48" data-duration="10.32">
+      <div id="c5-after-title">After the lesson</div>
+      <div id="c5-after-p" data-hold><span id="c5-a1">When you finish an exercise, read its <code>SOLUTION.md</code> on the <code>solutions</code> branch and compare it with your fix.</span> <span id="c5-a2">Then write, in two sentences, the PR comment you would leave for the author.</span> <span id="c5-a3">If you cannot write it without looking, reread the chapter: the concept is not yours yet.</span></div>
+    </div>
+
+    <!-- c5-close: 18:00, the desk closes, lights down to the end -->
+    <div id="c5-close" class="clip world" data-start="119.8" data-duration="6.14">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock" style="color: var(--accent)">18:00</span></div>
+        <div class="app-body">
+          <div id="c5-closed">Opens again at 09:00</div>
+        </div>
+      </div>
+      <div id="c5-lights" data-hold></div>
+    </div>
+
+    <audio id="c5-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="75" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c5-bed2" class="clip" src="assets/music/bed.mp3" data-start="77.28" data-duration="28.7" data-media-start="83" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c5-1" class="clip" src="assets/vo/c5-1.wav" data-start="3.0" data-duration="8.299" data-volume="1"></audio>
+    <audio id="vo-c5-2" class="clip" src="assets/vo/c5-2.wav" data-start="11.65" data-duration="7.787" data-volume="1"></audio>
+    <audio id="vo-c5-3" class="clip" src="assets/vo/c5-3.wav" data-start="19.79" data-duration="7.659" data-volume="1"></audio>
+    <audio id="vo-c5-4" class="clip" src="assets/vo/c5-4.wav" data-start="27.8" data-duration="7.424" data-volume="1"></audio>
+    <audio id="vo-c5-5" class="clip" src="assets/vo/c5-5.wav" data-start="35.57" data-duration="9.899" data-volume="1"></audio>
+    <audio id="vo-c5-6" class="clip" src="assets/vo/c5-6.wav" data-start="45.82" data-duration="9.28" data-volume="1"></audio>
+    <audio id="vo-c5-7" class="clip" src="assets/vo/c5-7.wav" data-start="55.45" data-duration="4.011" data-volume="1"></audio>
+    <audio id="vo-c5-8" class="clip" src="assets/vo/c5-8.wav" data-start="59.81" data-duration="9.024" data-volume="1"></audio>
+    <audio id="vo-c5-9" class="clip" src="assets/vo/c5-9.wav" data-start="69.18" data-duration="7.744" data-volume="1"></audio>
+    <audio id="vo-c5-end" class="clip" src="assets/vo/c5-end.wav" data-start="77.28" data-duration="2.155" data-volume="1"></audio>
+    <audio id="vo-c5-after" class="clip" src="assets/vo/c5-after.wav" data-start="109.83" data-duration="9.621" data-volume="1"></audio>
+    <audio id="vo-c5-close" class="clip" src="assets/vo/c5-close.wav" data-start="119.8" data-duration="5.141" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const INK = "#1d1b18";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: CLEAR, duration: 0.4 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c5-1: four topics, then the first one takes the accent
+    ["#c5-t1", "#c5-t2", "#c5-t3", "#c5-t4"].forEach((t, i) => fadeIn(t, 3.8 + i * 0.15, 0.4));
+    tl.to("#c5-t1", { color: ACCENT, duration: 0.3 }, 5.0);
+
+    // c5-2: the tree; the lookup climbs from ProfilePage toward the root
+    fadeIn("#c5-tree svg g, #c5-tree .node", 11.7, 0.4);
+    tl.fromTo("#c5-climb", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.8, ease: "power2.inOut" }, 15.4);
+
+    // c5-3: rows one by one, then the Route.providers row banded
+    fadeIn("#c5-lh span", 19.9, 0.4);
+    ["#c5-lr1 span", "#c5-lr2 span", "#c5-lr3 span", "#c5-lr4 span"].forEach((r, i) => fadeIn(r, 20.4 + i * 0.6, 0.4));
+    band("#c5-lr2 span", 23.0);
+
+    // c5-4: band on the destination check
+    fadeIn("#c5-leavew .code", 27.9, 0.4);
+    band("#c5-next", 31.7);
+
+    // c5-5: both limits; band on before unload, then on the app dialog
+    fadeIn("#c5-limits-h", 35.7, 0.4);
+    fadeIn("#c5-li1", 35.9, 0.4);
+    fadeIn("#c5-li2", 36.05, 0.4);
+    band("#c5-li1", 36.2);
+    unband("#c5-li1", 41.15);
+    band("#c5-li2", 41.2);
+
+    // c5-6: the shareable URL is the accent; then the link that is harder to build
+    tl.set("#c5-url", { opacity: 0 }, 45.82);
+    fadeIn("#c5-url", 49.4, 0.4);
+    tl.to("#c5-url", { color: ACCENT, borderColor: ACCENT, duration: 0.3 }, 49.5);
+    tl.to("#c5-url", { color: INK, borderColor: "#c4b9a6", duration: 0.3 }, 51.5);
+    tl.fromTo("#c5-band1", { opacity: 0, y: 1 * 45 }, { opacity: 1, duration: 0.3 }, 51.6);
+
+    // c5-7: closing the outlet; the plain alternative
+    tl.set("#c5-if", { opacity: 0 }, 55.45);
+    fadeIn("#c5-if", 58.8, 0.4);
+
+    // c5-8: the deepest route wins; then extending TitleStrategy
+    band("#c5-tp2", 62.6);
+    unband("#c5-tp2", 65.1);
+    band("#c5-tp3", 65.15);
+    ["#c5-ch1", "#c5-ch2", "#c5-ch3"].forEach((c, i) => fadeIn(c, 65.3 + i * 0.15, 0.4));
+
+    // c5-9: a navigation; the tab gets its new title
+    tl.set("#c5-tt2", { opacity: 0 }, 69.18);
+    tl.to("#c5-tt1", { opacity: 0, duration: 0.2, ease: "power2.in" }, 71.4);
+    fadeIn("#c5-tt2", 71.6, 0.4);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c5-q1", "#c5-q2", "#c5-q3", "#c5-q4"].forEach((q, i) => fadeIn(q, 77.54 + i * 0.6));
+    fadeIn("#c5-pause-2", 106.46);
+
+    // after the lesson: compare, write, reread
+    fadeIn("#c5-after-title", 109.55, 0.4);
+    fadeIn("#c5-a1", 109.9, 0.4);
+    tl.set(["#c5-a2", "#c5-a3"], { opacity: 0 }, 109.48);
+    fadeIn("#c5-a2", 113.3, 0.4);
+    fadeIn("#c5-a3", 117.3, 0.4);
+    band("#c5-a3", 117.4);
+
+    // close: 18:00, the lights go down and stay down to the last frame
+    fadeIn("#c5-closed", 120.0);
+    tl.fromTo("#c5-lights", { opacity: 0 }, { opacity: 0.62, duration: 2.6, ease: "power2.inOut" }, 121.5);
+
+    window.__timelines["c5"] = tl;
+  </script>
+</template>

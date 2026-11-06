@@ -1,0 +1,370 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c2-h { position: absolute; left: 140px; top: 84px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c2-h code { font: 600 50px/1 var(--font-code); }
+    .c2-code { left: 120px; padding: 36px 48px; font-size: 28px; line-height: 1.5; }
+    .c2-code .ln { margin: 0 -48px; padding: 0 48px; }
+    .c2-mk { border-radius: 4px; }
+    .c2-prose code { font-family: var(--font-code); font-size: 0.92em; }
+
+    /* desk: a book page and its URL */
+    .c2-addr { position: absolute; left: 40px; top: 30px; width: 1520px; height: 72px; border: 1px solid var(--rule-strong); border-radius: 36px; background: var(--paper); }
+    .c2-addr span { position: absolute; left: 36px; top: 18px; font: 700 36px/1 var(--font-code); color: var(--accent); }
+    .c2-book { position: absolute; left: 40px; top: 150px; width: 1520px; height: 560px; }
+    .c2-cover { position: absolute; left: 0; top: 0; width: 300px; height: 440px; border: 1px solid var(--rule); border-radius: 6px; padding: 24px 20px; box-sizing: border-box; font: 600 40px/1.1 var(--font-display); }
+    .c2-bt { position: absolute; left: 360px; top: 0; font: 600 72px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c2-ba { position: absolute; left: 360px; top: 100px; font: 400 40px/1.2 var(--font-text); color: var(--ink-muted); }
+    .c2-facts { position: absolute; left: 360px; top: 200px; width: 700px; }
+    .c2-fact { display: flex; justify-content: space-between; padding: 22px 0; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c2-fact span:first-child { color: var(--ink-muted); }
+    .c2-fact span:last-child { font-weight: 700; }
+
+    /* flows */
+    .c2-flow .fbox { height: 110px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; white-space: nowrap; }
+    .c2-flow .fbox code { font: 700 38px/1 var(--font-code); }
+    .c2-flow .flabel { white-space: nowrap; }
+
+    /* tables */
+    .c2-table { position: absolute; left: 120px; top: 190px; width: 1680px; font: 400 34px/1.35 var(--font-text); }
+    .c2-table code { font: 400 30px/1.3 var(--font-code); }
+    .c2-tr { display: flex; border-bottom: 1px solid var(--rule); border-radius: 6px; padding: 22px 32px; background-color: rgba(245, 226, 217, 0); }
+    .c2-tr > div { flex: none; }
+    .c2-th { font-weight: 700; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c2-src-tbl .c2-tr > div:nth-child(1) { width: 620px; padding-right: 32px; box-sizing: border-box; }
+    #c2-src-tbl .c2-tr > div:nth-child(2) { width: 540px; }
+    #c2-src-tbl .c2-tr > div:nth-child(3) { width: 456px; }
+    #c2-cmp-tbl { top: 640px; font-size: 30px; }
+    #c2-cmp-tbl .c2-tr { padding: 14px 32px; }
+    #c2-cmp-tbl .c2-tr > div:nth-child(1) { width: 300px; }
+    #c2-cmp-tbl .c2-tr > div:nth-child(2) { width: 640px; }
+    #c2-cmp-tbl .c2-tr > div:nth-child(3) { width: 676px; }
+    #c2-rr-tbl { top: 180px; }
+    #c2-rr-tbl .c2-tr { padding: 18px 32px; }
+    #c2-rr-tbl .c2-tr > div:nth-child(1) { width: 700px; }
+    #c2-rr-tbl .c2-tr > div:nth-child(2) { width: 916px; }
+
+    /* lists as ruled rows */
+    .c2-list { position: absolute; left: 120px; top: 200px; width: 1680px; }
+    .c2-row { padding: 22px 32px; border-bottom: 1px solid var(--rule); border-radius: 6px; font: 400 34px/1.4 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c2-row code { font: 400 31px/1 var(--font-code); }
+
+    #c2-load-code { top: 170px; }
+    #c2-where-list { top: 180px; }
+    #c2-res-code { top: 470px; }
+
+    #c2-questions .q { font-size: 40px; margin-bottom: 28px; }
+    #c2-questions .q code { font-family: var(--font-code); font-size: 0.92em; }
+  </style>
+
+  <div id="root" data-composition-id="c2" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c2-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c2-card-time" class="chapter-time">10:30</div>
+      <div id="c2-card-title" class="chapter-title">The router reuses your component</div>
+    </div>
+
+    <!-- c2-1 the desk's book page, the URL in the address bar; the member moves to the next book -->
+    <div id="c2-desk" class="clip world" data-start="3" data-duration="7.54">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">10:30</span></div>
+        <div class="app-body">
+          <div class="c2-addr"><span id="c2-url1">/books/1</span><span id="c2-url2">/books/2</span></div>
+          <div id="c2-book1" class="c2-book">
+            <div class="c2-cover" style="background: var(--tip-soft)">Persuasion</div>
+            <div class="c2-bt">Persuasion</div>
+            <div class="c2-ba">Jane Austen</div>
+            <div class="c2-facts">
+              <div class="c2-fact"><span>Shelf</span><span>F-AUS</span></div>
+              <div class="c2-fact"><span>Copies on the shelf</span><span>3</span></div>
+            </div>
+          </div>
+          <div id="c2-book2" class="c2-book" data-hold>
+            <div class="c2-cover" style="background: var(--note-soft)">Walden</div>
+            <div class="c2-bt">Walden</div>
+            <div class="c2-ba">Henry David Thoreau</div>
+            <div class="c2-facts">
+              <div class="c2-fact"><span>Shelf</span><span>N-THO</span></div>
+              <div class="c2-fact"><span>Copies on the shelf</span><span>1</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-2, c2-3 same route, same instance (LESSON.md flow) -->
+    <div id="c2-same" class="clip world sunk c2-flow" data-start="10.54" data-duration="17.96">
+      <div class="c2-h">Same route, same instance</div>
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <g stroke="#1d1b18" stroke-width="4" fill="none">
+          <line id="c2-e1" x1="560" y1="275" x2="1102" y2="275" stroke-dasharray="542" />
+          <path id="c2-e2" d="M1460,330 V425 H340 V494" stroke-dasharray="1284" />
+          <line id="c2-e3" x1="560" y1="565" x2="1102" y2="565" stroke-dasharray="542" />
+          <path id="c2-e4" d="M1460,620 V715 H340 V784" stroke-dasharray="1284" />
+          <line id="c2-e5" x1="640" y1="855" x2="1102" y2="855" stroke-dasharray="462" />
+        </g>
+        <g fill="#1d1b18">
+          <polygon id="c2-a1" points="1100,263 1120,275 1100,287" />
+          <polygon id="c2-a2" points="328,492 340,512 352,492" />
+          <polygon id="c2-a3" points="1100,553 1120,565 1100,577" />
+          <polygon id="c2-a4" points="328,782 340,802 352,782" />
+          <polygon id="c2-a5" points="1100,843 1120,855 1100,867" />
+        </g>
+      </svg>
+      <div id="c2-l1" class="flabel" style="left: 560px; top: 216px; width: 560px">constructor, ngOnInit</div>
+      <div id="c2-l2" class="flabel" style="left: 660px; top: 368px; width: 600px">same Route object</div>
+      <div id="c2-l3" class="flabel" style="left: 560px; top: 506px; width: 560px">no constructor, no ngOnInit</div>
+      <div id="c2-l4" class="flabel" style="left: 660px; top: 658px; width: 600px">query string only</div>
+      <div id="c2-l5" class="flabel" style="left: 650px; top: 796px; width: 460px">still the same instance</div>
+      <div id="c2-b1" class="fbox" style="left: 140px; top: 220px; width: 420px"><code>/books/1</code></div>
+      <div id="c2-b2" class="fbox" style="left: 1120px; top: 220px; width: 680px">BookPage created</div>
+      <div id="c2-b3" class="fbox" style="left: 140px; top: 510px; width: 420px"><code>/books/2</code></div>
+      <div id="c2-b4" class="fbox" style="left: 1120px; top: 510px; width: 680px" data-hold>BookPage reused</div>
+      <div id="c2-b5" class="fbox" style="left: 100px; top: 800px; width: 540px"><code style="font-size: 34px">/books/2?view=copies</code></div>
+      <div id="c2-b6" class="fbox" style="left: 1120px; top: 800px; width: 680px" data-hold>BookPage reused again</div>
+    </div>
+
+    <!-- c2-4 three ways to read route data (LESSON.md table) -->
+    <div id="c2-src" class="clip world" data-start="28.5" data-duration="8.22">
+      <div class="c2-h">Three ways to read route data</div>
+      <div id="c2-src-tbl" class="c2-table c2-prose" data-hold>
+        <div id="c2-s0" class="c2-tr c2-th"><div>Source</div><div>What it gives you</div><div>Follows later URLs?</div></div>
+        <div id="c2-s1" class="c2-tr"><div><code>route.snapshot</code></div><div>the route state at one moment</div><div>no, it is a photo</div></div>
+        <div id="c2-s2" class="c2-tr"><div><code>route.paramMap</code>, <code>route.queryParamMap</code>, <code>route.data</code></div><div>observables of each part</div><div>yes, while subscribed</div></div>
+        <div id="c2-s3" class="c2-tr"><div>bound inputs (<code>withComponentInputBinding</code>)</div><div>signal inputs set by the router</div><div>yes</div></div>
+      </div>
+    </div>
+
+    <!-- c2-5, c2-6 the rules of input binding (LESSON.md list), the first three items -->
+    <div id="c2-rules" class="clip world" data-start="36.72" data-duration="18.66">
+      <div class="c2-h">The rules of input binding</div>
+      <div class="c2-list c2-prose" data-hold>
+        <div id="c2-r1" class="c2-row">The router binds from query params, path and matrix params, static <code>data</code>, and resolver results.</div>
+        <div id="c2-r2" class="c2-row">When two sources share a key, the later one in that list wins, so resolver results override params and static data. With <code>withRouterResources()</code> enabled, route resources come after resolver results.</div>
+        <div id="c2-r3" class="c2-row">By default (<code>unmatchedInputBehavior: <span id="c2-au" class="c2-mk">'alwaysUndefined'</span></code>), an input with no matching key in the current route is set to <code>undefined</code>, so a value from a previous URL is never kept. <code>'undefinedIfStale'</code> only resets inputs that the router set earlier in the life of that route.</div>
+      </div>
+    </div>
+
+    <!-- c2-7 load in the page (LESSON.md code), then the comparison table -->
+    <div id="c2-load" class="clip world" data-start="55.38" data-duration="11.85">
+      <div class="c2-h">Load in the page, or before it</div>
+      <div id="c2-load-code" class="code c2-code" data-hold>
+<span class="ln"><span class="k">export class</span> BookPage {</span>
+<span class="ln">  <span class="k">private readonly</span> api = inject(BookApi);</span>
+<span class="ln">  <span class="k">readonly</span> isbn = input.required&lt;string&gt;();</span>
+<span class="ln"> </span>
+<span class="ln">  <span class="k">readonly</span> copies = rxResource({</span>
+<span id="c2-l-params" class="ln">    params: () =&gt; <span class="k">this</span>.isbn(),</span>
+<span class="ln">    stream: ({ params: isbn }) =&gt; <span class="k">this</span>.api.copies(isbn),</span>
+<span class="ln">  });</span>
+<span class="ln">}</span>
+      </div>
+      <div id="c2-cmp-tbl" class="c2-table">
+        <div class="c2-tr c2-th"><div></div><div>Resolver</div><div>Load in the page</div></div>
+        <div class="c2-tr"><div>While loading</div><div>the user stares at the old page</div><div>the new page shows, with a skeleton</div></div>
+        <div class="c2-tr"><div>Missing data</div><div>redirect before the page exists</div><div>the page shows an inline "not found"</div></div>
+        <div class="c2-tr"><div>Fits</div><div>data the page cannot render at all without</div><div>most pages</div></div>
+      </div>
+    </div>
+
+    <!-- c2-8 when resolvers run again (LESSON.md table) -->
+    <div id="c2-rr" class="clip world" data-start="67.23" data-duration="8.05">
+      <div class="c2-h">When resolvers run again</div>
+      <div id="c2-rr-tbl" class="c2-table c2-prose" data-hold>
+        <div class="c2-tr c2-th"><div>Value</div><div>Reruns guards and resolvers when</div></div>
+        <div id="c2-rr1" class="c2-tr"><div><code>'paramsChange'</code> (default)</div><div>path or matrix params change</div></div>
+        <div class="c2-tr"><div><code>'pathParamsChange'</code></div><div>path params change (matrix params ignored)</div></div>
+        <div class="c2-tr"><div><code>'pathParamsOrQueryParamsChange'</code></div><div>path params or query params change</div></div>
+        <div class="c2-tr"><div><code>'paramsOrQueryParamsChange'</code></div><div>any params or query params change</div></div>
+        <div class="c2-tr"><div><code>'always'</code></div><div>on every navigation to the route</div></div>
+        <div class="c2-tr"><div>a function <code>(from, to) =&gt; boolean</code></div><div>the function says so</div></div>
+      </div>
+    </div>
+
+    <!-- c2-9 a resolver that fails (LESSON.md flow), its three branches -->
+    <div id="c2-fail" class="clip world sunk c2-flow" data-start="75.28" data-duration="8.29">
+      <div class="c2-h">A resolver that fails</div>
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <g stroke="#1d1b18" stroke-width="4" fill="none">
+          <line x1="500" y1="305" x2="642" y2="305" />
+          <line x1="1000" y1="305" x2="1182" y2="305" />
+          <path id="c2-f0" d="M1470,360 V450" stroke-dasharray="90" />
+          <path id="c2-f1" d="M1470,450 H360 V664" stroke-dasharray="1324" />
+          <path id="c2-f2" d="M960,450 V664" stroke-dasharray="214" />
+          <path id="c2-f3" d="M1470,450 V664" stroke-dasharray="214" />
+        </g>
+        <g fill="#1d1b18">
+          <polygon points="640,293 660,305 640,317" />
+          <polygon points="1180,293 1200,305 1180,317" />
+          <polygon id="c2-fa1" points="348,662 360,682 372,662" />
+          <polygon id="c2-fa2" points="948,662 960,682 972,662" />
+          <polygon id="c2-fa3" points="1458,662 1470,682 1482,662" />
+        </g>
+      </svg>
+      <div id="c2-fl1" class="flabel" style="left: 376px; top: 540px; text-align: left">value emitted</div>
+      <div id="c2-fl2" class="flabel" style="left: 976px; top: 540px; text-align: left">error, the old page stays</div>
+      <div id="c2-fl3" class="flabel" style="left: 1486px; top: 520px; width: 300px; text-align: left">completed with no value</div>
+      <div class="fbox" style="left: 140px; top: 250px; width: 360px">click a link</div>
+      <div class="fbox" style="left: 660px; top: 250px; width: 340px">guards pass</div>
+      <div class="fbox" style="left: 1200px; top: 250px; width: 540px">resolver runs</div>
+      <div id="c2-fb1" class="fbox" style="left: 140px; top: 680px; width: 440px">page activates</div>
+      <div id="c2-fb2" class="fbox" style="left: 700px; top: 680px; width: 520px">navigation fails</div>
+      <div id="c2-fb3" class="fbox" style="left: 1260px; top: 680px; width: 540px" data-hold>navigation cancelled</div>
+    </div>
+
+    <!-- c2-10 where the missing-data answer lives (LESSON.md list), then bookResolver -->
+    <div id="c2-where" class="clip world" data-start="83.57" data-duration="11.1">
+      <div class="c2-h">Where the answer lives is a design choice</div>
+      <div id="c2-where-list" class="c2-list c2-prose">
+        <div id="c2-w1" class="c2-row">in each resolver, which knows its own data and can send the user somewhere specific;</div>
+        <div id="c2-w2" class="c2-row">once, in <code>withNavigationErrorHandler</code>, which catches every failed navigation and can return a <code>RedirectCommand</code> to a generic error page.</div>
+      </div>
+      <div id="c2-res-code" class="code c2-code" data-hold>
+<span class="ln"><span class="k">const</span> ISBN = <span class="s">/^\d{13}$/</span>;</span>
+<span class="ln"> </span>
+<span class="ln"><span class="k">export const</span> bookResolver: ResolveFn&lt;Book&gt; = (route) =&gt; {</span>
+<span class="ln">  <span class="k">const</span> isbn = route.paramMap.get(<span class="s">'isbn'</span>) ?? <span class="s">''</span>;</span>
+<span class="ln">  <span class="k">if</span> (!ISBN.test(isbn)) {</span>
+<span id="c2-l-redir" class="ln">    <span class="k">return new</span> RedirectCommand(inject(Router).parseUrl(<span class="s">'/books'</span>));</span>
+<span class="ln">  }</span>
+<span class="ln">  <span class="k">return</span> inject(BookApi).get(isbn);</span>
+<span class="ln">};</span>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c2-questions" class="clip world note" data-start="94.67" data-duration="27.8">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c2-q1" class="q">Go from one item to the next without a reload. Does every value on screen change with the URL?</div>
+        <div id="c2-q2" class="q">Add and remove each query param by hand. What does the page show when one is absent?</div>
+        <div id="c2-q3" class="q">Which route values does the component read, and from where: snapshot, observable, or input?</div>
+        <div id="c2-q4" class="q">Open an id that does not exist. What does the user see, and where does the error go?</div>
+        <div id="c2-q5" class="q">Does each resolver run again when only the query string changes? Count the requests in the Network panel.</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c2-pause" class="clip world" data-start="122.47" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c2-pause-2" class="pause-2">Now do exercise 02.</div>
+    </div>
+
+    <audio id="c2-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="34" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-bed2" class="clip" src="assets/music/bed.mp3" data-start="94.67" data-duration="27.8" data-media-start="76" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c2-1" class="clip" src="assets/vo/c2-1.wav" data-start="3" data-duration="7.189" data-volume="1"></audio>
+    <audio id="vo-c2-2" class="clip" src="assets/vo/c2-2.wav" data-start="10.54" data-duration="9.365" data-volume="1"></audio>
+    <audio id="vo-c2-3" class="clip" src="assets/vo/c2-3.wav" data-start="20.25" data-duration="7.893" data-volume="1"></audio>
+    <audio id="vo-c2-4" class="clip" src="assets/vo/c2-4.wav" data-start="28.5" data-duration="7.872" data-volume="1"></audio>
+    <audio id="vo-c2-5" class="clip" src="assets/vo/c2-5.wav" data-start="36.72" data-duration="9.707" data-volume="1"></audio>
+    <audio id="vo-c2-6" class="clip" src="assets/vo/c2-6.wav" data-start="46.78" data-duration="8.256" data-volume="1"></audio>
+    <audio id="vo-c2-7" class="clip" src="assets/vo/c2-7.wav" data-start="55.38" data-duration="11.499" data-volume="1"></audio>
+    <audio id="vo-c2-8" class="clip" src="assets/vo/c2-8.wav" data-start="67.23" data-duration="7.701" data-volume="1"></audio>
+    <audio id="vo-c2-9" class="clip" src="assets/vo/c2-9.wav" data-start="75.28" data-duration="7.936" data-volume="1"></audio>
+    <audio id="vo-c2-10" class="clip" src="assets/vo/c2-10.wav" data-start="83.57" data-duration="10.752" data-volume="1"></audio>
+    <audio id="vo-c2-end" class="clip" src="assets/vo/c2-end.wav" data-start="94.67" data-duration="2.155" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "#f5e2d9", SOFT0 = "rgba(245, 226, 217, 0)";
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+    const box = (sel, at) => tl.fromTo(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, at);
+    const draw = (sel, len, at, d = 0.5) =>
+      tl.fromTo(sel, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+    const hot = (sel, at) => tl.to(sel, { borderColor: "#b8321f", color: "#b8321f", backgroundColor: "#f5e2d9", duration: 0.3 }, at);
+    const cool = (sel, at) => tl.to(sel, { borderColor: "#1d1b18", color: "#1d1b18", backgroundColor: "#fffdf9", duration: 0.3 }, at);
+
+    // chapter card: on screen from frame 0
+
+    // c2-1: on "the next" the URL and the whole page change together
+    fadeOut(["#c2-url1", "#c2-book1"], 6.1, 0.3);
+    fadeIn(["#c2-url2", "#c2-book2"], 6.4, 0.5);
+
+    // c2-2: the first visit, the same Route object, the reuse; BookPage reused is the accent
+    box("#c2-b1", 10.7);
+    draw("#c2-e1", 542, 11.1, 0.4);
+    fadeIn("#c2-a1", 11.45, 0.1);
+    fadeIn("#c2-l1", 11.25, 0.4);
+    box("#c2-b2", 11.5);
+    draw("#c2-e2", 1284, 12.4, 0.7);
+    fadeIn("#c2-a2", 13.05, 0.1);
+    fadeIn("#c2-l2", 13.7, 0.4);
+    box("#c2-b3", 13.1);
+    draw("#c2-e3", 542, 15.4, 0.4);
+    fadeIn("#c2-a3", 15.75, 0.1);
+    fadeIn("#c2-l3", 15.55, 0.4);
+    box("#c2-b4", 15.8);
+    hot("#c2-b4", 16.3);
+
+    // c2-3: the query-string arrow on "query string"; the accent moves to the instance that is still the same
+    draw("#c2-e4", 1284, 22.0, 0.7);
+    fadeIn("#c2-a4", 22.65, 0.1);
+    fadeIn("#c2-l4", 22.3, 0.4);
+    box("#c2-b5", 22.7);
+    draw("#c2-e5", 462, 23.5, 0.4);
+    fadeIn("#c2-a5", 23.85, 0.1);
+    fadeIn("#c2-l5", 23.65, 0.4);
+    box("#c2-b6", 23.9);
+    cool("#c2-b4", 25.6);
+    hot("#c2-b6", 25.6);
+
+    // c2-4: rows one by one; bound inputs banded on "always do"
+    fadeIn("#c2-s0", 28.6, 0.4);
+    fadeIn("#c2-s1", 28.9, 0.4);
+    fadeIn("#c2-s2", 31.2, 0.4);
+    fadeIn("#c2-s3", 34.6, 0.4);
+    band("#c2-s3", 35.3);
+
+    // c2-5: the first two items, banded in turn; c2-6: the third item, 'alwaysUndefined' banded
+    band("#c2-r1", 37.4);
+    unband("#c2-r1", 42.8);
+    fadeIn("#c2-r2", 42.6, 0.5);
+    band("#c2-r2", 42.8);
+    unband("#c2-r2", 46.9);
+    fadeIn("#c2-r3", 46.9, 0.5);
+    band("#c2-au", 47.6);
+
+    // c2-7: band on the params line on "rx Resource"; then the comparison table
+    band("#c2-l-params", 61.6);
+    fadeIn("#c2-cmp-tbl", 63.6, 0.6);
+
+    // c2-8: the default row banded on "By default"
+    band("#c2-rr1", 71.3);
+
+    // c2-9: the three branches draw on in turn
+    draw("#c2-f0", 90, 75.5, 0.2);
+    draw("#c2-f1", 1324, 75.7, 0.6);
+    fadeIn("#c2-fa1", 76.25, 0.1);
+    fadeIn("#c2-fl1", 75.9, 0.4);
+    box("#c2-fb1", 76.3);
+    draw("#c2-f2", 214, 76.6, 0.4);
+    fadeIn("#c2-fa2", 76.95, 0.1);
+    fadeIn("#c2-fl2", 76.75, 0.4);
+    box("#c2-fb2", 77.0);
+    draw("#c2-f3", 214, 79.8, 0.4);
+    fadeIn("#c2-fa3", 80.15, 0.1);
+    fadeIn("#c2-fl3", 79.95, 0.4);
+    box("#c2-fb3", 80.2);
+
+    // c2-10: each place the answer can live; then the resolver that refuses first
+    band("#c2-w1", 85.9);
+    unband("#c2-w1", 87.1);
+    band("#c2-w2", 87.1);
+    unband("#c2-w2", 89.4);
+    tl.to(["#c2-w1", "#c2-w2"], { color: "#5f584d", duration: 0.4, ease: "power2.inOut" }, 89.4);
+    fadeIn("#c2-res-code", 89.5, 0.6);
+    band("#c2-l-redir", 90.9);
+
+    // questions 0.6 s apart, then hold; pause card
+    for (let i = 1; i <= 5; i++) fadeIn("#c2-q" + i, 95.0 + (i - 1) * 0.6);
+    fadeIn("#c2-pause-2", 123.0);
+
+    window.__timelines["c2"] = tl;
+  </script>
+</template>
