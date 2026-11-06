@@ -37,3 +37,9 @@
 
 - c0 opening sections: the "What it costs" third item and the rendering-mode table each stay up about 2-3 s before the voice
   moves on.
+
+## Delivery
+
+- `renders/ssr-lesson.mp4` (gitignored; published in release `videos-batch-4`): 1920x1080, 30 fps, 10:11, about 31 MB.
+- Mix normalized with ffmpeg `loudnorm` (I=-16, TP=-1.5): -16.4 LUFS integrated, true peak -1.4 dBTP, clipping count 0.
+- Frame 0 is chapter 0's card, which serves as the thumbnail.

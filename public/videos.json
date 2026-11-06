@@ -275,6 +275,78 @@
           "start": 465.1
         }
       ]
+    },
+    {
+      "topic": "di",
+      "release": "videos-batch-4",
+      "file": "di-lesson.mp4",
+      "duration": 610.2,
+      "chapters": [
+        {
+          "number": 0,
+          "start": 0.0
+        },
+        {
+          "number": 1,
+          "start": 113.6
+        },
+        {
+          "number": 2,
+          "start": 300.4
+        },
+        {
+          "number": 3,
+          "start": 457.4
+        }
+      ]
+    },
+    {
+      "topic": "security",
+      "release": "videos-batch-4",
+      "file": "security-lesson.mp4",
+      "duration": 617.7,
+      "chapters": [
+        {
+          "number": 0,
+          "start": 0.0
+        },
+        {
+          "number": 1,
+          "start": 163.1
+        },
+        {
+          "number": 2,
+          "start": 303.7
+        },
+        {
+          "number": 3,
+          "start": 450.0
+        }
+      ]
+    },
+    {
+      "topic": "ssr",
+      "release": "videos-batch-4",
+      "file": "ssr-lesson.mp4",
+      "duration": 611.2,
+      "chapters": [
+        {
+          "number": 0,
+          "start": 0.0
+        },
+        {
+          "number": 1,
+          "start": 140.3
+        },
+        {
+          "number": 2,
+          "start": 257.5
+        },
+        {
+          "number": 3,
+          "start": 455.6
+        }
+      ]
     }
   ]
 }
