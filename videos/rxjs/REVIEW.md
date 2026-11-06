@@ -18,8 +18,8 @@
 
 ## Not checked
 
-- Sound was measured by duration only, never heard. Loudness of the final mix is checked after render with
-  `npx hyperframes audio`.
+- Sound was measured, never heard. Rendered mix: -19.2 LUFS raw, normalized with ffmpeg `loudnorm` (I=-16, TP=-1.5) to
+  -16.9 LUFS integrated, true peak -1.4 dBTP, no clipping.
 - The phone sheet: code at 28-34 px is not readable at 360 px. The video targets a desktop screen, like the reader.
 
 ## Warnings kept on purpose
@@ -34,3 +34,8 @@
 
 - c4-6 opens on an empty paper frame for about 0.3 s while the backoff chart builds (t=332.9 s). With more time: land the
   `retry` heading and the axis on the cut.
+
+## Delivery
+
+- `renders/rxjs-lesson.mp4` (gitignored): 1920x1080, 30 fps, 11:50, about 35 MB; render 7 min 20 s.
+- Frame 0 is chapter 0's card ("08:55 / What moved since Angular 17"), which serves as the thumbnail.
