@@ -1,0 +1,350 @@
+{
+  "total": 525.35,
+  "scenes": [
+    {
+      "id": "c0",
+      "start": 0.0,
+      "duration": 115.25,
+      "clips": [
+        {
+          "id": "c0-1",
+          "start": 3.0,
+          "duration": 12.523
+        },
+        {
+          "id": "c0-2",
+          "start": 15.87,
+          "duration": 9.493
+        },
+        {
+          "id": "c0-3",
+          "start": 25.72,
+          "duration": 9.856
+        },
+        {
+          "id": "c0-4",
+          "start": 35.92,
+          "duration": 9.941
+        },
+        {
+          "id": "c0-5",
+          "start": 46.21,
+          "duration": 11.776
+        },
+        {
+          "id": "c0-6",
+          "start": 58.34,
+          "duration": 11.136
+        },
+        {
+          "id": "c0-7",
+          "start": 69.82,
+          "duration": 9.387
+        },
+        {
+          "id": "c0-8",
+          "start": 79.56,
+          "duration": 11.499
+        },
+        {
+          "id": "c0-9",
+          "start": 91.41,
+          "duration": 9.771
+        },
+        {
+          "id": "c0-10",
+          "start": 101.53,
+          "duration": 8.576
+        },
+        {
+          "id": "c0-10b",
+          "start": 110.46,
+          "duration": 3.797
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        }
+      }
+    },
+    {
+      "id": "c1",
+      "start": 115.25,
+      "duration": 125.24,
+      "clips": [
+        {
+          "id": "c1-1",
+          "start": 3.0,
+          "duration": 9.173
+        },
+        {
+          "id": "c1-2",
+          "start": 12.52,
+          "duration": 6.933
+        },
+        {
+          "id": "c1-3",
+          "start": 19.81,
+          "duration": 10.176
+        },
+        {
+          "id": "c1-4",
+          "start": 30.33,
+          "duration": 8.384
+        },
+        {
+          "id": "c1-4b",
+          "start": 39.07,
+          "duration": 5.632
+        },
+        {
+          "id": "c1-5",
+          "start": 45.05,
+          "duration": 9.493
+        },
+        {
+          "id": "c1-6",
+          "start": 54.89,
+          "duration": 10.325
+        },
+        {
+          "id": "c1-7",
+          "start": 65.57,
+          "duration": 10.603
+        },
+        {
+          "id": "c1-8",
+          "start": 76.52,
+          "duration": 4.971
+        },
+        {
+          "id": "c1-8b",
+          "start": 81.84,
+          "duration": 7.253
+        },
+        {
+          "id": "c1-9",
+          "start": 89.44,
+          "duration": 8.171
+        },
+        {
+          "id": "c1-9b",
+          "start": 97.96,
+          "duration": 4.928
+        },
+        {
+          "id": "c1-end",
+          "start": 103.24,
+          "duration": 2.347
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 103.24,
+          "duration": 18.5,
+          "items": [
+            "For each piece of state: which component owns it, and who else changes it?",
+            "Every time a collection changes, is a new reference produced?",
+            "Which views show this data, and through which path does each one learn that it changed?",
+            "Where `ChangeDetectorRef` is used, which views does it refresh, and which views needed to know?"
+          ]
+        },
+        "pause": {
+          "start": 121.74,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c2",
+      "start": 240.5,
+      "duration": 138.07,
+      "clips": [
+        {
+          "id": "c2-1",
+          "start": 3.0,
+          "duration": 5.867
+        },
+        {
+          "id": "c2-2",
+          "start": 9.22,
+          "duration": 9.173
+        },
+        {
+          "id": "c2-3",
+          "start": 18.74,
+          "duration": 11.499
+        },
+        {
+          "id": "c2-4",
+          "start": 30.59,
+          "duration": 9.472
+        },
+        {
+          "id": "c2-5",
+          "start": 40.41,
+          "duration": 9.749
+        },
+        {
+          "id": "c2-6",
+          "start": 50.51,
+          "duration": 10.197
+        },
+        {
+          "id": "c2-7",
+          "start": 61.06,
+          "duration": 10.923
+        },
+        {
+          "id": "c2-8",
+          "start": 72.33,
+          "duration": 9.899
+        },
+        {
+          "id": "c2-9",
+          "start": 82.58,
+          "duration": 9.451
+        },
+        {
+          "id": "c2-9b",
+          "start": 92.38,
+          "duration": 9.067
+        },
+        {
+          "id": "c2-10",
+          "start": 101.8,
+          "duration": 11.819
+        },
+        {
+          "id": "c2-end",
+          "start": 113.97,
+          "duration": 1.899
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 113.97,
+          "duration": 20.6,
+          "items": [
+            "For each template expression, does evaluating it twice in a row give the same result?",
+            "Which hook writes state, and which views had already rendered that state in the same pass?",
+            "In the component tree (not the DOM tree), who reads a shared value before whom?",
+            "What does the screen show between the first render and the moment the value is right?"
+          ]
+        },
+        "pause": {
+          "start": 134.57,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c3",
+      "start": 378.56,
+      "duration": 146.79,
+      "clips": [
+        {
+          "id": "c3-1",
+          "start": 3.0,
+          "duration": 10.56
+        },
+        {
+          "id": "c3-2",
+          "start": 13.91,
+          "duration": 6.699
+        },
+        {
+          "id": "c3-3",
+          "start": 20.96,
+          "duration": 11.307
+        },
+        {
+          "id": "c3-4",
+          "start": 32.62,
+          "duration": 5.717
+        },
+        {
+          "id": "c3-5",
+          "start": 38.68,
+          "duration": 8.768
+        },
+        {
+          "id": "c3-6",
+          "start": 47.8,
+          "duration": 9.984
+        },
+        {
+          "id": "c3-7",
+          "start": 58.14,
+          "duration": 7.424
+        },
+        {
+          "id": "c3-8",
+          "start": 65.91,
+          "duration": 10.027
+        },
+        {
+          "id": "c3-9",
+          "start": 76.29,
+          "duration": 10.069
+        },
+        {
+          "id": "c3-10",
+          "start": 86.7,
+          "duration": 8.299
+        },
+        {
+          "id": "c3-11",
+          "start": 95.35,
+          "duration": 11.051
+        },
+        {
+          "id": "c3-end",
+          "start": 106.75,
+          "duration": 2.325
+        },
+        {
+          "id": "c3-after",
+          "start": 132.41,
+          "duration": 8.917
+        },
+        {
+          "id": "c3-close",
+          "start": 141.67,
+          "duration": 4.117
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 106.75,
+          "duration": 21.8,
+          "items": [
+            "For each binding in the template, what notifies Angular when its value changes?",
+            "What does each `NgZone` call do in an app without zone.js?",
+            "Which hook runs this calculation, and does that hook run when the data changes?",
+            "What does the external client hold on to after this component is destroyed? Who stops it?",
+            "Which settings or calls exist only because zone.js used to be there?"
+          ]
+        },
+        "pause": {
+          "start": 128.56,
+          "duration": 3.5
+        }
+      }
+    }
+  ]
+}
