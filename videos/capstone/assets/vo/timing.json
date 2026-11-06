@@ -1,0 +1,380 @@
+{
+  "total": 555.5,
+  "scenes": [
+    {
+      "id": "c0",
+      "start": 0.0,
+      "duration": 142.75,
+      "clips": [
+        {
+          "id": "c0-1",
+          "start": 3.0,
+          "duration": 9.067
+        },
+        {
+          "id": "c0-1b",
+          "start": 12.42,
+          "duration": 7.573
+        },
+        {
+          "id": "c0-1c",
+          "start": 20.34,
+          "duration": 6.272
+        },
+        {
+          "id": "c0-2",
+          "start": 26.96,
+          "duration": 7.296
+        },
+        {
+          "id": "c0-3",
+          "start": 34.61,
+          "duration": 6.699
+        },
+        {
+          "id": "c0-3b",
+          "start": 41.66,
+          "duration": 7.787
+        },
+        {
+          "id": "c0-4",
+          "start": 49.79,
+          "duration": 7.147
+        },
+        {
+          "id": "c0-5",
+          "start": 57.29,
+          "duration": 7.339
+        },
+        {
+          "id": "c0-5b",
+          "start": 64.98,
+          "duration": 8.299
+        },
+        {
+          "id": "c0-6",
+          "start": 73.63,
+          "duration": 7.403
+        },
+        {
+          "id": "c0-6b",
+          "start": 81.38,
+          "duration": 7.317
+        },
+        {
+          "id": "c0-7",
+          "start": 89.05,
+          "duration": 7.232
+        },
+        {
+          "id": "c0-7b",
+          "start": 96.63,
+          "duration": 8.405
+        },
+        {
+          "id": "c0-7c",
+          "start": 105.39,
+          "duration": 4.992
+        },
+        {
+          "id": "c0-8",
+          "start": 110.73,
+          "duration": 10.496
+        },
+        {
+          "id": "c0-8b",
+          "start": 121.57,
+          "duration": 7.467
+        },
+        {
+          "id": "c0-8c",
+          "start": 129.39,
+          "duration": 5.504
+        },
+        {
+          "id": "c0-9",
+          "start": 135.25,
+          "duration": 6.507
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        }
+      }
+    },
+    {
+      "id": "c1",
+      "start": 142.75,
+      "duration": 412.75,
+      "clips": [
+        {
+          "id": "c1-1",
+          "start": 3.0,
+          "duration": 8.832
+        },
+        {
+          "id": "c1-1b",
+          "start": 12.18,
+          "duration": 9.429
+        },
+        {
+          "id": "c1-2",
+          "start": 21.96,
+          "duration": 8.533
+        },
+        {
+          "id": "c1-3",
+          "start": 30.84,
+          "duration": 7.253
+        },
+        {
+          "id": "c1-3b",
+          "start": 38.45,
+          "duration": 7.168
+        },
+        {
+          "id": "c1-3c",
+          "start": 45.96,
+          "duration": 7.659
+        },
+        {
+          "id": "c1-4",
+          "start": 53.97,
+          "duration": 6.699
+        },
+        {
+          "id": "c1-4b",
+          "start": 61.02,
+          "duration": 9.365
+        },
+        {
+          "id": "c1-4c",
+          "start": 70.74,
+          "duration": 5.056
+        },
+        {
+          "id": "c1-5",
+          "start": 76.14,
+          "duration": 8.0
+        },
+        {
+          "id": "c1-5b",
+          "start": 84.49,
+          "duration": 8.491
+        },
+        {
+          "id": "c1-6",
+          "start": 93.33,
+          "duration": 9.195
+        },
+        {
+          "id": "c1-6b",
+          "start": 102.88,
+          "duration": 7.381
+        },
+        {
+          "id": "c1-7",
+          "start": 110.61,
+          "duration": 13.163
+        },
+        {
+          "id": "c1-7b",
+          "start": 124.12,
+          "duration": 6.016
+        },
+        {
+          "id": "c1-8",
+          "start": 130.49,
+          "duration": 7.339
+        },
+        {
+          "id": "c1-8b",
+          "start": 138.18,
+          "duration": 4.587
+        },
+        {
+          "id": "c1-9",
+          "start": 143.12,
+          "duration": 9.003
+        },
+        {
+          "id": "c1-9b",
+          "start": 152.47,
+          "duration": 7.744
+        },
+        {
+          "id": "c1-9c",
+          "start": 160.56,
+          "duration": 4.053
+        },
+        {
+          "id": "c1-10",
+          "start": 164.97,
+          "duration": 9.6
+        },
+        {
+          "id": "c1-10b",
+          "start": 174.92,
+          "duration": 6.549
+        },
+        {
+          "id": "c1-11",
+          "start": 181.81,
+          "duration": 9.024
+        },
+        {
+          "id": "c1-12",
+          "start": 191.19,
+          "duration": 5.803
+        },
+        {
+          "id": "c1-13",
+          "start": 197.34,
+          "duration": 7.36
+        },
+        {
+          "id": "c1-13b",
+          "start": 205.05,
+          "duration": 7.168
+        },
+        {
+          "id": "c1-13c",
+          "start": 212.57,
+          "duration": 8.384
+        },
+        {
+          "id": "c1-13d",
+          "start": 221.3,
+          "duration": 6.613
+        },
+        {
+          "id": "c1-14",
+          "start": 228.27,
+          "duration": 7.019
+        },
+        {
+          "id": "c1-14b",
+          "start": 235.64,
+          "duration": 7.211
+        },
+        {
+          "id": "c1-15",
+          "start": 243.2,
+          "duration": 5.781
+        },
+        {
+          "id": "c1-15b",
+          "start": 249.33,
+          "duration": 7.061
+        },
+        {
+          "id": "c1-15c",
+          "start": 256.74,
+          "duration": 3.776
+        },
+        {
+          "id": "c1-16",
+          "start": 260.86,
+          "duration": 7.104
+        },
+        {
+          "id": "c1-16b",
+          "start": 268.32,
+          "duration": 8.875
+        },
+        {
+          "id": "c1-16c",
+          "start": 277.54,
+          "duration": 7.424
+        },
+        {
+          "id": "c1-16d",
+          "start": 285.32,
+          "duration": 3.968
+        },
+        {
+          "id": "c1-17",
+          "start": 289.64,
+          "duration": 9.792
+        },
+        {
+          "id": "c1-18",
+          "start": 299.78,
+          "duration": 7.424
+        },
+        {
+          "id": "c1-18b",
+          "start": 307.55,
+          "duration": 4.651
+        },
+        {
+          "id": "c1-19",
+          "start": 312.55,
+          "duration": 6.08
+        },
+        {
+          "id": "c1-19b",
+          "start": 318.98,
+          "duration": 7.659
+        },
+        {
+          "id": "c1-19c",
+          "start": 326.99,
+          "duration": 8.96
+        },
+        {
+          "id": "c1-end",
+          "start": 336.3,
+          "duration": 2.112
+        },
+        {
+          "id": "c1-after",
+          "start": 390.45,
+          "duration": 7.829
+        },
+        {
+          "id": "c1-afterb",
+          "start": 398.63,
+          "duration": 6.571
+        },
+        {
+          "id": "c1-afterc",
+          "start": 405.55,
+          "duration": 3.883
+        },
+        {
+          "id": "c1-close",
+          "start": 409.78,
+          "duration": 1.963
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 336.3,
+          "duration": 50.3,
+          "items": [
+            "Which sentences in the description are reasons for an unusual choice? What would you have to read to know whether each reason is true?",
+            "Pick the main thing a user does with the feature. Have you seen every file that action touches, and every place that shows its result?",
+            "For every value that comes from outside the code (users, URLs, other services): what is the last place it reaches?",
+            "What does the user see when each request fails, is slow, or arrives twice?",
+            "What happens if the user acts again before the first action finishes?",
+            "For each finding: can you state the impact in one sentence, and does the label follow from it?",
+            "Before each comment that says \"this is wrong\": can you name the failure, or only the shape you recognised?",
+            "Does every blocking comment say what to do and which test would have caught it?",
+            "If the author read only your summary, would they know what to fix first?"
+          ]
+        },
+        "pause": {
+          "start": 386.6,
+          "duration": 3.5
+        }
+      }
+    }
+  ]
+}
