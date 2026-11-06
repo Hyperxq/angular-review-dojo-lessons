@@ -1,0 +1,402 @@
+{
+  "total": 611.21,
+  "scenes": [
+    {
+      "id": "c0",
+      "start": 0.0,
+      "duration": 140.29,
+      "clips": [
+        {
+          "id": "c0-1",
+          "start": 3.0,
+          "duration": 9.109
+        },
+        {
+          "id": "c0-1b",
+          "start": 12.46,
+          "duration": 8.491
+        },
+        {
+          "id": "c0-2",
+          "start": 21.3,
+          "duration": 7.275
+        },
+        {
+          "id": "c0-3",
+          "start": 28.92,
+          "duration": 7.467
+        },
+        {
+          "id": "c0-4",
+          "start": 36.74,
+          "duration": 8.235
+        },
+        {
+          "id": "c0-6",
+          "start": 45.33,
+          "duration": 7.296
+        },
+        {
+          "id": "c0-7",
+          "start": 52.97,
+          "duration": 9.536
+        },
+        {
+          "id": "c0-9",
+          "start": 62.86,
+          "duration": 9.173
+        },
+        {
+          "id": "c0-10",
+          "start": 72.38,
+          "duration": 6.464
+        },
+        {
+          "id": "c0-11",
+          "start": 79.2,
+          "duration": 9.323
+        },
+        {
+          "id": "c0-12",
+          "start": 88.87,
+          "duration": 8.789
+        },
+        {
+          "id": "c0-13",
+          "start": 98.01,
+          "duration": 11.648
+        },
+        {
+          "id": "c0-15",
+          "start": 110.01,
+          "duration": 9.963
+        },
+        {
+          "id": "c0-16",
+          "start": 120.32,
+          "duration": 9.664
+        },
+        {
+          "id": "c0-18",
+          "start": 130.33,
+          "duration": 8.96
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        }
+      }
+    },
+    {
+      "id": "c1",
+      "start": 140.29,
+      "duration": 117.2,
+      "clips": [
+        {
+          "id": "c1-1",
+          "start": 3.0,
+          "duration": 6.784
+        },
+        {
+          "id": "c1-2",
+          "start": 10.13,
+          "duration": 8.192
+        },
+        {
+          "id": "c1-3",
+          "start": 18.68,
+          "duration": 9.536
+        },
+        {
+          "id": "c1-5",
+          "start": 28.56,
+          "duration": 8.661
+        },
+        {
+          "id": "c1-7",
+          "start": 37.57,
+          "duration": 10.432
+        },
+        {
+          "id": "c1-8",
+          "start": 48.36,
+          "duration": 6.485
+        },
+        {
+          "id": "c1-9",
+          "start": 55.19,
+          "duration": 9.579
+        },
+        {
+          "id": "c1-10",
+          "start": 65.12,
+          "duration": 8.192
+        },
+        {
+          "id": "c1-12",
+          "start": 73.66,
+          "duration": 9.429
+        },
+        {
+          "id": "c1-13",
+          "start": 83.44,
+          "duration": 7.808
+        },
+        {
+          "id": "c1-end",
+          "start": 91.6,
+          "duration": 2.091
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 91.6,
+          "duration": 22.1,
+          "items": [
+            "For each line in a constructor or initializer: would it work in a process that has no browser?",
+            "Which of these platform checks could be replaced by a tool that works on both platforms?",
+            "Does anything in the first render depend on a value only the browser knows?",
+            "What does the late update cost in layout shift or LCP, and could the server know the value instead?"
+          ]
+        },
+        "pause": {
+          "start": 113.7,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c2",
+      "start": 257.49,
+      "duration": 198.09,
+      "clips": [
+        {
+          "id": "c2-1",
+          "start": 3.0,
+          "duration": 5.269
+        },
+        {
+          "id": "c2-2",
+          "start": 8.62,
+          "duration": 8.405
+        },
+        {
+          "id": "c2-3",
+          "start": 17.37,
+          "duration": 8.256
+        },
+        {
+          "id": "c2-4",
+          "start": 25.98,
+          "duration": 8.085
+        },
+        {
+          "id": "c2-5",
+          "start": 34.41,
+          "duration": 7.808
+        },
+        {
+          "id": "c2-6",
+          "start": 42.57,
+          "duration": 8.896
+        },
+        {
+          "id": "c2-7",
+          "start": 51.82,
+          "duration": 9.301
+        },
+        {
+          "id": "c2-8",
+          "start": 61.47,
+          "duration": 8.469
+        },
+        {
+          "id": "c2-9",
+          "start": 70.29,
+          "duration": 9.28
+        },
+        {
+          "id": "c2-10",
+          "start": 79.92,
+          "duration": 8.491
+        },
+        {
+          "id": "c2-11",
+          "start": 88.76,
+          "duration": 9.685
+        },
+        {
+          "id": "c2-12",
+          "start": 98.79,
+          "duration": 11.051
+        },
+        {
+          "id": "c2-13",
+          "start": 110.2,
+          "duration": 10.581
+        },
+        {
+          "id": "c2-14",
+          "start": 121.13,
+          "duration": 9.088
+        },
+        {
+          "id": "c2-15",
+          "start": 130.56,
+          "duration": 8.619
+        },
+        {
+          "id": "c2-16",
+          "start": 139.53,
+          "duration": 7.829
+        },
+        {
+          "id": "c2-17",
+          "start": 147.71,
+          "duration": 9.301
+        },
+        {
+          "id": "c2-18",
+          "start": 157.36,
+          "duration": 7.275
+        },
+        {
+          "id": "c2-end",
+          "start": 164.99,
+          "duration": 2.112
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 164.99,
+          "duration": 29.6,
+          "items": [
+            "For each value in the first render: where does it come from, and would the other platform compute the same one?",
+            "Would the browser's HTML parser read every template exactly as written?",
+            "Does anything change the DOM outside a template, and when does it run relative to hydration?",
+            "What does this page start on the server that might never finish?",
+            "For each request on this page, would the browser repeat it, and would the cache take it?",
+            "What does the user lose if this goes wrong, and how would you prove it?"
+          ]
+        },
+        "pause": {
+          "start": 194.59,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c3",
+      "start": 455.58,
+      "duration": 155.63,
+      "clips": [
+        {
+          "id": "c3-1",
+          "start": 3.0,
+          "duration": 9.664
+        },
+        {
+          "id": "c3-2",
+          "start": 13.01,
+          "duration": 10.283
+        },
+        {
+          "id": "c3-3",
+          "start": 23.65,
+          "duration": 4.629
+        },
+        {
+          "id": "c3-4",
+          "start": 28.63,
+          "duration": 7.915
+        },
+        {
+          "id": "c3-5",
+          "start": 36.89,
+          "duration": 9.6
+        },
+        {
+          "id": "c3-6",
+          "start": 46.84,
+          "duration": 7.232
+        },
+        {
+          "id": "c3-7",
+          "start": 54.42,
+          "duration": 10.411
+        },
+        {
+          "id": "c3-8",
+          "start": 65.18,
+          "duration": 9.451
+        },
+        {
+          "id": "c3-10",
+          "start": 74.98,
+          "duration": 7.808
+        },
+        {
+          "id": "c3-11",
+          "start": 83.14,
+          "duration": 8.491
+        },
+        {
+          "id": "c3-12",
+          "start": 91.98,
+          "duration": 10.645
+        },
+        {
+          "id": "c3-13",
+          "start": 102.98,
+          "duration": 10.133
+        },
+        {
+          "id": "c3-end",
+          "start": 113.46,
+          "duration": 2.197
+        },
+        {
+          "id": "c3-after",
+          "start": 143.91,
+          "duration": 8.405
+        },
+        {
+          "id": "c3-close",
+          "start": 152.67,
+          "duration": 1.963
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 113.46,
+          "duration": 26.6,
+          "items": [
+            "For each `@defer (hydrate ...)` block: what does its trigger say about how people use that region, and is that true?",
+            "What does each region cost in JavaScript before it responds, and who pays it: every visitor, or only those who use it?",
+            "After a client-side navigation, which trigger applies to this block?",
+            "For each `ngSkipHydration`: which error did it silence, and what was the cause?",
+            "What would this page's Interaction to Next Paint look like for the region people use most?"
+          ]
+        },
+        "pause": {
+          "start": 140.06,
+          "duration": 3.5
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,390 @@
+{
+  "total": 617.7,
+  "scenes": [
+    {
+      "id": "c0",
+      "start": 0.0,
+      "duration": 163.06,
+      "clips": [
+        {
+          "id": "c0-1",
+          "start": 3.0,
+          "duration": 9.877
+        },
+        {
+          "id": "c0-1b",
+          "start": 13.23,
+          "duration": 5.568
+        },
+        {
+          "id": "c0-2",
+          "start": 19.14,
+          "duration": 8.683
+        },
+        {
+          "id": "c0-3",
+          "start": 28.18,
+          "duration": 9.984
+        },
+        {
+          "id": "c0-4",
+          "start": 38.51,
+          "duration": 11.819
+        },
+        {
+          "id": "c0-5",
+          "start": 50.68,
+          "duration": 11.243
+        },
+        {
+          "id": "c0-6",
+          "start": 62.27,
+          "duration": 9.024
+        },
+        {
+          "id": "c0-7",
+          "start": 71.65,
+          "duration": 9.835
+        },
+        {
+          "id": "c0-8",
+          "start": 81.83,
+          "duration": 8.085
+        },
+        {
+          "id": "c0-9",
+          "start": 90.27,
+          "duration": 10.155
+        },
+        {
+          "id": "c0-10",
+          "start": 100.77,
+          "duration": 8.96
+        },
+        {
+          "id": "c0-11",
+          "start": 110.08,
+          "duration": 9.067
+        },
+        {
+          "id": "c0-12",
+          "start": 119.5,
+          "duration": 9.301
+        },
+        {
+          "id": "c0-13",
+          "start": 129.15,
+          "duration": 10.581
+        },
+        {
+          "id": "c0-14",
+          "start": 140.08,
+          "duration": 10.069
+        },
+        {
+          "id": "c0-15",
+          "start": 150.5,
+          "duration": 11.563
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        }
+      }
+    },
+    {
+      "id": "c1",
+      "start": 163.06,
+      "duration": 140.61,
+      "clips": [
+        {
+          "id": "c1-1",
+          "start": 3.0,
+          "duration": 8.213
+        },
+        {
+          "id": "c1-2",
+          "start": 11.56,
+          "duration": 9.259
+        },
+        {
+          "id": "c1-3",
+          "start": 21.17,
+          "duration": 10.667
+        },
+        {
+          "id": "c1-4",
+          "start": 32.19,
+          "duration": 10.944
+        },
+        {
+          "id": "c1-5",
+          "start": 43.48,
+          "duration": 7.104
+        },
+        {
+          "id": "c1-6",
+          "start": 50.94,
+          "duration": 6.997
+        },
+        {
+          "id": "c1-7",
+          "start": 58.28,
+          "duration": 8.469
+        },
+        {
+          "id": "c1-8",
+          "start": 67.1,
+          "duration": 9.28
+        },
+        {
+          "id": "c1-9",
+          "start": 76.73,
+          "duration": 10.347
+        },
+        {
+          "id": "c1-10",
+          "start": 87.43,
+          "duration": 8.683
+        },
+        {
+          "id": "c1-11",
+          "start": 96.46,
+          "duration": 8.704
+        },
+        {
+          "id": "c1-12",
+          "start": 105.52,
+          "duration": 11.84
+        },
+        {
+          "id": "c1-end",
+          "start": 117.71,
+          "duration": 2.347
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 117.71,
+          "duration": 19.4,
+          "items": [
+            "For each value bound into the template: who wrote it, and which security context does the binding use?",
+            "Who outside your team can produce this value, directly or through something they control?",
+            "Is this the least powerful binding that renders what the feature needs?",
+            "Is any decision about a URL made with string methods instead of the parser?"
+          ]
+        },
+        "pause": {
+          "start": 137.11,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c2",
+      "start": 303.67,
+      "duration": 146.36,
+      "clips": [
+        {
+          "id": "c2-1",
+          "start": 3.0,
+          "duration": 9.707
+        },
+        {
+          "id": "c2-2",
+          "start": 13.06,
+          "duration": 9.963
+        },
+        {
+          "id": "c2-3",
+          "start": 23.37,
+          "duration": 10.091
+        },
+        {
+          "id": "c2-4",
+          "start": 33.81,
+          "duration": 10.987
+        },
+        {
+          "id": "c2-5",
+          "start": 45.15,
+          "duration": 10.005
+        },
+        {
+          "id": "c2-6",
+          "start": 55.5,
+          "duration": 10.773
+        },
+        {
+          "id": "c2-7",
+          "start": 66.63,
+          "duration": 8.427
+        },
+        {
+          "id": "c2-8",
+          "start": 75.4,
+          "duration": 9.195
+        },
+        {
+          "id": "c2-9",
+          "start": 84.95,
+          "duration": 8.896
+        },
+        {
+          "id": "c2-10",
+          "start": 94.19,
+          "duration": 5.632
+        },
+        {
+          "id": "c2-11",
+          "start": 100.18,
+          "duration": 10.752
+        },
+        {
+          "id": "c2-12",
+          "start": 111.28,
+          "duration": 9.131
+        },
+        {
+          "id": "c2-end",
+          "start": 120.76,
+          "duration": 2.027
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 120.76,
+          "duration": 22.1,
+          "items": [
+            "For each interceptor: which destinations does it touch, and what happens for a destination nobody listed yet?",
+            "If this credential leaked, who would hold it and for how long?",
+            "Which of your defences would still hold if the browser sent cookies cross-site?",
+            "For every log line, event and error report: which fields could hold a credential or personal data? Would you paste this line in a ticket?"
+          ]
+        },
+        "pause": {
+          "start": 142.86,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c3",
+      "start": 450.03,
+      "duration": 167.67,
+      "clips": [
+        {
+          "id": "c3-1",
+          "start": 3.0,
+          "duration": 10.133
+        },
+        {
+          "id": "c3-2",
+          "start": 13.48,
+          "duration": 10.155
+        },
+        {
+          "id": "c3-3",
+          "start": 23.99,
+          "duration": 9.515
+        },
+        {
+          "id": "c3-4",
+          "start": 33.85,
+          "duration": 10.304
+        },
+        {
+          "id": "c3-5",
+          "start": 44.51,
+          "duration": 8.896
+        },
+        {
+          "id": "c3-6",
+          "start": 53.75,
+          "duration": 9.6
+        },
+        {
+          "id": "c3-7",
+          "start": 63.7,
+          "duration": 7.083
+        },
+        {
+          "id": "c3-8",
+          "start": 71.14,
+          "duration": 7.552
+        },
+        {
+          "id": "c3-end",
+          "start": 79.04,
+          "duration": 2.197
+        },
+        {
+          "id": "c3-out",
+          "start": 105.29,
+          "duration": 9.835
+        },
+        {
+          "id": "c3-outb",
+          "start": 115.47,
+          "duration": 6.976
+        },
+        {
+          "id": "c3-outc",
+          "start": 122.8,
+          "duration": 10.709
+        },
+        {
+          "id": "c3-outd",
+          "start": 133.86,
+          "duration": 11.861
+        },
+        {
+          "id": "c3-after",
+          "start": 146.07,
+          "duration": 9.451
+        },
+        {
+          "id": "c3-afterb",
+          "start": 155.87,
+          "duration": 5.483
+        },
+        {
+          "id": "c3-close",
+          "start": 161.7,
+          "duration": 4.971
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 79.04,
+          "duration": 22.4,
+          "items": [
+            "For each place text becomes markup: is the text escaped for the context it is written into, and before any tags are added?",
+            "Which writes to the DOM happen outside a template binding?",
+            "Could this feature return data and let the template render it?",
+            "Who outside your team can produce the text that reaches this sink?",
+            "If one of these defences failed, what would the next layer catch?"
+          ]
+        },
+        "pause": {
+          "start": 101.44,
+          "duration": 3.5
+        }
+      }
+    }
+  ]
+}
