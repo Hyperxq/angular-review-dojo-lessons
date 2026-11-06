@@ -37,3 +37,9 @@
 ## Weakest shot
 
 - c1-9: the due-dates graded example is on screen about 6.9 s against a 15.5 s reading floor.
+
+## Delivery
+
+- `renders/a11y-lesson.mp4` (gitignored; published in release `videos-batch-5`): 1920x1080, 30 fps, 11:32, about 34 MB.
+- Mix normalized with ffmpeg `loudnorm` (I=-16, TP=-1.5): -16.5 LUFS integrated, true peak -1.4 dBTP, clipping count 0.
+- Frame 0 is chapter 0's card, which serves as the thumbnail.

@@ -347,6 +347,78 @@
           "start": 455.6
         }
       ]
+    },
+    {
+      "topic": "state",
+      "release": "videos-batch-5",
+      "file": "state-lesson.mp4",
+      "duration": 608.3,
+      "chapters": [
+        {
+          "number": 0,
+          "start": 0.0
+        },
+        {
+          "number": 1,
+          "start": 180.7
+        },
+        {
+          "number": 2,
+          "start": 320.7
+        },
+        {
+          "number": 3,
+          "start": 469.7
+        }
+      ]
+    },
+    {
+      "topic": "http-errors",
+      "release": "videos-batch-5",
+      "file": "http-errors-lesson.mp4",
+      "duration": 630.2,
+      "chapters": [
+        {
+          "number": 0,
+          "start": 0.0
+        },
+        {
+          "number": 1,
+          "start": 115.9
+        },
+        {
+          "number": 2,
+          "start": 274.1
+        },
+        {
+          "number": 3,
+          "start": 447.6
+        }
+      ]
+    },
+    {
+      "topic": "a11y",
+      "release": "videos-batch-5",
+      "file": "a11y-lesson.mp4",
+      "duration": 692.0,
+      "chapters": [
+        {
+          "number": 0,
+          "start": 0.0
+        },
+        {
+          "number": 1,
+          "start": 138.9
+        },
+        {
+          "number": 2,
+          "start": 316.3
+        },
+        {
+          "number": 3,
+          "start": 539.8
+        }
+      ]
     }
   ]
 }

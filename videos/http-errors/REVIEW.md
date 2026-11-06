@@ -32,3 +32,9 @@
 
 - c1-16: the 55-word should-fix comment is on screen 8.2 s against a 12.75 s reading floor; the questions card starts at a
   fixed time right after it.
+
+## Delivery
+
+- `renders/http-errors-lesson.mp4` (gitignored; published in release `videos-batch-5`): 1920x1080, 30 fps, 10:30, about 28 MB.
+- Mix normalized with ffmpeg `loudnorm` (I=-16, TP=-1.5): -16.4 LUFS integrated, true peak -1.4 dBTP, clipping count 0.
+- Frame 0 is chapter 0's card, which serves as the thumbnail.
