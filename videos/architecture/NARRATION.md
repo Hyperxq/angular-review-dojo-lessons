@@ -60,7 +60,7 @@ bed plays. Each exercise chapter ends on "Pause here. Now do exercise NN." as a 
 ## Chapter 3: changing structure without changing behaviour (15:00)
 
 - c3-1 | Three o'clock. Every feature of the library app calls Legacy Catalog Client for anything about books. This afternoon is about reshaping code like that safely. | clock 15:00; desk app at rest; `LegacyCatalogClient` as a label
-- c3-2 | Read the single responsibility principle in its original wording: a module should have one reason to change, meaning one group of people asking for its changes. | heading "Reasons to change"
+- c3-2 | Read the single responsibility principle with its author's later clarification: a module should have one reason to change, meaning one group of people asking for its changes. | heading "Reasons to change"
 - c3-2b | Cohesion means a module's parts change together, for the same people. Coupling is how much a module must know about others to do its job. | the labels **cohesion** and **coupling**
 - c3-3 | To find the seams, ask who requests changes to each part, and read the history. Files that always change together belong together. | heading "Finding where to cut"; the lesson's `git log` command
 - c3-3b | Then look at state. Whoever writes a piece of state owns it, and code that writes state owned elsewhere is coupled to it, whatever the names say. | same heading, the third item banded
