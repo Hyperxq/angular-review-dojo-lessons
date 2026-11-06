@@ -1,0 +1,369 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    code { font-family: var(--font-code); font-size: 0.92em; }
+
+    .c2-h { position: absolute; left: 140px; top: 100px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c2-h code { font: 600 56px/1 var(--font-code); }
+    .c2-prose { position: absolute; left: 140px; width: 1560px; font: 400 40px/1.45 var(--font-text); }
+    .c2-prose span { border-radius: 4px; }
+    .c2-chip { position: absolute; box-sizing: border-box; padding: 24px 40px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 48px/1 var(--font-code); white-space: nowrap; }
+    .c2-chip.hot { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .c2-cap { position: absolute; font: 400 32px/1.3 var(--font-text); color: var(--ink-muted); white-space: nowrap; }
+
+    /* desk: the shelf page */
+    .c2-shelves { position: absolute; left: 40px; right: 40px; top: 96px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .c2-bay { height: 280px; box-sizing: border-box; padding: 32px 36px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
+    .c2-bay b { display: block; font: 600 48px/1.1 var(--font-display); }
+    .c2-bay span { display: block; margin-top: 18px; font: 400 32px/1.3 var(--font-text); color: var(--ink-muted); }
+    .c2-bay i { display: block; height: 22px; margin-top: 30px; border-radius: 4px; background: var(--rule); font-style: normal; }
+
+    /* the "open now" badge */
+    .c2-badge { display: inline-block; padding: 12px 22px; border-radius: 8px; background: var(--tip-soft); color: var(--tip); font: 700 32px/1 var(--font-text); }
+    .c2-hdr { position: absolute; left: 120px; top: 80px; width: 1680px; height: 100px; box-sizing: border-box; padding: 0 40px; display: flex; align-items: center; gap: 36px; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow); font: 700 34px/1 var(--font-text); }
+    .c2-hdr .app-clock { margin-left: auto; }
+    .c2-side { position: absolute; top: 300px; width: 780px; height: 600px; box-sizing: border-box; padding: 48px; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; }
+    .c2-side .c2-tz { font: 700 48px/1 var(--font-code); }
+    .c2-side .label { margin-top: 16px; }
+    .c2-slot { position: absolute; left: 48px; top: 240px; width: 300px; height: 84px; box-sizing: border-box; border-radius: 8px; }
+    .c2-slot .c2-badge { padding: 26px 32px; }
+    #c2-empty { border: 3px dashed var(--accent); }
+
+    /* options, rows, lists */
+    .c2-opts { position: absolute; left: 140px; top: 380px; width: 1600px; }
+    .c2-opt { display: grid; grid-template-columns: 70px 1fr; padding: 22px 0; border-bottom: 1px solid var(--rule); font: 400 38px/1.4 var(--font-text); }
+    .c2-opt b { color: var(--ink-muted); }
+
+    .c2-code { left: 140px; top: 280px; padding: 40px 48px; font-size: 34px; line-height: 1.5; }
+    .c2-code .ln { margin: 0 -48px; padding: 0 48px; border-radius: 0; background-color: rgba(245, 226, 217, 0); }
+
+    .c2-list { position: absolute; left: 140px; top: 210px; width: 1640px; }
+    #c2-cache .c2-list { top: 180px; }
+    .c2-row { padding: 16px 28px; border-bottom: 1px solid var(--rule); border-radius: 6px; font: 400 30px/1.35 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c2-row code { font: 400 28px/1 var(--font-code); white-space: nowrap; }
+    #c2-cache-close { margin-top: 18px; border-bottom: 0; font-weight: 700; }
+
+    .c2-dom .c2-row { font-size: 40px; padding: 26px 32px; }
+    .c2-dom .c2-row code { font-size: 36px; }
+
+    /* sequence flow: lifelines and labelled arrows */
+    .c2-flow .fbox { top: 190px; height: 100px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; white-space: nowrap; }
+    .c2-flow .flabel { line-height: 38px; }
+
+    #c2-questions .q { font-size: 40px; margin-bottom: 26px; }
+  </style>
+
+  <div id="root" data-composition-id="c2" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c2-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">11:30</div>
+      <div class="chapter-title">Hydration matches by structure</div>
+    </div>
+
+    <!-- c2-1: 11:30, the desk's shelf page -->
+    <div id="c2-desk" class="clip world sunk" data-start="3" data-duration="5.62">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">11:30</span></div>
+        <div class="app-body" data-hold>
+          <div class="label" style="position: absolute; left: 40px; top: 36px">Shelf map, ground floor</div>
+          <div class="c2-shelves">
+            <div class="c2-bay"><b>Fiction</b><span>Bays 1 to 6</span><i style="width: 80%"></i></div>
+            <div class="c2-bay"><b>Poetry</b><span>Bay 7</span><i style="width: 45%"></i></div>
+            <div class="c2-bay"><b>History</b><span>Bays 8 to 10</span><i style="width: 65%"></i></div>
+            <div class="c2-bay"><b>Science</b><span>Bays 11 to 13</span><i style="width: 55%"></i></div>
+            <div class="c2-bay"><b>Travel</b><span>Bay 14</span><i style="width: 35%"></i></div>
+            <div class="c2-bay"><b>Children</b><span>Bays 15 and 16</span><i style="width: 70%"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-2, c2-3: what hydration checks; the NG0500 family -->
+    <div id="c2-check" class="clip world" data-start="8.62" data-duration="17.36">
+      <div class="c2-h">What hydration checks</div>
+      <div id="c2-ck1" class="c2-prose" style="top: 250px">Hydration walks the server DOM alongside the component tree and claims existing nodes instead of creating new ones.</div>
+      <div id="c2-ck2" class="c2-prose" style="top: 390px">For each node it checks <span id="c2-ck-mk">the node type and, for elements, the tag name</span>.</div>
+      <div id="c2-ng500" class="c2-chip hot" style="left: 140px; top: 620px">NG0500</div>
+      <div id="c2-ng500-msg" class="c2-cap" style="left: 140px; top: 760px; font-size: 36px; color: var(--ink)" data-hold>"Expected DOM node did not match the server-rendered DOM"</div>
+    </div>
+
+    <!-- c2-4: text is not compared -->
+    <div id="c2-text" class="clip world" data-start="25.98" data-duration="8.43">
+      <div id="c2-t1" class="c2-chip" style="left: 300px; top: 380px; font-size: 96px; padding: 40px 64px">10:00</div>
+      <div id="c2-t1c" class="c2-cap" style="left: 300px; top: 580px">server</div>
+      <div id="c2-t2" class="c2-chip hot" style="left: 1060px; top: 380px; font-size: 96px; padding: 40px 64px">11:00</div>
+      <div id="c2-t2c" class="c2-cap" style="left: 1060px; top: 580px">browser</div>
+      <div id="c2-t3" class="c2-cap" style="left: 300px; top: 720px; font-size: 40px; color: var(--ink)" data-hold>the node still matches</div>
+    </div>
+
+    <!-- c2-5: structure is compared -->
+    <div id="c2-struct" class="clip world" data-start="34.41" data-duration="8.16">
+      <div id="c2-if" class="c2-chip" style="left: 300px; top: 380px; font-size: 80px; padding: 36px 56px">@if</div>
+      <div id="c2-ifc" class="c2-cap" style="left: 300px; top: 560px">an <code>@if</code> that flips</div>
+      <div id="c2-for" class="c2-chip" style="left: 1000px; top: 380px; font-size: 80px; padding: 36px 56px" data-hold>@for</div>
+      <div id="c2-forc" class="c2-cap" style="left: 1000px; top: 560px" data-hold>an <code>@for</code> with a different number of items</div>
+    </div>
+
+    <!-- c2-6: the three families; the first one named -->
+    <div id="c2-fam" class="clip world" data-start="42.57" data-duration="9.25">
+      <div id="c2-fh1" class="c2-h">1. Values that differ between the two renders</div>
+      <div id="c2-fh2" class="c2-h" style="top: 220px; color: var(--ink-muted)">2. HTML that the parser reshapes</div>
+      <div id="c2-fh3" class="c2-h" style="top: 340px; color: var(--ink-muted)">3. DOM changes behind Angular's back</div>
+      <div id="c2-fl" class="c2-prose" style="top: 280px" data-hold>The clock, randomness, the time zone, the locale, storage, the viewport.</div>
+    </div>
+
+    <!-- c2-7: the "open now" badge, UTC against local time -->
+    <div id="c2-open" class="clip world sunk" data-start="51.82" data-duration="9.65">
+      <div class="c2-hdr"><span>Circulation desk</span><span class="c2-badge">Open now</span><span class="app-clock">11:30</span></div>
+      <div id="c2-utc" class="c2-side" style="left: 120px">
+        <div class="c2-tz">UTC</div>
+        <div class="label">server</div>
+        <div id="c2-slot1" class="c2-slot"><span class="c2-badge">Open now</span></div>
+      </div>
+      <div id="c2-local" class="c2-side" style="left: 1020px">
+        <div class="c2-tz">local time</div>
+        <div class="label">browser</div>
+        <div id="c2-empty" class="c2-slot" data-hold></div>
+      </div>
+    </div>
+
+    <!-- c2-8: one source both renders use -->
+    <div id="c2-src" class="clip world" data-start="61.47" data-duration="8.82">
+      <div id="c2-src-lead" class="c2-prose" style="top: 140px">Making the first render deterministic means choosing one source for the value both renders use:</div>
+      <div class="c2-opts">
+        <div id="c2-o1" class="c2-opt"><b>1</b><span>format times in a fixed time zone both sides know (<code>DatePipe</code> accepts a time zone argument),</span></div>
+        <div id="c2-o2" class="c2-opt"><b>2</b><span>compute the value from data both sides receive,</span></div>
+        <div id="c2-o3" class="c2-opt" data-hold><b>3</b><span>or let the browser fill it in after hydration and accept the late update (with its layout cost from chapter 1).</span></div>
+      </div>
+    </div>
+
+    <!-- c2-9, c2-10: HTML that the parser reshapes (LESSON.md code) -->
+    <div id="c2-parse" class="clip world" data-start="70.29" data-duration="18.47">
+      <div class="c2-h">2. HTML that the parser reshapes</div>
+      <div id="c2-parse-code" class="code c2-code" data-hold>
+<span class="ln">&lt;p&gt;Shelves: &lt;ul&gt;&lt;li&gt;Fiction&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</span>
+<span id="c2-pc1" class="ln c">&lt;!-- parsed as &lt;p&gt;Shelves: &lt;/p&gt;&lt;ul&gt;&lt;li&gt;Fiction&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;/p&gt; --&gt;</span>
+<span class="ln"> </span>
+<span class="ln">&lt;button&gt;Reserve &lt;button&gt;Info&lt;/button&gt;&lt;/button&gt;</span>
+<span id="c2-pc2" class="ln c">&lt;!-- parsed as &lt;button&gt;Reserve &lt;/button&gt;&lt;button&gt;Info&lt;/button&gt; --&gt;</span>
+      </div>
+    </div>
+
+    <!-- c2-11, c2-12: DOM changes behind Angular's back -->
+    <div id="c2-dom" class="clip world" data-start="88.76" data-duration="21.44">
+      <div class="c2-h">3. DOM changes behind Angular's back</div>
+      <div class="c2-list c2-dom">
+        <div id="c2-d1" class="c2-row">a directive that moves its host into <code>document.body</code> to act as an overlay,</div>
+        <div id="c2-d2" class="c2-row">a script in <code>index.html</code> that inserts a banner into the app's root element,</div>
+        <div id="c2-d3" class="c2-row" data-hold>a widget that rewrites the markup it was given.</div>
+      </div>
+      <div id="c2-anr" class="c2-chip hot" style="left: 140px; top: 720px" data-hold>afterNextRender</div>
+    </div>
+
+    <!-- c2-13, c2-14: stability -->
+    <div id="c2-stable" class="clip world" data-start="110.2" data-duration="20.36">
+      <div class="c2-h">Stability: when the server is done</div>
+      <div id="c2-st1" class="c2-prose" style="top: 230px">It waits until the application is <b>stable</b>: no pending tasks.</div>
+      <div id="c2-pt" class="c2-chip" style="left: 140px; top: 330px">PendingTasks</div>
+      <div id="c2-st2" class="c2-prose" style="top: 520px">In a zoneless app, the default since v21, only pending tasks count.</div>
+      <div id="c2-ng506" class="c2-chip hot" style="left: 140px; top: 650px" data-hold>NG0506</div>
+      <div id="c2-ng506c" class="c2-cap" style="left: 140px; top: 780px" data-hold>browser, dev mode</div>
+    </div>
+
+    <!-- c2-15: the transfer cache flow (LESSON.md) -->
+    <div id="c2-xfer" class="clip world sunk c2-flow" data-start="130.56" data-duration="8.97">
+      <div class="c2-h" style="top: 64px">The HTTP transfer cache</div>
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <g stroke="#c4b9a6" stroke-width="3" stroke-dasharray="8 10">
+          <line x1="300" y1="290" x2="300" y2="1000" />
+          <line x1="760" y1="290" x2="760" y2="1000" />
+          <line x1="1260" y1="290" x2="1260" y2="1000" />
+          <line x1="1640" y1="290" x2="1640" y2="1000" />
+        </g>
+        <g stroke="#1d1b18" stroke-width="4" fill="none">
+          <line id="c2-x1" x1="760" y1="410" x2="320" y2="410" stroke-dasharray="440" />
+          <line id="c2-x2" x1="300" y1="550" x2="740" y2="550" stroke-dasharray="440" />
+          <line id="c2-x3" x1="760" y1="690" x2="1240" y2="690" stroke-dasharray="480" />
+          <line id="c2-x4" x1="1260" y1="830" x2="1620" y2="830" stroke-dasharray="360" />
+          <line id="c2-x5" x1="1640" y1="980" x2="1280" y2="980" stroke="#b8321f" stroke-dasharray="360" />
+        </g>
+        <g fill="#1d1b18">
+          <polygon id="c2-xa1" points="320,398 300,410 320,422" />
+          <polygon id="c2-xa2" points="740,538 760,550 740,562" />
+          <polygon id="c2-xa3" points="1240,678 1260,690 1240,702" />
+          <polygon id="c2-xa4" points="1620,818 1640,830 1620,842" />
+          <polygon id="c2-xa5" points="1280,968 1260,980 1280,992" fill="#b8321f" />
+        </g>
+      </svg>
+      <div id="c2-xb1" class="fbox" style="left: 140px; width: 320px">Library API</div>
+      <div id="c2-xb2" class="fbox" style="left: 570px; width: 380px">Server render</div>
+      <div id="c2-xb3" class="fbox" style="left: 1120px; width: 280px">Browser</div>
+      <div id="c2-xb4" class="fbox" style="left: 1490px; width: 300px">HttpClient</div>
+      <div id="c2-xl1" class="flabel" style="left: 310px; width: 440px; bottom: 682px">GET /api/shelves</div>
+      <div id="c2-xl2" class="flabel" style="left: 310px; width: 440px; bottom: 542px">response stored in TransferState</div>
+      <div id="c2-xl3" class="flabel" style="left: 770px; width: 480px; bottom: 402px">HTML plus a script element with the stored state</div>
+      <div id="c2-xl4" class="flabel" style="left: 1270px; width: 360px; bottom: 262px">GET /api/shelves again during startup</div>
+      <div id="c2-xl5" class="flabel" style="left: 1270px; width: 360px; bottom: 112px; color: var(--accent)" data-hold>answered from the transfer cache without a network request</div>
+    </div>
+
+    <!-- c2-16, c2-17, c2-18: what the cache answers and what it skips (LESSON.md list) -->
+    <div id="c2-cache" class="clip world" data-start="139.53" data-duration="25.46">
+      <div class="c2-h" style="top: 64px">The HTTP transfer cache</div>
+      <div class="c2-list" data-hold>
+        <div id="c2-c1" class="c2-row">It answers only until the browser app first becomes stable. A request made after that (from a timer, after a click, from code that waits for something) goes to the network, even if the server made the same request.</div>
+        <div id="c2-c2" class="c2-row">It caches <code>GET</code> and <code>HEAD</code>; <code>POST</code> only with <code>includePostRequests: true</code>.</div>
+        <div id="c2-c3" class="c2-row">It skips requests with <code>Authorization</code>, <code>Proxy-Authorization</code> or <code>Cookie</code> headers, unless <code>includeRequestsWithAuthHeaders</code> is set.</div>
+        <div id="c2-c4" class="c2-row">It skips requests sent with credentials (<code>withCredentials</code>, or fetch <code>credentials</code> of <code>'include'</code> or <code>'same-origin'</code>), unless <code>includeRequestsWithCredentials</code> is set.</div>
+        <div id="c2-c5" class="c2-row">It skips requests whose <code>Cache-Control</code> header says <code>no-store</code>, <code>private</code> or <code>no-cache</code>, or whose fetch <code>cache</code> option is <code>no-cache</code> or <code>no-store</code>, unless <code>includeNonCacheableRequests</code> is set.</div>
+        <div id="c2-c6" class="c2-row">A request can opt out with its own <code>transferCache: false</code> option, and <code>withHttpTransferCacheOptions({ filter })</code> can exclude more.</div>
+        <div id="c2-cache-close" class="c2-row">Opting in to the authenticated cases writes those responses into the page source, which matters if pages are cached.</div>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c2-questions" class="clip world note" data-start="164.99" data-duration="29.6">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c2-q1" class="q">For each value in the first render: where does it come from, and would the other platform compute the same one?</div>
+        <div id="c2-q2" class="q">Would the browser's HTML parser read every template exactly as written?</div>
+        <div id="c2-q3" class="q">Does anything change the DOM outside a template, and when does it run relative to hydration?</div>
+        <div id="c2-q4" class="q">What does this page start on the server that might never finish?</div>
+        <div id="c2-q5" class="q">For each request on this page, would the browser repeat it, and would the cache take it?</div>
+        <div id="c2-q6" class="q">What does the user lose if this goes wrong, and how would you prove it?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c2-pause" class="clip world" data-start="194.59" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c2-pause-2" class="pause-2">Now do exercise 02.</div>
+    </div>
+
+    <audio id="c2-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="58" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-bed2" class="clip" src="assets/music/bed.mp3" data-start="164.99" data-duration="29.6" data-media-start="110" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c2-1" class="clip" src="assets/vo/c2-1.wav" data-start="3.0" data-duration="5.269" data-volume="1"></audio>
+    <audio id="vo-c2-2" class="clip" src="assets/vo/c2-2.wav" data-start="8.62" data-duration="8.405" data-volume="1"></audio>
+    <audio id="vo-c2-3" class="clip" src="assets/vo/c2-3.wav" data-start="17.37" data-duration="8.256" data-volume="1"></audio>
+    <audio id="vo-c2-4" class="clip" src="assets/vo/c2-4.wav" data-start="25.98" data-duration="8.085" data-volume="1"></audio>
+    <audio id="vo-c2-5" class="clip" src="assets/vo/c2-5.wav" data-start="34.41" data-duration="7.808" data-volume="1"></audio>
+    <audio id="vo-c2-6" class="clip" src="assets/vo/c2-6.wav" data-start="42.57" data-duration="8.896" data-volume="1"></audio>
+    <audio id="vo-c2-7" class="clip" src="assets/vo/c2-7.wav" data-start="51.82" data-duration="9.301" data-volume="1"></audio>
+    <audio id="vo-c2-8" class="clip" src="assets/vo/c2-8.wav" data-start="61.47" data-duration="8.469" data-volume="1"></audio>
+    <audio id="vo-c2-9" class="clip" src="assets/vo/c2-9.wav" data-start="70.29" data-duration="9.28" data-volume="1"></audio>
+    <audio id="vo-c2-10" class="clip" src="assets/vo/c2-10.wav" data-start="79.92" data-duration="8.491" data-volume="1"></audio>
+    <audio id="vo-c2-11" class="clip" src="assets/vo/c2-11.wav" data-start="88.76" data-duration="9.685" data-volume="1"></audio>
+    <audio id="vo-c2-12" class="clip" src="assets/vo/c2-12.wav" data-start="98.79" data-duration="11.051" data-volume="1"></audio>
+    <audio id="vo-c2-13" class="clip" src="assets/vo/c2-13.wav" data-start="110.2" data-duration="10.581" data-volume="1"></audio>
+    <audio id="vo-c2-14" class="clip" src="assets/vo/c2-14.wav" data-start="121.13" data-duration="9.088" data-volume="1"></audio>
+    <audio id="vo-c2-15" class="clip" src="assets/vo/c2-15.wav" data-start="130.56" data-duration="8.619" data-volume="1"></audio>
+    <audio id="vo-c2-16" class="clip" src="assets/vo/c2-16.wav" data-start="139.53" data-duration="7.829" data-volume="1"></audio>
+    <audio id="vo-c2-17" class="clip" src="assets/vo/c2-17.wav" data-start="147.71" data-duration="9.301" data-volume="1"></audio>
+    <audio id="vo-c2-18" class="clip" src="assets/vo/c2-18.wav" data-start="157.36" data-duration="7.275" data-volume="1"></audio>
+    <audio id="vo-c2-end" class="clip" src="assets/vo/c2-end.wav" data-start="164.99" data-duration="2.112" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "#f5e2d9", SOFT0 = "rgba(245, 226, 217, 0)";
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+    const mute = (sel, at) => tl.to(sel, { color: "#5f584d", duration: 0.4, ease: "power2.inOut" }, at);
+    const box = (sel, at) => tl.fromTo(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, at);
+    const draw = (sel, len, at, d = 0.5) =>
+      tl.fromTo(sel, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+    const arrow = (n, len, at) => {
+      draw("#c2-x" + n, len, at, 0.45);
+      fadeIn("#c2-xa" + n, at + 0.4, 0.1);
+      fadeIn("#c2-xl" + n, at + 0.15, 0.4);
+    };
+
+    // chapter card: on screen from frame 0, the time label with no fade
+
+    // c2-2: the walk, then what it checks on "type"
+    fadeIn("#c2-ck1", 8.8);
+    fadeIn("#c2-ck2", 12.4);
+    band("#c2-ck-mk", 13.0);
+
+    // c2-3: the error family on "N G zero five zero zero", then its message
+    mute(["#c2-ck1", "#c2-ck2"], 20.6);
+    box("#c2-ng500", 20.9);
+    fadeIn("#c2-ng500-msg", 21.5);
+
+    // c2-4: the server's text, the browser's text; the node still matches
+    box("#c2-t1", 27.4);
+    fadeIn("#c2-t1c", 27.55, 0.4);
+    box("#c2-t2", 28.8);
+    fadeIn("#c2-t2c", 28.95, 0.4);
+    fadeIn("#c2-t3", 30.3);
+
+    // c2-5: @if on "if", @for on "for"
+    box("#c2-if", 35.8);
+    fadeIn("#c2-ifc", 35.95, 0.4);
+    box("#c2-for", 37.0);
+    fadeIn("#c2-forc", 37.15, 0.4);
+
+    // c2-6: the three families, then the first one on "First"
+    fadeIn(["#c2-fh1", "#c2-fh2", "#c2-fh3"], 42.7);
+    fadeOut(["#c2-fh2", "#c2-fh3"], 45.6);
+    fadeIn("#c2-fl", 48.2);
+
+    // c2-7: UTC, local time; one render shows the badge, the other not
+    fadeIn("#c2-utc", 54.8);
+    fadeIn("#c2-local", 56.0);
+    box("#c2-slot1", 58.5);
+    box("#c2-empty", 59.4);
+
+    // c2-8: the three options one by one
+    fadeIn("#c2-src-lead", 61.6);
+    fadeIn("#c2-o1", 63.6);
+    fadeIn("#c2-o2", 66.1);
+    fadeIn("#c2-o3", 67.6);
+
+    // c2-10: band on each parsed-as comment in turn
+    band("#c2-pc1", 80.1);
+    unband("#c2-pc1", 82.4);
+    band("#c2-pc2", 82.5);
+
+    // c2-11: each change as it is named; c2-12: afterNextRender
+    fadeIn("#c2-d1", 91.2);
+    fadeIn("#c2-d2", 94.2);
+    fadeIn("#c2-d3", 95.9);
+    mute(["#c2-d1", "#c2-d2", "#c2-d3"], 103.0);
+    box("#c2-anr", 103.3);
+
+    // c2-13: stable, then PendingTasks on "pending tasks"; c2-14: zoneless note, NG0506 in the browser
+    fadeIn("#c2-st1", 110.4);
+    box("#c2-pt", 114.6);
+    fadeIn("#c2-st2", 121.3);
+    box("#c2-ng506", 124.6);
+    fadeIn("#c2-ng506c", 124.75, 0.4);
+
+    // c2-15: the five steps draw on as they are named
+    arrow(1, 440, 132.6);
+    arrow(2, 440, 133.4);
+    arrow(3, 480, 134.3);
+    arrow(4, 360, 135.2);
+    arrow(5, 360, 136.6);
+
+    // c2-16: the first rule banded; c2-17: the rest one by one; c2-18: the closing sentence banded
+    fadeIn("#c2-c1", 139.7);
+    band("#c2-c1", 140.6);
+    unband("#c2-c1", 147.8);
+    fadeIn("#c2-c2", 149.0);
+    fadeIn("#c2-c3", 152.0);
+    fadeIn("#c2-c4", 153.4);
+    fadeIn("#c2-c5", 154.2);
+    fadeIn("#c2-c6", 155.6);
+    fadeIn("#c2-cache-close", 157.5);
+    band("#c2-cache-close", 157.9);
+
+    // questions 0.6 s apart, then hold; pause card
+    for (let i = 1; i <= 6; i++) fadeIn("#c2-q" + i, 165.3 + (i - 1) * 0.6);
+    fadeIn("#c2-pause-2", 195.1);
+
+    window.__timelines["c2"] = tl;
+  </script>
+</template>

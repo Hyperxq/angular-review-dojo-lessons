@@ -1,0 +1,330 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c0-h { position: absolute; left: 140px; top: 84px; width: 1640px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-prose code { font-family: var(--font-code); font-size: 0.9em; }
+    .c0-chip { padding: 12px 22px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 34px/1 var(--font-code); white-space: nowrap; }
+    .c0-mk { border-radius: 4px; -webkit-box-decoration-break: clone; box-decoration-break: clone; background-color: rgba(245, 226, 217, 0); }
+
+    /* desk */
+    .c0-page-title { font: 600 52px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-status { position: absolute; left: 40px; top: 130px; display: flex; align-items: center; gap: 18px; }
+    .c0-pill { position: relative; width: 150px; height: 52px; }
+    .c0-pill > span { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 26px; font: 700 30px/1 var(--font-text); }
+    .c0-closed { background: var(--paper-sunk); color: var(--ink-muted); border: 2px solid var(--rule-strong); }
+    .c0-open { background: var(--tip-soft); color: var(--tip); border: 2px solid var(--tip); }
+    .c0-members { position: absolute; left: 40px; top: 230px; width: 860px; }
+    .c0-mem { display: flex; justify-content: space-between; padding: 22px 0; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c0-mem b { font-weight: 700; }
+    .c0-mem span:last-child { color: var(--ink-muted); }
+    .c0-stack { position: absolute; left: 1000px; top: 230px; width: 600px; }
+    .c0-stack .label { margin-bottom: 10px; }
+    .c0-api { font: 700 34px/1 var(--font-text); padding: 24px 0; border-bottom: 1px solid var(--rule); }
+    .c0-clock { position: relative; display: inline-block; }
+    #c0-t9 { position: absolute; right: 0; top: 0; }
+
+    /* opening paragraph */
+    #c0-open-para { position: absolute; left: 200px; top: 300px; width: 1520px; font: 400 44px/1.5 var(--font-text); }
+    #c0-hyd { font-weight: 700; color: #1d1b18; }
+
+    /* lists */
+    .c0-sub { font: 700 34px/1.3 var(--font-text); color: var(--ink-muted); margin: 0 0 14px; }
+    .c0-li { padding: 4px 0 4px 28px; border-left: 6px solid var(--rule-strong); margin-bottom: 18px; font: 400 34px/1.4 var(--font-text); }
+    #c0-why-lists { position: absolute; left: 140px; top: 196px; width: 1640px; }
+    #c0-costs-sub { margin-top: 34px; }
+    .c0-ex { padding: 18px 28px; border-radius: 6px; margin-bottom: 14px; font: 400 34px/1.42 var(--font-text); border-left: 6px solid var(--rule-strong); }
+    #c0-ex-list { position: absolute; left: 120px; top: 270px; width: 1680px; }
+    #c0-ex-intro { position: absolute; left: 140px; top: 190px; font: 400 36px/1.3 var(--font-text); }
+    #c0-not-rev { color: #1d1b18; }
+
+    /* tables */
+    .c0-table { position: absolute; left: 120px; top: 196px; width: 1680px; font: 400 32px/1.35 var(--font-text); }
+    .c0-table code { font: 400 30px/1.35 var(--font-code); }
+    .c0-tr { display: flex; gap: 40px; border-bottom: 1px solid var(--rule); border-radius: 6px; padding: 20px 28px; background-color: rgba(245, 226, 217, 0); }
+    .c0-tr > div { flex: none; }
+    .c0-tr > div:last-child { flex: 1; }
+    .c0-th { font-weight: 700; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c0-modes-tbl .c0-tr > div:nth-child(1) { width: 420px; }
+    #c0-modes-tbl .c0-tr > div:nth-child(2) { width: 640px; }
+    #c0-axes-tbl { top: 300px; }
+    #c0-axes-tbl .c0-tr > div:first-child { width: 320px; }
+    #c0-axes-intro { position: absolute; left: 140px; top: 190px; width: 1640px; font: 400 36px/1.4 var(--font-text); }
+    .c0-moved .c0-tr > div:nth-child(1) { width: 440px; }
+    .c0-moved .c0-tr > div:nth-child(2) { width: 380px; }
+    .c0-moved { font-size: 30px; }
+    .c0-moved code { font-size: 28px; }
+
+    /* proof paragraph */
+    #c0-proof { position: absolute; left: 140px; top: 260px; width: 1600px; font: 400 42px/1.5 var(--font-text); }
+
+    /* dojo helpers */
+    #c0-helpers { position: absolute; left: 140px; top: 200px; display: flex; gap: 24px; }
+    #c0-dojo-para { position: absolute; left: 140px; top: 330px; width: 1640px; font: 400 38px/1.5 var(--font-text); }
+
+    /* render modes per route */
+    #c0-modes { position: absolute; left: 140px; top: 360px; display: flex; flex-direction: column; gap: 36px; }
+    #c0-modes .c0-chip { font-size: 44px; padding: 18px 30px; }
+  </style>
+
+  <div id="root" data-composition-id="c0" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c0-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c0-card-time" class="chapter-time">08:55</div>
+      <div id="c0-card-title" class="chapter-title">What moved since Angular 17</div>
+    </div>
+
+    <!-- c0-1: the desk before opening, 08:55 in the header -->
+    <div id="c0-desk" class="clip world" data-start="3" data-duration="9.46">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div class="c0-page-title">What moved since Angular 17</div>
+          <div class="c0-status"><span class="label">Desk</span><span class="c0-pill"><span class="c0-closed">Closed</span></span></div>
+          <div id="c0-members" class="c0-members" data-hold>
+            <div id="c0-m1" class="c0-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div id="c0-m2" class="c0-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div id="c0-m3" class="c0-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div id="c0-m4" class="c0-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+          <div id="c0-places" class="c0-stack" data-hold>
+            <div id="c0-pl0" class="label">Runs in</div>
+            <div id="c0-pl1" class="c0-api">Server</div>
+            <div id="c0-pl2" class="c0-api">Browser</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-1b, c0-2: the lesson's opening paragraph -->
+    <div id="c0-intro" class="clip world" data-start="12.46" data-duration="16.46">
+      <div id="c0-open-para" data-hold>Server-side rendering asks one piece of code to run in two places. The server renders HTML so the first paint arrives fast and crawlers see content; the browser then <b id="c0-hyd">hydrates</b> that HTML, which means Angular adopts the DOM it received instead of building it again. <span id="c0-last" class="c0-mk">Most SSR bugs come from forgetting the first place, and most hydration bugs from making the two places disagree.</span></div>
+    </div>
+
+    <!-- c0-3, c0-4: what SSR buys, what it costs -->
+    <div id="c0-why" class="clip world" data-start="28.92" data-duration="15.08">
+      <div class="c0-h">Why render on the server, and when not to</div>
+      <div id="c0-why-lists" data-hold>
+        <div class="c0-sub">What SSR buys:</div>
+        <div id="c0-b1" class="c0-li">A faster first meaningful paint (First Contentful Paint, Largest Contentful Paint) on slow devices and networks, because the browser can show HTML before the JavaScript has downloaded and run.</div>
+        <div id="c0-b2" class="c0-li">Content for crawlers and link previews that do not run JavaScript.</div>
+        <div id="c0-costs-sub" class="c0-sub">What it costs:</div>
+        <div id="c0-k1" class="c0-li">A Node runtime that renders on every request: server CPU, a longer Time to First Byte when rendering is slow, and the work of caching rendered pages at a CDN.</div>
+        <div id="c0-k2" class="c0-li">Code that has to run correctly in two environments (chapter 1).</div>
+        <div id="c0-k3" class="c0-li">Hydration still downloads and runs the app's JavaScript. That work can still hurt Total Blocking Time and Interaction to Next Paint, and incremental hydration (chapter 3) exists to reduce it.</div>
+      </div>
+    </div>
+
+    <!-- c0-4 end: Rendering mode / Good for / Moves mostly -->
+    <div id="c0-modes-shot" class="clip world" data-start="44" data-duration="3.2">
+      <div class="c0-h">Why render on the server, and when not to</div>
+      <div id="c0-modes-tbl" class="c0-table" data-hold>
+        <div class="c0-tr c0-th"><div>Rendering mode</div><div>Good for</div><div>Moves mostly</div></div>
+        <div class="c0-tr"><div>Client-side only (CSR)</div><div>Authenticated dashboards and tools with no search value</div><div>Nothing on first paint; simplest to run</div></div>
+        <div class="c0-tr"><div>Prerendering at build time (SSG)</div><div>Content that does not vary per user or per request (help pages, a catalogue that changes daily)</div><div>FCP and LCP, with no server cost per request</div></div>
+        <div class="c0-tr"><div>Server rendering per request (SSR)</div><div>Dynamic content that must be visible on first paint (search results, a page that depends on the request)</div><div>FCP and LCP, at a server cost per request</div></div>
+      </div>
+    </div>
+
+    <!-- c0-6: How bad is an SSR finding? Axis / Ask -->
+    <div id="c0-bad" class="clip world" data-start="47.2" data-duration="5.77">
+      <div class="c0-h">How bad is an SSR finding?</div>
+      <div id="c0-axes-intro" data-hold>SSR findings are weighed on a few consequence axes. Apply them to each finding and the label follows:</div>
+      <div id="c0-axes-tbl" class="c0-table" data-hold>
+        <div class="c0-tr c0-th"><div>Axis</div><div>Ask</div></div>
+        <div id="c0-a1" class="c0-tr"><div>Reach</div><div>Does it affect every request, one region of one page, or nobody until a rare condition?</div></div>
+        <div id="c0-a2" class="c0-tr"><div>Visibility</div><div>Do users see it (an error page, a dead control, flicker), or does it only show in a trace or a bill?</div></div>
+        <div id="c0-a3" class="c0-tr"><div>Reversibility</div><div>Can it be switched off or reverted cheaply, or has it already leaked something?</div></div>
+        <div id="c0-a4" class="c0-tr"><div>Proof</div><div>Can a unit test in this repo prove it, or does it need a real SSR build and a browser?</div></div>
+      </div>
+    </div>
+
+    <!-- c0-7, c0-9: the three examples -->
+    <div id="c0-examples" class="clip world" data-start="52.97" data-duration="19.41">
+      <div class="c0-h">How bad is an SSR finding?</div>
+      <div id="c0-ex-intro">Three examples that are not in the exercises:</div>
+      <div id="c0-ex-list" class="c0-prose" data-hold>
+        <div id="c0-e1" class="c0-ex">A component starts a <code>setInterval</code> clock in its constructor. In an app that still uses Zone.js, the server app never becomes stable (see chapter 2), so every render hangs until it times out. <span id="c0-reach" class="c0-mk">Reach: every request to that page.</span> Visible to users as a slow or failed page.</div>
+        <div id="c0-e2" class="c0-ex">A "book not found" page renders a friendly message with HTTP status 200. Users see the right page; crawlers index thousands of empty pages. Reach is narrow, visibility is low, but it is cheap to fix.</div>
+        <div id="c0-e3" class="c0-ex">A server render puts a member's private loan history into the serialized transfer state of a page that a CDN then caches for everyone. Reach may be small, but it is <b id="c0-not-rev">not reversible</b> once cached copies are out.</div>
+      </div>
+    </div>
+
+    <!-- c0-10: what you would need to prove the finding -->
+    <div id="c0-proof-shot" class="clip world" data-start="72.38" data-duration="6.82">
+      <div class="c0-h">How bad is an SSR finding?</div>
+      <div id="c0-proof" data-hold>Many SSR defects are invisible in unit tests and on a developer's machine, where the app usually runs as a single-page app. Say in the comment what you would need to prove the finding, for example <span id="c0-quote" class="c0-mk">"this shows up as NG0500 in the browser console of a real SSR build"</span>.</div>
+    </div>
+
+    <!-- c0-11, c0-12: how the dojo simulates a server -->
+    <div id="c0-dojo" class="clip world" data-start="79.2" data-duration="18.81">
+      <div class="c0-h">How the dojo simulates a server</div>
+      <div id="c0-helpers">
+        <span id="c0-hp1" class="c0-chip">SERVER_PLATFORM</span>
+        <span id="c0-hp2" class="c0-chip">enterServerMode()</span>
+        <span id="c0-hp3" class="c0-chip">stubBrowserGlobals()</span>
+      </div>
+      <div id="c0-dojo-para" class="c0-prose" data-hold><code>@angular/ssr</code> and <code>@angular/platform-server</code> are not installed here. The specs approximate the server with helpers in <code>src/app/core/server-env.ts</code>: <code>SERVER_PLATFORM</code> provides <code>PLATFORM_ID</code> as <code>'server'</code>, <code>enterServerMode()</code> sets the <code>ngServerMode</code> global, and <code>stubBrowserGlobals()</code> also hides <code>window</code>, <code>localStorage</code> and <code>sessionStorage</code>. That catches code that touches browser globals too early and first renders that are not deterministic. <span id="c0-limit" class="c0-mk">It cannot show a real hydration mismatch.</span> Keep that limit in mind when you decide what a test can prove.</div>
+    </div>
+
+    <!-- c0-13: Area / Angular 17 / Angular 22.2.2, the provideClientHydration() row, then incremental hydration -->
+    <div id="c0-t1" class="clip world" data-start="98.01" data-duration="12">
+      <div class="c0-h">Chapter 0: what moved since Angular 17</div>
+      <div class="c0-table c0-moved" data-hold>
+        <div class="c0-tr c0-th"><div>Area</div><div>Angular 17</div><div>Angular 22.2.2 (verified in the installed package)</div></div>
+        <div id="c0-r1" class="c0-tr"><div><code>provideClientHydration()</code> defaults</div><div>DOM hydration and the HTTP transfer cache.</div><div>The same two, plus <b>incremental hydration</b> and, with it, <b>event replay</b>. Opt out or configure with <code>withNoHttpTransferCache()</code>, <code>withHttpTransferCacheOptions({...})</code>, <code>withNoIncrementalHydration()</code>; <code>withI18nSupport()</code> adds i18n support. Passing both <code>withNoHttpTransferCache()</code> and <code>withHttpTransferCacheOptions()</code> throws a configuration error.</div></div>
+        <div id="c0-r2" class="c0-tr"><div>Incremental hydration</div><div>Did not exist.</div><div><code>@defer</code> blocks accept <code>hydrate</code> triggers (chapter 3). <code>withIncrementalHydration()</code> is deprecated ("enabled by default with <code>provideClientHydration</code>", intent to remove in v24).</div></div>
+      </div>
+    </div>
+
+    <!-- c0-15: same table, the render hooks row -->
+    <div id="c0-t2" class="clip world" data-start="110.01" data-duration="10.31">
+      <div class="c0-h">Chapter 0: what moved since Angular 17</div>
+      <div class="c0-table c0-moved" data-hold>
+        <div class="c0-tr c0-th"><div>Area</div><div>Angular 17</div><div>Angular 22.2.2 (verified in the installed package)</div></div>
+        <div id="c0-r3" class="c0-tr"><div>Event replay</div><div>Did not exist.</div><div><code>withEventReplay()</code> records events that happen before hydration and replays them afterwards. The installed source registers it inside incremental hydration, so the default setup has it.</div></div>
+        <div id="c0-r4" class="c0-tr"><div>Render hooks</div><div><code>afterRender</code> and <code>afterNextRender</code> in developer preview.</div><div><code>afterEveryRender</code> (the renamed <code>afterRender</code>) and <code>afterNextRender</code>, both browser-only, with phases (<code>earlyRead</code>, <code>write</code>, <code>mixedReadWrite</code>, <code>read</code>). <code>afterRenderEffect</code> combines them with signals.</div></div>
+      </div>
+    </div>
+
+    <!-- c0-16: same table, "Am I on the server?", then DOCUMENT and request data -->
+    <div id="c0-t3" class="clip world" data-start="120.32" data-duration="10.01">
+      <div class="c0-h">Chapter 0: what moved since Angular 17</div>
+      <div class="c0-table c0-moved" data-hold>
+        <div class="c0-tr c0-th"><div>Area</div><div>Angular 17</div><div>Angular 22.2.2 (verified in the installed package)</div></div>
+        <div id="c0-r5" class="c0-tr"><div>"Am I on the server?"</div><div><code>PLATFORM_ID</code> and <code>isPlatformServer</code>.</div><div>Those still exist, but <code>afterNextRender</code>, <code>afterEveryRender</code> and the transfer cache read the <code>ngServerMode</code> global (a build-time define in real builds).</div></div>
+        <div id="c0-r6" class="c0-tr"><div><code>DOCUMENT</code></div><div>Only from <code>@angular/common</code>.</div><div>Exported from <code>@angular/core</code>; <code>@angular/common</code> re-exports it.</div></div>
+        <div id="c0-r7" class="c0-tr"><div>Request data</div><div>Express-specific injection tokens in the generated server.</div><div><code>REQUEST</code>, <code>RESPONSE_INIT</code> and <code>REQUEST_CONTEXT</code> tokens in <code>@angular/core</code>. They are <code>null</code> in the browser and during prerendering.</div></div>
+      </div>
+    </div>
+
+    <!-- c0-18: choosing the mode per route -->
+    <div id="c0-route" class="clip world" data-start="130.33" data-duration="8.57">
+      <div class="c0-h">Choosing the mode per route</div>
+      <div id="c0-modes" data-hold>
+        <span id="c0-rm1" class="c0-chip">RenderMode.Server</span>
+        <span id="c0-rm2" class="c0-chip">RenderMode.Prerender</span>
+        <span id="c0-rm3" class="c0-chip">RenderMode.Client</span>
+      </div>
+    </div>
+
+    <!-- c0-18 end: the desk again, the clock turns to 09:00 -->
+    <div id="c0-desk2" class="clip world" data-start="138.9" data-duration="1.39">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock c0-clock"><span id="c0-t8">08:59</span><span id="c0-t9">09:00</span></span></div>
+        <div class="app-body">
+          <div class="c0-page-title">Members</div>
+          <div class="c0-status"><span class="label">Desk</span><span class="c0-pill"><span id="c0-closed2" class="c0-closed">Closed</span><span id="c0-open2" class="c0-open">Open</span></span></div>
+          <div class="c0-members" data-hold>
+            <div class="c0-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div class="c0-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div class="c0-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div class="c0-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <audio id="c0-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="0" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c0-1" class="clip" src="assets/vo/c0-1.wav" data-start="3.0" data-duration="9.109" data-volume="1"></audio>
+    <audio id="vo-c0-1b" class="clip" src="assets/vo/c0-1b.wav" data-start="12.46" data-duration="8.491" data-volume="1"></audio>
+    <audio id="vo-c0-2" class="clip" src="assets/vo/c0-2.wav" data-start="21.3" data-duration="7.275" data-volume="1"></audio>
+    <audio id="vo-c0-3" class="clip" src="assets/vo/c0-3.wav" data-start="28.92" data-duration="7.467" data-volume="1"></audio>
+    <audio id="vo-c0-4" class="clip" src="assets/vo/c0-4.wav" data-start="36.74" data-duration="8.235" data-volume="1"></audio>
+    <audio id="vo-c0-6" class="clip" src="assets/vo/c0-6.wav" data-start="45.33" data-duration="7.296" data-volume="1"></audio>
+    <audio id="vo-c0-7" class="clip" src="assets/vo/c0-7.wav" data-start="52.97" data-duration="9.536" data-volume="1"></audio>
+    <audio id="vo-c0-9" class="clip" src="assets/vo/c0-9.wav" data-start="62.86" data-duration="9.173" data-volume="1"></audio>
+    <audio id="vo-c0-10" class="clip" src="assets/vo/c0-10.wav" data-start="72.38" data-duration="6.464" data-volume="1"></audio>
+    <audio id="vo-c0-11" class="clip" src="assets/vo/c0-11.wav" data-start="79.2" data-duration="9.323" data-volume="1"></audio>
+    <audio id="vo-c0-12" class="clip" src="assets/vo/c0-12.wav" data-start="88.87" data-duration="8.789" data-volume="1"></audio>
+    <audio id="vo-c0-13" class="clip" src="assets/vo/c0-13.wav" data-start="98.01" data-duration="11.648" data-volume="1"></audio>
+    <audio id="vo-c0-15" class="clip" src="assets/vo/c0-15.wav" data-start="110.01" data-duration="9.963" data-volume="1"></audio>
+    <audio id="vo-c0-16" class="clip" src="assets/vo/c0-16.wav" data-start="120.32" data-duration="9.664" data-volume="1"></audio>
+    <audio id="vo-c0-18" class="clip" src="assets/vo/c0-18.wav" data-start="130.33" data-duration="8.96" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "rgba(245, 226, 217, 1)", SOFT0 = "rgba(245, 226, 217, 0)";
+    const INK = "#1d1b18", ACCENT = "#b8321f";
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+    const accent = (sel, at) => tl.fromTo(sel, { color: INK }, { color: ACCENT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+
+    // chapter card: on screen from frame 0, the time with no fade
+
+    // c0-1: the members on "the desk opens", then the two places on their words
+    for (let i = 1; i <= 4; i++) fadeIn("#c0-m" + i, 4.94 + (i - 1) * 0.15, 0.5);
+    fadeIn("#c0-pl0", 9.13, 0.5);
+    fadeIn("#c0-pl1", 10.36, 0.5);
+    fadeIn("#c0-pl2", 11.07, 0.5);
+
+    // c0-1b: "hydrates" turns accent on its word; c0-2: it returns to ink and the last sentence is banded
+    accent("#c0-hyd", 17.45);
+    tl.to("#c0-hyd", { color: INK, duration: 0.4, ease: "power2.inOut" }, 21.34);
+    band("#c0-last", 21.34);
+
+    // c0-3: the buys list on "faster" and "content"
+    fadeIn("#c0-b1", 29.58, 0.5);
+    fadeIn("#c0-b2", 32.48, 0.5);
+
+    // c0-4: the costs list item by item
+    fadeIn("#c0-costs-sub", 36.78, 0.5);
+    fadeIn("#c0-k1", 37.31, 0.5);
+    fadeIn("#c0-k2", 39.63, 0.5);
+    fadeIn("#c0-k3", 42.24, 0.5);
+
+    // c0-6: the axes one by one after "Besides finding each defect"
+    fadeIn("#c0-a1", 47.8, 0.5);
+    fadeIn("#c0-a2", 48.62, 0.5);
+    fadeIn("#c0-a3", 49.34, 0.5);
+    fadeIn("#c0-a4", 50.09, 0.5);
+
+    // c0-7: the first example, its reach banded on "every request"; c0-9: the other two, "not reversible" as the accent
+    tl.fromTo(["#c0-e2", "#c0-e3"], { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out" }, 62.89);
+    band("#c0-reach", 59.44);
+    unband("#c0-reach", 62.89);
+    accent("#c0-not-rev", 70.87);
+
+    // c0-10: the quoted comment on "comment"
+    band("#c0-quote", 76.65);
+
+    // c0-11: the paragraph from the cut, the helpers on their words; c0-12: its limit banded
+    fadeIn("#c0-hp1", 83.58, 0.5);
+    fadeIn("#c0-hp2", 85.62, 0.5);
+    fadeIn("#c0-hp3", 87.06, 0.5);
+    band("#c0-limit", 94.81);
+
+    // c0-13: provideClientHydration() banded, then the incremental hydration row
+    band("#c0-r1", 99.68);
+    fadeIn("#c0-r2", 106.73, 0.5);
+    unband("#c0-r1", 107.05);
+    band("#c0-r2", 107.05);
+
+    // c0-15: the render hooks row
+    band("#c0-r4", 110.48);
+
+    // c0-16: "Am I on the server?", then DOCUMENT and request data
+    band("#c0-r5", 120.42);
+    fadeIn("#c0-r6", 127.26, 0.5);
+    fadeIn("#c0-r7", 127.41, 0.5);
+    unband("#c0-r5", 127.26);
+    band("#c0-r6", 127.4);
+
+    // c0-18: the three modes on "choose the mode"
+    fadeIn("#c0-rm1", 133.89, 0.5);
+    fadeIn("#c0-rm2", 134.04, 0.5);
+    fadeIn("#c0-rm3", 134.19, 0.5);
+
+    // c0-18 end: the clock turns to 09:00 and the desk opens
+    fadeOut("#c0-t8", 139.25, 0.2);
+    fadeIn("#c0-t9", 139.35, 0.3);
+    fadeOut("#c0-closed2", 139.5, 0.3);
+    fadeIn("#c0-open2", 139.6, 0.4);
+
+    window.__timelines["c0"] = tl;
+  </script>
+</template>

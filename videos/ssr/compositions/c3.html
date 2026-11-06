@@ -1,0 +1,349 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c3-svg { position: absolute; left: 0; top: 0; }
+    code { font-family: var(--font-code); font-size: 0.92em; }
+    .c3-h { position: absolute; left: 200px; top: 120px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c3-h code { font-size: 0.86em; font-weight: 700; }
+    .c3-big { position: absolute; left: 200px; top: 440px; width: 1520px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+
+    /* desk app book page */
+    #c3-bp, #c3-bp2 { position: absolute; left: 40px; top: 24px; width: 1520px; }
+    .c3-title { font: 600 56px/1.1 var(--font-display); margin-bottom: 10px; }
+    .c3-reg { position: absolute; left: 0; width: 1520px; box-sizing: border-box; padding: 64px 32px 24px; border-radius: 8px; }
+    .c3-out { position: absolute; inset: 0; border: 3px dashed var(--rule-strong); border-radius: 8px; }
+    .c3-tag { position: absolute; left: 24px; top: -20px; padding: 6px 14px; background: var(--paper-raised); font: 700 30px/1 var(--font-text); color: var(--ink-muted); }
+    .c3-bar { height: 18px; margin: 0 0 18px; border-radius: 9px; background: var(--rule); }
+    .c3-row { height: 72px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c3-row span { margin-left: auto; font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+    .c3-scroll { position: absolute; right: 12px; top: 20px; bottom: 20px; width: 12px; border-radius: 6px; background: var(--paper-sunk); }
+    .c3-thumb { position: absolute; left: 0; width: 12px; height: 110px; border-radius: 6px; background: var(--rule-strong); }
+
+    #c3-cw .c3-out { border-color: var(--accent); }
+    #c3-cw .c3-tag { color: var(--accent); }
+    .c3-ci { display: flex; align-items: center; height: 76px; }
+    .c3-av { width: 48px; height: 48px; border-radius: 50%; background: var(--rule); margin-right: 24px; flex: none; }
+    .c3-ci .c3-bar { margin: 0; flex: none; }
+    #c3-editor { position: relative; margin-top: 30px; height: 250px; border: 2px solid var(--rule-strong); border-radius: 8px; }
+    #c3-tools { height: 64px; display: flex; align-items: center; gap: 16px; padding: 0 20px; border-bottom: 1px solid var(--rule); }
+    #c3-tools i { width: 32px; height: 32px; border-radius: 4px; background: var(--rule); }
+    #c3-edtag { position: absolute; left: 980px; top: 440px; padding: 14px 22px; border: 3px solid var(--ink); border-radius: 8px; background: var(--paper); font: 700 34px/1 var(--font-text); white-space: nowrap; }
+
+    /* @defer on the server */
+    .c3-rule { position: absolute; left: 200px; width: 1520px; font: 400 40px/1.35 var(--font-text); }
+    .c3-chip { position: absolute; box-sizing: border-box; padding: 22px 36px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 40px/1 var(--font-text); white-space: nowrap; }
+    #c3-dehy b { color: var(--accent); }
+
+    #c3-trig-code { position: absolute; left: 200px; top: 360px; padding: 32px 48px; font: 400 52px/1 var(--font-code); }
+    #c3-trig-code span { border-radius: 4px; }
+    .c3-note { position: absolute; font: 400 34px/1.2 var(--font-text); color: var(--ink-muted); white-space: nowrap; }
+
+    /* tables */
+    .c3-table { position: absolute; left: 120px; width: 1680px; }
+    .c3-tr { display: grid; border-bottom: 1px solid var(--rule); font: 400 32px/1.35 var(--font-text); border-radius: 4px; }
+    .c3-tr > span { padding: 16px 20px; }
+    .c3-th { font-weight: 700; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    .c3-tr code { font: 700 30px/1.35 var(--font-code); }
+    #c3-trig .c3-tr { grid-template-columns: 560px 1120px; }
+    #c3-opt .c3-tr { grid-template-columns: 420px 700px 560px; }
+
+    #c3-never { position: absolute; left: 200px; top: 300px; width: 1520px; font: 400 44px/1.5 var(--font-text); }
+    #c3-never span { border-radius: 4px; }
+
+    .c3-fb { box-sizing: border-box; height: 120px; display: flex; align-items: center; justify-content: center; }
+    #c3-rec { position: absolute; left: 200px; top: 560px; width: 760px; font: 400 32px/1.3 var(--font-text); color: var(--ink-muted); }
+    #c3-wait { position: absolute; left: 200px; top: 380px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+
+    #c3-skip-p { position: absolute; left: 200px; top: 330px; width: 1520px; font: 400 38px/1.45 var(--font-text); }
+    #c3-skip-p p { margin: 0 0 36px; padding: 4px 12px; border-radius: 4px; }
+    #c3-skip-p code { font-size: 34px; }
+
+    .q { font-size: 40px; margin-bottom: 34px; }
+    .q code { font: 400 36px/1 var(--font-code); }
+
+    #c3-after-title { position: absolute; left: 200px; top: 150px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+    #c3-after-p { position: absolute; left: 200px; top: 330px; width: 1520px; font: 400 44px/1.5 var(--font-text); }
+    #c3-after-p code { font-size: 40px; }
+    #c3-closed { position: absolute; left: 80px; top: 280px; font: 600 88px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c3-lights { position: absolute; inset: 0; background: var(--ink); }
+  </style>
+
+  <div id="root" data-composition-id="c3" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c3-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">15:00</div>
+      <div class="chapter-title">Deciding when each part hydrates</div>
+    </div>
+
+    <!-- c3-1: 15:00; the book page, long, its regions outlined -->
+    <div id="c3-desk" class="clip world sunk" data-start="3" data-duration="10.01">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">15:00</span></div>
+        <div class="app-body">
+          <div id="c3-bp" data-hold>
+            <div class="c3-title">Dune</div>
+            <div class="label">Frank Herbert · 3 copies</div>
+            <div class="c3-reg" style="top: 150px; height: 250px">
+              <div class="c3-bar" style="width: 96%"></div>
+              <div class="c3-bar" style="width: 92%"></div>
+              <div class="c3-bar" style="width: 97%"></div>
+              <div class="c3-bar" style="width: 88%"></div>
+              <div class="c3-bar" style="width: 60%"></div>
+              <div id="c3-o1" class="c3-out"><span class="c3-tag">synopsis</span></div>
+            </div>
+            <div class="c3-reg" style="top: 440px; height: 290px">
+              <div class="c3-row">Copy 1<span>on shelf</span></div>
+              <div class="c3-row">Copy 2<span>on loan</span></div>
+              <div class="c3-row">Copy 3<span>on shelf</span></div>
+              <div id="c3-o2" class="c3-out"><span class="c3-tag">copies</span></div>
+            </div>
+            <div class="c3-reg" style="top: 770px; height: 300px">
+              <div class="c3-bar" style="width: 70%"></div>
+              <div id="c3-o3" class="c3-out"><span class="c3-tag">comments</span></div>
+            </div>
+          </div>
+          <div class="c3-scroll"><div class="c3-thumb" style="top: 0"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3-2: heading "@defer on the server", "placeholder" and "main content"; c3-3: "dehydrated" as the accent -->
+    <div id="c3-defer" class="clip world" data-start="13.01" data-duration="15.62">
+      <div class="c3-h"><code>@defer</code> on the server</div>
+      <div id="c3-ra" class="c3-rule" style="top: 345px">A plain <code>@defer</code> (no <code>hydrate</code> trigger)</div>
+      <div id="c3-ca" class="c3-chip" style="left: 1100px; top: 330px">placeholder</div>
+      <div id="c3-rb" class="c3-rule" style="top: 525px">A <code>@defer</code> with a <code>hydrate</code> trigger</div>
+      <div id="c3-cb" class="c3-chip" style="left: 1100px; top: 510px">main content</div>
+      <div id="c3-dehy" class="c3-rule" style="top: 720px" data-hold>In the browser that content stays <b>dehydrated</b> (visible, but without its JavaScript, listeners or bindings)</div>
+    </div>
+
+    <!-- c3-4: the two-statement block, band on `on viewport`, then on `hydrate on idle` -->
+    <div id="c3-two" class="clip world" data-start="28.63" data-duration="8.26">
+      <div id="c3-trig-code" class="code"><span>@defer (</span><span id="c3-bv">on viewport</span><span>; </span><span id="c3-bi">hydrate on idle</span><span>)</span></div>
+      <div id="c3-nv" class="c3-note" style="left: 520px; top: 540px">what to do after a navigation</div>
+      <div id="c3-ni" class="c3-note" style="left: 940px; top: 620px" data-hold>what to do on first load</div>
+    </div>
+
+    <!-- c3-5: table "Trigger / Hydrates when", rows one by one -->
+    <div id="c3-trigw" class="clip world" data-start="36.89" data-duration="9.95">
+      <div id="c3-trig" class="c3-table" style="top: 140px" data-hold>
+        <div id="c3-t0" class="c3-tr c3-th"><span>Trigger</span><span>Hydrates when</span></div>
+        <div id="c3-t1" class="c3-tr"><span><code>hydrate on immediate</code></span><span>right after the rest of the page hydrates</span></div>
+        <div id="c3-t2" class="c3-tr"><span><code>hydrate on idle</code></span><span>the browser is idle</span></div>
+        <div id="c3-t3" class="c3-tr"><span><code>hydrate on viewport</code></span><span>the block scrolls into view</span></div>
+        <div id="c3-t4" class="c3-tr"><span><code>hydrate on interaction</code></span><span>the user clicks or presses a key inside the block</span></div>
+        <div id="c3-t5" class="c3-tr"><span><code>hydrate on hover</code></span><span>the pointer enters the block, or focus moves into it (keyboard users included)</span></div>
+        <div id="c3-t6" class="c3-tr"><span><code>hydrate on timer(500ms)</code></span><span>after a delay</span></div>
+        <div id="c3-t7" class="c3-tr"><span><code>hydrate when cond</code></span><span>an expression becomes true</span></div>
+        <div id="c3-t8" class="c3-tr"><span><code>hydrate never</code></span><span>never: the block stays static HTML for the life of the page</span></div>
+      </div>
+    </div>
+
+    <!-- c3-6: heading "A worked choice", then the book page scrolled to its comments widget -->
+    <div id="c3-wc" class="clip world" data-start="46.84" data-duration="2.06">
+      <div id="c3-wc-h" class="c3-big" data-hold>A worked choice</div>
+    </div>
+    <div id="c3-desk2" class="clip world sunk" data-start="48.9" data-duration="5.52">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">15:00</span></div>
+        <div class="app-body">
+          <div id="c3-bp2">
+            <div id="c3-cw" class="c3-reg" style="top: 40px; height: 640px" data-hold>
+              <div class="c3-ci"><i class="c3-av"></i><div class="c3-bar" style="width: 900px"></div></div>
+              <div class="c3-ci"><i class="c3-av"></i><div class="c3-bar" style="width: 1100px"></div></div>
+              <div class="c3-ci"><i class="c3-av"></i><div class="c3-bar" style="width: 760px"></div></div>
+              <div id="c3-editor"><div id="c3-tools"><i></i><i></i><i></i><i></i><i></i></div></div>
+              <div id="c3-edtag">rich-text editor</div>
+              <div class="c3-out"><span class="c3-tag">comments widget</span></div>
+            </div>
+          </div>
+          <div class="c3-scroll"><div class="c3-thumb" style="bottom: 0"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3-7: table "Option / What it costs / When it fits", the `hydrate on viewport` row as the accent -->
+    <div id="c3-optw" class="clip world" data-start="54.42" data-duration="10.76">
+      <div id="c3-opt" class="c3-table" style="top: 220px" data-hold>
+        <div id="c3-p0" class="c3-tr c3-th"><span>Option</span><span>What it costs</span><span>When it fits</span></div>
+        <div id="c3-p1" class="c3-tr"><span><code>hydrate on idle</code></span><span>Downloads the widget's code on every visit, even for readers who never see it. The page is ready when they arrive.</span><span>The widget is small, or most readers use it.</span></div>
+        <div id="c3-p2" class="c3-tr"><span><code>hydrate on viewport</code></span><span>Downloads only for readers who scroll there; the code loads as the widget appears, so a fast scroller may wait.</span><span>The widget is large and below the fold, as here.</span></div>
+        <div id="c3-p3" class="c3-tr"><span>no <code>@defer</code></span><span>Hydrates with the page, paying for it before anything else becomes responsive.</span><span>The widget is above the fold and used by most readers.</span></div>
+      </div>
+    </div>
+
+    <!-- c3-8: the `hydrate never` paragraph -->
+    <div id="c3-neverw" class="clip world" data-start="65.18" data-duration="9.8">
+      <div id="c3-never" data-hold><span id="c3-n1"><code>hydrate never</code> is the extreme: zero JavaScript for that region, a real gain for large static content such as a long synopsis or a footer.</span> <span id="c3-n2">It also means no listeners and no bindings that react to state, ever.</span> <span id="c3-n3">Above-the-fold content that must respond at once is a poor fit for any deferred hydration.</span></div>
+    </div>
+
+    <!-- c3-10: heading "Event replay"; c3-11: same heading, "Interaction to Next Paint" as a label -->
+    <div id="c3-replay" class="clip world" data-start="74.98" data-duration="17.0">
+      <div class="c3-h">Event replay</div>
+      <svg class="c3-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
+        <defs><marker id="c3-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1d1b18" /></marker></defs>
+        <path id="c3-arrow" pathLength="1" d="M970 420 H1206" stroke="#1d1b18" stroke-width="4" marker-end="url(#c3-head)" />
+      </svg>
+      <div id="c3-flow">
+        <div id="c3-f1" class="fbox c3-fb" style="left: 200px; top: 360px; width: 760px">a small dispatcher in the page</div>
+        <div id="c3-rec">records events on server-rendered elements</div>
+        <div id="c3-fl" class="flabel" style="left: 960px; top: 352px; width: 260px">replays them</div>
+        <div id="c3-f2" class="fbox c3-fb" style="left: 1220px; top: 360px; width: 500px">the real listeners</div>
+      </div>
+      <div id="c3-wait">Replay keeps the event; it does not remove the wait.</div>
+      <div id="c3-inp" class="c3-chip" style="left: 200px; top: 580px" data-hold>Interaction to Next Paint</div>
+    </div>
+
+    <!-- c3-12: heading "ngSkipHydration is for code you do not control"; c3-13: its second paragraph banded -->
+    <div id="c3-skip" class="clip world" data-start="91.98" data-duration="21.48">
+      <div class="c3-h" style="top: 110px"><code>ngSkipHydration</code> is for code you do not control</div>
+      <div id="c3-skip-p" data-hold>
+        <p id="c3-s1">Adding the <code>ngSkipHydration</code> attribute to a component's host tells Angular not to hydrate that component and everything inside it. In the browser, Angular discards the server DOM of that subtree and renders it again from scratch.</p>
+        <p id="c3-s2">That is the right tool for a component that cannot hydrate, typically one wrapping a third-party library that rewrites its own DOM. Added to your own component, it usually makes NG0500 errors disappear from the console while their cause stays. The subtree is still rebuilt (users see it flash, the browser does the work twice, and the benefit of SSR for that region is gone).</p>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c3-questions" class="clip world note" data-start="113.46" data-duration="26.6">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c3-q1" class="q">For each <code>@defer (hydrate ...)</code> block: what does its trigger say about how people use that region, and is that true?</div>
+        <div id="c3-q2" class="q">What does each region cost in JavaScript before it responds, and who pays it: every visitor, or only those who use it?</div>
+        <div id="c3-q3" class="q">After a client-side navigation, which trigger applies to this block?</div>
+        <div id="c3-q4" class="q">For each <code>ngSkipHydration</code>: which error did it silence, and what was the cause?</div>
+        <div id="c3-q5" class="q">What would this page's Interaction to Next Paint look like for the region people use most?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c3-pause" class="clip world" data-start="140.06" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c3-pause-2" class="pause-2" data-hold>Now do exercise 03.</div>
+    </div>
+
+    <!-- c3-after: the "After the lesson" card -->
+    <div id="c3-after" class="clip world" data-start="143.56" data-duration="9.11">
+      <div id="c3-after-title">After the lesson</div>
+      <div id="c3-after-p" data-hold><span id="c3-a1">For each exercise, write your findings with a severity on each, and for each one note whether a unit test in this repo can prove it or only a real SSR build can.</span> <span id="c3-a2">Then compare with <code>SOLUTION.md</code> on the <code>solutions</code> branch.</span> <span id="c3-a3">A good SSR comment names the platform where the problem appears and how to see it.</span></div>
+    </div>
+
+    <!-- c3-close: 18:00, the desk closes, lights down to the end -->
+    <div id="c3-close" class="clip world" data-start="152.67" data-duration="2.96">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock" style="color: var(--accent)">18:00</span></div>
+        <div class="app-body">
+          <div id="c3-closed">Opens again at 09:00</div>
+        </div>
+      </div>
+      <div id="c3-lights" data-hold></div>
+    </div>
+
+    <audio id="c3-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="96" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c3-bed2" class="clip" src="assets/music/bed.mp3" data-start="113.46" data-duration="26.6" data-media-start="118" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c3-1" class="clip" src="assets/vo/c3-1.wav" data-start="3.0" data-duration="9.664" data-volume="1"></audio>
+    <audio id="vo-c3-2" class="clip" src="assets/vo/c3-2.wav" data-start="13.01" data-duration="10.283" data-volume="1"></audio>
+    <audio id="vo-c3-3" class="clip" src="assets/vo/c3-3.wav" data-start="23.65" data-duration="4.629" data-volume="1"></audio>
+    <audio id="vo-c3-4" class="clip" src="assets/vo/c3-4.wav" data-start="28.63" data-duration="7.915" data-volume="1"></audio>
+    <audio id="vo-c3-5" class="clip" src="assets/vo/c3-5.wav" data-start="36.89" data-duration="9.6" data-volume="1"></audio>
+    <audio id="vo-c3-6" class="clip" src="assets/vo/c3-6.wav" data-start="46.84" data-duration="7.232" data-volume="1"></audio>
+    <audio id="vo-c3-7" class="clip" src="assets/vo/c3-7.wav" data-start="54.42" data-duration="10.411" data-volume="1"></audio>
+    <audio id="vo-c3-8" class="clip" src="assets/vo/c3-8.wav" data-start="65.18" data-duration="9.451" data-volume="1"></audio>
+    <audio id="vo-c3-10" class="clip" src="assets/vo/c3-10.wav" data-start="74.98" data-duration="7.808" data-volume="1"></audio>
+    <audio id="vo-c3-11" class="clip" src="assets/vo/c3-11.wav" data-start="83.14" data-duration="8.491" data-volume="1"></audio>
+    <audio id="vo-c3-12" class="clip" src="assets/vo/c3-12.wav" data-start="91.98" data-duration="10.645" data-volume="1"></audio>
+    <audio id="vo-c3-13" class="clip" src="assets/vo/c3-13.wav" data-start="102.98" data-duration="10.133" data-volume="1"></audio>
+    <audio id="vo-c3-end" class="clip" src="assets/vo/c3-end.wav" data-start="113.46" data-duration="2.197" data-volume="1"></audio>
+    <audio id="vo-c3-after" class="clip" src="assets/vo/c3-after.wav" data-start="143.91" data-duration="8.405" data-volume="1"></audio>
+    <audio id="vo-c3-close" class="clip" src="assets/vo/c3-close.wav" data-start="152.67" data-duration="1.963" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const RULE = "#c4b9a6";
+    const INK = "#1d1b18";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: CLEAR, duration: 0.4 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c3-1: the book page, then its regions outlined one by one
+    fadeIn("#c3-bp", 3.1, 0.5);
+    ["#c3-o1", "#c3-o2", "#c3-o3"].forEach((o, i) => fadeIn(o, 8.6 + i * 0.3, 0.5));
+
+    // c3-2: the plain block and its placeholder, then the hydrate block and its main content
+    fadeIn("#c3-ra", 13.15, 0.5);
+    fadeIn("#c3-ca", 14.9, 0.5);
+    fadeIn("#c3-rb", 16.9, 0.5);
+    fadeIn("#c3-cb", 19.3, 0.5);
+    tl.fromTo("#c3-cb", { borderColor: RULE }, { borderColor: INK, duration: 0.3 }, 19.45);
+
+    // c3-3: dehydrated, as the accent
+    fadeIn("#c3-dehy", 23.75, 0.5);
+
+    // c3-4: the block cut in whole; band on `on viewport`, then on `hydrate on idle`
+    band("#c3-bv", 28.8);
+    fadeIn("#c3-nv", 28.95, 0.5);
+    unband("#c3-bv", 32.4);
+    band("#c3-bi", 32.6);
+    fadeIn("#c3-ni", 32.75, 0.5);
+
+    // c3-5: the trigger table, rows as the voice names them
+    [36.95, 37.6, 38.4, 39.2, 39.9, 40.7, 42.5, 43.4, 44.6].forEach((t, i) => fadeIn("#c3-t" + i, t, 0.5));
+
+    // c3-6: the heading, then the widget at the bottom of the page; the editor tagged
+    fadeIn("#c3-wc-h", 46.9, 0.5);
+    fadeIn("#c3-edtag", 50.4, 0.5);
+
+    // c3-7: the options one by one, then the viewport row takes the accent
+    fadeIn("#c3-p0", 54.5, 0.4);
+    fadeIn("#c3-p1", 54.6, 0.5);
+    fadeIn("#c3-p2", 57.6, 0.5);
+    fadeIn("#c3-p3", 60.9, 0.5);
+    band("#c3-p2", 62.3);
+
+    // c3-8: the paragraph cut in whole; the band follows the voice
+    band("#c3-n1", 65.4);
+    unband("#c3-n1", 70.9);
+    band("#c3-n2", 71.1);
+
+    // c3-10: the dispatcher records, then replays to the real listeners
+    fadeIn("#c3-f1", 77.9, 0.5);
+    fadeIn("#c3-rec", 78.05, 0.5);
+    tl.fromTo("#c3-arrow", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.6, ease: "power2.inOut" }, 79.6);
+    fadeIn("#c3-fl", 79.75, 0.5);
+    fadeIn("#c3-f2", 80.2, 0.5);
+
+    // c3-11: the flow clears; the wait stays, Interaction to Next Paint named
+    fadeOut("#c3-flow, #c3-arrow", 83.2, 0.4);
+    fadeIn("#c3-wait", 83.7, 0.5);
+    fadeIn("#c3-inp", 87.4, 0.5);
+    tl.fromTo("#c3-inp", { borderColor: RULE }, { borderColor: ACCENT, duration: 0.3 }, 87.55);
+
+    // c3-12: the first paragraph, then the second; c3-13: the second banded
+    fadeIn("#c3-s1", 92.1, 0.5);
+    fadeIn("#c3-s2", 97.6, 0.5);
+    band("#c3-s2", 103.1);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c3-q1", "#c3-q2", "#c3-q3", "#c3-q4", "#c3-q5"].forEach((q, i) => fadeIn(q, 113.7 + i * 0.6));
+    fadeIn("#c3-pause-2", 140.54);
+
+    // after the lesson: write findings, then compare
+    fadeIn("#c3-after-title", 143.62, 0.4);
+    fadeIn("#c3-a1", 144.0, 0.4);
+    fadeIn("#c3-a2", 150.3, 0.4);
+    fadeIn("#c3-a3", 150.45, 0.4);
+
+    // close: 18:00, the lights go down and stay down to the last frame
+    fadeIn("#c3-closed", 152.75);
+    tl.fromTo("#c3-lights", { opacity: 0 }, { opacity: 0.62, duration: 2.0, ease: "power2.inOut" }, 153.3);
+
+    window.__timelines["c3"] = tl;
+  </script>
+</template>

@@ -1,0 +1,284 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c1-h { position: absolute; left: 140px; top: 84px; width: 1640px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c1-prose code { font-family: var(--font-code); font-size: 0.9em; }
+    .c1-chip { padding: 12px 22px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 34px/1 var(--font-code); white-space: nowrap; }
+    .c1-mk { border-radius: 4px; -webkit-box-decoration-break: clone; box-decoration-break: clone; background-color: rgba(245, 226, 217, 0); }
+
+    /* book page, half loaded */
+    .c1-book { position: absolute; left: 40px; top: 40px; right: 40px; bottom: 40px; }
+    .c1-cover { position: absolute; left: 0; top: 0; width: 300px; height: 440px; border-radius: 6px; background: var(--paper-sunk); border: 1px solid var(--rule); }
+    .c1-info { position: absolute; left: 360px; top: 0; width: 1200px; }
+    .c1-title { font: 600 64px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c1-author { margin-top: 14px; font: 400 36px/1.2 var(--font-text); color: var(--ink-muted); }
+    .c1-meta { margin-top: 30px; display: flex; gap: 20px; }
+    .c1-meta span { padding: 10px 20px; border: 2px solid var(--rule-strong); border-radius: 8px; font: 700 30px/1 var(--font-text); }
+    .c1-sk { height: 30px; border-radius: 6px; background: var(--paper-sunk); margin-top: 22px; }
+    .c1-sk-cards { position: absolute; left: 0; top: 520px; display: flex; gap: 32px; }
+    .c1-sk-card { width: 370px; height: 230px; border-radius: 8px; border: 1px solid var(--rule); background: var(--paper-sunk); }
+
+    /* flow (LESSON.md "The class runs twice") */
+    .c1-flow .fbox { height: 110px; display: flex; gap: 14px; align-items: center; justify-content: center; box-sizing: border-box; white-space: nowrap; font-size: 36px; }
+    .c1-flow .fbox code { font: 700 34px/1 var(--font-code); }
+    .c1-flow .flabel { font-size: 30px; }
+
+    /* tables */
+    .c1-table { position: absolute; left: 120px; top: 196px; width: 1680px; font: 400 32px/1.35 var(--font-text); }
+    .c1-table code { font: 400 30px/1.35 var(--font-code); }
+    .c1-tr { display: flex; gap: 40px; border-bottom: 1px solid var(--rule); border-radius: 6px; padding: 20px 28px; background-color: rgba(245, 226, 217, 0); }
+    .c1-tr > div { flex: none; }
+    .c1-tr > div:last-child { flex: 1; }
+    .c1-th { font-weight: 700; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c1-runs-tbl .c1-tr > div:nth-child(1) { width: 900px; }
+    #c1-runs-tbl .c1-tr > div:nth-child(2) { width: 300px; }
+    #c1-tools-tbl { top: 180px; }
+    #c1-tools-tbl .c1-tr > div:nth-child(1) { width: 380px; }
+    #c1-tools-tbl .c1-tr > div:nth-child(2) { width: 470px; }
+
+    /* browser globals as labels */
+    #c1-globals { position: absolute; left: 200px; top: 420px; display: flex; gap: 28px; }
+    #c1-globals .c1-chip { font-size: 44px; padding: 18px 30px; }
+
+    /* KeyValueStore (LESSON.md), cut in whole */
+    .c1-code { left: 120px; top: 70px; width: 1680px; box-sizing: border-box; padding: 32px 48px; font-size: 28px; line-height: 1.5; }
+    .c1-code .ln { white-space: pre-wrap; margin: 0 -48px; padding: 0 48px; background-color: rgba(245, 226, 217, 0); }
+    .c1-code .gap { height: 21px; overflow: hidden; }
+
+    /* first render paragraph */
+    #c1-first-para { position: absolute; left: 140px; top: 230px; width: 1640px; font: 400 42px/1.5 var(--font-text); }
+    #c1-metrics { position: absolute; left: 140px; top: 660px; display: flex; gap: 28px; }
+    #c1-metrics .c1-chip { font: 700 40px/1 var(--font-text); padding: 18px 30px; }
+
+    #c1-questions .q { font-size: 40px; }
+  </style>
+
+  <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c1-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c1-card-time" class="chapter-time">09:00</div>
+      <div id="c1-card-title" class="chapter-title">Code that runs on both platforms</div>
+    </div>
+
+    <!-- c1-1: 09:00, a book page half loaded -->
+    <div id="c1-desk" class="clip world" data-start="3" data-duration="7.13">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body" style="padding: 0">
+          <div class="c1-book" data-hold>
+            <div class="c1-cover"></div>
+            <div class="c1-info">
+              <div id="c1-bk-t" class="c1-title">Middlemarch</div>
+              <div id="c1-bk-a" class="c1-author">George Eliot</div>
+              <div id="c1-bk-m" class="c1-meta"><span>Shelf 4B</span><span>3 copies</span></div>
+              <div class="c1-sk" style="width: 1180px; margin-top: 56px"></div>
+              <div class="c1-sk" style="width: 1100px"></div>
+              <div class="c1-sk" style="width: 760px"></div>
+            </div>
+            <div class="c1-sk-cards">
+              <div class="c1-sk-card"></div><div class="c1-sk-card"></div><div class="c1-sk-card"></div><div class="c1-sk-card"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-2: the class runs twice (LESSON.md flow), arrows drawing on as each step is named -->
+    <div id="c1-flow" class="clip world sunk c1-flow" data-start="10.13" data-duration="8.55">
+      <div class="c1-h">The class runs twice</div>
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <g stroke="#1d1b18" stroke-width="4" fill="none">
+          <path id="c1-f1" pathLength="1" stroke-dasharray="1" d="M500,375 H818" />
+          <path id="c1-f2" pathLength="1" stroke-dasharray="1" d="M1060,375 H1358" />
+          <path id="c1-f3" pathLength="1" stroke-dasharray="1" d="M1510,430 V580 H245 V678" />
+          <path id="c1-f4" pathLength="1" stroke-dasharray="1" d="M370,755 H798" />
+        </g>
+        <g fill="#1d1b18">
+          <polygon id="c1-fa1" points="818,363 838,375 818,387" />
+          <polygon id="c1-fa2" points="1358,363 1378,375 1358,387" />
+          <polygon id="c1-fa3" points="233,678 245,698 257,678" />
+          <polygon id="c1-fa4" points="798,743 818,755 798,767" />
+        </g>
+      </svg>
+      <div id="c1-fl1" class="flabel" style="left: 510px; top: 210px; width: 300px">constructs components and renders HTML</div>
+      <div id="c1-fl2" class="flabel" style="left: 1070px; top: 246px; width: 290px">HTML plus serialized state</div>
+      <div id="c1-fl3" class="flabel" style="left: 330px; top: 516px; width: 1100px">constructs the same components again and adopts the DOM</div>
+      <div id="c1-fl4" class="flabel" style="left: 380px; top: 670px; width: 410px">browser-only work runs here</div>
+      <div id="c1-fb1" class="fbox" style="left: 120px; top: 320px; width: 380px">Browser request</div>
+      <div id="c1-fb2" class="fbox" style="left: 840px; top: 320px; width: 220px">Server</div>
+      <div id="c1-fb3" class="fbox" style="left: 1380px; top: 320px; width: 260px">Browser</div>
+      <div id="c1-fb4" class="fbox" style="left: 100px; top: 700px; width: 270px">Hydration</div>
+      <div id="c1-fb5" class="fbox" style="left: 820px; top: 700px; width: 600px" data-hold><code>afterNextRender</code> callbacks</div>
+    </div>
+
+    <!-- c1-3: Code / Server / Browser, rows one by one -->
+    <div id="c1-runs" class="clip world" data-start="18.68" data-duration="9.88">
+      <div class="c1-h">The class runs twice</div>
+      <div id="c1-runs-tbl" class="c1-table" data-hold>
+        <div class="c1-tr c1-th"><div>Code</div><div>Server</div><div>Browser</div></div>
+        <div id="c1-c1" class="c1-tr"><div>Constructor and field initializers</div><div>runs</div><div>runs</div></div>
+        <div id="c1-c2" class="c1-tr"><div><code>ngOnInit</code>, <code>computed</code>, the first render</div><div>runs</div><div>runs</div></div>
+        <div id="c1-c3" class="c1-tr"><div>Event handlers (<code>(click)</code>, <code>host: { '(window:resize)': ... }</code>)</div><div>never fires</div><div>runs</div></div>
+        <div id="c1-c4" class="c1-tr"><div><code>afterNextRender</code>, <code>afterEveryRender</code></div><div>skipped</div><div>runs</div></div>
+      </div>
+    </div>
+
+    <!-- c1-5 start: the browser globals Node lacks -->
+    <div id="c1-node" class="clip world" data-start="28.56" data-duration="3.04">
+      <div class="c1-h">The class runs twice</div>
+      <div id="c1-globals" data-hold>
+        <span id="c1-g1" class="c1-chip">window</span>
+        <span id="c1-g2" class="c1-chip">localStorage</span>
+        <span id="c1-g3" class="c1-chip">matchMedia</span>
+        <span id="c1-g4" class="c1-chip">navigator</span>
+      </div>
+    </div>
+
+    <!-- c1-5, c1-7: You need / Use / Why -->
+    <div id="c1-tools" class="clip world" data-start="31.6" data-duration="16.76">
+      <div class="c1-h">The tools</div>
+      <div id="c1-tools-tbl" class="c1-table" data-hold>
+        <div class="c1-tr c1-th"><div>You need</div><div>Use</div><div>Why</div></div>
+        <div id="c1-u1" class="c1-tr"><div>The document</div><div><code>inject(DOCUMENT)</code></div><div>On the server it is the server's DOM; in tests it is the TestBed's.</div></div>
+        <div id="c1-u2" class="c1-tr"><div>The page title and meta tags</div><div><code>inject(Title)</code>, <code>inject(Meta)</code></div><div>Work on both, and the server writes them into the HTML it sends.</div></div>
+        <div id="c1-u3" class="c1-tr"><div>Browser-only reads or DOM measurement</div><div><code>afterNextRender(...)</code></div><div>Runs once, after the first render, only in the browser. Pass phases (<code>{ read: () =&gt; ... }</code>, <code>{ write: ... }</code>) to keep DOM reads and writes apart and avoid layout thrashing.</div></div>
+        <div id="c1-u4" class="c1-tr"><div>A choice made before anything renders</div><div><code>isPlatformBrowser(<wbr>inject(PLATFORM_ID))</code></div><div>For synchronous decisions, typically in a provider factory.</div></div>
+        <div id="c1-u5" class="c1-tr"><div>Data from the incoming request</div><div><code>inject(REQUEST)</code></div><div>The server's <code>Request</code>, <code>null</code> in the browser.</div></div>
+      </div>
+    </div>
+
+    <!-- c1-8, c1-9, c1-10: KeyValueStore, cut in whole, the band moving -->
+    <div id="c1-kvs" class="clip world" data-start="48.36" data-duration="25.3">
+      <div class="code c1-code" data-hold>
+<span class="ln"><span class="k">export abstract class</span> KeyValueStore {</span>
+<span class="ln">  <span class="k">abstract</span> get(key: string): string | <span class="k">null</span>;</span>
+<span class="ln">  <span class="k">abstract</span> set(key: string, value: string): void;</span>
+<span class="ln">}</span>
+<span class="ln gap"> </span>
+<span class="ln"><span class="k">class</span> MemoryStore <span class="k">extends</span> KeyValueStore {</span>
+<span class="ln">  <span class="k">private readonly</span> data = <span class="k">new</span> Map&lt;string, string&gt;();</span>
+<span id="c1-k-mget" class="ln">  get(key: string) { <span class="k">return this</span>.data.get(key) ?? <span class="k">null</span>; }</span>
+<span class="ln">  set(key: string, value: string) { <span class="k">this</span>.data.set(key, value); }</span>
+<span class="ln">}</span>
+<span class="ln gap"> </span>
+<span class="ln"><span class="k">class</span> WebStorageStore <span class="k">extends</span> KeyValueStore {</span>
+<span class="ln">  get(key: string) { <span class="k">return</span> localStorage.getItem(key); }</span>
+<span class="ln">  set(key: string, value: string) { localStorage.setItem(key, value); }</span>
+<span class="ln">}</span>
+<span class="ln gap"> </span>
+<span class="ln"><span class="k">export const</span> provideKeyValueStore = () =&gt; ({</span>
+<span class="ln">  provide: KeyValueStore,</span>
+<span id="c1-k-fac" class="ln" style="padding-left: calc(48px + 4ch); text-indent: -4ch">  useFactory: () =&gt; (isPlatformBrowser(inject(PLATFORM_ID)) ? <span class="k">new</span> WebStorageStore() : <span class="k">new</span> MemoryStore()),</span>
+<span class="ln">});</span>
+      </div>
+    </div>
+
+    <!-- c1-12, c1-13: the first render should be the same on both sides -->
+    <div id="c1-first" class="clip world" data-start="73.66" data-duration="17.94">
+      <div class="c1-h">The first render should be the same on both sides</div>
+      <div id="c1-first-para" data-hold>The usual answer is to render a neutral state both sides agree on and fill in the browser value after the first render. That has a measurable cost: the update can shift layout (Cumulative Layout Shift) or replace the largest element after it painted (Largest Contentful Paint). <span id="c1-last" class="c1-mk">Reserving space for the late value avoids the shift; making the server aware of the value (from the request) avoids the late update.</span></div>
+      <div id="c1-metrics" data-hold>
+        <span id="c1-cls" class="c1-chip">Cumulative Layout Shift</span>
+        <span id="c1-lcp" class="c1-chip">Largest Contentful Paint</span>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c1-questions" class="clip world note" data-start="91.6" data-duration="22.1">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c1-q1" class="q">For each line in a constructor or initializer: would it work in a process that has no browser?</div>
+        <div id="c1-q2" class="q">Which of these platform checks could be replaced by a tool that works on both platforms?</div>
+        <div id="c1-q3" class="q">Does anything in the first render depend on a value only the browser knows?</div>
+        <div id="c1-q4" class="q">What does the late update cost in layout shift or LCP, and could the server know the value instead?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c1-pause" class="clip world" data-start="113.7" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c1-pause-2" class="pause-2" data-hold>Now do exercise 01.</div>
+    </div>
+
+    <audio id="c1-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="40" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-bed2" class="clip" src="assets/music/bed.mp3" data-start="91.6" data-duration="22.1" data-media-start="100" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c1-1" class="clip" src="assets/vo/c1-1.wav" data-start="3.0" data-duration="6.784" data-volume="1"></audio>
+    <audio id="vo-c1-2" class="clip" src="assets/vo/c1-2.wav" data-start="10.13" data-duration="8.192" data-volume="1"></audio>
+    <audio id="vo-c1-3" class="clip" src="assets/vo/c1-3.wav" data-start="18.68" data-duration="9.536" data-volume="1"></audio>
+    <audio id="vo-c1-5" class="clip" src="assets/vo/c1-5.wav" data-start="28.56" data-duration="8.661" data-volume="1"></audio>
+    <audio id="vo-c1-7" class="clip" src="assets/vo/c1-7.wav" data-start="37.57" data-duration="10.432" data-volume="1"></audio>
+    <audio id="vo-c1-8" class="clip" src="assets/vo/c1-8.wav" data-start="48.36" data-duration="6.485" data-volume="1"></audio>
+    <audio id="vo-c1-9" class="clip" src="assets/vo/c1-9.wav" data-start="55.19" data-duration="9.579" data-volume="1"></audio>
+    <audio id="vo-c1-10" class="clip" src="assets/vo/c1-10.wav" data-start="65.12" data-duration="8.192" data-volume="1"></audio>
+    <audio id="vo-c1-12" class="clip" src="assets/vo/c1-12.wav" data-start="73.66" data-duration="9.429" data-volume="1"></audio>
+    <audio id="vo-c1-13" class="clip" src="assets/vo/c1-13.wav" data-start="83.44" data-duration="7.808" data-volume="1"></audio>
+    <audio id="vo-c1-end" class="clip" src="assets/vo/c1-end.wav" data-start="91.6" data-duration="2.091" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "rgba(245, 226, 217, 1)", SOFT0 = "rgba(245, 226, 217, 0)";
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+    const draw = (sel, at, d = 0.5) => tl.fromTo(sel, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0, the time with no fade
+
+    // c1-1: the loaded half of the book page on "Server rendering"
+    fadeIn("#c1-bk-t", 4.4, 0.6);
+    fadeIn(["#c1-bk-a", "#c1-bk-m"], 4.55, 0.5);
+
+    // c1-2: each step draws on as it is named
+    fadeIn("#c1-fb2", 10.33, 0.5);
+    draw("#c1-f1", 10.59);
+    fadeIn(["#c1-fa1", "#c1-fl1"], 10.95, 0.4);
+    draw("#c1-f2", 13.03);
+    fadeIn(["#c1-fa2", "#c1-fl2"], 13.39, 0.4);
+    fadeIn("#c1-fb3", 14.55, 0.5);
+    draw("#c1-f3", 15.24, 0.7);
+    fadeIn(["#c1-fa3", "#c1-fl3"], 15.8, 0.4);
+    fadeIn("#c1-fb4", 15.86, 0.5);
+    draw("#c1-f4", 16.98);
+    fadeIn(["#c1-fa4", "#c1-fl4"], 17.34, 0.4);
+    fadeIn("#c1-fb5", 17.37, 0.5);
+
+    // c1-3: rows on "constructors", "ng on init", "Event handlers", "render hooks"
+    fadeIn("#c1-c1", 18.83, 0.5);
+    fadeIn("#c1-c2", 21.09, 0.5);
+    fadeIn("#c1-c3", 24.38, 0.5);
+    fadeIn("#c1-c4", 26.96, 0.5);
+
+    // c1-5: the globals on "window" and "local Storage"; then the first two rows of the tools table
+    fadeIn("#c1-g1", 29.37, 0.5);
+    fadeIn("#c1-g2", 30.36, 0.5);
+    fadeIn("#c1-g3", 30.51, 0.5);
+    fadeIn("#c1-g4", 30.66, 0.5);
+    fadeIn("#c1-u1", 31.74, 0.5);
+    fadeIn("#c1-u2", 33.9, 0.5);
+
+    // c1-7: the rest of the table, the band on isPlatformBrowser, then on REQUEST
+    fadeIn(["#c1-u3", "#c1-u4", "#c1-u5"], 37.6, 0.5);
+    band("#c1-u4", 37.96);
+    unband("#c1-u4", 43.81);
+    band("#c1-u5", 43.81);
+
+    // c1-9: band on the useFactory line on "choose its implementation"; c1-10: on MemoryStore's get on "get returns null"
+    band("#c1-k-fac", 57.13);
+    unband("#c1-k-fac", 67.68);
+    band("#c1-k-mget", 68.1);
+
+    // c1-12: the two metrics on their words; c1-13: the last sentence banded
+    fadeIn("#c1-cls", 79.51, 0.5);
+    fadeIn("#c1-lcp", 80.96, 0.5);
+    band("#c1-last", 83.48);
+
+    // questions 0.6 s apart, then hold; pause card
+    for (let i = 1; i <= 4; i++) fadeIn("#c1-q" + i, 92.0 + (i - 1) * 0.6);
+    fadeIn("#c1-pause-2", 114.2);
+
+    window.__timelines["c1"] = tl;
+  </script>
+</template>
