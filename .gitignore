@@ -45,3 +45,12 @@ Thumbs.db
 
 # Lesson copies synced from the dojo (scripts/sync-lessons.ts)
 /public/lessons
+
+# Hyperframes artifacts and renders
+.hyperframes/
+videos/**/renders/
+videos/**/*.mp4
+videos/**/assets/vo/*.wav
+# bundled /brag track, licence unverified for redistribution: copied locally, never committed
+videos/**/assets/music/
+.thumbnails/

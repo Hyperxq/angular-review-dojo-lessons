@@ -1,0 +1,255 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    #c6-map { position: absolute; left: 40px; top: 40px; width: 1040px; height: 700px; }
+    .c6-shelf { position: absolute; width: 300px; height: 120px; display: grid; place-items: center; background: var(--paper-sunk); border: 2px solid var(--rule-strong); border-radius: 8px; font: 700 34px/1 var(--font-code); color: var(--ink-muted); }
+    #c6-sel { border: 4px solid var(--ink); background: var(--paper-raised); color: var(--ink); }
+    #c6-detail { position: absolute; left: 1140px; top: 40px; width: 460px; height: 700px; padding: 40px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
+    #c6-detail-name { font: 600 64px/1.1 var(--font-display); margin-bottom: 12px; }
+    #c6-btn { position: absolute; left: 40px; right: 40px; bottom: 40px; padding: 26px 0; text-align: center; border-radius: 8px; background: var(--ink); color: var(--paper); font: 700 36px/1 var(--font-text); }
+    #c6-err { position: absolute; left: 40px; top: 260px; width: 1560px; padding: 40px 48px; background: var(--caution-soft); border: 3px solid var(--caution); border-radius: 8px; box-shadow: var(--shadow); }
+    #c6-err-code { font: 700 64px/1 var(--font-code); color: var(--caution); margin-bottom: 18px; }
+    #c6-err-msg { font: 400 40px/1.3 var(--font-text); }
+
+    #c6-inject { left: 120px; top: 170px; font-size: 32px; }
+    .c6-band { position: absolute; left: 0; width: 100%; height: 48px; background: var(--accent-soft); }
+    #c6-inject .ln, #c6-effect .ln { position: relative; }
+
+    .c6-api { position: absolute; left: 220px; font: 700 56px/1 var(--font-code); }
+    #c6-same { position: absolute; left: 200px; top: 200px; }
+    #c6-frame { position: absolute; left: 160px; top: 270px; width: 840px; height: 440px; border: 3px dashed var(--rule-strong); border-radius: 8px; }
+    #c6-frame-label { position: absolute; left: 160px; top: 730px; }
+    #c6-arrows { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #c6-owner { position: absolute; left: 1220px; top: 360px; width: 560px; padding: 44px 48px; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; box-shadow: var(--shadow); }
+    #c6-owner-name { font: 600 72px/1 var(--font-display); margin-bottom: 16px; }
+
+    #c6-effect { left: 120px; top: 230px; font-size: 32px; }
+    .c6-sig { position: absolute; left: 1380px; width: 420px; padding: 30px 40px; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; }
+    .c6-sig-name { font: 700 34px/1 var(--font-code); color: var(--ink-muted); }
+    .c6-sig-val { font: 600 120px/1 var(--font-display); margin-top: 14px; }
+    #c6-gap { position: absolute; left: 1350px; top: 210px; width: 480px; height: 560px; border: 6px solid var(--accent); border-radius: 8px; }
+    #c6-gap-label { position: absolute; left: 1380px; top: 800px; font: 700 34px/1.3 var(--font-text); color: var(--accent); }
+
+    #c6-edges { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #c6-graph { position: absolute; left: 120px; top: 150px; width: 900px; height: 780px; border: 3px solid var(--rule-strong); border-radius: 8px; }
+    #c6-graph-label { position: absolute; left: 150px; top: 176px; }
+    .c6-node { position: absolute; padding: 24px 32px; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; font: 700 40px/1 var(--font-code); white-space: nowrap; }
+    #c6-fx { border-color: var(--accent); color: var(--accent); }
+    .c6-edge-label { position: absolute; font: 700 32px/1 var(--font-code); color: var(--ink-muted); }
+    .c6-target { position: absolute; left: 1400px; font: 700 40px/1 var(--font-code); }
+    #c6-chart { position: absolute; left: 1400px; top: 720px; width: 300px; height: 150px; }
+
+    .q code { font-family: var(--font-code); }
+  </style>
+
+  <div id="root" data-composition-id="c6" data-width="1920" data-height="1080">
+    <!-- 0.0 chapter card -->
+    <div id="c6-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c6-card-time" class="chapter-time">15:00</div>
+      <div id="c6-card-title" class="chapter-title">Injection context, and the job of an effect</div>
+    </div>
+
+    <!-- c6-1 NG0203 over the shelf map -->
+    <div id="c6-desk" class="clip world" data-start="3" data-duration="8.46">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">15:00</span></div>
+        <div class="app-body">
+          <div id="c6-map">
+            <div class="c6-shelf" style="left: 0; top: 0">A-1</div><div class="c6-shelf" style="left: 360px; top: 0">A-2</div><div class="c6-shelf" style="left: 720px; top: 0">A-3</div>
+            <div class="c6-shelf" style="left: 0; top: 200px">B-1</div><div class="c6-shelf" style="left: 360px; top: 200px">B-2</div><div class="c6-shelf" style="left: 720px; top: 200px">B-3</div>
+            <div class="c6-shelf" style="left: 0; top: 400px">C-1</div><div class="c6-shelf" style="left: 360px; top: 400px">C-2</div><div id="c6-sel" class="c6-shelf" style="left: 720px; top: 400px">C-3</div>
+            <div class="c6-shelf" style="left: 0; top: 600px; height: 100px">D-1</div><div class="c6-shelf" style="left: 360px; top: 600px; height: 100px">D-2</div><div class="c6-shelf" style="left: 720px; top: 600px; height: 100px">D-3</div>
+          </div>
+          <div id="c6-detail">
+            <div class="label">Shelf map</div>
+            <div id="c6-detail-name">Shelf C-3</div>
+            <div class="label">Fiction, P to R</div>
+            <div id="c6-btn">Open details</div>
+          </div>
+          <div id="c6-err">
+            <div id="c6-err-code">NG0203</div>
+            <div id="c6-err-msg">can only be used within an injection context</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c6-2 a helper built on inject(): fine as a field, fails after await -->
+    <div id="c6-ctx" class="clip world" data-start="11.46" data-duration="10.59">
+      <div id="c6-inject" class="code">
+        <div id="c6-band1" class="c6-band" style="top: 40px"></div>
+        <span class="ln"><span class="k">export function</span> injectBranchId(): Signal&lt;number&gt; {</span>
+        <span class="ln">  <span class="k">return</span> inject(BranchContext).id;</span>
+        <span class="ln">}</span>
+        <span class="ln"> </span>
+        <span class="ln"><span class="k">export class</span> ShelfMap {</span>
+        <span class="ln">  <span class="k">readonly</span> branchId = injectBranchId(); <span class="c">// fine: a field initializer</span></span>
+        <span class="ln"> </span>
+        <span class="ln">  <span class="k">async</span> openDetails(): Promise&lt;<span class="k">void</span>&gt; {</span>
+        <span class="ln">    <span class="k">await</span> <span class="k">this</span>.dialog.closed();</span>
+        <span class="ln">    <span class="k">const</span> id = injectBranchId();        <span class="c">// NG0203: construction ended long ago</span></span>
+        <span class="ln">  }</span>
+        <span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c6-3 APIs that find their owner the same way -->
+    <div id="c6-owners" class="clip world" data-start="22.05" data-duration="6.83">
+      <div id="c6-same" class="label">find their owner the same way as <code style="font-family: var(--font-code)">inject()</code></div>
+      <div id="c6-frame"></div>
+      <div id="c6-frame-label" class="label">at construction</div>
+      <div id="c6-api1" class="c6-api" style="top: 330px">toSignal</div>
+      <div id="c6-api2" class="c6-api" style="top: 460px">takeUntilDestroyed()</div>
+      <div id="c6-api3" class="c6-api" style="top: 590px">effect</div>
+      <svg id="c6-arrows" viewBox="0 0 1920 1080">
+        <defs><marker id="c6-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#b8321f" /></marker></defs>
+        <path id="c6-ar1" d="M540 358 C 820 358, 940 430, 1200 470" stroke="#b8321f" stroke-width="5" fill="none" marker-end="url(#c6-head)" />
+        <path id="c6-ar2" d="M960 488 C 1060 488, 1120 490, 1200 500" stroke="#b8321f" stroke-width="5" fill="none" marker-end="url(#c6-head)" />
+        <path id="c6-ar3" d="M440 618 C 820 618, 940 560, 1200 530" stroke="#b8321f" stroke-width="5" fill="none" marker-end="url(#c6-head)" />
+      </svg>
+      <div id="c6-owner"><div id="c6-owner-name">an owner</div><div class="label">an injector or a destroy reference</div></div>
+    </div>
+
+    <!-- c6-4 an effect that resets the page: new shelf, old page -->
+    <div id="c6-trap" class="clip world" data-start="28.88" data-duration="9.67">
+      <div id="c6-effect" class="code">
+        <div id="c6-band2" class="c6-band" style="top: 232px"></div>
+        <span class="ln"><span class="k">readonly</span> shelf = signal&lt;Shelf&gt;(firstShelf);</span>
+        <span class="ln"><span class="k">readonly</span> page = signal(<span class="n">1</span>);</span>
+        <span class="ln"> </span>
+        <span class="ln"><span class="k">constructor</span>() {</span>
+        <span class="ln">  effect(() =&gt; {</span>
+        <span class="ln">    <span class="k">this</span>.shelf();      <span class="c">// when the shelf changes...</span></span>
+        <span class="ln">    <span class="k">this</span>.page.set(<span class="n">1</span>);  <span class="c">// ...go back to the first page</span></span>
+        <span class="ln">  });</span>
+        <span class="ln">}</span>
+      </div>
+      <div class="c6-sig" style="top: 240px"><div class="c6-sig-name">shelf()</div><div id="c6-shelf-val" class="c6-sig-val">C-3</div></div>
+      <div class="c6-sig" style="top: 510px"><div class="c6-sig-name">page()</div><div id="c6-page-val" class="c6-sig-val">4</div></div>
+      <div id="c6-gap"></div>
+      <div id="c6-gap-label">the new shelf, the old page</div>
+    </div>
+
+    <!-- c6-5 an effect leaves the signal graph -->
+    <div id="c6-leave" class="clip world sunk" data-start="38.55" data-duration="12.39">
+      <div id="c6-graph"></div>
+      <div id="c6-graph-label" class="label">signal graph</div>
+      <svg id="c6-edges" viewBox="0 0 1920 1080">
+        <defs><marker id="c6-head2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#b8321f" /></marker>
+          <marker id="c6-head3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#c4b9a6" /></marker></defs>
+        <path id="c6-e-linked" d="M330 340 V 520" stroke="#c4b9a6" stroke-width="5" fill="none" marker-end="url(#c6-head3)" />
+        <path id="c6-e-computed" d="M440 300 H 600" stroke="#c4b9a6" stroke-width="5" fill="none" marker-end="url(#c6-head3)" />
+        <path id="c6-e-res" d="M500 790 C 600 790, 640 700, 640 340" stroke="#c4b9a6" stroke-width="5" fill="none" marker-end="url(#c6-head3)" />
+        <path id="c6-o1" d="M1130 540 C 1250 540, 1260 300, 1380 300" stroke="#b8321f" stroke-width="5" fill="none" marker-end="url(#c6-head2)" />
+        <path id="c6-o2" d="M1130 560 H 1380" stroke="#b8321f" stroke-width="5" fill="none" marker-end="url(#c6-head2)" />
+        <path id="c6-o3" d="M1130 580 C 1250 580, 1260 790, 1380 790" stroke="#b8321f" stroke-width="5" fill="none" marker-end="url(#c6-head2)" />
+      </svg>
+      <div class="c6-node" style="left: 220px; top: 260px">shelf</div>
+      <div class="c6-node" style="left: 230px; top: 530px">page</div>
+      <div id="c6-n-count" class="c6-node" style="left: 610px; top: 260px">count</div>
+      <div id="c6-l-computed" class="c6-edge-label" style="left: 440px; top: 210px">computed</div>
+      <div id="c6-l-linked" class="c6-edge-label" style="left: 350px; top: 420px">linkedSignal</div>
+      <div id="c6-n-res" class="c6-node" style="left: 200px; top: 750px">resource</div>
+      <div id="c6-fx" class="c6-node" style="left: 900px; top: 520px">effect</div>
+      <div id="c6-t1" class="c6-target" style="top: 280px">localStorage</div>
+      <div id="c6-t2" class="c6-target" style="top: 540px">document.title</div>
+      <svg id="c6-chart" viewBox="0 0 300 150">
+        <rect x="0" y="90" width="60" height="60" fill="#5f584d" /><rect x="80" y="40" width="60" height="110" fill="#5f584d" /><rect x="160" y="70" width="60" height="80" fill="#5f584d" /><rect x="240" y="10" width="60" height="140" fill="#5f584d" />
+      </svg>
+    </div>
+
+    <!-- questions card -->
+    <div id="c6-q" class="clip world note" data-start="50.94" data-duration="22.1">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c6-q1" class="q">For every call to <code>inject()</code> or a function built on it: is it guaranteed to run during construction? Would it still be if someone moved it into a callback next month?</div>
+        <div id="c6-q2" class="q">For every <code>effect</code>: what non-signal thing does it write to? If the answer is another signal, what would <code>computed</code> or <code>linkedSignal</code> look like?</div>
+        <div id="c6-q3" class="q">When an effect runs again, is anything from its previous run still running?</div>
+      </div>
+    </div>
+
+    <!-- pause card -->
+    <div id="c6-pause" class="clip world" data-start="73.04" data-duration="3.5">
+      <div id="c6-pause-1" class="pause-1">Pause here.</div>
+      <div id="c6-pause-2" class="pause-2">Now do exercise 06.</div>
+    </div>
+
+    <audio id="c6-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="90" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c6-bed2" class="clip" src="assets/music/bed.mp3" data-start="50.94" data-duration="22.1" data-media-start="98" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c6-vo1" class="clip" src="assets/vo/c6-1.wav" data-start="3" data-duration="8.107" data-volume="1"></audio>
+    <audio id="c6-vo2" class="clip" src="assets/vo/c6-2.wav" data-start="11.46" data-duration="10.24" data-volume="1"></audio>
+    <audio id="c6-vo3" class="clip" src="assets/vo/c6-3.wav" data-start="22.05" data-duration="6.485" data-volume="1"></audio>
+    <audio id="c6-vo4" class="clip" src="assets/vo/c6-4.wav" data-start="28.88" data-duration="9.323" data-volume="1"></audio>
+    <audio id="c6-vo5" class="clip" src="assets/vo/c6-5.wav" data-start="38.55" data-duration="12.032" data-volume="1"></audio>
+    <audio id="c6-vo6" class="clip" src="assets/vo/c6-end.wav" data-start="50.94" data-duration="1.472" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const enter = { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" };
+    const fade = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const moveBand = (sel, line, at) => tl.to(sel, { y: line * 48, duration: 0.8, ease: "power2.inOut" }, at);
+    const draw = (sel, at) => tl.fromTo(sel, { strokeDasharray: 1200, strokeDashoffset: 1200, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: 0.8, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0; the time lands a beat later
+
+    // c6-1: the map builds, a shelf is opened, NG0203 lands on "throws"
+    tl.fromTo("#c6-map .c6-shelf", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power3.out", stagger: 0.06 }, 3.2);
+    fade("#c6-detail", 5.2);
+    tl.fromTo("#c6-btn", { scale: 1 }, { scale: 0.96, duration: 0.15, ease: "power2.inOut", yoyo: true, repeat: 1 }, 7.6);
+    tl.to(["#c6-map", "#c6-detail"], { opacity: 0.4, duration: 0.4, ease: "power2.inOut" }, 8.6);
+    tl.fromTo("#c6-err", { opacity: 0, y: -24 }, enter, 8.6);
+
+    // c6-2: block cut in whole; the band moves field initializer -> helper -> the call after await
+    fade("#c6-inject", 11.6, 0.3);
+    tl.set("#c6-band1", { y: 5 * 48, opacity: 0 }, 11.46);
+    fade("#c6-band1", 15.5, 0.3);
+    moveBand("#c6-band1", 1, 18.7);
+    moveBand("#c6-band1", 9, 20.3);
+
+    // c6-3: three APIs, the rule they share, construction or an owner
+    ["#c6-api1", "#c6-api2", "#c6-api3"].forEach((a, i) => fade(a, 22.3 + i * 0.25, 0.4));
+    fade("#c6-same", 24.6);
+    tl.fromTo("#c6-frame", { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 25.6);
+    fade("#c6-frame-label", 25.75);
+    fade("#c6-owner", 26.8);
+    ["#c6-ar1", "#c6-ar2", "#c6-ar3"].forEach((a, i) => draw(a, 26.95 + i * 0.1));
+
+    // c6-4: the effect, the reset, the shelf changes, the in-between frame, then the reset lands
+    fade("#c6-effect", 29.0, 0.3);
+    fade("#c6-band2", 30.2, 0.3);
+    moveBand("#c6-band2", 2, 32.0);
+    moveBand("#c6-band2", 1, 33.4);
+    tl.set("#c6-shelf-val", { textContent: "D-1" }, 33.9);
+    tl.fromTo("#c6-shelf-val", { opacity: 0.2 }, { opacity: 1, duration: 0.3, immediateRender: false }, 33.9);
+    fade("#c6-gap", 35.2, 0.3);
+    fade("#c6-gap-label", 35.35);
+    tl.set("#c6-page-val", { textContent: "1" }, 37.9);
+    tl.fromTo("#c6-page-val", { opacity: 0.2 }, { opacity: 1, duration: 0.3, immediateRender: false }, 37.9);
+    tl.to(["#c6-gap", "#c6-gap-label"], { opacity: 0, duration: 0.4, ease: "power2.in" }, 38.0);
+
+    // c6-5: the effect's arrows leave the graph; derivation and loading stay inside
+    fade("#c6-fx", 39.0);
+    ["#c6-o1", "#c6-o2", "#c6-o3"].forEach((o) => draw(o, 40.4));
+    fade("#c6-t1", 41.4);
+    fade("#c6-t2", 42.5);
+    fade("#c6-chart", 43.6);
+    draw("#c6-e-computed", 46.0);
+    fade(["#c6-l-computed", "#c6-n-count"], 46.2);
+    draw("#c6-e-linked", 46.7);
+    fade("#c6-l-linked", 46.9);
+    fade("#c6-n-res", 49.6);
+    draw("#c6-e-res", 49.8);
+
+    // questions card: one by one, 0.6 s apart, then hold
+    ["#c6-q1", "#c6-q2", "#c6-q3"].forEach((q, i) => fade(q, 51.3 + i * 0.6));
+
+    // pause card
+    fade("#c6-pause-1", 73.2);
+    tl.fromTo("#c6-pause-2", { opacity: 0, y: 16 }, enter, 73.7);
+
+    window.__timelines["c6"] = tl;
+  </script>
+</template>

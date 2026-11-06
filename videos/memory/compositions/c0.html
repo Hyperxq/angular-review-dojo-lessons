@@ -1,0 +1,300 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c0-nav { position: absolute; left: 48px; top: 40px; width: 340px; }
+    .c0-nav div { font: 400 40px/1 var(--font-text); color: var(--ink-muted); padding: 26px 0; border-bottom: 1px solid var(--rule); }
+    .c0-main { position: absolute; left: 480px; top: 40px; width: 1100px; }
+    #c0-desk-title { font: 600 72px/1.1 var(--font-display); letter-spacing: -0.01em; }
+
+    .c0-head { position: absolute; left: 200px; top: 130px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    #c0-root-lead { position: absolute; left: 200px; top: 280px; }
+    .c0-root { position: absolute; left: 200px; width: 900px; padding: 22px 0; border-bottom: 1px solid var(--rule); font: 400 44px/1 var(--font-text); }
+    .c0-root code { font: 700 44px/1 var(--font-code); }
+
+    .c0-flow .fbox { height: 140px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .c0-flow .flabel { width: 340px; }
+
+    .c0-factor { position: absolute; top: 420px; width: 320px; height: 220px; padding: 28px 30px; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; box-sizing: border-box; font: 700 38px/1.2 var(--font-text); }
+    .c0-op { position: absolute; top: 420px; width: 92px; height: 220px; display: flex; align-items: center; justify-content: center; font: 700 48px/1 var(--font-text); color: var(--ink-muted); }
+    #c0-against { font: 400 32px/1 var(--font-text); }
+
+    #c0-tabs { position: absolute; left: 40px; top: 32px; right: 40px; height: 76px; border-bottom: 2px solid var(--rule-strong); }
+    #c0-tab { position: absolute; left: 0; bottom: -2px; width: 460px; height: 76px; padding: 0 28px; display: flex; align-items: center; background: var(--paper-sunk); border: 2px solid var(--rule-strong); border-bottom-color: var(--paper-sunk); border-radius: 8px 8px 0 0; font: 700 34px/1 var(--font-text); box-sizing: border-box; }
+    .c0-stat { position: absolute; left: 40px; width: 900px; height: 110px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; font: 400 40px/1 var(--font-text); }
+    .c0-stat b { font-variant-numeric: tabular-nums; }
+
+    .c0-tr { position: absolute; left: 200px; width: 1520px; display: grid; grid-template-columns: 820px 700px; border-bottom: 1px solid var(--rule); padding: 26px 0; font: 400 40px/1.25 var(--font-text); }
+    .c0-tr code { font: 400 40px/1.25 var(--font-code); }
+    #c0-th { font: 700 32px/1 var(--font-text); color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); padding: 18px 0; }
+
+    #c0-moved-head { position: absolute; left: 140px; top: 70px; font: 600 56px/1 var(--font-display); letter-spacing: -0.01em; }
+    #c0-list { position: absolute; left: 140px; top: 166px; width: 1640px; }
+    .c0-item { position: relative; padding-left: 36px; margin-bottom: 22px; font: 400 34px/1.35 var(--font-text); }
+    .c0-item code { font: 400 32px/1 var(--font-code); }
+    .c0-mark { position: absolute; left: 0; top: 4px; bottom: 4px; width: 8px; border-radius: 4px; background: var(--accent); }
+    .c0-band { background-color: rgb(245 226 217 / 0); border-radius: 4px; }
+
+    #c0-file { position: absolute; left: 1380px; top: 260px; width: 420px; height: 520px; padding: 44px 40px; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow); box-sizing: border-box; }
+    #c0-file-name { font: 700 44px/1 var(--font-code); margin-bottom: 24px; }
+    #c0-file .label { margin-bottom: 40px; }
+    .c0-bar { height: 14px; margin-bottom: 26px; border-radius: 7px; background: var(--rule); }
+    #c0-opens { font: 400 40px/1.2 var(--font-text); color: var(--ink-muted); margin-top: 36px; }
+  </style>
+
+  <div id="root" data-composition-id="c0" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c0-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c0-card-time" class="chapter-time">08:55</div>
+      <div id="c0-card-title" class="chapter-title">What moved since Angular 17</div>
+    </div>
+
+    <!-- c0-1, c0-1b the desk before opening, then idle -->
+    <div id="c0-desk" class="clip world" data-start="3" data-duration="16.91">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div class="c0-nav"><div>Members</div><div>Loans</div><div>Returns</div><div>Reading room</div></div>
+          <div class="c0-main"><div id="c0-desk-title" data-hold>What moved since Angular 17</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-2 reachability: the roots named in the lesson -->
+    <div id="c0-roots" class="clip world" data-start="19.91" data-duration="11">
+      <div id="c0-roots-head" class="c0-head">What did not move: reachability</div>
+      <div id="c0-root-lead" class="label">a chain of references from a root:</div>
+      <div id="c0-r1" class="c0-root" style="top: 350px"><code>window</code></div>
+      <div id="c0-r2" class="c0-root" style="top: 440px"><code>document</code></div>
+      <div id="c0-r3" class="c0-root" style="top: 530px">the list of active timers</div>
+      <div id="c0-r4" class="c0-root" style="top: 620px">the root injector</div>
+      <div id="c0-r5" class="c0-root" style="top: 710px" data-hold>module-level variables</div>
+    </div>
+
+    <!-- c0-3 chapter 1's flow, drawn whole -->
+    <div id="c0-flow" class="clip world sunk c0-flow" data-start="30.91" data-duration="9.76">
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <g stroke="#1d1b18" stroke-width="4" fill="none">
+          <line id="c0-e1" x1="380" y1="340" x2="722" y2="340" />
+          <line x1="1140" y1="340" x2="1482" y2="340" />
+          <path d="M1630,410 V550 H410 V674" />
+          <line x1="680" y1="760" x2="1162" y2="760" />
+        </g>
+        <g fill="#1d1b18">
+          <polygon id="c0-a1" points="720,328 740,340 720,352" />
+          <polygon points="1480,328 1500,340 1480,352" />
+          <polygon points="398,672 410,692 422,672" />
+          <polygon points="1160,748 1180,760 1160,772" />
+        </g>
+      </svg>
+      <div class="flabel" style="left: 390px; top: 250px">keeps alive while it observes</div>
+      <div class="flabel" style="left: 1150px; top: 290px">holds</div>
+      <div class="flabel" style="left: 820px; top: 500px; width: 400px">closes over this</div>
+      <div class="flabel" style="left: 720px; top: 708px; width: 400px">references</div>
+      <div class="fbox" style="left: 140px; top: 270px; width: 240px">browser</div>
+      <div class="fbox" style="left: 740px; top: 270px; width: 400px">ResizeObserver</div>
+      <div class="fbox" style="left: 1500px; top: 270px; width: 260px">callback</div>
+      <div id="c0-f-room" class="fbox" style="left: 140px; top: 690px; width: 540px">ReadingRoom instance</div>
+      <div class="fbox" style="left: 1180px; top: 690px; width: 580px" data-hold>its view and DOM nodes</div>
+    </div>
+
+    <!-- c0-4 the four factors from "When a leak matters" -->
+    <div id="c0-cost" class="clip world" data-start="40.67" data-duration="10.12">
+      <div class="c0-head">When a leak matters</div>
+      <div id="c0-x1" class="c0-factor" style="left: 170px">retained size of one occurrence</div>
+      <div id="c0-o1" class="c0-op" style="left: 490px; width: 80px">&times;</div>
+      <div id="c0-x2" class="c0-factor" style="left: 570px">occurrences per session</div>
+      <div id="c0-o2" class="c0-op" style="left: 890px; width: 80px">&times;</div>
+      <div id="c0-x3" class="c0-factor" style="left: 970px">length of the session</div>
+      <div id="c0-o3" class="c0-op" style="left: 1290px; width: 140px"><span id="c0-against">against</span></div>
+      <div id="c0-x4" class="c0-factor" style="left: 1430px" data-hold>memory the device can spare</div>
+    </div>
+
+    <!-- c0-5 one tab, eight hours: the clock runs, the header stays -->
+    <div id="c0-day" class="clip world" data-start="50.79" data-duration="9.48">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span id="c0-day-clock" class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div id="c0-tabs"><div id="c0-tab">Circulation desk</div></div>
+          <div class="c0-stat" style="top: 170px"><span>Tabs open</span><b>1</b></div>
+          <div class="c0-stat" style="top: 280px"><span>Open since</span><b>08:55</b></div>
+          <div class="c0-stat" style="top: 390px" data-hold><span>Route changes</span><b id="c0-routes">0</b></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-5b the same flow, the view and its DOM as the accent -->
+    <div id="c0-flow2" class="clip world sunk c0-flow" data-start="60.27" data-duration="5.94">
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <g stroke="#1d1b18" stroke-width="4" fill="none">
+          <line x1="380" y1="340" x2="722" y2="340" />
+          <line x1="1140" y1="340" x2="1482" y2="340" />
+          <path d="M1630,410 V550 H410 V674" />
+          <line x1="680" y1="760" x2="1162" y2="760" />
+        </g>
+        <g fill="#1d1b18">
+          <polygon points="720,328 740,340 720,352" />
+          <polygon points="1480,328 1500,340 1480,352" />
+          <polygon points="398,672 410,692 422,672" />
+          <polygon points="1160,748 1180,760 1160,772" />
+        </g>
+      </svg>
+      <div class="flabel" style="left: 390px; top: 250px">keeps alive while it observes</div>
+      <div class="flabel" style="left: 1150px; top: 290px">holds</div>
+      <div class="flabel" style="left: 820px; top: 500px; width: 400px">closes over this</div>
+      <div class="flabel" style="left: 720px; top: 708px; width: 400px">references</div>
+      <div class="fbox" style="left: 140px; top: 270px; width: 240px">browser</div>
+      <div class="fbox" style="left: 740px; top: 270px; width: 400px">ResizeObserver</div>
+      <div class="fbox" style="left: 1500px; top: 270px; width: 260px">callback</div>
+      <div class="fbox" style="left: 140px; top: 690px; width: 540px">ReadingRoom instance</div>
+      <div id="c0-f2-view" class="fbox" style="left: 1180px; top: 690px; width: 580px" data-hold>its view and DOM nodes</div>
+    </div>
+
+    <!-- c0-6 the (click) row of "Declarative form / Who stops it" -->
+    <div id="c0-clean" class="clip world" data-start="66.21" data-duration="10.61">
+      <div class="c0-head" style="top: 200px">When you do not need cleanup</div>
+      <div id="c0-table" data-hold>
+        <div id="c0-th" class="c0-tr" style="top: 400px"><div>Declarative form</div><div>Who stops it</div></div>
+        <div class="c0-tr" style="top: 454px"><div><code>(click)="borrow()"</code> in the template</div><div>Angular, with the element</div></div>
+      </div>
+    </div>
+
+    <!-- c0-7 to c0-11 the "What moved" list -->
+    <div id="c0-moved" class="clip world" data-start="76.82" data-duration="59.87">
+      <div id="c0-moved-head">What moved</div>
+      <div id="c0-list" data-hold>
+        <div class="c0-item"><div id="c0-m1" class="c0-mark"></div>Zone.js is gone (zoneless is the default since v21, and it is not installed here). Zone used to wrap every listener and timer. That never prevented leaks, and its absence does not cause them. <span id="c0-b1" class="c0-band">A leaked listener no longer triggers change detection just by firing; it still does if it sets a signal a template reads or calls <code>markForCheck()</code>.</span></div>
+        <div class="c0-item"><div id="c0-m2" class="c0-mark"></div><code>DestroyRef</code> and <code>inject()</code> let you register cleanup at the point of creation, in the constructor or a field initializer. <span id="c0-b2a" class="c0-band"><code>takeUntilDestroyed()</code></span> and <span id="c0-b2b" class="c0-band"><code>toSignal()</code></span> use it to end subscriptions for you.</div>
+        <div class="c0-item"><div id="c0-m3" class="c0-mark"></div>The <code>host</code> metadata registers <code>window:</code> and <code>document:</code> listeners that Angular adds and removes with the component.</div>
+        <div class="c0-item"><div id="c0-m4" class="c0-mark"></div><code>effect(fn)</code> re-runs when its signals change and gives you <code>onCleanup</code> for whatever one run set up.</div>
+        <div class="c0-item"><div id="c0-m5" class="c0-mark"></div><code>afterNextRender</code> and <span id="c0-b3" class="c0-band"><code>afterEveryRender</code> (named <code>afterRender</code> before v20)</span> run code after rendering, in the browser only, and accept phases that separate DOM reads from DOM writes.</div>
+        <div class="c0-item"><div id="c0-m6" class="c0-mark"></div><code>computed</code> caches derived values. With <code>OnPush</code> as the default strategy, a view re-renders when a signal it reads changes, and any plain method called from that template runs again with it.</div>
+      </div>
+    </div>
+
+    <!-- c0-12 GUIDE.md beside the desk; the desk opens -->
+    <div id="c0-guide" class="clip world" data-start="136.69" data-duration="10.64">
+      <div class="app" style="width: 1180px">
+        <div class="app-header"><span>Circulation desk</span><span id="c0-guide-clock" class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div class="c0-nav"><div>Members</div><div>Loans</div><div>Returns</div><div>Reading room</div></div>
+          <div class="c0-main" style="width: 640px"><div id="c0-opens" data-hold>Opens at 09:00</div></div>
+        </div>
+      </div>
+      <div id="c0-file" data-hold>
+        <div id="c0-file-name">GUIDE.md</div>
+        <div class="label">the step-by-step profiling guide</div>
+        <div class="c0-bar" style="width: 100%"></div>
+        <div class="c0-bar" style="width: 86%"></div>
+        <div class="c0-bar" style="width: 94%"></div>
+        <div class="c0-bar" style="width: 70%"></div>
+        <div class="c0-bar" style="width: 90%"></div>
+      </div>
+    </div>
+
+    <audio id="c0-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="0" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c0-1" class="clip" src="assets/vo/c0-1.wav" data-start="3" data-duration="7.061" data-volume="1"></audio>
+    <audio id="vo-c0-1b" class="clip" src="assets/vo/c0-1b.wav" data-start="10.41" data-duration="9.152" data-volume="1"></audio>
+    <audio id="vo-c0-2" class="clip" src="assets/vo/c0-2.wav" data-start="19.91" data-duration="10.645" data-volume="1"></audio>
+    <audio id="vo-c0-3" class="clip" src="assets/vo/c0-3.wav" data-start="30.91" data-duration="9.408" data-volume="1"></audio>
+    <audio id="vo-c0-4" class="clip" src="assets/vo/c0-4.wav" data-start="40.67" data-duration="9.771" data-volume="1"></audio>
+    <audio id="vo-c0-5" class="clip" src="assets/vo/c0-5.wav" data-start="50.79" data-duration="9.131" data-volume="1"></audio>
+    <audio id="vo-c0-5b" class="clip" src="assets/vo/c0-5b.wav" data-start="60.27" data-duration="5.589" data-volume="1"></audio>
+    <audio id="vo-c0-6" class="clip" src="assets/vo/c0-6.wav" data-start="66.21" data-duration="10.261" data-volume="1"></audio>
+    <audio id="vo-c0-7" class="clip" src="assets/vo/c0-7.wav" data-start="76.82" data-duration="7.509" data-volume="1"></audio>
+    <audio id="vo-c0-7b" class="clip" src="assets/vo/c0-7b.wav" data-start="84.68" data-duration="8.427" data-volume="1"></audio>
+    <audio id="vo-c0-8" class="clip" src="assets/vo/c0-8.wav" data-start="93.45" data-duration="10.731" data-volume="1"></audio>
+    <audio id="vo-c0-9" class="clip" src="assets/vo/c0-9.wav" data-start="104.53" data-duration="9.131" data-volume="1"></audio>
+    <audio id="vo-c0-10" class="clip" src="assets/vo/c0-10.wav" data-start="114.02" data-duration="11.733" data-volume="1"></audio>
+    <audio id="vo-c0-11" class="clip" src="assets/vo/c0-11.wav" data-start="126.1" data-duration="10.24" data-volume="1"></audio>
+    <audio id="vo-c0-12" class="clip" src="assets/vo/c0-12.wav" data-start="136.69" data-duration="9.643" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at) => tl.to(sel, { opacity: 0, duration: 0.4, ease: "power2.in" }, at);
+    const hot = (sel, at) => tl.to(sel, { borderColor: "#b8321f", backgroundColor: "#f5e2d9", duration: 0.3 }, at);
+    const cool = (sel, at) => tl.to(sel, { borderColor: "#1d1b18", backgroundColor: "#fffdf9", duration: 0.3 }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: "rgba(245,226,217,0)" }, { backgroundColor: "rgba(245,226,217,1)", duration: 0.3 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: "rgba(245,226,217,0)", duration: 0.3 }, at);
+
+    // chapter card: on screen from frame 0
+
+    // c0-1: the title in the desk; c0-1b: the desk idles
+    fadeIn("#c0-desk-title", 3.4);
+
+    // c0-2: the heading, then the roots as the narration names them
+    fadeIn("#c0-roots-head", 20.1);
+    fadeIn("#c0-root-lead", 25.9, 0.4);
+    fadeIn("#c0-r1", 26.6, 0.4);
+    fadeIn("#c0-r2", 26.9, 0.4);
+    fadeIn("#c0-r3", 28.0, 0.4);
+    fadeIn("#c0-r4", 29.3, 0.4);
+    fadeIn("#c0-r5", 29.6, 0.4);
+
+    // c0-3: the destroyed component at the end of the chain, then the first link
+    hot("#c0-f-room", 31.6);
+    cool("#c0-f-room", 36.9);
+    tl.to("#c0-e1", { stroke: "#b8321f", duration: 0.3 }, 37.1);
+    tl.to("#c0-a1", { fill: "#b8321f", duration: 0.3 }, 37.1);
+
+    // c0-4: factors one after another
+    fadeIn("#c0-x1", 42.4);
+    fadeIn("#c0-o1", 44.7, 0.4);
+    fadeIn("#c0-x2", 44.85);
+    fadeIn("#c0-o2", 46.9, 0.4);
+    fadeIn("#c0-x3", 47.05);
+    fadeIn("#c0-o3", 48.7, 0.4);
+    fadeIn("#c0-x4", 48.85);
+
+    // c0-5: the clock runs to closing time; route changes add up; the header stays
+    ["09:40", "10:25", "11:10", "11:55", "12:40", "13:25", "14:10", "14:55", "15:40", "16:20", "17:00"].forEach((t, i) => {
+      tl.set("#c0-day-clock", { textContent: t }, 55.8 + i * 0.25);
+      tl.set("#c0-routes", { textContent: String(18 * (i + 1)) }, 55.8 + i * 0.25);
+    });
+
+    // c0-5b: the whole view and its DOM
+    hot("#c0-f2-view", 61.6);
+
+    // c0-6: the heading, then the one row
+    fadeIn("#c0-table", 70.0);
+
+    // c0-7: the Zone.js item; c0-7b: its last sentence
+    fadeIn("#c0-m1", 77.2, 0.3);
+    band("#c0-b1", 84.9);
+
+    // c0-8: DestroyRef, then takeUntilDestroyed() and toSignal()
+    unband("#c0-b1", 93.5);
+    fadeOut("#c0-m1", 93.5);
+    fadeIn("#c0-m2", 93.7, 0.3);
+    band("#c0-b2a", 100.5);
+    band("#c0-b2b", 100.65);
+
+    // c0-9: host, then effect
+    unband("#c0-b2a", 104.6);
+    unband("#c0-b2b", 104.6);
+    fadeOut("#c0-m2", 104.6);
+    fadeIn("#c0-m3", 104.8, 0.3);
+    fadeOut("#c0-m3", 109.8);
+    fadeIn("#c0-m4", 110.0, 0.3);
+
+    // c0-10: the render hooks, then the rename
+    fadeOut("#c0-m4", 114.1);
+    fadeIn("#c0-m5", 114.3, 0.3);
+    band("#c0-b3", 121.8);
+
+    // c0-11: computed
+    unband("#c0-b3", 126.2);
+    fadeOut("#c0-m5", 126.2);
+    fadeIn("#c0-m6", 126.4, 0.3);
+
+    // c0-12: the guide beside the desk; nine o'clock
+    fadeIn("#c0-file", 141.2);
+    tl.set("#c0-guide-clock", { textContent: "09:00" }, 145.0);
+    tl.set("#c0-opens", { textContent: "Open" }, 145.0);
+
+    window.__timelines["c0"] = tl;
+  </script>
+</template>

@@ -1,0 +1,342 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    #c5-nav { position: absolute; left: 48px; top: 40px; width: 300px; }
+    #c5-nav div { font: 400 40px/1 var(--font-text); color: var(--ink-muted); padding: 26px 0; border-bottom: 1px solid var(--rule); }
+    #c5-nav .on { color: var(--ink); font-weight: 700; }
+    .c5-widget { position: absolute; top: 60px; width: 560px; height: 620px; padding: 40px 44px; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; }
+    .c5-widget-name { font: 700 40px/1.2 var(--font-text); }
+    .c5-widget-where { font: 400 32px/1.3 var(--font-text); color: var(--ink-muted); margin-top: 8px; }
+    .c5-ticket { position: absolute; left: 44px; bottom: 44px; font: 700 300px/1 var(--font-code); }
+    #c5-tb { color: var(--accent); }
+
+    /* marble rows draw their "-" frames as segments, so a row can start late or stop early */
+    .c5-dia .mtrack { background: none; }
+    .c5-seg { position: absolute; top: 0; height: 3px; background: var(--rule-strong); }
+    .c5-dia .m.cut::after { content: ""; position: absolute; left: -8px; right: -8px; top: 50%; height: 4px; margin-top: -2px; background: currentColor; transform: rotate(-45deg); }
+    .c5-dia .m.cut.hot { background: transparent; }
+
+    #c5-code { left: 120px; top: 120px; }
+    #c5-runs { position: absolute; left: 1400px; top: 380px; width: 400px; }
+    #c5-runs-n { font: 600 220px/1 var(--font-display); }
+    #c5-subs { position: absolute; left: 440px; top: 760px; }
+    .c5-sub { font: 400 34px/1.3 var(--font-code); margin-bottom: 18px; }
+    .c5-sub span { font: 400 32px/1 var(--font-text); color: var(--ink-muted); margin-left: 24px; }
+
+    #c5-table { position: absolute; left: 120px; top: 230px; width: 1680px; }
+    .c5-tr { position: relative; display: flex; height: 152px; padding: 26px 32px; border-bottom: 1px solid var(--rule); font: 400 38px/1.3 var(--font-text); }
+    .c5-tr.head { height: auto; font: 700 32px/1 var(--font-text); color: var(--ink-muted); padding-top: 0; padding-bottom: 26px; border-bottom: 2px solid var(--rule-strong); }
+    .c5-tr > div:nth-child(1) { width: 600px; flex: none; font-family: var(--font-code); font-size: 34px; }
+    .c5-tr.head > div:nth-child(1) { font-family: var(--font-text); }
+    .c5-tr > div:nth-child(2) { width: 540px; flex: none; padding-right: 40px; }
+    .c5-tr > div:nth-child(3) { flex: 1; }
+    .c5-tr code { font-family: var(--font-code); }
+    #c5-band { position: absolute; left: 0; top: 0; width: 1680px; height: 152px; background: var(--accent-soft); border-radius: 8px; }
+
+    #c5-toasts .mlabel { width: 480px; font-size: 36px; }
+    #c5-toasts .mtrack, #c5-toasts .mnote { left: 540px; }
+    #c5-w2note { top: 122px; }
+
+    .c5-ref .m { width: 64px; height: 64px; margin: -31px 0 0 -32px; font-size: 28px; }
+    .c5-ref .mlabel { top: 20px; font-size: 36px; }
+    .c5-ref .mtrack { top: 40px; }
+    .c5-ref .mnote { top: 80px; }
+    .c5-head { position: relative; height: 50px; padding-left: 440px; font: 700 34px/1 var(--font-code); }
+    .c5-head span { font: 400 32px/1 var(--font-text); color: var(--ink-muted); margin-left: 16px; }
+
+    #c5-choices { position: absolute; left: 40px; top: 30px; display: flex; gap: 24px; }
+    .c5-chip { padding: 16px 26px; border: 2px solid var(--rule-strong); border-radius: 8px; font: 700 36px/1 var(--font-code); }
+    #c5-axes { position: absolute; left: 40px; top: 120px; display: flex; gap: 80px; font: 400 34px/1.3 var(--font-text); }
+    .c5-panel { position: absolute; top: 210px; width: 780px; height: 540px; padding: 36px 40px; background: var(--paper); border: 3px solid var(--rule); border-radius: 8px; }
+    .c5-panel-name { font: 700 40px/1.2 var(--font-text); }
+    .c5-panel-sub { font: 400 30px/1.3 var(--font-text); color: var(--ink-muted); margin-top: 6px; }
+    .c5-panel-sub code { font-family: var(--font-code); }
+    .c5-branch { font: 400 36px/1 var(--font-text); padding: 18px 0; border-bottom: 1px solid var(--rule); width: 300px; }
+    #c5-map { position: absolute; left: 40px; top: 170px; width: 300px; height: 215px; }
+    .c5-ask { position: absolute; right: 40px; top: 270px; padding: 18px 26px; border: 3px solid var(--ink); border-radius: 8px; background: var(--paper-raised); font: 700 40px/1 var(--font-code); }
+    .c5-ask b { color: var(--accent); }
+  </style>
+
+  <div id="root" data-composition-id="c5" data-width="1920" data-height="1080">
+    <!-- 0.0 chapter card -->
+    <div id="c5-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c5-card-time" class="chapter-time">14:00</div>
+      <div id="c5-card-title" class="chapter-title">Cold, hot, and shared</div>
+    </div>
+
+    <!-- c5-1 two ticket widgets, two numbers -->
+    <div id="c5-desk" class="clip world" data-start="3" data-duration="5.55">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">14:00</span></div>
+        <div class="app-body">
+          <div id="c5-nav"><div>Members</div><div>Loans</div><div>Returns</div><div class="on">Queue</div></div>
+          <div id="c5-wa" class="c5-widget" style="left: 420px">
+            <div class="c5-widget-name">Queue ticket</div>
+            <div class="c5-widget-where">Front counter</div>
+            <div id="c5-ta" class="c5-ticket">a</div>
+          </div>
+          <div id="c5-wb" class="c5-widget" style="left: 1040px">
+            <div class="c5-widget-name">Queue ticket</div>
+            <div class="c5-widget-where">Self-service screen</div>
+            <div id="c5-tb" class="c5-ticket">b</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c5-2 a cold observable runs once per subscriber -->
+    <div id="c5-cold" class="clip world sunk" data-start="8.55" data-duration="7.97">
+      <div id="c5-code" class="code"><span class="ln"><span class="k">const</span> ticket$ = defer(() =&gt; of(nextTicketNumber()));</span></div>
+      <div class="marbles c5-dia" style="top: 340px; --fw: 136px">
+        <div class="mrow">
+          <div class="mlabel">widget 1</div>
+          <div class="mtrack"><div class="c5-seg" style="--f: 0; width: 136px"></div><div id="c5-w1a" class="m" style="--f: 0">a</div><div id="c5-w1d" class="m-done" style="--f: 1"></div></div>
+        </div>
+        <div class="mrow">
+          <div class="mlabel">widget 2</div>
+          <div class="mtrack"><div class="c5-seg" style="--f: 0; width: 136px"></div><div id="c5-w2b" class="m hot" style="--f: 0">b</div><div id="c5-w2d" class="m-done" style="--f: 1"></div></div>
+          <div id="c5-w2note" class="mnote">// a second run of the producer: a different number</div>
+        </div>
+      </div>
+      <div id="c5-runs"><div class="label">producer runs</div><div id="c5-runs-n">0</div></div>
+      <div id="c5-subs">
+        <div id="c5-sub1" class="c5-sub">ticket$ | async<span>a subscriber</span></div>
+        <div id="c5-sub2" class="c5-sub">toSignal(ticket$)<span>a subscriber</span></div>
+      </div>
+    </div>
+
+    <!-- c5-3 which subject remembers -->
+    <div id="c5-subjects" class="clip world" data-start="16.52" data-duration="9.55">
+      <div id="c5-table">
+        <div id="c5-th" class="c5-tr head"><div>Type</div><div>Late subscriber receives</div><div>Fits</div></div>
+        <div style="position: relative">
+          <div id="c5-band"></div>
+          <div id="c5-r1" class="c5-tr"><div>Subject</div><div>Nothing from the past.</div><div>Events: "a hold became available".</div></div>
+          <div id="c5-r2" class="c5-tr"><div>BehaviorSubject(initial)</div><div>The current value at once, then future ones.</div><div>Current state, when you cannot use a signal.</div></div>
+          <div id="c5-r3" class="c5-tr"><div>ReplaySubject(n)</div><div>The last <code>n</code> values, then future ones.</div><div>Short histories, used deliberately.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c5-4 a late panel: Subject vs Replay -->
+    <div id="c5-late" class="clip world sunk" data-start="26.07" data-duration="5.94">
+      <div id="c5-toasts" class="marbles c5-dia" style="top: 300px; --fw: 78.75px">
+        <div class="mrow">
+          <div class="mlabel">toasts$</div>
+          <div class="mtrack"><div class="c5-seg" style="--f: 0; width: 1260px"></div><div id="c5-ta1" class="m" style="--f: 0">a</div><div id="c5-tb1" class="m" style="--f: 6">b</div></div>
+        </div>
+        <div class="mrow">
+          <div class="mlabel">panel (Subject)</div>
+          <div class="mtrack"><div id="c5-seg-s" class="c5-seg" style="--f: 4; width: 945px"></div><div id="c5-sb" class="m" style="--f: 6">b</div></div>
+          <div id="c5-note-s" class="mnote">// opened at frame 4: only what happens next</div>
+        </div>
+        <div class="mrow">
+          <div class="mlabel">panel (Replay)</div>
+          <div class="mtrack"><div id="c5-seg-r" class="c5-seg" style="--f: 4; width: 945px"></div><div id="c5-ra" class="m hot" style="--f: 4">a</div><div id="c5-rb" class="m" style="--f: 6">b</div></div>
+          <div id="c5-note-r" class="mnote">// the same panel shows an old toast again</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c5-5 the two refCount diagrams from chapter 0 -->
+    <div id="c5-ref" class="clip world sunk" data-start="32.01" data-duration="8.39">
+      <div id="c5-d1" class="marbles c5-dia c5-ref" style="top: 64px; --fw: 90.67px">
+        <div class="c5-head">refCount: false<span>(the default)</span></div>
+        <div class="mrow" style="height: 120px">
+          <div class="mlabel">source</div>
+          <div class="mtrack"><div class="c5-seg" style="--f: 0; width: 1360px"></div><div class="m" style="--f: 0">a</div><div class="m" style="--f: 3">b</div><div class="m" style="--f: 6">c</div><div id="c5-d1-d" class="m" style="--f: 9">d</div><div id="c5-d1-e" class="m" style="--f: 12">e</div></div>
+          <div class="mnote">// one subscription, kept after subscriber 1 left</div>
+        </div>
+        <div class="mrow" style="height: 96px">
+          <div class="mlabel">subscriber 1</div>
+          <div class="mtrack"><div class="c5-seg" style="--f: 0; width: 453px"></div><div class="m" style="--f: 0">a</div><div class="m" style="--f: 3">b</div><div class="m cut" style="--f: 5"></div></div>
+        </div>
+        <div class="mrow" style="height: 120px">
+          <div class="mlabel">subscriber 2</div>
+          <div class="mtrack"><div class="c5-seg" style="--f: 8; width: 635px"></div><div class="m" style="--f: 8">c</div><div class="m" style="--f: 9">d</div><div class="m" style="--f: 12">e</div></div>
+          <div class="mnote">// gets the buffered c at once, then d</div>
+        </div>
+      </div>
+      <div id="c5-d2" class="marbles c5-dia c5-ref" style="top: 520px; --fw: 90.67px">
+        <div class="c5-head">refCount: true</div>
+        <div class="mrow" style="height: 120px">
+          <div class="mlabel">source run 1</div>
+          <div class="mtrack"><div class="c5-seg" style="--f: 0; width: 453px"></div><div class="m" style="--f: 0">a</div><div class="m" style="--f: 3">b</div><div id="c5-d2-x" class="m cut" style="--f: 5"></div></div>
+          <div class="mnote">// unsubscribed when subscriber 1 left</div>
+        </div>
+        <div class="mrow" style="height: 96px">
+          <div class="mlabel">subscriber 1</div>
+          <div class="mtrack"><div class="c5-seg" style="--f: 0; width: 453px"></div><div class="m" style="--f: 0">a</div><div class="m" style="--f: 3">b</div><div class="m cut" style="--f: 5"></div></div>
+        </div>
+        <div class="mrow" style="height: 120px">
+          <div class="mlabel">source run 2</div>
+          <div class="mtrack"><div class="c5-seg" style="--f: 8; width: 544px"></div><div class="m" style="--f: 8">a</div><div class="m" style="--f: 11">b</div><div class="m" style="--f: 14">c</div></div>
+          <div class="mnote">// a new run for subscriber 2</div>
+        </div>
+        <div class="mrow" style="height: 96px">
+          <div class="mlabel">subscriber 2</div>
+          <div class="mtrack"><div class="c5-seg" style="--f: 8; width: 544px"></div><div class="m" style="--f: 8">a</div><div class="m" style="--f: 11">b</div><div class="m" style="--f: 14">c</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c5-6 branch list and position watch, each with a "?" -->
+    <div id="c5-decide" class="clip world" data-start="40.4" data-duration="12.66">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">14:00</span></div>
+        <div class="app-body">
+          <div id="c5-choices"><div class="c5-chip">refCount: false</div><div class="c5-chip">refCount: true</div></div>
+          <div id="c5-axes"><div id="c5-ax1">cost while nobody is watching</div><div id="c5-ax2">what a later subscriber receives</div></div>
+          <div id="c5-pa" class="c5-panel" style="left: 40px">
+            <div class="c5-panel-name">Branches</div>
+            <div class="c5-panel-sub">loaded once, small, the same all day</div>
+            <div style="margin-top: 26px"><div class="c5-branch">Central</div><div class="c5-branch">Riverside</div><div class="c5-branch">Northgate</div><div class="c5-branch">Harbour</div></div>
+            <div id="c5-qa" class="c5-ask">refCount: <b>?</b></div>
+          </div>
+          <div id="c5-pb" class="c5-panel" style="left: 860px">
+            <div class="c5-panel-name">Branch map</div>
+            <div class="c5-panel-sub"><code>navigator.geolocation.watchPosition</code></div>
+            <svg id="c5-map" viewBox="0 0 460 330">
+              <rect x="1" y="1" width="458" height="328" rx="8" fill="#efe9de" stroke="#ddd4c5" stroke-width="2" />
+              <path d="M0 120 H460 M0 250 H460 M140 0 V330 M330 0 V330" stroke="#c4b9a6" stroke-width="10" fill="none" />
+              <circle cx="236" cy="186" r="40" fill="none" stroke="#5f584d" stroke-width="3" />
+              <circle id="c5-dot" cx="236" cy="186" r="14" fill="#1d1b18" />
+            </svg>
+            <div id="c5-qb" class="c5-ask">refCount: <b>?</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- questions card -->
+    <div id="c5-q" class="clip world note" data-start="53.06" data-duration="16.7">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c5-q1" class="q">How many times does each producer run? Count every subscriber, including template pipes and signals made from it.</div>
+        <div id="c5-q2" class="q">When someone subscribes late, what should they see: nothing, the latest value, or a history?</div>
+        <div id="c5-q3" class="q">When the last subscriber leaves, what does the source still cost, and who pays for it?</div>
+      </div>
+    </div>
+
+    <!-- pause card -->
+    <div id="c5-pause" class="clip world" data-start="69.76" data-duration="3.5">
+      <div id="c5-pause-1" class="pause-1">Pause here.</div>
+      <div id="c5-pause-2" class="pause-2">Now do exercise 05.</div>
+    </div>
+
+    <audio id="c5-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="75" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c5-bed2" class="clip" src="assets/music/bed.mp3" data-start="53.06" data-duration="16.7" data-media-start="83" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c5-vo1" class="clip" src="assets/vo/c5-1.wav" data-start="3" data-duration="5.205" data-volume="1"></audio>
+    <audio id="c5-vo2" class="clip" src="assets/vo/c5-2.wav" data-start="8.55" data-duration="7.616" data-volume="1"></audio>
+    <audio id="c5-vo3" class="clip" src="assets/vo/c5-3.wav" data-start="16.52" data-duration="9.195" data-volume="1"></audio>
+    <audio id="c5-vo4" class="clip" src="assets/vo/c5-4.wav" data-start="26.07" data-duration="5.589" data-volume="1"></audio>
+    <audio id="c5-vo5" class="clip" src="assets/vo/c5-5.wav" data-start="32.01" data-duration="8.043" data-volume="1"></audio>
+    <audio id="c5-vo6" class="clip" src="assets/vo/c5-6.wav" data-start="40.4" data-duration="12.309" data-volume="1"></audio>
+    <audio id="c5-vo7" class="clip" src="assets/vo/c5-end.wav" data-start="53.06" data-duration="2.197" data-volume="1"></audio>
+    <!-- one tick per printed marble (marbles printed on the same frame share one) -->
+    <audio id="c5-tick1" class="clip" src="assets/sfx/tick-a.wav" data-start="9.6" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick2" class="clip" src="assets/sfx/tick-b.wav" data-start="11" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick3" class="clip" src="assets/sfx/tick-a.wav" data-start="26.2" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick4" class="clip" src="assets/sfx/tick-b.wav" data-start="27.28" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick5" class="clip" src="assets/sfx/tick-a.wav" data-start="28.96" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick6" class="clip" src="assets/sfx/tick-b.wav" data-start="29.9" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick7" class="clip" src="assets/sfx/tick-a.wav" data-start="30.26" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick8" class="clip" src="assets/sfx/tick-b.wav" data-start="32.3" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick9" class="clip" src="assets/sfx/tick-a.wav" data-start="32.84" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick10" class="clip" src="assets/sfx/tick-b.wav" data-start="33.2" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick11" class="clip" src="assets/sfx/tick-a.wav" data-start="33.38" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick12" class="clip" src="assets/sfx/tick-b.wav" data-start="33.74" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick13" class="clip" src="assets/sfx/tick-a.wav" data-start="33.92" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick14" class="clip" src="assets/sfx/tick-b.wav" data-start="34.46" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick15" class="clip" src="assets/sfx/tick-a.wav" data-start="35.4" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick16" class="clip" src="assets/sfx/tick-b.wav" data-start="35.94" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick17" class="clip" src="assets/sfx/tick-a.wav" data-start="36.3" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick18" class="clip" src="assets/sfx/tick-b.wav" data-start="36.84" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick19" class="clip" src="assets/sfx/tick-a.wav" data-start="37.38" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c5-tick20" class="clip" src="assets/sfx/tick-b.wav" data-start="37.92" data-duration="0.3" data-volume="0.25"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const enter = { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" };
+    const fade = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const print = (sel, at) =>
+      tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out" }, at);
+    const pulse = (sel, at) =>
+      tl.fromTo(sel, { scale: 1 }, { scale: 1.12, duration: 0.2, ease: "power2.inOut", yoyo: true, repeat: 1 }, at);
+    // prints every marble and x of a diagram left to right: frame f lands at t0 + f * 0.18 s
+    const printDiagram = (root, t0) =>
+      document.querySelectorAll(root + " .m").forEach((el) => print(el, t0 + parseFloat(el.style.getPropertyValue("--f")) * 0.18));
+
+    // chapter card: on screen from frame 0; the time lands a beat later
+
+    // c5-1: two widgets, then two different numbers
+    fade("#c5-wa", 3.5);
+    fade("#c5-wb", 3.65);
+    tl.fromTo("#c5-ta", { opacity: 0, y: 24 }, enter, 5.6);
+    tl.fromTo("#c5-tb", { opacity: 0, y: 24 }, enter, 7.3);
+
+    // c5-2: each widget subscription runs the producer again
+    fade("#c5-code", 8.7, 0.3);
+    print("#c5-w1a", 9.6);
+    print("#c5-w1d", 9.78);
+    tl.set("#c5-runs-n", { textContent: "1" }, 9.65);
+    print("#c5-w2b", 11.0);
+    print("#c5-w2d", 11.18);
+    tl.set("#c5-runs-n", { textContent: "2" }, 11.05);
+    pulse("#c5-w2b", 11.4);
+    fade("#c5-w2note", 11.5);
+    fade("#c5-sub1", 12.2);
+    fade("#c5-sub2", 13.4);
+    tl.fromTo("#c5-runs-n", { scale: 1 }, { scale: 1.08, duration: 0.25, ease: "power2.inOut", yoyo: true, repeat: 1, transformOrigin: "left center" }, 15.2);
+
+    // c5-3: rows land on "nothing", "the current value", "a short history"; the band picks events, then state
+    fade("#c5-th", 16.8);
+    fade("#c5-r1", 19.7);
+    fade("#c5-r2", 20.5);
+    fade("#c5-r3", 22.0);
+    fade("#c5-band", 22.9, 0.3);
+    tl.fromTo("#c5-band", { y: 0 }, { y: 152, duration: 0.8, ease: "power2.inOut" }, 24.3);
+
+    // c5-4: toasts print, then the panel opens at frame 4, once as a Subject and once as a Replay
+    print("#c5-ta1", 26.2);
+    print("#c5-tb1", 27.28);
+    fade("#c5-seg-s", 28.6, 0.3);
+    print("#c5-sb", 28.96);
+    fade("#c5-note-s", 29.0);
+    fade("#c5-seg-r", 29.8, 0.3);
+    print("#c5-ra", 29.9);
+    print("#c5-rb", 30.26);
+    pulse("#c5-ra", 30.5);
+    fade("#c5-note-r", 30.0);
+
+    // c5-5: refCount false keeps the source running; refCount true stops it and starts again
+    printDiagram("#c5-d1", 32.3);
+    fade("#c5-d2", 35.1, 0.3);
+    printDiagram("#c5-d2", 35.4);
+    pulse(["#c5-d1-d", "#c5-d1-e"], 38.4);
+    tl.fromTo("#c5-d2-x", { color: "#5f584d", borderColor: "#5f584d" }, { color: "#b8321f", borderColor: "#b8321f", duration: 0.3 }, 39.4);
+    pulse("#c5-d2-x", 39.5);
+
+    // c5-6: two equal choices, two questions to ask, two sources, each still open
+    fade("#c5-choices", 40.6);
+    fade(["#c5-pa", "#c5-pb"], 40.75);
+    fade("#c5-ax1", 43.6);
+    fade("#c5-ax2", 46.6);
+    tl.to("#c5-pa", { borderColor: "#1d1b18", duration: 0.3 }, 48.1);
+    tl.to("#c5-pb", { borderColor: "#1d1b18", duration: 0.3 }, 49.4);
+    tl.fromTo("#c5-dot", { x: -60, y: 20 }, { x: 0, y: 0, duration: 2.4, ease: "power2.inOut" }, 49.8);
+    tl.fromTo(["#c5-qa", "#c5-qb"], { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out", stagger: 0.15 }, 50.9);
+
+    // questions card: one by one, 0.6 s apart, then hold
+    ["#c5-q1", "#c5-q2", "#c5-q3"].forEach((q, i) => fade(q, 53.4 + i * 0.6));
+
+    // pause card
+    fade("#c5-pause-1", 69.9);
+    tl.fromTo("#c5-pause-2", { opacity: 0, y: 16 }, enter, 70.4);
+
+    window.__timelines["c5"] = tl;
+  </script>
+</template>

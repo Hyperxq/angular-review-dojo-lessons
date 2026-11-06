@@ -1,0 +1,456 @@
+{
+  "total": 600.15,
+  "scenes": [
+    {
+      "id": "c0",
+      "start": 0.0,
+      "duration": 97.13,
+      "clips": [
+        {
+          "id": "c0-1",
+          "start": 3.0,
+          "duration": 10.645
+        },
+        {
+          "id": "c0-2a",
+          "start": 13.99,
+          "duration": 1.579
+        },
+        {
+          "id": "c0-2b",
+          "start": 15.92,
+          "duration": 9.472
+        },
+        {
+          "id": "c0-3a",
+          "start": 25.75,
+          "duration": 5.76
+        },
+        {
+          "id": "c0-3b",
+          "start": 31.86,
+          "duration": 5.589
+        },
+        {
+          "id": "c0-4",
+          "start": 37.8,
+          "duration": 10.261
+        },
+        {
+          "id": "c0-5",
+          "start": 48.41,
+          "duration": 9.792
+        },
+        {
+          "id": "c0-6",
+          "start": 58.55,
+          "duration": 5.888
+        },
+        {
+          "id": "c0-7",
+          "start": 64.79,
+          "duration": 8.576
+        },
+        {
+          "id": "c0-8a",
+          "start": 73.71,
+          "duration": 7.872
+        },
+        {
+          "id": "c0-8b",
+          "start": 81.93,
+          "duration": 4.949
+        },
+        {
+          "id": "c0-9",
+          "start": 87.23,
+          "duration": 8.896
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        }
+      }
+    },
+    {
+      "id": "c1",
+      "start": 97.13,
+      "duration": 117.69,
+      "clips": [
+        {
+          "id": "c1-1",
+          "start": 3.0,
+          "duration": 9.579
+        },
+        {
+          "id": "c1-2",
+          "start": 12.93,
+          "duration": 8.832
+        },
+        {
+          "id": "c1-3a",
+          "start": 22.11,
+          "duration": 7.552
+        },
+        {
+          "id": "c1-3b",
+          "start": 30.01,
+          "duration": 5.568
+        },
+        {
+          "id": "c1-4",
+          "start": 35.93,
+          "duration": 8
+        },
+        {
+          "id": "c1-5",
+          "start": 44.28,
+          "duration": 6.507
+        },
+        {
+          "id": "c1-6a",
+          "start": 51.14,
+          "duration": 8.896
+        },
+        {
+          "id": "c1-6b",
+          "start": 60.38,
+          "duration": 5.12
+        },
+        {
+          "id": "c1-7a",
+          "start": 65.85,
+          "duration": 5.803
+        },
+        {
+          "id": "c1-7b",
+          "start": 72.01,
+          "duration": 4.459
+        },
+        {
+          "id": "c1-8",
+          "start": 76.82,
+          "duration": 8.683
+        },
+        {
+          "id": "c1-9",
+          "start": 85.85,
+          "duration": 9.493
+        },
+        {
+          "id": "c1-end",
+          "start": 95.69,
+          "duration": 2.347
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 95.69,
+          "duration": 18.5,
+          "items": [
+            "For each piece of state, list every path that writes it. Does each one produce new references for what it changed?",
+            "Who can write this state, and through which API?",
+            "Where do two consumers of the same data take different routes to it?",
+            "Are any derived values recombined from streams that come from one source?"
+          ]
+        },
+        "pause": {
+          "start": 114.19,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c2",
+      "start": 214.82,
+      "duration": 101.8,
+      "clips": [
+        {
+          "id": "c2-1",
+          "start": 3.0,
+          "duration": 10.155
+        },
+        {
+          "id": "c2-2",
+          "start": 13.5,
+          "duration": 8.747
+        },
+        {
+          "id": "c2-3",
+          "start": 22.6,
+          "duration": 10.475
+        },
+        {
+          "id": "c2-4",
+          "start": 33.43,
+          "duration": 7.232
+        },
+        {
+          "id": "c2-5",
+          "start": 41.01,
+          "duration": 10.219
+        },
+        {
+          "id": "c2-6",
+          "start": 51.58,
+          "duration": 6.507
+        },
+        {
+          "id": "c2-7a",
+          "start": 58.43,
+          "duration": 6.272
+        },
+        {
+          "id": "c2-7b",
+          "start": 65.06,
+          "duration": 6.379
+        },
+        {
+          "id": "c2-8",
+          "start": 71.79,
+          "duration": 7.36
+        },
+        {
+          "id": "c2-end",
+          "start": 79.5,
+          "duration": 2.027
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 79.5,
+          "duration": 18.8,
+          "items": [
+            "For each piece of local state, which outside value does it belong to?",
+            "Which state is derived (and should be `computed`), and which is chosen by the user?",
+            "For state the user chooses, what event should reset it, and what should not?",
+            "Is there code whose only job is to turn an input into something reactive?"
+          ]
+        },
+        "pause": {
+          "start": 98.3,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c3",
+      "start": 316.62,
+      "duration": 122.18,
+      "clips": [
+        {
+          "id": "c3-1",
+          "start": 3.0,
+          "duration": 6.848
+        },
+        {
+          "id": "c3-2",
+          "start": 10.2,
+          "duration": 8.32
+        },
+        {
+          "id": "c3-3",
+          "start": 18.87,
+          "duration": 8.64
+        },
+        {
+          "id": "c3-4a",
+          "start": 27.86,
+          "duration": 6.613
+        },
+        {
+          "id": "c3-4b",
+          "start": 34.82,
+          "duration": 7.552
+        },
+        {
+          "id": "c3-5",
+          "start": 42.72,
+          "duration": 6.72
+        },
+        {
+          "id": "c3-6",
+          "start": 49.79,
+          "duration": 7.531
+        },
+        {
+          "id": "c3-7",
+          "start": 57.67,
+          "duration": 8.939
+        },
+        {
+          "id": "c3-8a",
+          "start": 66.96,
+          "duration": 7.403
+        },
+        {
+          "id": "c3-8b",
+          "start": 74.72,
+          "duration": 6.869
+        },
+        {
+          "id": "c3-9a",
+          "start": 81.94,
+          "duration": 7.595
+        },
+        {
+          "id": "c3-9b",
+          "start": 89.88,
+          "duration": 8.149
+        },
+        {
+          "id": "c3-end",
+          "start": 98.38,
+          "duration": 1.856
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 98.38,
+          "duration": 20.3,
+          "items": [
+            "How many separate pieces of state describe this one request? List every path that writes each of them.",
+            "What keeps this loading logic alive after its first failure?",
+            "What does the user see while the next value loads: the new state, or leftovers from the previous request?",
+            "Which manual cleanup here exists only because the framework is not owning the request?"
+          ]
+        },
+        "pause": {
+          "start": 118.68,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c4",
+      "start": 438.8,
+      "duration": 161.35,
+      "clips": [
+        {
+          "id": "c4-1",
+          "start": 3.0,
+          "duration": 7.253
+        },
+        {
+          "id": "c4-2a",
+          "start": 10.6,
+          "duration": 9.92
+        },
+        {
+          "id": "c4-2b",
+          "start": 20.87,
+          "duration": 3.605
+        },
+        {
+          "id": "c4-3",
+          "start": 24.83,
+          "duration": 8.171
+        },
+        {
+          "id": "c4-4",
+          "start": 33.35,
+          "duration": 9.941
+        },
+        {
+          "id": "c4-5a",
+          "start": 43.64,
+          "duration": 3.584
+        },
+        {
+          "id": "c4-5b",
+          "start": 47.57,
+          "duration": 8.32
+        },
+        {
+          "id": "c4-5c",
+          "start": 56.24,
+          "duration": 5.333
+        },
+        {
+          "id": "c4-6",
+          "start": 61.93,
+          "duration": 11.541
+        },
+        {
+          "id": "c4-7a",
+          "start": 73.82,
+          "duration": 5.397
+        },
+        {
+          "id": "c4-7b",
+          "start": 79.56,
+          "duration": 8.491
+        },
+        {
+          "id": "c4-7c",
+          "start": 88.41,
+          "duration": 5.739
+        },
+        {
+          "id": "c4-8",
+          "start": 94.49,
+          "duration": 8.469
+        },
+        {
+          "id": "c4-9",
+          "start": 103.31,
+          "duration": 10.027
+        },
+        {
+          "id": "c4-10",
+          "start": 113.69,
+          "duration": 8.512
+        },
+        {
+          "id": "c4-end",
+          "start": 122.55,
+          "duration": 2.453
+        },
+        {
+          "id": "c4-after",
+          "start": 144.3,
+          "duration": 10.283
+        },
+        {
+          "id": "c4-close",
+          "start": 154.94,
+          "duration": 5.419
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 122.55,
+          "duration": 17.9,
+          "items": [
+            "How many requests does one user action cause? How many happen before the user did anything?",
+            "If two requests are in flight, which one decides what the screen shows?",
+            "Which rules about the input (length, whitespace, repeats) are enforced, and where?",
+            "Is there an `effect` writing to a signal? What would replace it?"
+          ]
+        },
+        "pause": {
+          "start": 140.45,
+          "duration": 3.5
+        }
+      }
+    }
+  ]
+}

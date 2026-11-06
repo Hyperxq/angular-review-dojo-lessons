@@ -1,0 +1,271 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c0-h { position: absolute; left: 140px; top: 84px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-h code { font: 600 50px/1 var(--font-code); }
+    .c0-code { left: 104px; padding: 40px 36px; font-size: 28px; line-height: 1.5; letter-spacing: -0.03em; }
+    .c0-code .ln { margin: 0 -36px; padding: 0 36px; }
+    .c0-blk { display: block; margin: 0 -36px; padding: 0 36px; }
+    .c0-mk { border-radius: 4px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+    .c0-ul { box-shadow: inset 0 -4px 0 rgba(29, 27, 24, 0); }
+    .c0-prose code { font-family: var(--font-code); font-size: 0.92em; }
+
+    /* desk */
+    #c0-page-title { font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c0-cat-label { position: absolute; left: 40px; top: 170px; }
+    #c0-covers { position: absolute; left: 40px; top: 230px; display: flex; gap: 28px; }
+    .c0-cover { position: relative; width: 200px; height: 300px; border: 1px solid var(--rule); border-radius: 6px; padding: 18px 16px; box-sizing: border-box; font: 600 30px/1.1 var(--font-display); }
+    #c0-outline { position: absolute; left: 484px; top: 218px; width: 224px; height: 324px; border: 4px solid var(--accent); border-radius: 10px; box-sizing: border-box; }
+    #c0-img-tag { position: absolute; left: 484px; top: 566px; font: 700 34px/1 var(--font-code); color: var(--accent); }
+    #c0-img-label { position: absolute; left: 484px; top: 616px; }
+    .c0-stack { position: absolute; left: 1200px; top: 170px; width: 400px; }
+    .c0-stack .label { margin-bottom: 14px; }
+    .c0-api { font: 700 38px/1 var(--font-code); padding: 20px 0; border-bottom: 1px solid var(--rule); }
+    .c0-api.word { font: 700 36px/1 var(--font-text); }
+
+    /* lists drawn as ruled rows, no bullets */
+    .c0-list { position: absolute; left: 120px; width: 1680px; }
+    .c0-row { padding: 20px 32px; border-bottom: 1px solid var(--rule); border-radius: 6px; font: 400 34px/1.35 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c0-row code { font: 400 31px/1 var(--font-code); }
+    #c0-before-sub { position: absolute; left: 140px; top: 172px; font: 400 38px/1.2 var(--font-text); color: var(--ink-muted); }
+    #c0-before-last { position: absolute; left: 152px; top: 860px; width: 1620px; font: 700 36px/1.35 var(--font-text); }
+
+    #c0-shelf-code { top: 180px; }
+    #c0-ng0950 { position: absolute; left: 420px; top: 568px; padding: 10px 20px; border: 3px solid var(--caution); border-radius: 8px; background: var(--caution-soft); color: var(--caution); font: 700 34px/1 var(--font-code); }
+    #c0-call { position: absolute; left: 820px; top: 568px; padding: 10px 20px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 34px/1 var(--font-code); }
+    #c0-shelf-para { position: absolute; left: 140px; top: 660px; width: 1640px; font: 400 34px/1.4 var(--font-text); }
+
+    #c0-card-code { top: 190px; }
+
+    #c0-destroy-line { left: 140px; top: 330px; font-size: 52px; }
+    #c0-destroy-note { position: absolute; left: 140px; top: 560px; width: 1500px; font: 400 36px/1.35 var(--font-text); }
+
+    #c0-render-list { top: 210px; }
+    #c0-rename { position: absolute; left: 140px; top: 800px; padding: 18px 32px; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; font: 700 34px/1 var(--font-code); }
+    #c0-rename-old { position: relative; color: var(--ink-muted); }
+    #c0-rename-strike { position: absolute; left: -6px; right: -6px; top: 50%; height: 4px; margin-top: -2px; background: var(--ink-muted); }
+
+    #c0-zone-para { position: absolute; left: 140px; top: 210px; width: 1640px; font: 400 38px/1.5 var(--font-text); }
+  </style>
+
+  <div id="root" data-composition-id="c0" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c0-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c0-card-time" class="chapter-time">08:55</div>
+      <div id="c0-card-title" class="chapter-title">What moved since Angular 17</div>
+    </div>
+
+    <!-- c0-1, c0-2 the desk before opening: a catalog row, the consumer's img; the v17 tools, then the new ones -->
+    <div id="c0-desk" class="clip world" data-start="3" data-duration="19.64">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div id="c0-page-title">What moved since Angular 17</div>
+          <div id="c0-cat-label" class="label">Catalog</div>
+          <div id="c0-covers">
+            <div class="c0-cover" style="background: var(--note-soft)">Walden</div>
+            <div class="c0-cover" style="background: var(--tip-soft)">Persuasion</div>
+            <div class="c0-cover" style="background: var(--warning-soft)">Middle&shy;march</div>
+            <div class="c0-cover" style="background: var(--paper-sunk)">Cranford</div>
+            <div class="c0-cover" style="background: var(--caution-soft)">Ivanhoe</div>
+          </div>
+          <div id="c0-outline"></div>
+          <div id="c0-img-tag">&lt;img&gt;</div>
+          <div id="c0-img-label" class="label">the consumer's element</div>
+          <div id="c0-old" class="c0-stack" data-hold>
+            <div class="label">v17</div>
+            <div id="c0-old1" class="c0-api">@Input()</div>
+            <div id="c0-old2" class="c0-api">@HostListener</div>
+            <div id="c0-old3" class="c0-api">ngOnInit</div>
+          </div>
+          <div id="c0-new" class="c0-stack">
+            <div class="label">now</div>
+            <div id="c0-new1" class="c0-api word">signal inputs</div>
+            <div id="c0-new2" class="c0-api">host</div>
+            <div id="c0-new3" class="c0-api">DestroyRef</div>
+            <div id="c0-new4" class="c0-api word">render hooks</div>
+            <div id="c0-new5" class="c0-api">effect</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-3, c0-3b, c0-4 before you write a directive (LESSON.md list) -->
+    <div id="c0-before" class="clip world" data-start="22.64" data-duration="29.04">
+      <div class="c0-h">Before you write a directive</div>
+      <div id="c0-before-sub">Three cheaper answers come first.</div>
+      <div class="c0-list c0-prose" style="top: 250px" data-hold>
+        <div id="c0-b1" class="c0-row">Plain HTML and CSS. A <code id="c0-u1" class="c0-ul">[class.on-loan]</code> binding in the template, the <code id="c0-u2" class="c0-ul">title</code> attribute, the <code id="c0-u3" class="c0-ul">popover</code> attribute, <span id="c0-u4" class="c0-ul">CSS anchor positioning</span> and the <span id="c0-u5" class="c0-ul">native <code>&lt;dialog&gt;</code> element</span> with <code>showModal()</code> and <code>inert</code> cover a lot of what used to need a directive.</div>
+        <div id="c0-b2" class="c0-row">A component, when you need to own a template. An attribute directive adds behaviour to an element the consumer owns. A component owns its markup. If you are building DOM by hand inside a directive, you probably wanted a component.</div>
+        <div id="c0-b3" class="c0-row">The Angular CDK, for problems that are hard to get right: overlays (<code>Overlay</code>, <code>CdkConnectedOverlay</code>), focus trapping (<code>cdkTrapFocus</code>), dialogs (CDK <code>Dialog</code>) and screen reader announcements (<code>LiveAnnouncer</code>).</div>
+      </div>
+      <div id="c0-before-last"><span id="c0-last-ul" class="c0-ul">Write your own directive when the behaviour is specific to your domain, small, and attached to elements you do not control.</span></div>
+    </div>
+
+    <!-- c0-5, c0-6, c0-6b inputs, outputs and models are functions (LESSON.md code + paragraph) -->
+    <div id="c0-shelf" class="clip world" data-start="51.68" data-duration="27.14">
+      <div class="c0-h">Inputs, outputs and models are functions</div>
+      <div id="c0-shelf-code" class="code c0-code" data-hold>
+<span class="ln">@Directive({ selector: <span class="s">'[appShelfLabel]'</span> })</span>
+<span class="ln"><span class="k">export class</span> ShelfLabel {</span>
+<span id="c0-l-code" class="ln">  <span class="k">readonly</span> code = <span id="c0-tok" class="c0-mk">input.required&lt;string&gt;</span>({ alias: <span class="s">'appShelfLabel'</span> }); <span class="c">// InputSignal&lt;string&gt;</span></span>
+<span class="ln">  <span class="k">readonly</span> tint = input(<span class="s">'#e8e0d0'</span>);                                   <span id="c0-opt" class="c c0-ul">// optional, with a default</span></span>
+<span class="ln">  <span class="k">readonly</span> picked = output&lt;string&gt;();                                 <span class="c">// OutputEmitterRef&lt;string&gt;</span></span>
+<span class="ln">  <span class="k">readonly</span> expanded = model(<span class="k">false</span>);                                   <span class="c">// two-way: [(expanded)]</span></span>
+<span class="ln">}</span>
+      </div>
+      <div id="c0-call">this.code()</div>
+      <div id="c0-ng0950">NG0950</div>
+      <div id="c0-shelf-para" class="c0-prose">You read a signal input by calling it: <code>this.code()</code>. Inputs are set after the constructor, while the parent renders. In the constructor an optional input returns its default and a required one throws (<code>NG0950</code>). Read inputs only in <span id="c0-m-reactive" class="c0-mk">reactive contexts</span> (a template, a host binding, a <code>computed</code>, an <code>effect</code>), or <span id="c0-m-oneoff" class="c0-mk">from <code>ngOnInit</code> onward for a one-off read</span>. Reactive readers follow every later change of the binding; a one-off read gets the value of that moment only.</div>
+    </div>
+
+    <!-- c0-7 the host property (LESSON.md code), the whole host object banded as one block -->
+    <div id="c0-hostp" class="clip world" data-start="78.82" data-duration="11.28">
+      <div class="c0-h">The <code>host</code> property</div>
+      <div id="c0-card-code" class="code c0-code" data-hold>
+<span class="ln">@Directive({</span>
+<span class="ln">  selector: <span class="s">'[appBookCard]'</span>,</span>
+<span id="c0-hostblk" class="c0-blk"><span class="ln">  host: {</span>
+<span class="ln">    role: <span class="s">'article'</span>,                          <span class="c">// static attribute</span></span>
+<span class="ln">    <span class="s">'[class.on-loan]'</span>: <span class="s">'onLoan()'</span>,            <span class="c">// class binding, re-evaluated like a template</span></span>
+<span class="ln">    <span class="s">'[attr.aria-busy]'</span>: <span class="s">'loading()'</span>,          <span class="c">// attribute binding</span></span>
+<span class="ln">    <span class="s">'(focusin)'</span>: <span class="s">'select()'</span>,                  <span class="c">// listener on the host element</span></span>
+<span class="ln">    <span class="s">'(window:resize)'</span>: <span class="s">'measure()'</span>,           <span class="c">// listener on window</span></span>
+<span class="ln">    <span class="s">'(document:keydown.escape)'</span>: <span class="s">'close()'</span>,   <span class="c">// listener on document, with a key filter</span></span>
+<span class="ln">  },</span></span>
+<span class="ln">})</span>
+      </div>
+    </div>
+
+    <!-- c0-8 cleanup next to what it starts -->
+    <div id="c0-destroy" class="clip world" data-start="90.1" data-duration="8.45">
+      <div class="c0-h">Cleanup is registered where the thing is created</div>
+      <div id="c0-destroy-line" class="code" data-hold><span class="ln">inject(DestroyRef).<span id="c0-ondestroy" class="c0-ul">onDestroy(fn)</span></span></div>
+      <div id="c0-destroy-note" class="c0-prose label">It returns a function that unregisters the callback, if you ever need that.</div>
+    </div>
+
+    <!-- c0-9, c0-9b render hooks and effects (LESSON.md list) -->
+    <div id="c0-render" class="clip world" data-start="98.55" data-duration="11.9">
+      <div class="c0-h">Render hooks and effects</div>
+      <div id="c0-render-list" class="c0-list c0-prose" data-hold>
+        <div id="c0-r1" class="c0-row"><code>afterNextRender(fn)</code> runs once, after the next render, in the browser only. It is the place for code that needs the element in the DOM or needs browser APIs. <code>afterEveryRender</code> (called <code>afterRender</code> before v20) runs after every render.</div>
+        <div id="c0-r2" class="c0-row"><code>effect(fn)</code> is stable. It runs <code>fn</code>, records every signal <code>fn</code> read, and runs it again when any of them changes. Its callback receives <code>onCleanup</code>, which registers code to run before the next run and on destroy.</div>
+      </div>
+      <div id="c0-rename"><span id="c0-rename-old">afterRender<span id="c0-rename-strike"></span></span><span id="c0-rename-new"> → afterEveryRender</span></div>
+    </div>
+
+    <!-- c0-10, c0-10b zoneless, again (LESSON.md paragraph) -->
+    <div id="c0-zone" class="clip world" data-start="110.45" data-duration="15.84">
+      <div class="c0-h">Zoneless, again</div>
+      <div id="c0-zone-para" class="c0-prose" data-hold>Zoneless is the default since v21, and Zone.js is not installed here. Angular renders again when it is told something changed: a signal read by a template changes, a template or host event fires, <code>markForCheck()</code> is called (the <code>async</code> pipe calls it for you), <code>ComponentRef.setInput()</code> runs, or a view is attached. <span id="c0-m-native" class="c0-mk">A directive that writes to <code>nativeElement</code> in its own code is doing work Angular does not track.</span> <span id="c0-m-zone" class="c0-mk">That was true in v17 as well: Zone triggered change detection, but it never re-ran a write you made once in <code>ngOnInit</code>.</span> When a value should follow an input, bind it through <code>host</code>.</div>
+    </div>
+
+    <audio id="c0-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="0" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c0-1" class="clip" src="assets/vo/c0-1.wav" data-start="3" data-duration="8.981" data-volume="1"></audio>
+    <audio id="vo-c0-2" class="clip" src="assets/vo/c0-2.wav" data-start="12.33" data-duration="9.963" data-volume="1"></audio>
+    <audio id="vo-c0-3" class="clip" src="assets/vo/c0-3.wav" data-start="22.64" data-duration="10.88" data-volume="1"></audio>
+    <audio id="vo-c0-3b" class="clip" src="assets/vo/c0-3b.wav" data-start="33.87" data-duration="10.816" data-volume="1"></audio>
+    <audio id="vo-c0-4" class="clip" src="assets/vo/c0-4.wav" data-start="45.04" data-duration="6.293" data-volume="1"></audio>
+    <audio id="vo-c0-5" class="clip" src="assets/vo/c0-5.wav" data-start="51.68" data-duration="8.107" data-volume="1"></audio>
+    <audio id="vo-c0-6" class="clip" src="assets/vo/c0-6.wav" data-start="60.14" data-duration="7.573" data-volume="1"></audio>
+    <audio id="vo-c0-6b" class="clip" src="assets/vo/c0-6b.wav" data-start="68.06" data-duration="10.411" data-volume="1"></audio>
+    <audio id="vo-c0-7" class="clip" src="assets/vo/c0-7.wav" data-start="78.82" data-duration="10.923" data-volume="1"></audio>
+    <audio id="vo-c0-8" class="clip" src="assets/vo/c0-8.wav" data-start="90.1" data-duration="8.107" data-volume="1"></audio>
+    <audio id="vo-c0-9" class="clip" src="assets/vo/c0-9.wav" data-start="98.55" data-duration="7.829" data-volume="1"></audio>
+    <audio id="vo-c0-9b" class="clip" src="assets/vo/c0-9b.wav" data-start="106.73" data-duration="3.371" data-volume="1"></audio>
+    <audio id="vo-c0-10" class="clip" src="assets/vo/c0-10.wav" data-start="110.45" data-duration="9.173" data-volume="1"></audio>
+    <audio id="vo-c0-10b" class="clip" src="assets/vo/c0-10b.wav" data-start="119.98" data-duration="5.312" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "#f5e2d9", SOFT0 = "rgba(245, 226, 217, 0)";
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at) => tl.to(sel, { opacity: 0, duration: 0.4, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+    const ul = (sel, at) => tl.to(sel, { boxShadow: "inset 0 -4px 0 rgba(29, 27, 24, 1)", duration: 0.3, ease: "power2.inOut" }, at);
+    const unul = (sel, at) => tl.to(sel, { boxShadow: "inset 0 -4px 0 rgba(29, 27, 24, 0)", duration: 0.3, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0
+
+    // c0-1: the catalog row, then the consumer's img outlined on "an element someone else owns"
+    fadeIn("#c0-covers", 4.2);
+    tl.fromTo("#c0-outline", { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 8.3);
+    fadeIn("#c0-img-tag", 8.45, 0.5);
+    fadeIn("#c0-img-label", 8.6, 0.5);
+
+    // c0-2: the v17 tools on "In seventeen", replaced once the two failures are named
+    tl.set("#c0-new", { opacity: 0 }, 0);
+    fadeIn("#c0-old", 12.6, 0.5);
+    for (let i = 1; i <= 3; i++) fadeIn("#c0-old" + i, 12.6 + (i - 1) * 0.15, 0.5);
+    fadeOut("#c0-old", 19.6);
+    tl.set("#c0-new", { opacity: 1 }, 20.0);
+    for (let i = 1; i <= 5; i++) fadeIn("#c0-new" + i, 20.0 + (i - 1) * 0.15, 0.5);
+
+    // c0-3: band on plain HTML and CSS, then each cheaper answer underlined as it is named
+    band("#c0-b1", 24.9);
+    ul("#c0-u1", 27.7);
+    ul("#c0-u2", 28.9);
+    ul("#c0-u3", 30.1);
+    ul("#c0-u4", 30.9);
+    ul("#c0-u5", 32.0);
+
+    // c0-3b: the band moves to the component item, then to the CDK item
+    for (let i = 1; i <= 5; i++) unul("#c0-u" + i, 33.9);
+    unband("#c0-b1", 34.1);
+    band("#c0-b2", 34.1);
+    unband("#c0-b2", 39.4);
+    band("#c0-b3", 39.4);
+
+    // c0-4: the three answers greyed, the last sentence underlined
+    unband("#c0-b3", 45.2);
+    tl.to(["#c0-b1", "#c0-b2", "#c0-b3", "#c0-before-sub"], { color: "#5f584d", duration: 0.5, ease: "power2.inOut" }, 45.2);
+    ul("#c0-last-ul", 46.4);
+
+    // c0-5: the code cut in whole; the code line banded; the call
+    band("#c0-l-code", 53.6);
+    fadeIn("#c0-call", 55.4, 0.5);
+
+    // c0-6: the optional default, then the band on input.required with NG0950
+    fadeOut("#c0-call", 60.2);
+    ul("#c0-opt", 61.2);
+    unband("#c0-l-code", 63.6);
+    band("#c0-tok", 63.6);
+    tl.fromTo("#c0-ng0950", { opacity: 0, scale: 0.9, transformOrigin: "left center" }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 64.4);
+
+    // c0-6b: the paragraph; reactive contexts marked, then the one-off read
+    unul("#c0-opt", 68.1);
+    unband("#c0-tok", 68.1);
+    fadeIn("#c0-shelf-para", 60.4, 0.5);
+    band("#c0-m-reactive", 69.0);
+    unband("#c0-m-reactive", 73.6);
+    band("#c0-m-oneoff", 73.6);
+
+    // c0-7: the host object banded as one block on "host property"
+    band("#c0-hostblk", 81.6);
+
+    // c0-8: one line; the stop underlined
+    ul("#c0-ondestroy", 93.0);
+    fadeIn("#c0-destroy-note", 93.9, 0.5);
+
+    // c0-9: the first item banded; the rename
+    band("#c0-r1", 98.8);
+    fadeIn("#c0-rename", 103.3, 0.5);
+    tl.fromTo("#c0-rename-strike", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.4, ease: "power2.inOut" }, 104.0);
+    fadeIn("#c0-rename-new", 104.6, 0.5);
+
+    // c0-9b: the band moves to effect(fn)
+    unband("#c0-r1", 106.8);
+    band("#c0-r2", 106.8);
+
+    // c0-10: the nativeElement sentence marked; c0-10b: the band moves to the Zone sentence
+    band("#c0-m-native", 114.6);
+    unband("#c0-m-native", 120.1);
+    band("#c0-m-zone", 120.1);
+
+    window.__timelines["c0"] = tl;
+  </script>
+</template>

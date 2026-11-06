@@ -1,0 +1,369 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c0-nav { position: absolute; left: 48px; top: 40px; width: 340px; }
+    .c0-nav div { font: 400 40px/1 var(--font-text); color: var(--ink-muted); padding: 26px 0; border-bottom: 1px solid var(--rule); }
+    #c0-head { position: absolute; left: 480px; top: 44px; font: 600 60px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-panel { position: absolute; top: 170px; width: 520px; height: 580px; box-sizing: border-box; padding: 40px; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; }
+    .c0-panel-h { font: 700 40px/1 var(--font-text); margin-bottom: 36px; }
+    #c0-member { font: 600 64px/1.1 var(--font-display); margin: 16px 0 12px; }
+    .c0-tag { position: absolute; left: 40px; bottom: 40px; padding: 14px 22px; border: 2px solid var(--rule-strong); border-radius: 8px; font: 700 36px/1 var(--font-code); }
+    #c0-border { position: absolute; left: 1037px; top: 150px; height: 620px; border-left: 6px dashed var(--accent); }
+
+    #c0-deps { left: 200px; top: 200px; width: 900px; font-size: 56px; }
+    #c0-deps .label { display: block; margin-bottom: 12px; }
+    #c0-zone { position: relative; display: inline-block; color: var(--ink-muted); }
+    #c0-zone-strike { position: absolute; left: -10px; right: -10px; top: 40px; height: 6px; background: var(--accent); }
+    #c0-zone-note { position: absolute; left: 1180px; top: 556px; font: 700 44px/1 var(--font-text); color: var(--ink-muted); }
+
+    .c0-wire { position: absolute; left: 140px; width: 1240px; height: 110px; }
+    .c0-wire-text { position: absolute; left: 0; top: 26px; width: 900px; font: 400 46px/1.2 var(--font-text); }
+    .c0-wire-text code { font-family: var(--font-code); }
+    .c0-wire-line { position: absolute; left: 920px; top: 52px; width: 320px; height: 8px; background: var(--rule-strong); }
+    .c0-wire-glow { position: absolute; left: 920px; top: 52px; width: 320px; height: 8px; background: var(--ink); }
+    #c0-lamp { position: absolute; left: 1420px; top: 330px; width: 380px; text-align: center; }
+    .c0-bulb { position: relative; width: 280px; height: 280px; margin: 0 auto 32px; border-radius: 50%; border: 8px solid var(--rule-strong); background: var(--paper-raised); box-sizing: border-box; }
+    #c0-bulb-on { position: absolute; inset: -8px; border-radius: 50%; background: var(--accent); }
+
+    .c0-cds { position: absolute; left: 160px; font: 700 56px/1 var(--font-code); }
+    .c0-cds-note { position: absolute; left: 1360px; font: 400 40px/1 var(--font-text); color: var(--ink-muted); }
+    #c0-eager-band { position: absolute; left: 120px; top: 410px; width: 1680px; height: 120px; border-radius: 8px; background: var(--accent-soft); }
+
+    #c0-edges, #c0-arrows { position: absolute; left: 0; top: 0; }
+    .c0-node { width: 520px; box-sizing: border-box; text-align: center; }
+    .c0-ring { position: absolute; inset: -3px; border: 6px solid var(--accent); border-radius: 8px; }
+    .c0-trig { position: absolute; top: 650px; width: 520px; text-align: center; font: 700 40px/1.2 var(--font-text); }
+
+    #c0-tbl-title { position: absolute; left: 100px; top: 70px; font: 600 60px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c0-tbl { position: absolute; left: 100px; top: 180px; width: 1720px; }
+    .c0-tr { position: relative; display: grid; grid-template-columns: 680px 420px 620px; border-bottom: 1px solid var(--rule); }
+    .c0-tr > div { position: relative; padding: 14px 24px 14px 0; font: 400 30px/1.3 var(--font-text); }
+    .c0-tr code { font: 400 29px/1.3 var(--font-code); }
+    .c0-th > div { font-weight: 700; color: var(--ink-muted); }
+    #c0-tr5-band { position: absolute; inset: 0; background: var(--accent-soft); padding: 0; }
+
+    #c0-sig { position: absolute; left: 440px; top: 130px; width: 820px; height: 320px; box-sizing: border-box; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; }
+    #c0-sig-h { position: absolute; left: 44px; top: 40px; font: 700 40px/1 var(--font-text); }
+    #c0-sig-code { position: absolute; left: 44px; top: 100px; font: 400 32px/1 var(--font-code); color: var(--ink-muted); }
+    #c0-sig-val { position: absolute; left: 44px; top: 186px; font: 600 72px/1 var(--font-display); }
+
+    .c0-fbox { box-sizing: border-box; height: 150px; display: grid; place-content: center; }
+    .c0-fbox small { display: block; font: 400 30px/1.2 var(--font-text); color: var(--ink-muted); }
+
+    .c0-callout { position: absolute; left: 160px; box-sizing: border-box; padding: 40px 48px; border-radius: 8px; border-left: 8px solid; }
+    .c0-callout-h { font: 700 32px/1 var(--font-text); letter-spacing: 0.06em; margin-bottom: 22px; }
+    .c0-callout p { margin: 0; font: 400 40px/1.4 var(--font-text); }
+    .c0-callout code { font: 400 37px/1 var(--font-code); }
+    #c0-note { top: 170px; width: 1100px; background: var(--note-soft); border-color: var(--note); }
+    #c0-note .c0-callout-h { color: var(--note); }
+    .c0-hl { border-radius: 6px; }
+    .c0-place { left: 1360px; width: 440px; box-sizing: border-box; }
+    #c0-warn { top: 100px; width: 1600px; background: var(--warning-soft); border-color: var(--warning); }
+    #c0-warn .c0-callout-h { color: var(--warning); }
+    #c0-warn p { font-size: 38px; }
+    .c0-life-l { position: absolute; left: 160px; width: 520px; text-align: right; font: 700 34px/1 var(--font-code); }
+    .c0-bar { position: absolute; left: 720px; height: 28px; border-radius: 4px; background: var(--ink-muted); }
+    #c0-root-bar { background: var(--accent); }
+    #c0-end { position: absolute; left: 1137px; top: 444px; width: 6px; height: 72px; background: var(--ink); }
+    .c0-type { position: absolute; left: 160px; font: 400 34px/1 var(--font-code); }
+    .c0-type span { position: absolute; left: 600px; white-space: nowrap; }
+  </style>
+
+  <div id="root" data-composition-id="c0" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c0-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">08:55</div>
+      <div class="chapter-title">What moved since Angular 17</div>
+    </div>
+
+    <!-- c0-1 the desk before opening: two worlds and the border -->
+    <div id="c0-desk" class="clip world" data-start="3" data-duration="10.99">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div class="c0-nav"><div id="c0-nav1">Members</div><div id="c0-nav2">Loans</div><div id="c0-nav3">Returns</div><div id="c0-nav4">Holds</div></div>
+          <div id="c0-head">What moved since Angular 17</div>
+          <div id="c0-pa" class="c0-panel" style="left: 480px">
+            <div class="c0-panel-h">Signed in</div>
+            <div id="c0-member">Ada Okafor</div>
+            <div class="label">Member #12</div>
+            <div id="c0-tag-a" class="c0-tag">signal</div>
+          </div>
+          <div id="c0-pb" class="c0-panel" style="left: 1080px">
+            <div class="c0-panel-h">Returns feed</div>
+            <div class="label">waiting for the first scan</div>
+            <div id="c0-tag-b" class="c0-tag">observable</div>
+          </div>
+          <div id="c0-border"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-2a zone.js struck from the dependencies -->
+    <div id="c0-zoneless" class="clip world" data-start="13.99" data-duration="1.93">
+      <div id="c0-deps" class="code">
+        <span class="label">dependencies</span>
+        <span class="ln">@angular/core</span>
+        <span class="ln">@angular/router</span>
+        <span class="ln">rxjs</span>
+        <span class="ln"><span id="c0-zone">zone.js<span id="c0-zone-strike"></span></span></span>
+      </div>
+      <div id="c0-zone-note">not installed</div>
+    </div>
+
+    <!-- c0-2b four inputs light the render lamp -->
+    <div id="c0-ways" class="clip world" data-start="15.92" data-duration="9.83">
+      <div id="c0-w1" class="c0-wire" style="top: 200px"><div class="c0-wire-text">a signal read by a template changes</div><div class="c0-wire-line"></div><div class="c0-wire-glow"></div></div>
+      <div id="c0-w2" class="c0-wire" style="top: 360px"><div class="c0-wire-text">a template event handler runs</div><div class="c0-wire-line"></div><div class="c0-wire-glow"></div></div>
+      <div id="c0-w3" class="c0-wire" style="top: 520px"><div class="c0-wire-text">an <code>async</code> pipe receives a value</div><div class="c0-wire-line"></div><div class="c0-wire-glow"></div></div>
+      <div id="c0-w4" class="c0-wire" style="top: 680px"><div class="c0-wire-text">someone calls <code>markForCheck()</code></div><div class="c0-wire-line"></div><div class="c0-wire-glow"></div></div>
+      <div id="c0-lamp"><div class="c0-bulb"><div id="c0-bulb-on"></div></div><div class="label">render</div></div>
+    </div>
+
+    <!-- c0-3a the old behaviour has a new name -->
+    <div id="c0-eager" class="clip world" data-start="25.75" data-duration="6.11">
+      <div id="c0-eager-band"></div>
+      <div id="c0-cd1" class="c0-cds" style="top: 270px">ChangeDetectionStrategy.OnPush</div>
+      <div id="c0-cd1n" class="c0-cds-note" style="top: 278px">default in v22</div>
+      <div id="c0-cd2" class="c0-cds" style="top: 442px">ChangeDetectionStrategy.Eager</div>
+      <div id="c0-cd2n" class="c0-cds-note" style="top: 450px">the old behaviour</div>
+      <div id="c0-cd3" class="c0-cds" style="top: 640px; color: var(--ink-muted)">ChangeDetectionStrategy.Default</div>
+      <div id="c0-cd3n" class="c0-cds-note" style="top: 648px">deprecated alias of it</div>
+    </div>
+
+    <!-- c0-3b an OnPush tree: three triggers, one node at a time -->
+    <div id="c0-tree" class="clip world sunk" data-start="31.86" data-duration="5.94">
+      <svg id="c0-edges" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <line x1="960" y1="298" x2="370" y2="520" stroke="#c4b9a6" stroke-width="4" />
+        <line x1="960" y1="298" x2="960" y2="520" stroke="#c4b9a6" stroke-width="4" />
+        <line x1="960" y1="298" x2="1550" y2="520" stroke="#c4b9a6" stroke-width="4" />
+      </svg>
+      <div id="c0-n0" class="node c0-node" style="left: 700px; top: 200px">DeskPage<span class="badge">[OnPush]</span></div>
+      <div id="c0-n1" class="node c0-node" style="left: 110px; top: 520px">MemberList<span class="badge">[OnPush]</span><div id="c0-r1" class="c0-ring"></div></div>
+      <div id="c0-n2" class="node c0-node" style="left: 700px; top: 520px">LoanPanel<span class="badge">[OnPush]</span><div id="c0-r2" class="c0-ring"></div></div>
+      <div id="c0-n3" class="node c0-node" style="left: 1290px; top: 520px">ReturnsFeed<span class="badge">[OnPush]</span><div id="c0-r3" class="c0-ring"></div></div>
+      <div id="c0-t1" class="c0-trig" style="left: 110px">new input reference</div>
+      <div id="c0-t2" class="c0-trig" style="left: 700px">event inside it</div>
+      <div id="c0-t3" class="c0-trig" style="left: 1290px">signal it reads</div>
+    </div>
+
+    <!-- c0-4 the toolbox table, verbatim -->
+    <div id="c0-toolbox" class="clip world" data-start="37.8" data-duration="10.61">
+      <div id="c0-tbl-title">The signal toolbox, then and now</div>
+      <div id="c0-tbl" data-hold>
+        <div class="c0-tr c0-th"><div>You had in v17.0</div><div>Arrived as developer preview</div><div>Status in v22.2</div></div>
+        <div id="c0-tr1" class="c0-tr"><div><code>signal</code>, <code>computed</code>, <code>effect</code></div><div><code>linkedSignal</code> (v19)</div><div>all stable; <code>linkedSignal</code> is writable state that resets when a source changes</div></div>
+        <div id="c0-tr2" class="c0-tr"><div><code>@Input()</code> + <code>ngOnChanges</code></div><div><code>input()</code>, <code>input.required()</code> (17.1), <code>model()</code> (17.2)</div><div>stable; inputs are signals, so <code>computed</code> can depend on them</div></div>
+        <div id="c0-tr3" class="c0-tr"><div><code>@ViewChild</code>, <code>@ContentChild</code></div><div><code>viewChild()</code>, <code>viewChildren()</code>, <code>contentChild()</code> (17.2)</div><div>stable; queries are signals</div></div>
+        <div id="c0-tr4" class="c0-tr"><div><code>@Output()</code> + <code>EventEmitter</code></div><div><code>output()</code> (17.3)</div><div>stable; an event emitter with no RxJS inside</div></div>
+        <div id="c0-tr5" class="c0-tr"><div id="c0-tr5-band"></div><div><code>toSignal</code>, <code>toObservable</code> (developer preview)</div><div></div><div>stable, in <code>@angular/core/rxjs-interop</code></div></div>
+        <div id="c0-tr6" class="c0-tr"><div><code>route.paramMap.pipe(switchMap(...))</code></div><div><code>resource</code>, <code>rxResource</code>, <code>httpResource</code> (v19)</div><div><code>@publicApi 22.0</code>: stable since v22</div></div>
+      </div>
+    </div>
+
+    <!-- c0-5 a value now vs events over time; c0-6 an event dropped into the value's box -->
+    <div id="c0-sides" class="clip world sunk" data-start="48.41" data-duration="16.38">
+      <div id="c0-sig">
+        <div id="c0-sig-h">signed-in member</div>
+        <div id="c0-sig-code">signal&lt;Member&gt;</div>
+        <div id="c0-sig-val">Ada Okafor</div>
+      </div>
+      <div class="marbles" style="top: 520px; --fw: 80px">
+        <div class="mrow" style="height: 200px">
+          <div id="c0-ev-l" class="mlabel">events$</div>
+          <div id="c0-ev-t" class="mtrack">
+            <div id="c0-m1" class="m" style="--f: 1">k</div>
+            <div id="c0-m2" class="m" style="--f: 3">k</div>
+            <div id="c0-m3" class="m" style="--f: 6">p</div>
+            <div id="c0-m4" class="m" style="--f: 9">t</div>
+            <div id="c0-m5" class="m" style="--f: 11">k</div>
+            <div id="c0-m6" class="m" style="--f: 14">t</div>
+          </div>
+          <div id="c0-ev-n" class="mnote">// k = keystroke, p = server push, t = timer tick</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-7 the border, crossed once in each direction (LESSON.md flow) -->
+    <div id="c0-flow" class="clip world sunk" data-start="64.79" data-duration="8.92">
+      <svg id="c0-arrows" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#1d1b18" stroke-width="4">
+        <g id="c0-e1"><path class="c0-ep" d="M400 405 H460" stroke-dasharray="60" /><polygon class="c0-eh" points="460,394 478,405 460,416" fill="#1d1b18" stroke="none" /></g>
+        <g id="c0-e2"><path class="c0-ep" d="M770 405 H830" stroke-dasharray="60" /><polygon class="c0-eh" points="830,394 848,405 830,416" fill="#1d1b18" stroke="none" /></g>
+        <g id="c0-e3"><path class="c0-ep" d="M1100 405 H1160" stroke-dasharray="60" /><polygon class="c0-eh" points="1160,394 1178,405 1160,416" fill="#1d1b18" stroke="none" /></g>
+        <g id="c0-e4"><path class="c0-ep" d="M1520 405 H1580" stroke-dasharray="60" /><polygon class="c0-eh" points="1580,394 1598,405 1580,416" fill="#1d1b18" stroke="none" /></g>
+        <g id="c0-e5"><path class="c0-ep" d="M1350 480 V735 H1158" stroke-dasharray="447" /><polygon class="c0-eh" points="1158,724 1140,735 1158,746" fill="#1d1b18" stroke="none" /></g>
+        <g id="c0-e6"><path class="c0-ep" d="M830 735 H625 V498" stroke-dasharray="442" /><polygon class="c0-eh" points="614,498 625,480 636,498" fill="#1d1b18" stroke="none" /></g>
+      </svg>
+      <div id="c0-fa" class="fbox c0-fbox" style="left: 100px; top: 330px; width: 300px">event<small>(keystroke, push, tick)</small></div>
+      <div id="c0-fb" class="fbox c0-fbox" style="left: 480px; top: 330px; width: 290px">observable pipeline</div>
+      <div id="c0-fc" class="fbox c0-fbox" style="left: 850px; top: 330px; width: 250px">toSignal</div>
+      <div id="c0-fd" class="fbox c0-fbox" style="left: 1180px; top: 330px; width: 340px">signal graph<small>(signal, computed)</small></div>
+      <div id="c0-fe" class="fbox c0-fbox" style="left: 1600px; top: 330px; width: 210px">template</div>
+      <div id="c0-ff" class="fbox c0-fbox" style="left: 830px; top: 660px; width: 310px">toObservable</div>
+    </div>
+
+    <!-- c0-8a NOTE: injection context; c0-8b band on the injector / DestroyRef sentence -->
+    <div id="c0-inject" class="clip world" data-start="73.71" data-duration="13.52">
+      <div id="c0-note" class="c0-callout">
+        <div class="c0-callout-h">NOTE</div>
+        <p><code>toSignal</code>, <code>toObservable</code>, <code>effect</code> and <code>takeUntilDestroyed()</code> without arguments <span id="c0-hl1" class="c0-hl">must run in an injection context</span>: a field initializer, the constructor, or a factory. <span id="c0-hl2" class="c0-hl">Each accepts an <code>injector</code> (or a <code>DestroyRef</code>) when you need it later.</span></p>
+      </div>
+      <div id="c0-p1" class="fbox c0-place" style="top: 230px">field initializer</div>
+      <div id="c0-p2" class="fbox c0-place" style="top: 400px">constructor</div>
+      <div id="c0-p3" class="fbox c0-place" style="top: 570px" data-hold>factory</div>
+    </div>
+
+    <!-- c0-9 WARNING: toSignal's lifetime and its three types -->
+    <div id="c0-life" class="clip world" data-start="87.23" data-duration="9.9">
+      <div id="c0-warn" class="c0-callout">
+        <div class="c0-callout-h">WARNING</div>
+        <p><code>toSignal</code> subscribes as soon as it is called, not when the signal is first read, and keeps the subscription until its injection context is destroyed.</p>
+      </div>
+      <div class="c0-life-l" style="top: 467px">component</div>
+      <div id="c0-comp-bar" class="c0-bar" style="top: 466px; width: 420px"></div>
+      <div id="c0-end"></div>
+      <div id="c0-end-l" class="label" style="position: absolute; left: 1166px; top: 462px">destroyed</div>
+      <div class="c0-life-l" style="top: 587px">providedIn: 'root'</div>
+      <div id="c0-root-bar" class="c0-bar" style="top: 586px; width: 1040px"></div>
+      <div id="c0-root-l" class="label" style="position: absolute; left: 1460px; top: 630px">the whole session</div>
+      <div id="c0-ty1" class="c0-type" style="top: 740px">toSignal(obs$)<span>Signal&lt;T | undefined&gt;</span></div>
+      <div id="c0-ty2" class="c0-type" style="top: 810px">initialValue<span>Signal&lt;T | typeof initialValue&gt;</span></div>
+      <div id="c0-ty3" class="c0-type" style="top: 880px">requireSync: true<span>Signal&lt;T&gt;</span></div>
+      <div id="c0-ty3n" class="label" style="position: absolute; left: 760px; top: 936px">but throws if the source does not emit synchronously on subscribe</div>
+    </div>
+
+    <audio id="c0-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="0" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c0-vo1" class="clip" src="assets/vo/c0-1.wav" data-start="3" data-duration="10.645" data-volume="1"></audio>
+    <audio id="c0-vo2" class="clip" src="assets/vo/c0-2a.wav" data-start="13.99" data-duration="1.579" data-volume="1"></audio>
+    <audio id="c0-vo3" class="clip" src="assets/vo/c0-2b.wav" data-start="15.92" data-duration="9.472" data-volume="1"></audio>
+    <audio id="c0-vo4" class="clip" src="assets/vo/c0-3a.wav" data-start="25.75" data-duration="5.76" data-volume="1"></audio>
+    <audio id="c0-vo5" class="clip" src="assets/vo/c0-3b.wav" data-start="31.86" data-duration="5.589" data-volume="1"></audio>
+    <audio id="c0-vo6" class="clip" src="assets/vo/c0-4.wav" data-start="37.8" data-duration="10.261" data-volume="1"></audio>
+    <audio id="c0-vo7" class="clip" src="assets/vo/c0-5.wav" data-start="48.41" data-duration="9.792" data-volume="1"></audio>
+    <audio id="c0-vo8" class="clip" src="assets/vo/c0-6.wav" data-start="58.55" data-duration="5.888" data-volume="1"></audio>
+    <audio id="c0-vo9" class="clip" src="assets/vo/c0-7.wav" data-start="64.79" data-duration="8.576" data-volume="1"></audio>
+    <audio id="c0-vo10" class="clip" src="assets/vo/c0-8a.wav" data-start="73.71" data-duration="7.872" data-volume="1"></audio>
+    <audio id="c0-vo11" class="clip" src="assets/vo/c0-8b.wav" data-start="81.93" data-duration="4.949" data-volume="1"></audio>
+    <audio id="c0-vo12" class="clip" src="assets/vo/c0-9.wav" data-start="87.23" data-duration="8.896" data-volume="1"></audio>
+    <audio id="c0-tick1" class="clip" src="assets/sfx/tick-a.wav" data-start="53.68" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c0-tick2" class="clip" src="assets/sfx/tick-b.wav" data-start="54.04" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c0-tick3" class="clip" src="assets/sfx/tick-a.wav" data-start="54.58" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c0-tick4" class="clip" src="assets/sfx/tick-b.wav" data-start="55.12" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c0-tick5" class="clip" src="assets/sfx/tick-a.wav" data-start="55.48" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c0-tick6" class="clip" src="assets/sfx/tick-b.wav" data-start="56.02" data-duration="0.3" data-volume="0.25"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const print = (sel, at) =>
+      tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out" }, at);
+    const pulse = (sel, at) => {
+      tl.fromTo(sel, { scale: 1 }, { scale: 1.12, duration: 0.15, ease: "power2.out" }, at);
+      tl.to(sel, { scale: 1, duration: 0.15, ease: "power2.in" }, at + 0.15);
+    };
+    const tint = (sel, from, to, at, d = 0.3) => tl.fromTo(sel, { backgroundColor: from }, { backgroundColor: to, duration: d }, at);
+    const draw = (sel, at, d = 0.6) => {
+      tl.fromTo(sel + " .c0-ep", { strokeDashoffset: (i, el) => el.getAttribute("stroke-dasharray") }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+      tl.fromTo(sel + " .c0-eh", { opacity: 0 }, { opacity: 1, duration: 0.15 }, at + d - 0.1);
+    };
+
+    // chapter card: fully on screen from frame 0
+
+    // c0-1: two worlds, then the border between them
+    ["#c0-nav1", "#c0-nav2", "#c0-nav3", "#c0-nav4"].forEach((n, i) => fadeIn(n, 3.2 + i * 0.2, 0.4));
+    fadeIn("#c0-head", 4.0, 0.6);
+    fadeIn("#c0-pa", 7.6);
+    fadeIn("#c0-pb", 7.75);
+    fadeIn("#c0-tag-a", 9.1, 0.4);
+    fadeIn("#c0-tag-b", 10.1, 0.4);
+    tl.fromTo("#c0-border", { scaleY: 0, transformOrigin: "top center" }, { scaleY: 1, duration: 0.8, ease: "power2.inOut" }, 12.3);
+
+    // c0-2a: zone.js struck on "zoneless"
+    tl.fromTo("#c0-zone-strike", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.4, ease: "power2.inOut" }, 14.9);
+    fadeIn("#c0-zone-note", 15.25, 0.4);
+
+    // c0-2b: each input lights the lamp as it is named
+    [17.6, 20.6, 22.5, 24.7].forEach((t, i) => {
+      const w = "#c0-w" + (i + 1);
+      fadeIn(w + " .c0-wire-text", t - 0.4, 0.4);
+      tl.fromTo(w + " .c0-wire-glow", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.5, ease: "power2.inOut" }, t - 0.2);
+    });
+    tl.fromTo("#c0-bulb-on", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 17.9);
+    tl.to("#c0-bulb-on", { keyframes: [
+      { opacity: 0.3, duration: 0.6, delay: 0.7 }, { opacity: 1, duration: 0.2, delay: 1.5 },
+      { opacity: 0.3, duration: 0.6, delay: 0.7 }, { opacity: 1, duration: 0.2, delay: 0.4 },
+      { opacity: 0.3, duration: 0.6, delay: 0.7 }, { opacity: 1, duration: 0.2, delay: 0.7 },
+    ] }, 18.1);
+
+    // c0-3a: OnPush is the default, the old behaviour is Eager
+    fadeIn("#c0-cd1", 26.2);
+    fadeIn("#c0-cd1n", 28.0, 0.4);
+    fadeIn("#c0-cd2", 29.4);
+    fadeIn("#c0-cd2n", 29.6, 0.4);
+    fadeIn("#c0-cd3", 30.2, 0.4);
+    fadeIn("#c0-cd3n", 30.35, 0.4);
+    tl.fromTo("#c0-eager-band", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 30.9);
+
+    // c0-3b: input, event, signal light one node each
+    fadeIn("#c0-n0", 31.95, 0.4);
+    fadeIn("#c0-edges", 32.1, 0.4);
+    ["#c0-n1", "#c0-n2", "#c0-n3"].forEach((n, i) => fadeIn(n, 32.2 + i * 0.12, 0.4));
+    [[34.5, 1], [35.8, 2], [37.0, 3]].forEach(([t, k]) => {
+      tl.fromTo("#c0-r" + k, { opacity: 0 }, { opacity: 1, duration: 0.2 }, t);
+      fadeIn("#c0-t" + k, t + 0.1, 0.4);
+      if (k < 3) tl.to("#c0-r" + k, { opacity: 0, duration: 0.2 }, t + 1.1);
+    });
+
+    // c0-4: rows top to bottom as the APIs are named, band on the interop row
+    fadeIn("#c0-tbl-title", 37.95, 0.5);
+    fadeIn("#c0-tbl .c0-th", 38.3, 0.4);
+    [38.7, 40.4, 40.9, 41.4, 41.9, 42.5].forEach((t, i) => fadeIn("#c0-tr" + (i + 1), t, 0.4));
+    tl.fromTo("#c0-tr5-band", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 46.6);
+
+    // c0-5: the value now, then events printed over time (0.18 s per frame from 53.5)
+    fadeIn("#c0-sig", 48.6);
+    fadeIn("#c0-sig-val", 51.9, 0.4);
+    fadeIn("#c0-ev-l", 53.2, 0.4);
+    fadeIn("#c0-ev-t", 53.2, 0.4);
+    [1, 3, 6, 9, 11, 14].forEach((f, i) => print("#c0-m" + (i + 1), 53.5 + f * 0.18));
+    fadeIn("#c0-ev-n", 56.4, 0.4);
+
+    // c0-6: one keystroke goes into the signal box
+    tint("#c0-m5", "#1d1b18", "#b8321f", 59.6);
+    pulse("#c0-m5", 59.9);
+    tl.fromTo("#c0-m5", { x: 0, y: 0 }, { x: -200, y: -262, duration: 0.8, ease: "power2.inOut" }, 61.4);
+    tl.to("#c0-sig-val", { opacity: 0.3, duration: 0.4, ease: "power2.in" }, 62.0);
+
+    // c0-7: boxes cut in; arrows draw when their step is named
+    ["#c0-fa", "#c0-fb", "#c0-fc", "#c0-fd", "#c0-fe", "#c0-ff"].forEach((b, i) => fadeIn(b, 64.9 + i * 0.1, 0.4));
+    draw("#c0-e1", 65.6);
+    draw("#c0-e5", 67.7, 0.7);
+    draw("#c0-e6", 68.4, 0.7);
+    draw("#c0-e2", 70.2);
+    draw("#c0-e3", 70.6);
+    draw("#c0-e4", 72.5);
+
+    // c0-8a: the injection context, then its three places
+    fadeIn("#c0-note", 73.9);
+    tint("#c0-hl1", "rgba(245,226,217,0)", "rgba(245,226,217,1)", 77.6);
+    ["#c0-p1", "#c0-p2", "#c0-p3"].forEach((p, i) => fadeIn(p, 78.1 + i * 0.4, 0.4));
+
+    // c0-8b: the band moves to the later-use sentence
+    tl.to("#c0-hl1", { backgroundColor: "rgba(245,226,217,0)", duration: 0.3 }, 82.4);
+    tint("#c0-hl2", "rgba(245,226,217,0)", "rgba(245,226,217,1)", 82.5);
+    tl.to(["#c0-p1", "#c0-p2", "#c0-p3"], { opacity: 0.4, duration: 0.4 }, 82.5);
+
+    // c0-9: subscribed at once, held until destroyed; a root service holds it all session
+    fadeIn("#c0-warn", 87.4);
+    ["#c0-ty1", "#c0-ty2", "#c0-ty3", "#c0-ty3n"].forEach((t, i) => fadeIn(t, 88.4 + i * 0.3, 0.4));
+    tl.fromTo("#c0-comp-bar", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.8, ease: "power2.inOut" }, 91.4);
+    fadeIn("#c0-end", 92.2, 0.2);
+    fadeIn("#c0-end-l", 92.35, 0.4);
+    tl.fromTo("#c0-root-bar", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 1.0, ease: "power2.inOut" }, 94.2);
+    fadeIn("#c0-root-l", 95.4, 0.4);
+
+    window.__timelines["c0"] = tl;
+  </script>
+</template>

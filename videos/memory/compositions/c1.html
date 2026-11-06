@@ -1,0 +1,331 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c1-nav { position: absolute; left: 48px; top: 40px; width: 340px; }
+    .c1-nav div { font: 400 40px/1 var(--font-text); color: var(--ink-muted); padding: 26px 0; border-bottom: 1px solid var(--rule); }
+    .c1-nav .on { color: var(--ink); font-weight: 700; }
+    .c1-book { position: absolute; left: 480px; top: 40px; width: 1100px; height: 740px; padding: 48px 56px; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; box-sizing: border-box; }
+    .c1-book-title { font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c1-book .label { margin: 12px 0 44px; }
+    .c1-text { height: 14px; margin-bottom: 28px; border-radius: 7px; background: var(--rule); }
+
+    .c1-flow .fbox { height: 140px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .c1-flow .flabel { width: 340px; }
+
+    .c1-head { position: absolute; left: 120px; top: 70px; width: 1680px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c1-table { position: absolute; left: 120px; top: 180px; width: 1680px; }
+    .c1-tr { display: grid; border-bottom: 1px solid var(--rule); padding: 18px 0; font: 400 30px/1.3 var(--font-text); }
+    .c1-tr > div { padding-right: 28px; }
+    .c1-tr code { font: 400 30px/1.3 var(--font-code); }
+    .c1-th { font: 700 30px/1 var(--font-text); color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c1-starts .c1-tr { grid-template-columns: 720px 420px 540px; }
+    #c1-decl .c1-tr { grid-template-columns: 880px 800px; padding: 28px 0; font-size: 34px; }
+    #c1-decl .c1-tr code { font-size: 34px; }
+    #c1-decl .c1-th { font-size: 32px; }
+
+    .c1-code { left: 180px; top: 110px; width: 1560px; font-size: 30px; line-height: 1.45; box-sizing: border-box; }
+    .c1-code .ln { position: relative; }
+    #c1-band { position: absolute; left: 0; right: 0; top: 344.5px; height: 261px; background: var(--accent-soft); transform-origin: left top; }
+
+    .c1-steps { position: absolute; left: 120px; top: 160px; width: 1680px; }
+    .c1-step { position: relative; padding-left: 56px; margin-bottom: 22px; font: 400 34px/1.35 var(--font-text); }
+    .c1-step code { font: 400 32px/1 var(--font-code); }
+    .c1-step b { position: absolute; left: 0; top: 0; }
+    #c1-mon { position: absolute; left: 120px; top: 560px; width: 1040px; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow); }
+    .c1-mon-head { height: 76px; padding: 0 36px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 700 32px/1 var(--font-text); }
+    .c1-ctr { height: 104px; padding: 0 36px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--rule); font: 400 38px/1 var(--font-text); }
+    .c1-ctr:last-child { border-bottom: 0; }
+    .c1-ctr b { font-variant-numeric: tabular-nums; }
+    #c1-visit { position: absolute; left: 1260px; top: 560px; width: 540px; }
+    #c1-visit-n { font: 700 96px/1.1 var(--font-text); font-variant-numeric: tabular-nums; }
+    #c1-step12 { font: 700 40px/1.2 var(--font-text); color: var(--accent); margin-top: 24px; }
+
+    #c1-mem { position: absolute; left: 120px; top: 110px; width: 1680px; height: 120px; padding: 0 36px; display: flex; align-items: center; gap: 36px; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow); box-sizing: border-box; font: 700 34px/1 var(--font-text); }
+    #c1-trash { width: 76px; height: 76px; display: grid; place-items: center; border: 4px solid var(--ink); border-radius: 8px; box-sizing: border-box; }
+    #c1-mem .label { font-weight: 400; }
+    .c1-chart-label { position: absolute; font: 700 32px/1 var(--font-text); }
+
+    #c1-warn { position: absolute; left: 200px; top: 220px; width: 1520px; padding: 48px 56px; background: var(--warning-soft); border-left: 8px solid var(--warning); border-radius: 8px; box-sizing: border-box; }
+    #c1-warn-title { font: 700 36px/1 var(--font-text); color: var(--warning); margin-bottom: 32px; }
+    #c1-warn-text { font: 400 40px/1.4 var(--font-text); }
+    #c1-warn-text code { font: 400 38px/1 var(--font-code); }
+
+    #c1-questions .q { font-size: 44px; }
+  </style>
+
+  <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c1-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c1-card-time" class="chapter-time">09:00</div>
+      <div id="c1-card-title" class="chapter-title">Everything you start has a handle</div>
+    </div>
+
+    <!-- c1-1 the reading-room view: one book closes, another opens -->
+    <div id="c1-desk" class="clip world" data-start="3" data-duration="8.8">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-nav"><div>Members</div><div>Loans</div><div>Returns</div><div class="on">Reading room</div></div>
+          <div id="c1-book-a" class="c1-book">
+            <div class="c1-book-title">Middlemarch</div>
+            <div class="label">George Eliot · page 214</div>
+            <div class="c1-text" style="width: 100%"></div><div class="c1-text" style="width: 96%"></div><div class="c1-text" style="width: 99%"></div>
+            <div class="c1-text" style="width: 92%"></div><div class="c1-text" style="width: 97%"></div><div class="c1-text" style="width: 60%"></div>
+            <div class="c1-text" style="width: 98%"></div><div class="c1-text" style="width: 94%"></div><div class="c1-text" style="width: 100%"></div>
+            <div class="c1-text" style="width: 88%"></div><div class="c1-text" style="width: 72%"></div>
+          </div>
+          <div id="c1-book-b" class="c1-book" data-hold>
+            <div class="c1-book-title">Moby-Dick</div>
+            <div class="label">Herman Melville · page 1</div>
+            <div class="c1-text" style="width: 97%"></div><div class="c1-text" style="width: 100%"></div><div class="c1-text" style="width: 93%"></div>
+            <div class="c1-text" style="width: 98%"></div><div class="c1-text" style="width: 54%"></div><div class="c1-text" style="width: 99%"></div>
+            <div class="c1-text" style="width: 95%"></div><div class="c1-text" style="width: 100%"></div><div class="c1-text" style="width: 90%"></div>
+            <div class="c1-text" style="width: 96%"></div><div class="c1-text" style="width: 66%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-2, c1-3 the chain from the browser to the view (LESSON.md flow) -->
+    <div id="c1-flow" class="clip world sunk c1-flow" data-start="11.8" data-duration="18.9">
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <g stroke="#1d1b18" stroke-width="4" fill="none">
+          <line id="c1-e1" x1="380" y1="340" x2="722" y2="340" stroke-dasharray="342" />
+          <line id="c1-e2" x1="1140" y1="340" x2="1482" y2="340" stroke-dasharray="342" />
+          <path id="c1-e3" d="M1630,410 V550 H410 V674" stroke-dasharray="1484" />
+          <line id="c1-e4" x1="680" y1="760" x2="1162" y2="760" stroke-dasharray="482" />
+        </g>
+        <g fill="#1d1b18">
+          <polygon id="c1-a1" points="720,328 740,340 720,352" />
+          <polygon id="c1-a2" points="1480,328 1500,340 1480,352" />
+          <polygon id="c1-a3" points="398,672 410,692 422,672" />
+          <polygon id="c1-a4" points="1160,748 1180,760 1160,772" />
+        </g>
+      </svg>
+      <div id="c1-l1" class="flabel" style="left: 390px; top: 250px">keeps alive while it observes</div>
+      <div id="c1-l2" class="flabel" style="left: 1150px; top: 290px">holds</div>
+      <div id="c1-l3" class="flabel" style="left: 820px; top: 500px; width: 400px">closes over this</div>
+      <div id="c1-l4" class="flabel" style="left: 720px; top: 708px; width: 400px">references</div>
+      <div id="c1-b1" class="fbox" style="left: 140px; top: 270px; width: 240px">browser</div>
+      <div id="c1-b2" class="fbox" style="left: 740px; top: 270px; width: 400px">ResizeObserver</div>
+      <div id="c1-b3" class="fbox" style="left: 1500px; top: 270px; width: 260px">callback</div>
+      <div id="c1-b4" class="fbox" style="left: 140px; top: 690px; width: 540px">ReadingRoom instance</div>
+      <div id="c1-b5" class="fbox" style="left: 1180px; top: 690px; width: 580px" data-hold>its view and DOM nodes</div>
+    </div>
+
+    <!-- c1-4 Started with / Handle / Stopped with, no row accented -->
+    <div id="c1-starts" class="clip world" data-start="30.7" data-duration="8.77">
+      <div class="c1-head">Every start returns a handle</div>
+      <div class="c1-table" data-hold>
+        <div id="c1-sh" class="c1-tr c1-th"><div>Started with</div><div>Handle</div><div>Stopped with</div></div>
+        <div id="c1-s1" class="c1-tr"><div><code>new ResizeObserver(cb)</code> / <code>IntersectionObserver</code></div><div>The observer</div><div><code>disconnect()</code></div></div>
+        <div id="c1-s2" class="c1-tr"><div><code>new BroadcastChannel(name)</code>, <code>new WebSocket(url)</code></div><div>The channel</div><div><code>close()</code></div></div>
+        <div id="c1-s3" class="c1-tr"><div><code>target.addEventListener(type, fn)</code></div><div>The <code>fn</code> object itself</div><div><code>removeEventListener(type, fn)</code> with the same object</div></div>
+        <div id="c1-s4" class="c1-tr"><div><code>setInterval(fn, ms)</code> / <code>setTimeout</code></div><div>The returned id</div><div><code>clearInterval(id)</code> / <code>clearTimeout(id)</code></div></div>
+        <div id="c1-s5" class="c1-tr"><div><code>obs$.subscribe(...)</code></div><div>The <code>Subscription</code></div><div><code>unsubscribe()</code></div></div>
+        <div id="c1-s6" class="c1-tr"><div>APIs that return a function (<code>Renderer2.listen</code>, <code>DestroyRef.onDestroy</code>)</div><div>That function</div><div>Calling it</div></div>
+      </div>
+    </div>
+
+    <!-- c1-5 Declarative form / Who stops it -->
+    <div id="c1-decl" class="clip world" data-start="39.47" data-duration="9.87">
+      <div class="c1-head">And the ways to not hold any handle yourself</div>
+      <div class="c1-table" style="top: 240px" data-hold>
+        <div id="c1-dh" class="c1-tr c1-th"><div>Declarative form</div><div>Who stops it</div></div>
+        <div id="c1-d1" class="c1-tr"><div><code>host: { '(window:scroll)': 'track()' }</code></div><div>Angular, when the component is destroyed</div></div>
+        <div id="c1-d2" class="c1-tr"><div><code>(click)="borrow()"</code> in the template</div><div>Angular, with the element</div></div>
+        <div id="c1-d3" class="c1-tr"><div><code>toSignal(obs$)</code>, <code>takeUntilDestroyed()</code></div><div>Angular, through <code>DestroyRef</code></div></div>
+      </div>
+    </div>
+
+    <!-- c1-6, c1-6b ReadingRoom (LESSON.md), cut in whole; the band moves from the start to the stop -->
+    <div id="c1-code" class="clip world" data-start="49.34" data-duration="15.85">
+      <div class="code c1-code" data-hold>
+        <div id="c1-band"></div>
+        <span class="ln"><span class="k">export class</span> ReadingRoom {</span>
+        <span class="ln">  <span class="k">private readonly</span> page = viewChild.required&lt;ElementRef&lt;HTMLElement&gt;&gt;(<span class="s">'page'</span>);</span>
+        <span class="ln">  <span class="k">protected readonly</span> columns = signal(<span class="n">1</span>);</span>
+        <span class="ln"> </span>
+        <span class="ln">  <span class="k">constructor</span>() {</span>
+        <span class="ln">    <span class="k">let</span> observer: ResizeObserver | <span class="k">undefined</span>;</span>
+        <span class="ln"> </span>
+        <span class="ln">    afterNextRender(() =&gt; {</span>
+        <span class="ln">      observer = <span class="k">new</span> ResizeObserver(([entry]) =&gt;</span>
+        <span class="ln">        <span class="k">this</span>.columns.set(entry.contentRect.width &gt; <span class="n">900</span> ? <span class="n">2</span> : <span class="n">1</span>),</span>
+        <span class="ln">      );</span>
+        <span class="ln">      observer.observe(<span class="k">this</span>.page().nativeElement);</span>
+        <span class="ln">    });</span>
+        <span class="ln"> </span>
+        <span class="ln">    inject(DestroyRef).onDestroy(() =&gt; observer?.disconnect());</span>
+        <span class="ln">  }</span>
+        <span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c1-7, c1-8, c1-8b the Performance monitor steps; DOM Nodes climbs by 14 per visit -->
+    <div id="c1-monitor" class="clip world" data-start="65.19" data-duration="20.46">
+      <div class="c1-head">Seeing it: the Performance monitor</div>
+      <div class="c1-steps">
+        <div id="c1-st1" class="c1-step"><b>1.</b>In DevTools, open the Command menu (<code>Cmd+Shift+P</code> or <code>Ctrl+Shift+P</code>), run "Show Performance monitor".</div>
+        <div id="c1-st2" class="c1-step"><b>2.</b>Watch "JS event listeners", "DOM Nodes" and "JS heap size".</div>
+        <div id="c1-st3" class="c1-step"><b>3.</b>Visit the page once and leave it as a warm-up, so one-off lazy loading is out of the way. Then visit and leave ten times.</div>
+      </div>
+      <div id="c1-mon">
+        <div class="c1-mon-head">Performance monitor</div>
+        <div class="c1-ctr"><span>JS event listeners</span><b>412</b></div>
+        <div class="c1-ctr"><span>DOM Nodes</span><b id="c1-nodes">1,480</b></div>
+        <div class="c1-ctr"><span>JS heap size</span><b>18.4 MB</b></div>
+      </div>
+      <div id="c1-visit" data-hold>
+        <div class="label">visit</div>
+        <div id="c1-visit-n">0 / 10</div>
+        <div id="c1-step12">DOM Nodes +14 per visit</div>
+      </div>
+    </div>
+
+    <!-- c1-8c the Memory panel's trash-can button; floor, not peaks -->
+    <div id="c1-gc" class="clip world" data-start="85.65" data-duration="7.58">
+      <div id="c1-mem">
+        <span>Memory</span>
+        <div id="c1-trash">
+          <svg width="40" height="44" viewBox="0 0 40 44">
+            <g fill="none" stroke="#1d1b18" stroke-width="4" stroke-linejoin="round">
+              <path d="M4,10 H36" /><path d="M14,10 V4 H26 V10" /><path d="M8,10 L10,40 H30 L32,10" /><path d="M17,18 V32 M23,18 V32" />
+            </g>
+          </svg>
+        </div>
+        <span class="label">force a collection (the trash-can button in the Memory panel)</span>
+      </div>
+      <svg id="c1-chart" style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <polyline id="c1-saw" points="160,860 400,620 400,860 640,640 640,860 880,610 880,860 1120,630 1120,860 1360,620 1360,860 1600,640 1600,860 1760,700" fill="none" stroke="#1d1b18" stroke-width="4" stroke-linejoin="round" stroke-dasharray="3200" />
+        <line id="c1-floor" x1="160" y1="868" x2="1760" y2="868" stroke="#1d1b18" stroke-width="4" stroke-dasharray="16 12" />
+      </svg>
+      <div id="c1-chart-name" class="c1-chart-label" style="left: 160px; top: 540px">JS heap size</div>
+      <div id="c1-peaks" class="c1-chart-label" style="left: 840px; top: 550px; color: #5f584d">peaks</div>
+      <div id="c1-floor-label" class="c1-chart-label" style="left: 160px; top: 900px" data-hold>floor</div>
+    </div>
+
+    <!-- c1-9 the WARNING callout (LESSON.md) -->
+    <div id="c1-warning" class="clip world" data-start="93.23" data-duration="12.81">
+      <div id="c1-warn" data-hold>
+        <div id="c1-warn-title">Warning</div>
+        <div id="c1-warn-text"><span id="c1-w1">DevTools can create the leak you are measuring. An object you logged with <code>console.log</code>, expanded in the console, or selected as <code>$0</code> stays retained by DevTools itself.</span> <span id="c1-w2">Browser extensions, Angular DevTools included, add their own objects and listeners.</span> <span id="c1-w3">Profile in an incognito window or a clean profile, and clear the console before you compare.</span></div>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c1-questions" class="clip world note" data-start="106.04" data-duration="17.3">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c1-q1" class="q">What does the browser hold on this component's behalf after it is destroyed?</div>
+        <div id="c1-q2" class="q">For each thing started here: what is its handle, and where is the handle used?</div>
+        <div id="c1-q3" class="q">After ten visits, how many of each resource are alive?</div>
+        <div id="c1-q4" class="q">Does the target of each callback outlive the component, or die with it?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c1-pause" class="clip world" data-start="123.34" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c1-pause-2" class="pause-2">Now do exercise 01.</div>
+    </div>
+
+    <audio id="c1-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="15" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-bed2" class="clip" src="assets/music/bed.mp3" data-start="106.04" data-duration="17.3" data-media-start="23" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c1-1" class="clip" src="assets/vo/c1-1.wav" data-start="3" data-duration="8.448" data-volume="1"></audio>
+    <audio id="vo-c1-2" class="clip" src="assets/vo/c1-2.wav" data-start="11.8" data-duration="9.643" data-volume="1"></audio>
+    <audio id="vo-c1-3" class="clip" src="assets/vo/c1-3.wav" data-start="21.79" data-duration="8.555" data-volume="1"></audio>
+    <audio id="vo-c1-4" class="clip" src="assets/vo/c1-4.wav" data-start="30.7" data-duration="8.427" data-volume="1"></audio>
+    <audio id="vo-c1-5" class="clip" src="assets/vo/c1-5.wav" data-start="39.47" data-duration="9.515" data-volume="1"></audio>
+    <audio id="vo-c1-6" class="clip" src="assets/vo/c1-6.wav" data-start="49.34" data-duration="10.432" data-volume="1"></audio>
+    <audio id="vo-c1-6b" class="clip" src="assets/vo/c1-6b.wav" data-start="60.12" data-duration="4.715" data-volume="1"></audio>
+    <audio id="vo-c1-7" class="clip" src="assets/vo/c1-7.wav" data-start="65.19" data-duration="8.683" data-volume="1"></audio>
+    <audio id="vo-c1-8" class="clip" src="assets/vo/c1-8.wav" data-start="74.22" data-duration="7.04" data-volume="1"></audio>
+    <audio id="vo-c1-8b" class="clip" src="assets/vo/c1-8b.wav" data-start="81.61" data-duration="3.691" data-volume="1"></audio>
+    <audio id="vo-c1-8c" class="clip" src="assets/vo/c1-8c.wav" data-start="85.65" data-duration="7.232" data-volume="1"></audio>
+    <audio id="vo-c1-9" class="clip" src="assets/vo/c1-9.wav" data-start="93.23" data-duration="12.459" data-volume="1"></audio>
+    <audio id="vo-c1-end" class="clip" src="assets/vo/c1-end.wav" data-start="106.04" data-duration="2.347" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at) => tl.to(sel, { opacity: 0, duration: 0.4, ease: "power2.in" }, at);
+    const box = (sel, at) => tl.fromTo(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, at);
+    const draw = (sel, len, at, d = 0.5) =>
+      tl.fromTo(sel, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0
+
+    // c1-1: one book closes, another opens
+    fadeOut("#c1-book-a", 7.0);
+    tl.fromTo("#c1-book-b", { opacity: 0, scale: 0.98 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 7.9);
+
+    // c1-2: the boxes draw on from the browser to the view and its DOM
+    box("#c1-b1", 12.1);
+    [[13.5, 1, 342], [15.4, 2, 342], [17.2, 3, 1484], [19.0, 4, 482]].forEach(([at, i, len]) => {
+      draw("#c1-e" + i, len, at, i === 3 ? 0.7 : 0.4);
+      fadeIn("#c1-a" + i, at + (i === 3 ? 0.65 : 0.35), 0.1);
+      fadeIn("#c1-l" + i, at + 0.15, 0.4);
+      box("#c1-b" + (i + 1), at + (i === 3 ? 0.7 : 0.4));
+    });
+
+    // c1-3: every arrow still drawn; the destroyed instance is the accent
+    tl.to("#c1-b4", { borderColor: "#b8321f", backgroundColor: "#f5e2d9", duration: 0.3 }, 22.1);
+
+    // c1-4: rows one by one, all alike
+    fadeIn("#c1-sh", 30.9, 0.4);
+    for (let i = 1; i <= 6; i++) fadeIn("#c1-s" + i, 31.3 + (i - 1) * 0.5, 0.4);
+
+    // c1-5: Angular holds the handle
+    fadeIn("#c1-dh", 39.7, 0.4);
+    fadeIn("#c1-d1", 42.0, 0.4);
+    fadeIn("#c1-d2", 43.2, 0.4);
+    fadeIn("#c1-d3", 45.0, 0.4);
+
+    // c1-6: band on the afterNextRender block; c1-6b: the band moves to the stop
+    fadeIn("#c1-band", 52.9, 0.3);
+    tl.to("#c1-band", { y: 7 * 43.5, scaleY: 1 / 6, duration: 0.8, ease: "power2.inOut" }, 60.3);
+
+    // c1-7: steps 1 and 2, the monitor with its three counters
+    fadeIn("#c1-st1", 65.4);
+    fadeIn("#c1-st2", 70.1);
+    fadeIn("#c1-mon", 70.25);
+
+    // c1-8: step 3
+    fadeIn("#c1-st3", 74.4);
+
+    // c1-8b: ten visits, DOM Nodes up by 14 each time
+    fadeIn("#c1-visit", 81.7, 0.3);
+    tl.to("#c1-nodes", { color: "#b8321f", duration: 0.2 }, 81.7);
+    for (let v = 1; v <= 10; v++) {
+      tl.set("#c1-visit-n", { textContent: v + " / 10" }, 81.9 + (v - 1) * 0.2);
+      tl.set("#c1-nodes", { textContent: (1480 + 14 * v).toLocaleString("en-US") }, 81.9 + (v - 1) * 0.2);
+    }
+    fadeIn("#c1-step12", 83.6, 0.4);
+
+    // c1-8c: the trash-can button, then the sawtooth and its floor
+    tl.to("#c1-trash", { borderColor: "#b8321f", duration: 0.3 }, 86.0);
+    tl.fromTo("#c1-trash", { scale: 1 }, { scale: 1.12, duration: 0.15, ease: "power2.out" }, 86.0);
+    tl.to("#c1-trash", { scale: 1, duration: 0.15, ease: "power2.in" }, 86.15);
+    draw("#c1-saw", 3200, 89.0, 1.2);
+    fadeIn("#c1-chart-name", 89.0, 0.4);
+    fadeIn("#c1-peaks", 89.6, 0.4);
+    tl.to("#c1-trash", { borderColor: "#1d1b18", duration: 0.3 }, 90.4);
+    tl.fromTo("#c1-floor", { opacity: 0, stroke: "#b8321f" }, { opacity: 1, stroke: "#b8321f", duration: 0.4 }, 90.4);
+    tl.fromTo("#c1-floor-label", { opacity: 0, color: "#b8321f" }, { opacity: 1, color: "#b8321f", duration: 0.4 }, 90.55);
+
+    // c1-9: the warning, sentence group by sentence group
+    fadeIn("#c1-w1", 93.5);
+    fadeIn("#c1-w2", 99.2);
+    fadeIn("#c1-w3", 101.0);
+
+    // questions 0.6 s apart, then hold; pause card
+    for (let i = 1; i <= 4; i++) fadeIn("#c1-q" + i, 106.3 + (i - 1) * 0.6);
+    fadeIn("#c1-pause-2", 123.8);
+
+    window.__timelines["c1"] = tl;
+  </script>
+</template>

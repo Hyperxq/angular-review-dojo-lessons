@@ -1,0 +1,288 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c2-svg { position: absolute; left: 0; top: 0; }
+    .c2-fb { height: 140px; box-sizing: border-box; padding: 0 24px; display: grid; place-items: center; }
+    .c2-fb.mono { font: 700 38px/1.2 var(--font-code); }
+    code { font-family: var(--font-code); font-size: 0.92em; }
+
+    #c2-list { position: absolute; left: 40px; top: 40px; width: 1600px; }
+    .c2-lhead { display: grid; grid-template-columns: 460px 760px 380px; height: 64px; align-items: center; padding: 0 32px; border-bottom: 2px solid var(--rule-strong); font: 700 30px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-slot { position: relative; height: 104px; border-bottom: 1px solid var(--rule); }
+    .c2-row { position: absolute; inset: 0; display: grid; grid-template-columns: 460px 760px 380px; align-items: center; padding: 0 32px; font: 400 36px/1 var(--font-text); }
+    .c2-row b { font-weight: 700; }
+    .c2-row span:last-child { font-variant-numeric: tabular-nums; color: var(--ink-muted); }
+
+    #c2-alive { position: absolute; left: 180px; top: 396px; width: 1040px; }
+
+    .c2-h { position: absolute; left: 200px; top: 130px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c2-h code { font-size: 0.86em; }
+    .c2-items { position: absolute; left: 176px; top: 290px; width: 1560px; }
+    .c2-item { display: grid; grid-template-columns: 56px 1fr; padding: 20px 24px; margin-bottom: 28px; border-radius: 8px; font: 400 38px/1.45 var(--font-text); }
+    .c2-item > b { font-weight: 700; }
+    .c2-hl { border-radius: 4px; }
+
+    #c2-para { position: absolute; left: 200px; top: 300px; width: 1500px; font: 400 42px/1.5 var(--font-text); }
+    #c2-para span { border-radius: 4px; }
+
+    #c2-table { position: absolute; left: 120px; top: 270px; width: 1680px; display: grid; grid-template-columns: 460px 610px 610px; font: 400 34px/1.35 var(--font-text); }
+    #c2-table > div { display: contents; }
+    #c2-table > div > span { padding: 22px 24px; border-bottom: 1px solid var(--rule); }
+    #c2-table > div > span:first-child { font: 700 34px/1.35 var(--font-code); }
+    #c2-thead > span { font: 700 30px/1.3 var(--font-text) !important; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong) !important; }
+    .c2-cell { border-radius: 4px; }
+
+    #c2-steps { position: absolute; left: 176px; top: 250px; width: 1560px; }
+    .c2-step { display: grid; grid-template-columns: 64px 1fr; margin-bottom: 30px; font: 400 36px/1.45 var(--font-text); }
+    .c2-step > b { font-weight: 700; color: var(--ink-muted); }
+
+    .c2-tn { height: 140px; box-sizing: border-box; padding: 22px 32px; }
+    .c2-tn .badge { display: block; margin: 12px 0 0; }
+    #c2-imp { position: absolute; left: 140px; top: 770px; width: 1640px; box-sizing: border-box; padding: 36px 48px; background: var(--note-soft); border-left: 10px solid var(--note); border-radius: 8px; font: 400 38px/1.4 var(--font-text); }
+    #c2-imp .kind { font: 700 30px/1 var(--font-text); color: var(--note); letter-spacing: 0.06em; margin-bottom: 20px; }
+
+    .q { font-size: 40px; margin-bottom: 30px; }
+  </style>
+
+  <div id="root" data-composition-id="c2" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c2-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">11:30</div>
+      <div class="chapter-title">Long-lived objects that point to short-lived ones</div>
+    </div>
+
+    <!-- c2-1: the loans list, rows coming and going -->
+    <div id="c2-desk" class="clip world" data-start="3" data-duration="9.65">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">11:30</span></div>
+        <div class="app-body">
+          <div id="c2-list" data-layout-allow-overlap>
+            <div class="c2-lhead"><span>Member</span><span>Book</span><span>Due</span></div>
+            <div class="c2-slot"><div id="c2-r1" class="c2-row"><b>Amara Osei</b><span>Middlemarch</span><span>14 Nov</span></div><div id="c2-x1" class="c2-row"><b>Jonas Lind</b><span>The Waves</span><span>20 Nov</span></div></div>
+            <div class="c2-slot"><div id="c2-r2" class="c2-row"><b>Lucía Ferrer</b><span>Pedro Páramo</span><span>15 Nov</span></div><div id="c2-x2" class="c2-row"><b>Noor Haddad</b><span>The Remains of the Day</span><span>21 Nov</span></div></div>
+            <div class="c2-slot"><div id="c2-r3" class="c2-row"><b>Tomás Reyes</b><span>Bleak House</span><span>15 Nov</span></div></div>
+            <div class="c2-slot"><div id="c2-r4" class="c2-row"><b>Hana Sato</b><span>Kokoro</span><span>17 Nov</span></div><div id="c2-x4" class="c2-row"><b>Ines Duarte</b><span>Blindness</span><span>22 Nov</span></div></div>
+            <div class="c2-slot"><div id="c2-r5" class="c2-row"><b>Oliver Grant</b><span>A Passage to India</span><span>18 Nov</span></div><div id="c2-x5" class="c2-row"><b>Mei Chen</b><span>Rebecca</span><span>23 Nov</span></div></div>
+            <div class="c2-slot"><div id="c2-r6" class="c2-row" data-hold><b>Sofia Marin</b><span>Persuasion</span><span>19 Nov</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-2, c2-3, c2-4: the chapter 2 flow from LESSON.md -->
+    <div id="c2-flow" class="clip world sunk" data-start="12.65" data-duration="22.45">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#1d1b18" stroke-width="4">
+        <g id="c2-e1"><path pathLength="1" d="M520 300 H742" /><polygon points="760,300 742,290 742,310" fill="#1d1b18" stroke="none" /></g>
+        <g id="c2-e2"><path pathLength="1" d="M1220 300 H1442" /><polygon points="1460,300 1442,290 1442,310" fill="#1d1b18" stroke="none" /></g>
+        <g id="c2-e3"><path pathLength="1" d="M1610 370 V490 H390 V592" /><polygon points="390,610 380,592 400,592" fill="#1d1b18" stroke="none" /></g>
+        <g id="c2-e4"><path pathLength="1" d="M600 680 H822" /><polygon points="840,680 822,670 822,690" fill="#1d1b18" stroke="none" /></g>
+      </svg>
+      <div id="c2-fb1" class="fbox c2-fb" style="left: 180px; top: 230px; width: 340px">root injector</div>
+      <div id="c2-fb2" class="fbox c2-fb" style="left: 760px; top: 230px; width: 460px">ReturnReminders service</div>
+      <div id="c2-fb3" class="fbox c2-fb" style="left: 1460px; top: 230px; width: 300px">Map entry</div>
+      <div id="c2-fb4" class="fbox c2-fb" style="left: 180px; top: 610px; width: 420px">LoanRow instance</div>
+      <div id="c2-fb5" class="fbox c2-fb" style="left: 840px; top: 610px; width: 520px">its view and DOM nodes</div>
+      <div id="c2-l1" class="flabel" style="left: 520px; top: 246px; width: 240px">records</div>
+      <div id="c2-l2" class="flabel" style="left: 1220px; top: 246px; width: 240px">holds in rows</div>
+      <div id="c2-l3" class="flabel" style="left: 900px; top: 440px; width: 200px">value</div>
+      <div id="c2-l4" class="flabel" style="left: 600px; top: 626px; width: 240px">references</div>
+      <div id="c2-alive" class="label" data-hold>alive as long as the app</div>
+    </div>
+
+    <!-- c2-5, c2-6, c2-7: the two cache questions -->
+    <div id="c2-caches" class="clip world" data-start="35.1" data-duration="29.63">
+      <div class="c2-h">Caches: a trade of memory for latency</div>
+      <div class="c2-items">
+        <div id="c2-q1i" class="c2-item"><b>1.</b><span>What is the key's domain? Book ids are bounded by the catalog, but bounded is not small: a catalog of two million books is two million possible entries. Search terms typed by a user are not bounded at all, since every distinct string is a new key.</span></div>
+        <div id="c2-q2i" class="c2-item"><b>2.</b><span>What is the value? Data (a string, a plain object) costs its own size. A DOM element or a component instance costs everything it references. <span id="c2-detached" class="c2-hl" data-hold>An element removed from the page but still referenced from a cache is a detached DOM node: not in the document, still in memory, along with its listeners and whatever its closures hold.</span></span></div>
+      </div>
+    </div>
+
+    <!-- c2-8, c2-8b: the sizing paragraph -->
+    <div id="c2-sizing" class="clip world" data-start="64.73" data-duration="15.57">
+      <div class="c2-h">Caches: a trade of memory for latency</div>
+      <div id="c2-para" data-hold>Sizing a cache is a measurement. Count the hit rate, size the cache for the working set (the keys people actually reuse within a session), and pick an eviction rule from how values go stale: <span id="c2-lru">least recently used</span> when old entries stay correct but get cold, <span id="c2-ttl">a time to live</span> when entries become wrong after a while. <span id="c2-none" data-hold>Sometimes the answer is no cache at all, when recomputing is cheaper than the memory.</span></div>
+    </div>
+
+    <!-- c2-9, c2-9b: WeakMap and WeakRef table -->
+    <div id="c2-weak" class="clip world" data-start="80.3" data-duration="20.25">
+      <div class="c2-h"><code>WeakMap</code> and <code>WeakRef</code></div>
+      <div id="c2-table">
+        <div id="c2-thead"><span>Tool</span><span>Right when</span><span>Limits</span></div>
+        <div><span>WeakMap&lt;object, V&gt;</span><span><span id="c2-wm-when" class="c2-cell">The key is an object whose lifetime you do not control, and the value should die with it (per-instance metadata)</span></span><span>Keys must be objects, not strings. You cannot iterate it or ask its size.</span></div>
+        <div><span>WeakRef&lt;T&gt;</span><span>You want to use an object if it still exists, and you accept that it may not</span><span><span id="c2-deref" class="c2-cell" data-hold><code>deref()</code> can return <code>undefined</code> at any time.</span> Collection timing is up to the engine.</span></div>
+      </div>
+    </div>
+
+    <!-- c2-10, c2-11: heap snapshot steps 1 to 4 -->
+    <div id="c2-snap" class="clip world" data-start="100.55" data-duration="19.51">
+      <div class="c2-h">Seeing it: heap snapshots and retainers</div>
+      <div id="c2-steps">
+        <div id="c2-s1" class="c2-step"><b>1.</b><span>Do the suspect action once as a warm-up. Take snapshot 1 (the baseline).</span></div>
+        <div id="c2-s2" class="c2-step"><b>2.</b><span>Repeat the action N times (show and hide a list ten times, type ten different searches). Take snapshot 2.</span></div>
+        <div id="c2-s3" class="c2-step"><b>3.</b><span>Repeat it N more times. Take snapshot 3.</span></div>
+        <div id="c2-s4" class="c2-step"><b>4.</b><span>Compare 2 with 1 and 3 with 2 ("Comparison" view, sort by "<b id="c2-delta" data-hold># Delta</b>"). A class that grows by the same amount in both steps is a leak. Growth only in the first step is usually a cache filling up or lazy setup.</span></div>
+      </div>
+    </div>
+
+    <!-- c2-12: the retainers tree, then the IMPORTANT callout -->
+    <div id="c2-ret" class="clip world sunk" data-start="120.06" data-duration="9.55">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#c4b9a6" stroke-width="4">
+        <path id="c2-t1" pathLength="1" d="M180 216 V316 H260" />
+        <path id="c2-t2" pathLength="1" d="M300 386 V486 H380" />
+        <path id="c2-t3" pathLength="1" d="M420 556 V656 H500" />
+      </svg>
+      <div id="c2-n0" class="node" style="left: 140px; top: 120px">Retainers of LoanRow @81423</div>
+      <div id="c2-n1" class="node c2-tn" style="left: 260px; top: 246px">value in Map entry<span class="badge">[rows]</span></div>
+      <div id="c2-n2" class="node c2-tn" style="left: 380px; top: 416px">rows in ReturnReminders<span class="badge">[root service]</span></div>
+      <div id="c2-n3" class="node c2-tn" style="left: 500px; top: 586px">ReturnReminders in R3Injector records<span class="badge">[root injector, alive as long as the app]</span></div>
+      <div id="c2-imp" data-hold>
+        <div class="kind">IMPORTANT</div>
+        A unit test can count registry entries or cache size, but it cannot tell you that the collector frees a component. The heap snapshot is the proof.
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c2-questions" class="clip world note" data-start="129.61" data-duration="22.4">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c2-q1" class="q">For each collection in a root service: who adds entries, who removes them, and when?</div>
+        <div id="c2-q2" class="q">Does anything call methods on objects that may already be destroyed?</div>
+        <div id="c2-q3" class="q">What is the domain of each cache key? What happens when the user produces the ten-thousandth distinct key?</div>
+        <div id="c2-q4" class="q">What does each cache entry hold: data, or something that references the DOM?</div>
+        <div id="c2-q5" class="q">Would a weak reference here express the lifetime, or hide it?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c2-pause" class="clip world" data-start="152.01" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c2-pause-2" class="pause-2" data-hold>Now do exercise 02.</div>
+    </div>
+
+    <audio id="c2-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="30" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-bed2" class="clip" src="assets/music/bed.mp3" data-start="129.61" data-duration="22.4" data-media-start="38" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c2-1" class="clip" src="assets/vo/c2-1.wav" data-start="3.0" data-duration="9.301" data-volume="1"></audio>
+    <audio id="vo-c2-2" class="clip" src="assets/vo/c2-2.wav" data-start="12.65" data-duration="6.848" data-volume="1"></audio>
+    <audio id="vo-c2-3" class="clip" src="assets/vo/c2-3.wav" data-start="19.85" data-duration="5.931" data-volume="1"></audio>
+    <audio id="vo-c2-4" class="clip" src="assets/vo/c2-4.wav" data-start="26.13" data-duration="8.619" data-volume="1"></audio>
+    <audio id="vo-c2-5" class="clip" src="assets/vo/c2-5.wav" data-start="35.1" data-duration="8.149" data-volume="1"></audio>
+    <audio id="vo-c2-6" class="clip" src="assets/vo/c2-6.wav" data-start="43.6" data-duration="9.941" data-volume="1"></audio>
+    <audio id="vo-c2-7" class="clip" src="assets/vo/c2-7.wav" data-start="53.89" data-duration="10.496" data-volume="1"></audio>
+    <audio id="vo-c2-8" class="clip" src="assets/vo/c2-8.wav" data-start="64.73" data-duration="10.027" data-volume="1"></audio>
+    <audio id="vo-c2-8b" class="clip" src="assets/vo/c2-8b.wav" data-start="75.11" data-duration="4.843" data-volume="1"></audio>
+    <audio id="vo-c2-9" class="clip" src="assets/vo/c2-9.wav" data-start="80.3" data-duration="10.731" data-volume="1"></audio>
+    <audio id="vo-c2-9b" class="clip" src="assets/vo/c2-9b.wav" data-start="91.39" data-duration="8.811" data-volume="1"></audio>
+    <audio id="vo-c2-10" class="clip" src="assets/vo/c2-10.wav" data-start="100.55" data-duration="9.579" data-volume="1"></audio>
+    <audio id="vo-c2-11" class="clip" src="assets/vo/c2-11.wav" data-start="110.48" data-duration="9.237" data-volume="1"></audio>
+    <audio id="vo-c2-12" class="clip" src="assets/vo/c2-12.wav" data-start="120.06" data-duration="9.195" data-volume="1"></audio>
+    <audio id="vo-c2-end" class="clip" src="assets/vo/c2-end.wav" data-start="129.61" data-duration="2.155" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const INK = "#1d1b18";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at) => tl.to(sel, { opacity: 0, duration: 0.4, ease: "power2.in" }, at);
+    const draw = (sel, at, d = 0.4) => {
+      tl.fromTo(sel + " path", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+      tl.fromTo(sel + " polygon", { opacity: 0 }, { opacity: 1, duration: 0.12 }, at + d - 0.08);
+    };
+    const line = (sel, at, d = 0.4) =>
+      tl.fromTo(sel, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: CLEAR, duration: 0.4 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c2-1: the list is on screen; rows leave and new ones take their place
+    fadeIn("#c2-list", 3.1, 0.4);
+    ["#c2-x1", "#c2-x2", "#c2-x4", "#c2-x5"].forEach((x) => tl.set(x, { opacity: 0 }, 3));
+    [["#c2-r2", "#c2-x2", 6.2], ["#c2-r5", "#c2-x5", 7.6], ["#c2-r1", "#c2-x1", 9.0], ["#c2-r4", "#c2-x4", 10.4]].forEach(([out, inn, at]) => {
+      fadeOut(out, at);
+      fadeIn(inn, at + 0.5, 0.4);
+    });
+
+    // c2-2: root injector and the service draw on
+    fadeIn("#c2-fb1", 12.8, 0.4);
+    draw("#c2-e1", 13.4, 0.4);
+    fadeIn("#c2-l1", 13.5, 0.4);
+    fadeIn("#c2-fb2", 13.8, 0.4);
+    fadeIn("#c2-alive", 15.2, 0.4);
+    // c2-3: the chain completes to the view; the Map entry is the accent
+    draw("#c2-e2", 20.0, 0.4);
+    fadeIn("#c2-l2", 20.1, 0.4);
+    fadeIn("#c2-fb3", 20.4, 0.4);
+    draw("#c2-e3", 20.8, 0.6);
+    fadeIn("#c2-l3", 21.1, 0.4);
+    fadeIn("#c2-fb4", 21.4, 0.4);
+    draw("#c2-e4", 21.8, 0.4);
+    fadeIn("#c2-l4", 21.9, 0.4);
+    fadeIn("#c2-fb5", 22.2, 0.4);
+    tl.to("#c2-fb3", { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 22.5);
+    // c2-4: the accent moves to the "holds in rows" edge
+    tl.to("#c2-fb3", { borderColor: INK, color: INK, duration: 0.3 }, 28.6);
+    tl.to("#c2-e2 path", { stroke: ACCENT, duration: 0.3 }, 28.7);
+    tl.to("#c2-e2 polygon", { fill: ACCENT, duration: 0.3 }, 28.7);
+    tl.to("#c2-l2", { color: ACCENT, duration: 0.3 }, 28.7);
+
+    // c2-5: the two questions, question one first
+    fadeIn("#c2-caches .c2-h", 35.25, 0.4);
+    fadeIn("#c2-q1i", 39.0, 0.5);
+    fadeIn("#c2-q2i", 40.4, 0.5);
+    // c2-6: question one banded
+    band("#c2-q1i", 43.8);
+    // c2-7: question two banded, then its detached-node sentence
+    unband("#c2-q1i", 54.0);
+    band("#c2-q2i", 54.05);
+    unband("#c2-q2i", 60.9);
+    band("#c2-detached", 60.95);
+
+    // c2-8: least recently used, then time to live; c2-8b: the last sentence
+    fadeIn("#c2-sizing .c2-h", 64.85, 0.4);
+    tl.fromTo("#c2-para", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 65.0);
+    tl.set("#c2-none", { opacity: 0 }, 64.73);
+    band("#c2-lru", 70.6);
+    unband("#c2-lru", 72.8);
+    band("#c2-ttl", 72.85);
+    unband("#c2-ttl", 75.2);
+    fadeIn("#c2-none", 75.25, 0.4);
+    band("#c2-none", 75.3);
+
+    // c2-9: the table, then the deref() limit banded; c2-9b: the WeakMap "Right when" cell
+    fadeIn("#c2-weak .c2-h", 80.45, 0.4);
+    fadeIn("#c2-table", 80.7, 0.4);
+    band("#c2-deref", 86.6);
+    unband("#c2-deref", 92.6);
+    band("#c2-wm-when", 92.65);
+
+    // c2-10: steps 1 to 3 as they are named; c2-11: step 4, "# Delta" named
+    fadeIn("#c2-snap .c2-h", 100.7, 0.4);
+    fadeIn("#c2-s1", 103.4, 0.4);
+    fadeIn("#c2-s2", 105.9, 0.4);
+    fadeIn("#c2-s3", 108.2, 0.4);
+    fadeIn("#c2-s4", 110.6, 0.4);
+    tl.to("#c2-delta", { color: ACCENT, duration: 0.3 }, 111.4);
+
+    // c2-12: the retainers tree walks toward the root; then the IMPORTANT callout
+    fadeIn("#c2-n0", 120.2, 0.4);
+    line("#c2-t1", 120.5, 0.3);
+    fadeIn("#c2-n1", 120.7, 0.4);
+    line("#c2-t2", 121.0, 0.3);
+    fadeIn("#c2-n2", 121.2, 0.4);
+    line("#c2-t3", 121.5, 0.3);
+    fadeIn("#c2-n3", 121.7, 0.4);
+    tl.to("#c2-n1", { borderColor: ACCENT, duration: 0.3 }, 123.4);
+    fadeIn("#c2-imp", 124.6, 0.5);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c2-q1", "#c2-q2", "#c2-q3", "#c2-q4", "#c2-q5"].forEach((q, i) => fadeIn(q, 129.9 + i * 0.6));
+    fadeIn("#c2-pause-2", 152.5);
+
+    window.__timelines["c2"] = tl;
+  </script>
+</template>

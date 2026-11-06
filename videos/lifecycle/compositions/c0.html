@@ -1,0 +1,315 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    #c0-moved { position: absolute; left: 40px; top: 60px; width: 720px; }
+    #c0-moved-title { font: 600 72px/1.1 var(--font-display); letter-spacing: -0.01em; margin-bottom: 36px; }
+    #c0-moved-v22 { font: 700 40px/1.2 var(--font-text); }
+    #c0-hooks { position: absolute; left: 860px; top: 10px; width: 700px; }
+    .c0-hook { font: 700 40px/1 var(--font-code); padding: 23px 0; border-bottom: 1px solid var(--rule); }
+
+    .c0-half { position: absolute; top: 150px; width: 760px; }
+    .c0-half .label { font-weight: 700; margin-bottom: 18px; }
+    .c0-q { font: 600 52px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    #c0-life { position: absolute; left: 160px; top: 600px; width: 700px; height: 6px; background: var(--ink); }
+    .c0-dot { position: absolute; top: -11px; width: 28px; height: 28px; margin-left: -14px; border-radius: 50%; background: var(--ink); }
+    #c0-now { position: absolute; left: 557px; top: 520px; width: 6px; height: 160px; background: var(--ink); }
+    #c0-now-label { position: absolute; left: 500px; top: 460px; width: 120px; text-align: center; font: 700 36px/1 var(--font-text); }
+    .c0-sbox { position: absolute; padding: 26px 36px; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; font: 700 44px/1 var(--font-code); }
+
+    #c0-flow-title { position: absolute; left: 140px; top: 60px; font: 600 56px/1 var(--font-display); letter-spacing: -0.01em; }
+    #c0-flow .fbox { height: 140px; padding: 0 18px; display: flex; align-items: center; justify-content: center; font: 700 30px/1.15 var(--font-text); box-sizing: border-box; }
+    .c0-tag { position: absolute; text-align: center; font: 700 30px/1.2 var(--font-text); }
+    .c0-tag span { display: block; }
+    #c0-change { position: absolute; left: 1380px; top: 56px; width: 400px; padding: 18px 0; text-align: center; border: 3px dashed var(--ink-muted); border-radius: 8px; font: 700 32px/1 var(--font-text); color: var(--ink-muted); }
+    #c0-rename { position: absolute; left: 1100px; top: 56px; width: 680px; padding: 18px 0; text-align: center; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; font: 700 32px/1 var(--font-code); }
+    #c0-rename-old { position: relative; color: var(--ink-muted); }
+    #c0-rename-strike { position: absolute; left: -6px; right: -6px; top: 50%; height: 4px; margin-top: -2px; background: var(--ink-muted); }
+
+    #c0-tools { z-index: 2; }
+    #c0-tools-title { position: absolute; left: 120px; top: 64px; font: 600 52px/1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-tr { position: absolute; left: 120px; width: 1680px; height: 98px; border-bottom: 1px solid var(--rule); font: 400 28px/1.25 var(--font-text); }
+    .c0-tr > div { position: absolute; top: 14px; }
+    .c0-tr code { font: 400 28px/1.25 var(--font-code); }
+    .c0-tr > div:nth-child(1) { left: 0; width: 470px; }
+    .c0-tr > div:nth-child(2) { left: 490px; width: 570px; }
+    .c0-tr > div:nth-child(3) { left: 1080px; width: 600px; }
+    #c0-tr0 { height: 56px; font: 700 28px/1 var(--font-text); color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+
+    .c0-panel { position: absolute; left: 160px; width: 1600px; padding: 40px 48px; border-radius: 8px; box-sizing: border-box; }
+    .c0-panel code { font-family: var(--font-code); }
+    #c0-req { top: 140px; height: 380px; background: var(--caution-soft); border: 2px solid var(--caution); }
+    #c0-req-code { font: 700 80px/1 var(--font-code); color: var(--caution); margin: 40px 0 28px; }
+    #c0-req-msg { font: 400 44px/1.2 var(--font-code); }
+    #c0-early { position: absolute; left: 208px; top: 560px; font: 700 40px/1 var(--font-text); }
+    #c0-plain { top: 660px; height: 260px; background: var(--paper-raised); border: 2px solid var(--rule); }
+    #c0-plain-res { font: 400 44px/1.2 var(--font-text); margin-top: 40px; }
+
+    #c0-still-title { position: absolute; left: 160px; top: 110px; font: 600 64px/1 var(--font-display); letter-spacing: -0.01em; }
+    #c0-band { position: absolute; left: 160px; top: 250px; width: 1600px; height: 160px; background: var(--accent-soft); border-radius: 8px; }
+    .c0-sr { position: absolute; left: 160px; width: 1600px; height: 160px; border-bottom: 1px solid var(--rule); }
+    .c0-sr > div:first-child { position: absolute; left: 32px; top: 58px; font: 700 40px/1 var(--font-code); }
+    .c0-sr > div:last-child { position: absolute; left: 720px; top: 0; height: 160px; width: 850px; display: flex; align-items: center; font: 400 36px/1.25 var(--font-text); }
+  </style>
+
+  <div id="root" data-composition-id="c0" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c0-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c0-card-time" class="chapter-time">08:55</div>
+      <div id="c0-card-title" class="chapter-title">What moved since Angular 17</div>
+    </div>
+
+    <!-- c0-1 the desk before opening, the hooks you know -->
+    <div id="c0-desk" class="clip world" data-start="3" data-duration="9.93">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div id="c0-moved">
+            <div id="c0-moved-title">What moved since Angular 17</div>
+            <div id="c0-moved-v22">They all still work in v22.</div>
+          </div>
+          <div id="c0-hooks">
+            <div id="c0-h1" class="c0-hook">ngOnChanges</div>
+            <div id="c0-h2" class="c0-hook">ngOnInit</div>
+            <div id="c0-h3" class="c0-hook">ngDoCheck</div>
+            <div id="c0-h4" class="c0-hook">ngAfterContentInit</div>
+            <div id="c0-h5" class="c0-hook">ngAfterContentChecked</div>
+            <div id="c0-h6" class="c0-hook">ngAfterViewInit</div>
+            <div id="c0-h7" class="c0-hook">ngAfterViewChecked</div>
+            <div id="c0-h8" class="c0-hook">ngOnDestroy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-2, c0-3 moment versus dependency -->
+    <div id="c0-two" class="clip world" data-start="12.93" data-duration="14.31">
+      <div id="c0-left">
+        <div class="c0-half" style="left: 140px">
+          <div class="label">a hook</div>
+          <div id="c0-q1" class="c0-q">what moment is it in this component's life?</div>
+        </div>
+        <div id="c0-life">
+          <div class="c0-dot" style="left: 40px"></div>
+          <div class="c0-dot" style="left: 220px"></div>
+          <div class="c0-dot" style="left: 400px"></div>
+          <div class="c0-dot" style="left: 580px"></div>
+        </div>
+        <div id="c0-now"></div>
+        <div id="c0-now-label">now</div>
+      </div>
+      <div id="c0-right">
+        <div class="c0-half" style="left: 1040px">
+          <div class="label">a signal-based API</div>
+          <div id="c0-q2" class="c0-q">what does this value depend on?</div>
+        </div>
+        <div id="c0-sig1" class="c0-sbox" style="left: 1040px; top: 420px">today()</div>
+        <div id="c0-sig2" class="c0-sbox" style="left: 1440px; top: 420px">member()</div>
+        <svg id="c0-reads" style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+          <g id="c0-reads-g" stroke="#1d1b18" stroke-width="4" fill="#1d1b18">
+            <line x1="1400" y1="756" x2="1222" y2="540" />
+            <polygon points="1212,526 1232,532 1219,546" />
+            <line x1="1520" y1="756" x2="1600" y2="542" />
+            <polygon points="1606,526 1610,548 1592,541" />
+          </g>
+        </svg>
+        <div id="c0-val" class="c0-sbox" style="left: 1240px; top: 760px">returnDate</div>
+      </div>
+    </div>
+
+    <!-- c0-4 to c0-7 the timeline of one component (LESSON.md flow) -->
+    <div id="c0-flow" class="clip world sunk" data-start="27.24" data-duration="37.78">
+      <div id="c0-flow-in">
+      <div id="c0-flow-title">The timeline of one component</div>
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <g stroke="#1d1b18" stroke-width="4" fill="none">
+          <line id="c0-e1" x1="464" y1="240" x2="530" y2="240" stroke-dasharray="66" />
+          <line id="c0-e2" x1="924" y1="240" x2="990" y2="240" stroke-dasharray="66" />
+          <line id="c0-e3" x1="1344" y1="240" x2="1410" y2="240" stroke-dasharray="66" />
+          <path id="c0-e4" d="M1784,240 H1812 V405 H108 V520 H126" stroke-dasharray="2050" />
+          <line id="c0-e5" x1="394" y1="520" x2="460" y2="520" stroke-dasharray="66" />
+          <line id="c0-e6" x1="794" y1="520" x2="860" y2="520" stroke-dasharray="66" />
+          <line id="c0-e7" x1="1324" y1="520" x2="1390" y2="520" stroke-dasharray="66" />
+          <path id="c0-e8" d="M1784,520 H1812 V705 H108 V800 H126" stroke-dasharray="2050" />
+          <line id="c0-e9" x1="604" y1="800" x2="670" y2="800" stroke-dasharray="66" />
+          <line id="c0-e10" x1="1144" y1="800" x2="1210" y2="800" stroke-dasharray="66" />
+        </g>
+        <g fill="#1d1b18">
+          <polygon id="c0-a1" points="522,230 538,240 522,250" />
+          <polygon id="c0-a2" points="982,230 998,240 982,250" />
+          <polygon id="c0-a3" points="1402,230 1418,240 1402,250" />
+          <polygon id="c0-a4" points="122,510 138,520 122,530" />
+          <polygon id="c0-a5" points="452,510 468,520 452,530" />
+          <polygon id="c0-a6" points="852,510 868,520 852,530" />
+          <polygon id="c0-a7" points="1382,510 1398,520 1382,530" />
+          <polygon id="c0-a8" points="122,790 138,800 122,810" />
+          <polygon id="c0-a9" points="662,790 678,800 662,810" />
+          <polygon id="c0-a10" points="1202,790 1218,800 1202,810" />
+        </g>
+      </svg>
+      <div id="c0-b1" class="fbox" style="left: 140px; top: 170px; width: 320px">constructor</div>
+      <div id="c0-b2" class="fbox" style="left: 540px; top: 170px; width: 380px">first input values set</div>
+      <div id="c0-b3" class="fbox" style="left: 1000px; top: 170px; width: 340px">ngOnChanges</div>
+      <div id="c0-b4" class="fbox" style="left: 1420px; top: 170px; width: 360px">ngOnInit</div>
+      <div id="c0-b5" class="fbox" style="left: 140px; top: 450px; width: 250px">ngDoCheck</div>
+      <div id="c0-b6" class="fbox" style="left: 470px; top: 450px; width: 320px">component effects</div>
+      <div id="c0-b7" class="fbox" style="left: 870px; top: 450px; width: 450px">ngAfterContentInit and ngAfterContentChecked</div>
+      <div id="c0-b8" class="fbox" style="left: 1400px; top: 450px; width: 380px">own view created or refreshed</div>
+      <div id="c0-b9" class="fbox" style="left: 140px; top: 730px; width: 460px">ngAfterViewInit and ngAfterViewChecked</div>
+      <div id="c0-b10" class="fbox" style="left: 680px; top: 730px; width: 460px">afterNextRender and afterEveryRender callbacks</div>
+      <div id="c0-b11" class="fbox" style="left: 1220px; top: 730px; width: 560px">later, when the view is removed, ngOnDestroy and DestroyRef callbacks</div>
+
+      <div id="c0-t-changes" class="c0-tag" style="left: 1000px; top: 326px; width: 340px">new value (Object.is)</div>
+      <div id="c0-t-init" class="c0-tag" style="left: 1420px; top: 326px; width: 360px">once</div>
+      <div id="c0-t-docheck" class="c0-tag" style="left: 140px; top: 606px; width: 250px">parent checked</div>
+      <div class="c0-tag" style="left: 870px; top: 606px; width: 450px"><span id="c0-t-ci">Init: once</span><span id="c0-t-cc">Checked: parent checked</span></div>
+      <div class="c0-tag" style="left: 140px; top: 886px; width: 460px"><span id="c0-t-vi">Init: once</span><span id="c0-t-vc">Checked: parent checked</span></div>
+      <div id="c0-t-render" class="c0-tag" style="left: 680px; top: 886px; width: 460px; color: var(--accent)">browser only</div>
+
+      <div id="c0-change" data-hold>data change</div>
+      <div id="c0-rename" data-hold><span id="c0-rename-old">afterRender<span id="c0-rename-strike"></span></span><span id="c0-rename-new"> → afterEveryRender</span></div>
+      </div>
+    </div>
+
+    <!-- c0-4b new tools (LESSON.md table), over the flow -->
+    <div id="c0-tools" class="clip world" data-start="34.69" data-duration="3.64">
+      <div id="c0-tools-title">New tools, and the hook each one replaces</div>
+      <div id="c0-tr0" class="c0-tr" style="top: 150px"><div>v17 habit</div><div>v22.2 tool</div><div>What you gain</div></div>
+      <div data-hold>
+        <div id="c0-tr1" class="c0-tr" style="top: 210px"><div><code>@Input()</code> read in <code>ngOnInit</code></div><div><code>input()</code> / <code>input.required()</code> read where it is used</div><div>the value is a signal, so derived values follow it</div></div>
+        <div id="c0-tr2" class="c0-tr" style="top: 308px"><div><code>ngOnChanges</code> to recompute</div><div><code>computed(() =&gt; ...)</code></div><div>lazy (runs only when read) and memoised (runs again only when a dependency changed)</div></div>
+        <div id="c0-tr3" class="c0-tr" style="top: 406px"><div><code>ngOnChanges</code> to reset local state</div><div><code>linkedSignal(...)</code></div><div>writable, recomputed when what it reads changes</div></div>
+        <div id="c0-tr4" class="c0-tr" style="top: 504px"><div><code>@ViewChild</code> + <code>ngAfterViewInit</code></div><div><code>viewChild()</code> / <code>viewChildren()</code></div><div>a signal that follows the element as <code>@if</code> and <code>@for</code> add and remove it</div></div>
+        <div id="c0-tr5" class="c0-tr" style="top: 602px"><div>DOM work in <code>ngAfterViewInit</code></div><div><code>afterNextRender({ ... })</code></div><div>browser only, with read and write phases</div></div>
+        <div id="c0-tr6" class="c0-tr" style="top: 700px"><div>DOM work in <code>ngAfterViewChecked</code></div><div><code>afterRenderEffect(...)</code></div><div>re-runs only when the signals it reads change</div></div>
+        <div id="c0-tr7" class="c0-tr" style="top: 798px"><div><code>ngOnDestroy</code> + <code>Subject</code> bookkeeping</div><div><code>inject(DestroyRef).onDestroy(fn)</code>, <code>takeUntilDestroyed()</code></div><div>cleanup registered next to what it cleans</div></div>
+        <div id="c0-tr8" class="c0-tr" style="top: 896px"><div><code>async ngOnInit</code> loading data</div><div><code>rxResource</code>, <code>resource</code>, <code>httpResource</code></div><div>status, error and cancellation built in</div></div>
+      </div>
+    </div>
+
+    <!-- c0-9 a required input read too early -->
+    <div id="c0-bite" class="clip world" data-start="65.02" data-duration="10.68">
+      <div id="c0-req" class="c0-panel">
+        <div class="label"><code>input.required()</code> read in the constructor</div>
+        <div id="c0-req-code">NG0950</div>
+        <div id="c0-req-msg">Input is required but no value is available yet</div>
+      </div>
+      <div id="c0-early">Reading it in the constructor is always too early.</div>
+      <div id="c0-plain" class="c0-panel" data-hold>
+        <div class="label"><code>input()</code> read in the constructor</div>
+        <div id="c0-plain-res">returns its default there, which hides the problem</div>
+      </div>
+    </div>
+
+    <!-- c0-10 when hooks are still the right tool -->
+    <div id="c0-still" class="clip world" data-start="75.7" data-duration="10.98">
+      <div id="c0-still-title">When hooks are still the right tool</div>
+      <div id="c0-band" data-hold></div>
+      <div id="c0-s1" class="c0-sr" style="top: 250px"><div>ngOnInit</div><div>one-off work that needs the first input values and should not repeat</div></div>
+      <div id="c0-s2" class="c0-sr" style="top: 410px"><div>ngOnDestroy / DestroyRef</div><div>the same thing, usable from functions and services</div></div>
+      <div id="c0-s3" class="c0-sr" style="top: 570px"><div>ngDoCheck</div><div>custom diffing of a mutable input you do not own</div></div>
+      <div id="c0-s4" class="c0-sr" style="top: 730px"><div>ngOnChanges</div><div>the previous and the current value together</div></div>
+    </div>
+
+    <audio id="c0-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="0" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c0-vo1" class="clip" src="assets/vo/c0-1.wav" data-start="3" data-duration="9.579" data-volume="1"></audio>
+    <audio id="c0-vo2" class="clip" src="assets/vo/c0-2.wav" data-start="12.93" data-duration="7.488" data-volume="1"></audio>
+    <audio id="c0-vo3" class="clip" src="assets/vo/c0-3.wav" data-start="20.77" data-duration="6.123" data-volume="1"></audio>
+    <audio id="c0-vo4" class="clip" src="assets/vo/c0-4.wav" data-start="27.24" data-duration="7.104" data-volume="1"></audio>
+    <audio id="c0-vo5" class="clip" src="assets/vo/c0-4b.wav" data-start="34.69" data-duration="3.285" data-volume="1"></audio>
+    <audio id="c0-vo6" class="clip" src="assets/vo/c0-5.wav" data-start="38.33" data-duration="6.635" data-volume="1"></audio>
+    <audio id="c0-vo7" class="clip" src="assets/vo/c0-6.wav" data-start="45.31" data-duration="9.237" data-volume="1"></audio>
+    <audio id="c0-vo8" class="clip" src="assets/vo/c0-7.wav" data-start="54.9" data-duration="9.771" data-volume="1"></audio>
+    <audio id="c0-vo9" class="clip" src="assets/vo/c0-9.wav" data-start="65.02" data-duration="10.325" data-volume="1"></audio>
+    <audio id="c0-vo10" class="clip" src="assets/vo/c0-10.wav" data-start="75.7" data-duration="9.984" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const hot = (sel, at) => tl.to(sel, { borderColor: "#b8321f", backgroundColor: "#f5e2d9", duration: 0.3 }, at);
+    const cool = (sel, at) => tl.to(sel, { borderColor: "#1d1b18", backgroundColor: "#fffdf9", duration: 0.3 }, at);
+
+    // chapter card: on screen from frame 0
+
+    // c0-1: the hooks stack on "by heart"; v22 on "Angular twenty-two"; they dim on "moved"
+    fadeIn("#c0-moved-title", 3.3, 0.6);
+    for (let i = 1; i <= 8; i++) fadeIn("#c0-h" + i, 5.9 + (i - 1) * 0.12, 0.4);
+    fadeIn("#c0-moved-v22", 10.2);
+    tl.to("#c0-hooks", { color: "#5f584d", duration: 0.5, ease: "power2.inOut" }, 11.6);
+
+    // c0-2: the moment on the left, the dependency on the right
+    fadeIn("#c0-q1", 13.1, 0.6);
+    tl.fromTo("#c0-life", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.8, ease: "power2.inOut" }, 13.7);
+    tl.fromTo("#c0-now", { opacity: 0, scaleY: 0.6 }, { opacity: 1, scaleY: 1, duration: 0.4, ease: "power3.out" }, 14.9);
+    fadeIn("#c0-now-label", 15.05, 0.4);
+    fadeIn("#c0-q2", 17.3, 0.6);
+    fadeIn("#c0-sig1", 18.1, 0.4);
+    fadeIn("#c0-sig2", 18.25, 0.4);
+    fadeIn("#c0-val", 18.6, 0.4);
+    fadeIn("#c0-reads-g", 19.3, 0.5);
+
+    // c0-3: the moment dims, the dependency arrows stay lit
+    tl.to("#c0-left", { opacity: 0.3, duration: 0.6, ease: "power2.inOut" }, 23.6);
+    tl.to("#c0-reads-g", { stroke: "#b8321f", fill: "#b8321f", duration: 0.4 }, 25.6);
+
+    // c0-4: boxes draw on left to right; component effects lands on its name
+    for (let i = 1; i <= 11; i++) {
+      const at = 27.5 + (i - 1) * 0.4;
+      tl.fromTo("#c0-b" + i, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" }, at);
+      if (i < 11) {
+        const len = i === 4 || i === 8 ? 2050 : 66;
+        tl.fromTo("#c0-e" + i, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: i === 4 || i === 8 ? 0.35 : 0.2, ease: "power2.inOut" }, at + 0.2);
+        fadeIn("#c0-a" + i, at + (i === 4 || i === 8 ? 0.5 : 0.36), 0.1);
+      }
+    }
+    hot("#c0-b6", 33.2);
+
+    // c0-4b: the tools table, row by row (cut over the flow)
+    tl.set("#c0-flow-in", { opacity: 0 }, 34.69);
+    tl.set("#c0-flow-in", { opacity: 1 }, 38.33);
+    for (let i = 1; i <= 8; i++) fadeIn("#c0-tr" + i, 34.75 + (i - 1) * 0.08, 0.3);
+    cool("#c0-b6", 37.9);
+
+    // c0-5: the Init hooks once; ngOnChanges on a new value
+    fadeIn("#c0-t-init", 39.4, 0.4);
+    fadeIn("#c0-t-ci", 39.55, 0.4);
+    fadeIn("#c0-t-vi", 39.7, 0.4);
+    tl.to("#c0-b3", { borderColor: "#b8321f", duration: 0.3 }, 41.0);
+    tl.fromTo("#c0-t-changes", { opacity: 0, color: "#b8321f" }, { opacity: 1, color: "#b8321f", duration: 0.4, ease: "power3.out" }, 43.0);
+
+    // c0-6: the per-check hooks; a data change beside them, no arrow
+    tl.to("#c0-b3", { borderColor: "#1d1b18", duration: 0.3 }, 45.4);
+    tl.to("#c0-t-changes", { color: "#1d1b18", duration: 0.3 }, 45.4);
+    tl.to("#c0-b5", { borderColor: "#b8321f", duration: 0.3 }, 46.0);
+    fadeIn("#c0-t-docheck", 49.4, 0.4);
+    fadeIn("#c0-t-cc", 49.55, 0.4);
+    fadeIn("#c0-t-vc", 49.7, 0.4);
+    fadeIn("#c0-change", 52.6);
+
+    // c0-7: render callbacks, browser only; the rename
+    tl.to("#c0-b5", { borderColor: "#1d1b18", duration: 0.3 }, 55.0);
+    tl.to("#c0-change", { opacity: 0, duration: 0.25, ease: "power2.in" }, 55.0);
+    tl.to("#c0-b10", { borderColor: "#b8321f", duration: 0.3 }, 56.0);
+    fadeIn("#c0-t-render", 59.8, 0.4);
+    fadeIn("#c0-rename", 61.4, 0.4);
+    tl.fromTo("#c0-rename-strike", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.4, ease: "power2.inOut" }, 62.4);
+    fadeIn("#c0-rename-new", 63.1, 0.4);
+
+    // c0-9: the throw on "throws", too early, then the quiet default
+    fadeIn("#c0-req", 65.2, 0.4);
+    tl.fromTo("#c0-req-code", { opacity: 0, scale: 0.9, transformOrigin: "left center" }, { opacity: 1, scale: 1, duration: 0.4, ease: "power3.out" }, 67.0);
+    fadeIn("#c0-req-msg", 67.2, 0.4);
+    fadeIn("#c0-early", 70.6);
+    fadeIn("#c0-plain", 73.0);
+
+    // c0-10: the list, then the band on ngOnInit and on ngOnChanges
+    fadeIn("#c0-still-title", 75.8, 0.5);
+    for (let i = 1; i <= 4; i++) fadeIn("#c0-s" + i, 76.4 + (i - 1) * 0.3, 0.4);
+    fadeIn("#c0-band", 78.2, 0.3);
+    tl.fromTo("#c0-band", { y: 0 }, { y: 480, duration: 0.8, ease: "power2.inOut" }, 82.4);
+
+    window.__timelines["c0"] = tl;
+  </script>
+</template>

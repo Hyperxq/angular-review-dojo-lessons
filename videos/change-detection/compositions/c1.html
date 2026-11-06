@@ -1,0 +1,402 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c1-nav { position: absolute; left: 48px; top: 40px; width: 340px; }
+    .c1-nav div { font: 400 40px/1 var(--font-text); color: var(--ink-muted); padding: 26px 0; border-bottom: 1px solid var(--rule); }
+    .c1-nav .on { color: var(--ink); font-weight: 700; }
+    #c1-loans-head { position: absolute; left: 480px; top: 44px; font: 600 56px/1.1 var(--font-display); }
+    #c1-loans { position: absolute; left: 480px; top: 150px; width: 1120px; }
+    .c1-lr { position: relative; display: flex; align-items: center; height: 96px; border-bottom: 1px solid var(--rule); font: 400 38px/1 var(--font-text); }
+    .c1-lr span { position: relative; }
+    .c1-lr span:nth-of-type(1) { width: 320px; padding-left: 20px; }
+    .c1-lr span:nth-of-type(2) { width: 400px; }
+    .c1-lr span:nth-of-type(3) { width: 200px; font-variant-numeric: tabular-nums; }
+    #c1-lr-head { height: 60px; font: 700 30px/1 var(--font-text); color: var(--ink-muted); }
+    #c1-renew-band { position: absolute; inset: 0; background: var(--accent-soft); opacity: 0; }
+    #c1-renew { padding: 12px 20px; border: 2px solid var(--ink); border-radius: 8px; font: 700 30px/1 var(--font-text); }
+    #c1-total { position: absolute; left: 480px; top: 640px; padding: 22px 28px; border: 2px solid var(--rule-strong); border-radius: 8px; font: 700 40px/1 var(--font-text); }
+    .c1-note { position: absolute; font: 400 34px/1.3 var(--font-text); color: var(--ink-muted); }
+    .c1-note code, .c1-way code, .q code { font-family: var(--font-code); font-size: 0.9em; }
+    #c1-order { color: var(--caution); font-weight: 700; }
+
+    .c1-svg { position: absolute; left: 0; top: 0; }
+    .c1-t { box-sizing: border-box; text-align: center; }
+    .c1-t > span { position: relative; }
+    .c1-lit { position: absolute; inset: -3px; border-radius: 8px; border: 3px solid var(--accent); background: var(--accent-soft); opacity: 0; }
+    .c1-chip { position: absolute; padding: 16px 22px; border: 3px solid var(--ink); border-radius: 8px; background: var(--paper-raised); font: 700 38px/1 var(--font-code); white-space: nowrap; }
+    #c1-reload-bar { position: absolute; left: 160px; top: 96px; width: 1600px; height: 8px; background: var(--ink); transform-origin: left center; }
+
+    #c1-contract { position: absolute; left: 160px; top: 70px; font: 600 64px/1.1 var(--font-display); }
+    .c1-way { position: absolute; left: 160px; width: 680px; font: 400 40px/1.2 var(--font-text); }
+    #c1-target { left: 1240px; top: 400px; width: 580px; font-size: 64px; border-color: var(--ink); }
+
+    .c1-code { left: 240px; top: 300px; }
+    .c1-code .ln { position: relative; }
+    .c1-band { position: absolute; left: 0; right: 0; top: 40px; height: 51px; background: var(--accent-soft); }
+    #c1-objectis { position: absolute; left: 240px; top: 170px; font: 700 48px/1 var(--font-code); }
+
+    #c1-rule { position: absolute; left: 200px; top: 120px; font: 600 64px/1.1 var(--font-display); }
+    #c1-obj { position: absolute; left: 820px; top: 500px; width: 520px; padding: 32px 40px; box-sizing: border-box; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; font: 400 40px/1.5 var(--font-code); }
+
+    .c1-fbox { box-sizing: border-box; display: grid; place-items: center; }
+
+    .c1-panel { position: absolute; top: 200px; width: 760px; height: 620px; padding: 40px; box-sizing: border-box; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow); }
+    .c1-panel h3 { margin: 0; font: 700 44px/1 var(--font-code); }
+    .c1-row { position: absolute; left: 40px; right: 40px; top: 140px; padding: 28px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper); }
+    .c1-row b { display: block; font: 700 40px/1 var(--font-text); margin-bottom: 20px; }
+    .c1-input { position: relative; height: 64px; padding: 0 20px; border: 2px solid var(--ink); border-radius: 6px; background: var(--paper-raised); font: 400 36px/64px var(--font-code); }
+    .c1-input i { display: inline-block; width: 4px; height: 44px; margin-left: 2px; vertical-align: -8px; background: var(--accent); }
+    #c1-hdr-band { position: absolute; left: 24px; top: 26px; width: 330px; height: 72px; border-radius: 6px; background: var(--accent-soft); }
+
+    .c1-bars i { display: block; width: 640px; height: 22px; margin-bottom: 14px; border-radius: 4px; background: var(--ink-muted); }
+    .c1-bars { position: absolute; left: 200px; }
+    #c1-meter { position: absolute; left: 200px; top: 200px; width: 640px; height: 24px; border-radius: 4px; background: var(--rule); }
+    #c1-meter-fill { position: absolute; inset: 0; border-radius: 4px; background: var(--accent); transform-origin: left center; }
+    #c1-store { position: absolute; left: 1180px; top: 270px; width: 600px; padding: 36px 44px; box-sizing: border-box; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; font: 400 38px/1.6 var(--font-code); }
+    #c1-store .label { margin-bottom: 16px; }
+
+    #c1-leaf { left: 520px; top: 420px; width: 880px; font-size: 64px; border-color: var(--ink); }
+    #c1-third { left: 520px; top: 610px; font-family: var(--font-text); border-color: var(--warning); color: var(--warning); background: var(--warning-soft); }
+  </style>
+
+  <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c1-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c1-card-time" class="chapter-time">10:00</div>
+      <div id="c1-card-title" class="chapter-title">References, and who gets told</div>
+    </div>
+
+    <!-- c1-1 a renewal: the row updates, the totals and the order do not -->
+    <div id="c1-desk" class="clip world" data-start="3" data-duration="9.52">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">10:00</span></div>
+        <div class="app-body">
+          <div class="c1-nav"><div>Members</div><div class="on">Loans</div><div>Returns</div><div>Holds</div></div>
+          <div id="c1-loans-head">Loans · sorted by due date</div>
+          <div id="c1-loans">
+            <div id="c1-lr-head" class="c1-lr"><span>Member</span><span>Book</span><span>Due</span></div>
+            <div id="c1-lr1" class="c1-lr"><span>Ben Ito</span><span>Kindred</span><span>12 Nov</span></div>
+            <div id="c1-lr2" class="c1-lr"><div id="c1-renew-band"></div><span>Ada Okafor</span><span>The Dispossessed</span><span id="c1-due">14 Nov</span><span id="c1-renew">Renew</span></div>
+            <div id="c1-lr3" class="c1-lr"><span>Chen Wu</span><span>Piranesi</span><span>16 Nov</span></div>
+            <div id="c1-lr4" class="c1-lr"><span>Dana Ruiz</span><span>Middlemarch</span><span>19 Nov</span></div>
+          </div>
+          <div id="c1-total">Due by 20 Nov: 4 loans</div>
+          <div id="c1-stale" class="c1-note" style="left: 1060px; top: 656px">unchanged</div>
+          <div id="c1-order" class="c1-note" style="left: 480px; top: 760px">28 Nov is listed before 16 Nov</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-2 + c1-3 one tree: some views told, a reload; then Eager vs an OnPush subtree -->
+    <div id="c1-tree-a" class="clip world sunk" data-start="12.52" data-duration="17.81">
+      <div id="c1-reload-bar"></div>
+      <div id="c1-reload" class="c1-note" style="left: 160px; top: 120px">reloading the page</div>
+      <svg class="c1-svg" width="1920" height="1080" viewBox="0 0 1920 1080" stroke="#c4b9a6" stroke-width="4">
+        <line x1="960" y1="258" x2="430" y2="400" /><line x1="960" y1="258" x2="960" y2="400" /><line x1="960" y1="258" x2="1530" y2="400" />
+        <line x1="960" y1="498" x2="720" y2="660" /><line x1="960" y1="498" x2="1200" y2="660" />
+      </svg>
+      <div id="c1-a-desk" class="node c1-t" style="left: 750px; top: 160px; width: 420px"><i class="c1-lit"></i><span>LoanDesk</span><span class="badge"></span></div>
+      <div id="c1-a-head" class="node c1-t" style="left: 160px; top: 400px; width: 540px"><i class="c1-lit"></i><span>MemberHeader</span><span class="badge"></span></div>
+      <div id="c1-a-list" class="node c1-t" style="left: 740px; top: 400px; width: 440px"><i class="c1-lit"></i><span>LoanList</span><span class="badge c1-sub"></span></div>
+      <div id="c1-a-tot" class="node c1-t" style="left: 1300px; top: 400px; width: 460px"><i class="c1-lit"></i><span>LoanTotals</span><span class="badge"></span></div>
+      <div id="c1-a-row1" class="node c1-t" style="left: 510px; top: 660px; width: 420px"><i class="c1-lit"></i><span>LoanRow</span><span class="badge c1-sub"></span></div>
+      <div id="c1-a-row2" class="node c1-t" style="left: 990px; top: 660px; width: 420px"><i class="c1-lit"></i><span>LoanRow</span><span class="badge c1-sub"></span></div>
+      <div id="c1-console" class="c1-chip" style="left: 160px; top: 860px; font-family: var(--font-text)">Console: 0 errors</div>
+      <div id="c1-cost" class="c1-note" style="left: 160px; top: 870px">each check costs time per binding</div>
+      <div id="c1-every" class="c1-note" style="left: 160px; top: 930px">Eager: every view, every tick</div>
+      <div id="c1-skip" class="c1-note" style="left: 1000px; top: 930px">OnPush subtree: skipped</div>
+    </div>
+
+    <!-- c1-4 four ways to mark an OnPush view dirty -->
+    <div id="c1-ways" class="clip world" data-start="30.33" data-duration="8.74">
+      <div id="c1-contract">The contract</div>
+      <svg class="c1-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="#1d1b18">
+        <line id="c1-w1" x1="860" y1="224" x2="1211" y2="429" stroke="#1d1b18" stroke-width="4" stroke-dasharray="406" /><polygon id="c1-w1h" points="1230,440 1199,437 1212,415" />
+        <line id="c1-w2" x1="860" y1="384" x2="1209" y2="462" stroke="#1d1b18" stroke-width="4" stroke-dasharray="357" /><polygon id="c1-w2h" points="1230,467 1200,474 1206,448" />
+        <line id="c1-w3" x1="860" y1="544" x2="1208" y2="497" stroke="#1d1b18" stroke-width="4" stroke-dasharray="351" /><polygon id="c1-w3h" points="1230,494 1204,511 1201,485" />
+        <line id="c1-w4" x1="860" y1="704" x2="1210" y2="530" stroke="#1d1b18" stroke-width="4" stroke-dasharray="391" /><polygon id="c1-w4h" points="1230,520 1211,544 1199,521" />
+      </svg>
+      <div id="c1-l1" class="c1-way" style="top: 200px">a new reference</div>
+      <div id="c1-l2" class="c1-way" style="top: 360px">an event inside the view</div>
+      <div id="c1-l3" class="c1-way" style="top: 520px"><code>markForCheck()</code></div>
+      <div id="c1-l4" class="c1-way" style="top: 680px">a signal it reads</div>
+      <div id="c1-target" class="node c1-t"><i class="c1-lit"></i><span>LoanRow</span><span class="badge">[OnPush]</span></div>
+    </div>
+
+    <!-- c1-4b in-place changes keep the reference (LESSON.md verbatim) -->
+    <div id="c1-inplace" class="clip world" data-start="39.07" data-duration="5.98">
+      <div id="c1-objectis">Object.is(previous, current)</div>
+      <div id="c1-code1" class="code c1-code" data-hold>
+        <div id="c1-band1" class="c1-band"></div>
+        <span class="ln">shelf.sort(byTitle);                     <span class="c">// same array, new order</span></span>
+        <span class="ln">Object.assign(member, { phone: <span class="s">'555'</span> }); <span class="c">// same object, new field</span></span>
+        <span class="ln">holds.set(bookId, hold);                 <span class="c">// same Map, new entry</span></span>
+      </div>
+      <div id="c1-same" class="c1-note" style="left: 240px; top: 600px">same reference: <code>true</code> for all three</div>
+    </div>
+
+    <!-- c1-5 one rule; owner and child edit the same object; the OnPush view stays unlit -->
+    <div id="c1-shared" class="clip world sunk" data-start="45.05" data-duration="9.84">
+      <div id="c1-rule">After hand-off, a change is a new reference</div>
+      <div id="c1-kinds" class="c1-note" style="left: 200px; top: 230px">arrays · objects · maps</div>
+      <svg id="c1-ptrs" class="c1-svg" width="1920" height="1080" viewBox="0 0 1920 1080" stroke="#1d1b18" stroke-width="4">
+        <line x1="560" y1="469" x2="820" y2="580" /><line x1="560" y1="759" x2="820" y2="680" />
+      </svg>
+      <div id="c1-owner" class="node c1-t" style="left: 200px; top: 420px; width: 360px"><span>owner</span></div>
+      <div id="c1-child" class="node c1-t" style="left: 200px; top: 710px; width: 360px"><span>child</span></div>
+      <div id="c1-obj"><div class="label">member · one reference</div><div>name: <span id="c1-name" class="s">'Ada'</span></div><div>phone: <span id="c1-phone" class="s">'555'</span></div></div>
+      <div id="c1-view" class="node dim c1-t" style="left: 1440px; top: 560px; width: 380px"><span>view</span><span class="badge">[OnPush]</span></div>
+      <div id="c1-untold" class="c1-note" style="left: 1440px; top: 690px">not told</div>
+    </div>
+
+    <!-- c1-6 data down, events up (LESSON.md flow) -->
+    <div id="c1-ddeu" class="clip world sunk" data-start="54.89" data-duration="10.68">
+      <svg class="c1-svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <line id="c1-e1" x1="660" y1="430" x2="1229" y2="213" stroke="#1d1b18" stroke-width="4" stroke-dasharray="609" /><polygon id="c1-e1h" points="1250,205 1228,227 1219,203" fill="#1d1b18" />
+        <line id="c1-e2" x1="660" y1="480" x2="1230" y2="731" stroke="#1d1b18" stroke-width="4" stroke-dasharray="623" /><polygon id="c1-e2h" points="1250,740 1219,741 1230,717" fill="#1d1b18" />
+        <line id="c1-e3" x1="1250" y1="765" x2="692" y2="765" stroke="#1d1b18" stroke-width="4" stroke-dasharray="558" /><polygon id="c1-e3h" points="670,765 698,752 698,778" fill="#1d1b18" />
+        <line id="c1-e4" x1="410" y1="690" x2="410" y2="562" stroke="#1d1b18" stroke-width="4" stroke-dasharray="128" /><polygon id="c1-e4h" points="410,540 423,568 397,568" fill="#1d1b18" />
+      </svg>
+      <div id="c1-fo" class="fbox c1-fbox" style="left: 160px; top: 380px; width: 500px; height: 150px">owner holds the state (signal)</div>
+      <div id="c1-fb" class="fbox c1-fbox" style="left: 1260px; top: 140px; width: 400px; height: 130px">child B</div>
+      <div id="c1-fa" class="fbox c1-fbox" style="left: 1260px; top: 700px; width: 400px; height: 130px">child A</div>
+      <div id="c1-fc" class="fbox c1-fbox" style="left: 160px; top: 690px; width: 500px; height: 150px">owner changes the state</div>
+      <div id="c1-fl1" class="flabel" style="left: 920px; top: 236px">input</div>
+      <div id="c1-fl2" class="flabel" style="left: 720px; top: 545px">input</div>
+      <div id="c1-fl3" class="flabel" style="left: 865px; top: 705px">output event</div>
+    </div>
+
+    <!-- c1-7 track book rebuilds the row; track book.isbn keeps it -->
+    <div id="c1-track" class="clip world" data-start="65.57" data-duration="10.95">
+      <div class="c1-panel" style="left: 160px">
+        <div id="c1-hdr-band"></div>
+        <h3 style="position: relative">track book</h3>
+        <div id="c1-row-old" class="c1-row"><b>Kindred</b><div class="c1-input">worn spi<i></i></div></div>
+        <div id="c1-row-new" class="c1-row"><b>Kindred</b><div class="c1-input"></div></div>
+        <div id="c1-rebuilt" class="c1-note" style="left: 40px; top: 370px">DOM destroyed and recreated</div>
+        <div id="c1-lost" class="c1-note" style="left: 40px; top: 430px">focus and typing lost</div>
+      </div>
+      <div class="c1-panel" style="left: 1000px">
+        <h3>track book.isbn</h3>
+        <div class="c1-row"><b>Kindred</b><div class="c1-input">worn spi<i></i></div></div>
+        <div id="c1-kept" class="c1-note" style="left: 40px; top: 370px">row kept, bindings updated</div>
+      </div>
+    </div>
+
+    <!-- c1-8 + c1-8b the chapter 0 tree: detectChanges, markForCheck, a signal -->
+    <div id="c1-tree-b" class="clip world sunk" data-start="76.52" data-duration="12.92">
+      <svg class="c1-svg" width="1920" height="1080" viewBox="0 0 1920 1080" stroke="#c4b9a6" stroke-width="4">
+        <line x1="960" y1="258" x2="430" y2="400" /><line x1="960" y1="258" x2="960" y2="400" /><line x1="960" y1="258" x2="1530" y2="400" />
+        <line x1="960" y1="498" x2="720" y2="660" /><line x1="960" y1="498" x2="1200" y2="660" />
+      </svg>
+      <div id="c1-b-desk" class="node c1-t" style="left: 780px; top: 160px; width: 360px"><i class="c1-lit"></i><span>LoanDesk</span></div>
+      <div id="c1-b-head" class="node c1-t" style="left: 160px; top: 400px; width: 540px"><span>MemberHeader</span><span class="badge">[OnPush]</span></div>
+      <div id="c1-b-list" class="node c1-t" style="left: 740px; top: 400px; width: 440px"><i class="c1-lit"></i><span>LoanList</span><span class="badge">[OnPush]</span></div>
+      <div id="c1-b-tot" class="node c1-t" style="left: 1300px; top: 400px; width: 460px"><span>LoanTotals</span><span class="badge">[Eager]</span></div>
+      <div id="c1-b-row1" class="node c1-t" style="left: 510px; top: 660px; width: 420px"><i class="c1-lit"></i><span>LoanRow</span><span class="badge">[OnPush]</span></div>
+      <div id="c1-b-row2" class="node c1-t" style="left: 990px; top: 660px; width: 420px"><span>LoanRow</span><span class="badge">[OnPush]</span></div>
+      <div id="c1-reads" class="c1-note" style="left: 420px; top: 780px; width: 600px; text-align: center">(reads the dueDate signal)</div>
+      <div id="c1-ch1" class="c1-chip" style="left: 1200px; top: 220px">detectChanges()</div>
+      <div id="c1-ch2" class="c1-chip" style="left: 1200px; top: 220px">markForCheck()</div>
+      <div id="c1-ch3" class="c1-chip" style="left: 1200px; top: 220px; font-family: var(--font-text)">signal write</div>
+      <div id="c1-now" class="c1-note" style="left: 160px; top: 880px">renders now, here; nobody else is told</div>
+      <div id="c1-path" class="c1-note" style="left: 160px; top: 880px">up to the root, for the next tick</div>
+      <div id="c1-exact" class="c1-note" style="left: 160px; top: 880px">exactly the views that read it</div>
+    </div>
+
+    <!-- c1-9 copies cost; measure, then page or key by id -->
+    <div id="c1-cost-w" class="clip world" data-start="89.44" data-duration="8.52">
+      <div class="c1-note" style="left: 200px; top: 140px">copies allocated</div>
+      <div id="c1-meter"><div id="c1-meter-fill"></div></div>
+      <div id="c1-measure" class="c1-note" style="left: 880px; top: 192px; color: var(--ink); font-weight: 700">measure it</div>
+      <div id="c1-g1" class="c1-bars" style="top: 270px"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div id="c1-g2" class="c1-bars" style="top: 486px"><i></i><i></i><i></i><i></i><i></i></div>
+      <div id="c1-g3" class="c1-bars" style="top: 666px"><i></i><i></i><i></i><i></i><i></i></div>
+      <div id="c1-p1" class="c1-note" style="left: 880px; top: 350px">page 1</div>
+      <div id="c1-p2" class="c1-note" style="left: 880px; top: 590px">page 2</div>
+      <div id="c1-p3" class="c1-note" style="left: 880px; top: 810px">page 3</div>
+      <div id="c1-store">
+        <div class="label">store keyed by id</div>
+        <div><span class="s">'L-1042'</span> → loan</div>
+        <div><span class="s">'L-1043'</span> → loan</div>
+        <div><span class="s">'L-1044'</span> → loan</div>
+        <div><span class="s">'L-1045'</span> → loan</div>
+      </div>
+    </div>
+
+    <!-- c1-9b an Eager leaf with an owner -->
+    <div id="c1-leaf-w" class="clip world sunk" data-start="97.96" data-duration="5.28">
+      <svg class="c1-svg" width="1920" height="1080" viewBox="0 0 1920 1080"><line x1="960" y1="258" x2="960" y2="420" stroke="#c4b9a6" stroke-width="4" /></svg>
+      <div class="node c1-t" style="left: 750px; top: 160px; width: 420px"><span>LoanDesk</span></div>
+      <div id="c1-leaf" class="node c1-t"><span>ShelfMap</span><span class="badge" style="font-size: 40px">[Eager]</span></div>
+      <div id="c1-third" class="c1-chip">third-party data</div>
+      <div id="c1-owns" class="c1-note" style="left: 520px; top: 720px; color: var(--ink)">owner: removes it after the migration</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c1-questions" class="clip world note" data-start="103.24" data-duration="18.5">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c1-q1" class="q">For each piece of state: which component owns it, and who else changes it?</div>
+        <div id="c1-q2" class="q">Every time a collection changes, is a new reference produced?</div>
+        <div id="c1-q3" class="q">Which views show this data, and through which path does each one learn that it changed?</div>
+        <div id="c1-q4" class="q">Where <code>ChangeDetectorRef</code> is used, which views does it refresh, and which views needed to know?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c1-pause" class="clip world" data-start="121.74" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c1-pause-2" class="pause-2">Now do exercise 01.</div>
+    </div>
+
+    <audio id="c1-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="15" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-bed2" class="clip" src="assets/music/bed.mp3" data-start="103.24" data-duration="18.5" data-media-start="23" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-vo1" class="clip" src="assets/vo/c1-1.wav" data-start="3" data-duration="9.173" data-volume="1"></audio>
+    <audio id="c1-vo2" class="clip" src="assets/vo/c1-2.wav" data-start="12.52" data-duration="6.933" data-volume="1"></audio>
+    <audio id="c1-vo3" class="clip" src="assets/vo/c1-3.wav" data-start="19.81" data-duration="10.176" data-volume="1"></audio>
+    <audio id="c1-vo4" class="clip" src="assets/vo/c1-4.wav" data-start="30.33" data-duration="8.384" data-volume="1"></audio>
+    <audio id="c1-vo5" class="clip" src="assets/vo/c1-4b.wav" data-start="39.07" data-duration="5.632" data-volume="1"></audio>
+    <audio id="c1-vo6" class="clip" src="assets/vo/c1-5.wav" data-start="45.05" data-duration="9.493" data-volume="1"></audio>
+    <audio id="c1-vo7" class="clip" src="assets/vo/c1-6.wav" data-start="54.89" data-duration="10.325" data-volume="1"></audio>
+    <audio id="c1-vo8" class="clip" src="assets/vo/c1-7.wav" data-start="65.57" data-duration="10.603" data-volume="1"></audio>
+    <audio id="c1-vo9" class="clip" src="assets/vo/c1-8.wav" data-start="76.52" data-duration="4.971" data-volume="1"></audio>
+    <audio id="c1-vo10" class="clip" src="assets/vo/c1-8b.wav" data-start="81.84" data-duration="7.253" data-volume="1"></audio>
+    <audio id="c1-vo11" class="clip" src="assets/vo/c1-9.wav" data-start="89.44" data-duration="8.171" data-volume="1"></audio>
+    <audio id="c1-vo12" class="clip" src="assets/vo/c1-9b.wav" data-start="97.96" data-duration="4.928" data-volume="1"></audio>
+    <audio id="c1-vo13" class="clip" src="assets/vo/c1-end.wav" data-start="103.24" data-duration="2.347" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.3) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const lit = (sel, at) => tl.to(sel + " .c1-lit", { opacity: 1, duration: 0.3 }, at);
+    const pulse = (sel, at) => {
+      tl.fromTo(sel, { scale: 1 }, { scale: 1.12, duration: 0.15, ease: "power2.out" }, at);
+      tl.to(sel, { scale: 1, duration: 0.15, ease: "power2.in" }, at + 0.15);
+    };
+    const draw = (line, head, len, at, d = 0.5) => {
+      tl.fromTo(line, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+      tl.fromTo(head, { opacity: 0 }, { opacity: 1, duration: 0.15 }, at + d - 0.1);
+    };
+    const bandTo = (sel, line, at) => tl.to(sel, { y: line * 51, duration: 0.8, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0 (the thumbnail)
+
+    // c1-1: rows land, the renewal updates its row only; totals and order stay wrong
+    ["#c1-lr-head", "#c1-lr1", "#c1-lr2", "#c1-lr3", "#c1-lr4"].forEach((r, i) => fadeIn(r, 3.2 + i * 0.15, 0.4));
+    fadeIn("#c1-total", 3.9);
+    pulse("#c1-renew", 4.8);
+    tl.set("#c1-due", { textContent: "28 Nov" }, 7.0);
+    tl.to("#c1-renew-band", { opacity: 1, duration: 0.3 }, 7.0);
+    fadeIn("#c1-stale", 8.2, 0.4);
+    fadeIn("#c1-order", 10.2, 0.4);
+
+    // c1-2: no error; one view told, two stale; then a reload
+    fadeIn("#c1-console", 13.7, 0.4);
+    lit("#c1-a-row1", 15.4);
+    tl.to(["#c1-a-list", "#c1-a-tot"], { opacity: 0.35, duration: 0.4 }, 16.6);
+    fadeIn("#c1-reload", 18.0, 0.3);
+    tl.fromTo("#c1-reload-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power2.inOut" }, 18.0);
+    tl.to("#c1-tree-a .node", { opacity: 0.15, duration: 0.3, ease: "power2.in" }, 18.1);
+    tl.set("#c1-a-row1 .c1-lit", { opacity: 0 }, 18.4);
+    tl.to("#c1-tree-a .node", { opacity: 1, duration: 0.4, ease: "power3.out" }, 18.6);
+
+    // c1-3: every view Eager and lit on a tick; then the LoanList subtree goes OnPush and grey
+    fadeOut(["#c1-reload", "#c1-reload-bar", "#c1-console"], 19.85);
+    tl.set("#c1-tree-a .badge", { textContent: "[Eager]" }, 20.0);
+    fadeIn("#c1-cost", 22.3);
+    ["#c1-a-desk", "#c1-a-head", "#c1-a-list", "#c1-a-tot", "#c1-a-row1", "#c1-a-row2"].forEach((n, i) => lit(n, 24.4 + i * 0.08));
+    fadeIn("#c1-every", 24.6);
+    tl.set("#c1-tree-a .c1-sub", { textContent: "[OnPush]" }, 26.5);
+    tl.to(["#c1-a-list .c1-lit", "#c1-a-row1 .c1-lit", "#c1-a-row2 .c1-lit"], { opacity: 0, duration: 0.3 }, 26.8);
+    tl.to(["#c1-a-list", "#c1-a-row1", "#c1-a-row2"], { opacity: 0.35, duration: 0.5, ease: "power2.inOut" }, 27.0);
+    fadeIn("#c1-skip", 28.4);
+
+    // c1-4: the OnPush node, then four arrows as each way is named
+    fadeIn("#c1-target", 30.5);
+    fadeIn("#c1-contract", 31.9);
+    [[1, 406, 34.6], [2, 357, 35.9], [3, 351, 36.6], [4, 391, 37.4]].forEach(([n, len, at]) => {
+      fadeIn("#c1-l" + n, at, 0.4);
+      draw("#c1-w" + n, "#c1-w" + n + "h", len, at + 0.15, 0.4);
+    });
+    lit("#c1-target", 38.1);
+
+    // c1-4b: the code is cut in whole; the band steps down the three in-place changes
+    tl.fromTo("#c1-band1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 41.0);
+    bandTo("#c1-band1", 1, 42.0);
+    bandTo("#c1-band1", 2, 43.0);
+    fadeIn("#c1-same", 43.2, 0.4);
+
+    // c1-5: owner and child share one object and edit it; the OnPush view is never told
+    fadeIn("#c1-kinds", 46.6, 0.4);
+    fadeIn(["#c1-owner", "#c1-child", "#c1-ptrs", "#c1-obj"], 47.2);
+    fadeIn("#c1-view", 49.2);
+    tl.set("#c1-phone", { textContent: "'556'" }, 52.6);
+    pulse("#c1-owner", 52.5);
+    tl.set("#c1-name", { textContent: "'Ada O.'" }, 53.9);
+    pulse("#c1-child", 53.8);
+    fadeIn("#c1-untold", 54.1, 0.4);
+
+    // c1-6: arrows draw on as the path is named; the loop back to the owner is the accent
+    fadeIn("#c1-fo", 55.0);
+    fadeIn("#c1-fc", 58.3, 0.4);
+    draw("#c1-e4", "#c1-e4h", 128, 58.8, 0.4);
+    fadeIn(["#c1-fb", "#c1-fa"], 61.0, 0.4);
+    draw("#c1-e1", "#c1-e1h", 609, 61.1);
+    draw("#c1-e2", "#c1-e2h", 623, 61.3);
+    fadeIn(["#c1-fl1", "#c1-fl2"], 61.6, 0.4);
+    draw("#c1-e3", "#c1-e3h", 558, 63.1);
+    fadeIn("#c1-fl3", 63.4, 0.4);
+    tl.to(["#c1-e3", "#c1-e4"], { attr: { stroke: "#b8321f" }, duration: 0.3 }, 64.6);
+    tl.to(["#c1-e3h", "#c1-e4h"], { attr: { fill: "#b8321f" }, duration: 0.3 }, 64.6);
+
+    // c1-7: identity tracking rebuilds the row and loses the cursor; the isbn key keeps it
+    tl.fromTo("#c1-hdr-band", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 68.0);
+    tl.set("#c1-row-new", { opacity: 0 }, 65.57);
+    fadeOut("#c1-row-old", 71.5);
+    fadeIn("#c1-row-new", 71.9, 0.3);
+    fadeIn("#c1-rebuilt", 73.4, 0.4);
+    fadeIn("#c1-lost", 74.2, 0.4);
+    fadeIn("#c1-kept", 75.0, 0.4);
+
+    // c1-8: detectChanges renders LoanList now; parent and siblings stay dark
+    fadeIn("#c1-ch1", 78.3, 0.4);
+    lit("#c1-b-list", 78.6);
+    tl.to(["#c1-b-desk", "#c1-b-head", "#c1-b-tot"], { opacity: 0.35, duration: 0.4 }, 79.6);
+    fadeIn("#c1-now", 79.8, 0.4);
+
+    // c1-8b: markForCheck lights the path to the root; then a signal lights only its reader
+    fadeOut(["#c1-ch1", "#c1-now", "#c1-b-list .c1-lit"], 82.0);
+    tl.to(["#c1-b-desk", "#c1-b-head", "#c1-b-tot"], { opacity: 1, duration: 0.3 }, 81.9);
+    fadeIn("#c1-ch2", 82.2, 0.4);
+    lit("#c1-b-row1", 83.8);
+    lit("#c1-b-list", 84.1);
+    lit("#c1-b-desk", 84.4);
+    fadeIn("#c1-path", 84.5, 0.4);
+    fadeOut(["#c1-ch2", "#c1-path", "#c1-b-desk .c1-lit", "#c1-b-list .c1-lit", "#c1-b-row1 .c1-lit"], 86.9);
+    fadeIn(["#c1-ch3", "#c1-reads"], 87.15, 0.4);
+    lit("#c1-b-row1", 87.3);
+    fadeIn("#c1-exact", 87.5, 0.4);
+
+    // c1-9: the meter fills over a long list; then pages and a keyed store
+    tl.fromTo("#c1-meter-fill", { scaleX: 0 }, { scaleX: 1, duration: 3.0, ease: "power2.inOut" }, 90.2);
+    fadeIn("#c1-measure", 93.9, 0.4);
+    tl.to("#c1-g2", { y: 40, duration: 0.8, ease: "power2.inOut" }, 95.0);
+    tl.to("#c1-g3", { y: 80, duration: 0.8, ease: "power2.inOut" }, 95.0);
+    fadeIn(["#c1-p1", "#c1-p2", "#c1-p3"], 95.6, 0.4);
+    fadeIn("#c1-store", 96.4);
+
+    // c1-9b: the Eager leaf, its third-party data, its owner
+    fadeIn("#c1-third", 100.0, 0.4);
+    fadeIn("#c1-owns", 101.2, 0.4);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c1-q1", "#c1-q2", "#c1-q3", "#c1-q4"].forEach((q, i) => fadeIn(q, 103.5 + i * 0.6));
+    fadeIn("#c1-pause-2", 122.2);
+
+    window.__timelines["c1"] = tl;
+  </script>
+</template>

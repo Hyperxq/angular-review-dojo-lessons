@@ -1,0 +1,338 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c1-nav { position: absolute; left: 48px; top: 40px; width: 340px; }
+    .c1-nav div { font: 400 40px/1 var(--font-text); color: var(--ink-muted); padding: 26px 0; border-bottom: 1px solid var(--rule); }
+    #c1-store { position: absolute; left: 480px; top: 250px; width: 460px; height: 240px; box-sizing: border-box; padding: 36px 40px; background: var(--paper); border: 3px solid var(--ink); border-radius: 8px; }
+    #c1-store-name { font: 700 44px/1 var(--font-code); margin-bottom: 16px; }
+    #c1-held { position: absolute; left: 40px; bottom: 30px; font: 400 34px/1 var(--font-text); color: var(--ink-muted); }
+    #c1-held b { font: 700 56px/1 var(--font-text); color: var(--accent); margin-left: 12px; vertical-align: -6px; }
+    .c1-reader { position: absolute; left: 1160px; width: 400px; height: 110px; box-sizing: border-box; display: grid; place-content: center; }
+    #c1-wires1, #c1-wires2, #c1-wires3, #c1-wires4 { position: absolute; left: 0; top: 0; }
+
+    .c1-panel { position: absolute; top: 380px; width: 800px; height: 580px; box-sizing: border-box; padding: 40px; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; }
+    .c1-panel-h { font: 700 40px/1.2 var(--font-text); margin-bottom: 36px; }
+    .c1-chip { display: table; margin-bottom: 24px; padding: 22px 30px; border: 3px solid var(--ink); border-radius: 8px; background: var(--paper); font: 700 40px/1 var(--font-text); }
+
+    .c1-src { box-sizing: border-box; width: 500px; height: 110px; display: grid; place-content: center; font: 700 44px/1 var(--font-code); }
+    .c1-rd { box-sizing: border-box; width: 320px; height: 100px; top: 640px; display: grid; place-content: center; }
+    .c1-flabel { top: 420px; }
+    #c1-back { left: 500px; top: 790px; width: 400px; box-sizing: border-box; border-color: var(--accent); font: 700 38px/1.15 var(--font-code); }
+    #c1-back-l { position: absolute; left: 500px; top: 912px; width: 400px; text-align: center; font: 700 36px/1 var(--font-text); color: var(--accent); }
+
+    .c1-code { left: 110px; width: 1700px; box-sizing: border-box; }
+    .c1-code .ln { position: relative; }
+    .c1-code .wrap { white-space: pre-wrap; padding-left: 6ch; text-indent: -6ch; }
+    .c1-code .wrap34 { white-space: pre-wrap; padding-left: 34ch; text-indent: -34ch; }
+    .c1-band { position: absolute; left: 0; right: 0; top: 40px; height: 51px; background: var(--accent-soft); }
+
+    #c1-keep-h { position: absolute; left: 180px; top: 120px; font: 600 64px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c1-keep { position: absolute; left: 180px; top: 270px; width: 1560px; }
+    .c1-item { padding: 30px 0; border-top: 1px solid var(--rule); font: 400 40px/1.35 var(--font-text); }
+    .c1-item code { font: 400 37px/1 var(--font-code); }
+
+    .c1-file { position: absolute; width: 780px; height: 190px; box-sizing: border-box; padding: 32px 40px; background: var(--paper-raised); border: 1px solid rgb(221 212 197 / 0.7); border-radius: 8px; box-shadow: var(--shadow); }
+    .c1-file .label { margin-bottom: 22px; }
+    .c1-use { position: relative; height: 51px; font: 400 40px/1.25 var(--font-code); }
+    .c1-use span { position: absolute; left: 0; top: 0; white-space: nowrap; }
+    #c1-plan { position: absolute; left: 160px; top: 740px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+
+    #c1-is { left: 160px; top: 430px; width: 620px; height: 160px; box-sizing: border-box; display: grid; place-content: center; border-color: var(--accent); font: 700 64px/1 var(--font-code); }
+    .c1-user { left: 1120px; width: 680px; height: 120px; box-sizing: border-box; display: grid; place-content: center; font-size: 44px; }
+
+  </style>
+
+  <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c1-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">09:00</div>
+      <div class="chapter-title">State that is read in two ways</div>
+    </div>
+
+    <!-- c1-1 the shared loans store and who reads it -->
+    <div id="c1-desk" class="clip world" data-start="3" data-duration="9.93">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-nav"><div id="c1-nav1">Members</div><div id="c1-nav2">Loans</div><div id="c1-nav3">Returns</div><div id="c1-nav4">Holds</div></div>
+          <svg id="c1-wires1" width="1680" height="831" viewBox="0 0 1680 831">
+            <defs><marker id="c1-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1d1b18" /></marker></defs>
+            <line id="c1-a1" x1="940" y1="370" x2="1150" y2="125" stroke="#1d1b18" stroke-width="4" marker-end="url(#c1-ah)" />
+            <line id="c1-a2" x1="940" y1="370" x2="1150" y2="365" stroke="#1d1b18" stroke-width="4" marker-end="url(#c1-ah)" />
+            <line id="c1-a3" x1="940" y1="370" x2="1150" y2="605" stroke="#1d1b18" stroke-width="4" marker-end="url(#c1-ah)" />
+          </svg>
+          <div id="c1-store">
+            <div id="c1-store-name">LoanStore</div>
+            <div class="label">shared loans</div>
+            <div id="c1-held">held in:<b>?</b></div>
+          </div>
+          <div id="c1-r1" class="fbox c1-reader" style="top: 70px">template</div>
+          <div id="c1-r2" class="fbox c1-reader" style="top: 310px">computed</div>
+          <div id="c1-r3" class="fbox c1-reader" style="top: 550px">polling loop</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-2 two kinds of readers -->
+    <div id="c1-readers" class="clip world sunk" data-start="12.93" data-duration="9.18">
+      <svg id="c1-wires2" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <line x1="960" y1="230" x2="520" y2="380" stroke="#c4b9a6" stroke-width="4" />
+        <line x1="960" y1="230" x2="1400" y2="380" stroke="#c4b9a6" stroke-width="4" />
+      </svg>
+      <div id="c1-st2" class="fbox" style="left: 760px; top: 110px; width: 400px; box-sizing: border-box; font-family: var(--font-code)">LoanStore</div>
+      <div id="c1-pl" class="c1-panel" style="left: 120px">
+        <div id="c1-pl-h" class="c1-panel-h">the current value, right now</div>
+        <div id="c1-c1" class="c1-chip">template</div>
+        <div id="c1-c2" class="c1-chip">computed</div>
+        <div id="c1-c3" class="c1-chip">click handler</div>
+      </div>
+      <div id="c1-pr" class="c1-panel" style="left: 1000px">
+        <div id="c1-pr-h" class="c1-panel-h">changes over time</div>
+        <div id="c1-c4" class="c1-chip">polling loop</div>
+        <div id="c1-c5" class="c1-chip">websocket merge</div>
+      </div>
+    </div>
+
+    <!-- c1-3a BehaviorSubject column; c1-3b signal column beside it -->
+    <div id="c1-columns" class="clip world sunk" data-start="22.11" data-duration="13.82">
+      <svg id="c1-wires3" width="1920" height="1080" viewBox="0 0 1920 1080" stroke="#1d1b18" stroke-width="4">
+        <line id="c1-l1" x1="510" y1="260" x2="300" y2="640" />
+        <line id="c1-l2" x1="510" y1="260" x2="720" y2="640" stroke-dasharray="14 12" />
+        <line id="c1-l3" x1="1410" y1="260" x2="1200" y2="640" />
+        <line id="c1-l4" x1="1410" y1="260" x2="1620" y2="640" stroke-dasharray="14 12" />
+      </svg>
+      <div id="c1-bs" class="fbox c1-src" style="left: 260px; top: 150px">BehaviorSubject</div>
+      <div id="c1-bs-p" class="fbox c1-rd" style="left: 140px">pipelines</div>
+      <div id="c1-bs-pl" class="flabel c1-flabel" style="left: 190px; width: 200px; text-align: right">directly</div>
+      <div id="c1-bs-t" class="fbox c1-rd" style="left: 560px">templates</div>
+      <div id="c1-bs-tl" class="flabel c1-flabel" style="left: 640px; width: 300px; text-align: left">via a subscription</div>
+      <div id="c1-back" class="fbox">subject.value</div>
+      <div id="c1-back-l" data-hold>back door</div>
+      <div id="c1-sg" class="fbox c1-src" style="left: 1160px; top: 150px">signal</div>
+      <div id="c1-sg-t" class="fbox c1-rd" style="left: 1040px">templates</div>
+      <div id="c1-sg-tl" class="flabel c1-flabel" style="left: 1050px; width: 200px; text-align: right">directly</div>
+      <div id="c1-sg-p" class="fbox c1-rd" style="left: 1460px">pipelines</div>
+      <div id="c1-sg-pl" class="flabel c1-flabel" style="left: 1530px; width: 280px; text-align: left; font-family: var(--font-code)">toObservable</div>
+    </div>
+
+    <!-- c1-4 the LoanStore; c1-5 band on asReadonly -->
+    <div id="c1-store-code" class="clip world" data-start="35.93" data-duration="15.21">
+      <div id="c1-code1" class="code c1-code" style="top: 150px" data-hold>
+        <div id="c1-band1" class="c1-band"></div>
+        <span class="ln">@Injectable({ providedIn: <span class="s">'root'</span> })</span>
+        <span class="ln"><span class="k">export class</span> LoanStore {</span>
+        <span class="ln">  <span class="k">private readonly</span> state = signal&lt;Loan[]&gt;([]);</span>
+        <span class="ln"> </span>
+        <span class="ln">  <span class="k">readonly</span> loans = <span class="k">this</span>.state.asReadonly();</span>
+        <span class="ln wrap">  <span class="k">readonly</span> active = computed(() =&gt; <span class="k">this</span>.state().filter((loan) =&gt; !loan.returned));</span>
+        <span class="ln"> </span>
+        <span class="ln">  lend(book: Book, member: Member) {</span>
+        <span class="ln wrap">    <span class="k">this</span>.state.update((loans) =&gt; [...loans, { bookId: book.id, memberId: member.id, returned: <span class="k">false</span> }]);</span>
+        <span class="ln">  }</span>
+        <span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c1-6a keep it observable when -->
+    <div id="c1-keepw" class="clip world" data-start="51.14" data-duration="9.24">
+      <div id="c1-keep-h">Keep it observable when</div>
+      <div id="c1-keep">
+        <div id="c1-k1" class="c1-item">most consumers are RxJS pipelines (merged with a websocket, throttled, retried), and turning it into a signal would only add a <code>toObservable</code> at every use;</div>
+        <div id="c1-k2" class="c1-item">you are migrating gradually: leave the service on observables and put <code>toSignal</code> at the edge, in the components that read it, until the callers have moved;</div>
+        <div id="c1-k3" class="c1-item">what you are storing is really a stream of events (clicks, messages), not a current value.</div>
+      </div>
+    </div>
+
+    <!-- c1-6b loans$ becomes loans() in every consumer -->
+    <div id="c1-migrate" class="clip world" data-start="60.38" data-duration="5.47">
+      <div id="c1-f1" class="c1-file" style="left: 140px; top: 120px"><div class="label">member-list.ts</div><div class="c1-use"><span id="c1-o1">store.loans$</span><span id="c1-n1">store.loans()</span></div></div>
+      <div id="c1-f2" class="c1-file" style="left: 1000px; top: 120px"><div class="label">loan-panel.ts</div><div class="c1-use"><span id="c1-o2">store.loans$</span><span id="c1-n2">store.loans()</span></div></div>
+      <div id="c1-f3" class="c1-file" style="left: 140px; top: 370px"><div class="label">overdue-board.ts</div><div class="c1-use"><span id="c1-o3">store.loans$</span><span id="c1-n3">store.loans()</span></div></div>
+      <div id="c1-f4" class="c1-file" style="left: 1000px; top: 370px"><div class="label">returns-feed.ts</div><div class="c1-use"><span id="c1-o4">store.loans$</span><span id="c1-n4">store.loans()</span></div></div>
+      <div id="c1-plan">plan it as a change of its own</div>
+    </div>
+
+    <!-- c1-7a Object.is and its three users -->
+    <div id="c1-equal" class="clip world sunk" data-start="65.85" data-duration="6.16">
+      <svg id="c1-wires4" width="1920" height="1080" viewBox="0 0 1920 1080" stroke="#1d1b18" stroke-width="4">
+        <line id="c1-u1l" x1="780" y1="510" x2="1120" y2="250" />
+        <line id="c1-u2l" x1="780" y1="510" x2="1120" y2="510" />
+        <line id="c1-u3l" x1="780" y1="510" x2="1120" y2="770" />
+      </svg>
+      <div id="c1-is" class="fbox">Object.is</div>
+      <div id="c1-u1" class="fbox c1-user" style="top: 190px">signal</div>
+      <div id="c1-u2" class="fbox c1-user" style="top: 450px">signal input</div>
+      <div id="c1-u3" class="fbox c1-user" style="top: 710px">OnPush input binding</div>
+    </div>
+
+    <!-- c1-7b band on the push; c1-8 band to set, then to update -->
+    <div id="c1-shelf" class="clip world" data-start="72.01" data-duration="13.84">
+      <div id="c1-code2" class="code c1-code" style="top: 290px" data-hold>
+        <div id="c1-band2" class="c1-band" style="height: 102px"></div>
+        <span class="ln"><span class="k">const</span> shelf = signal&lt;Book[]&gt;([]);</span>
+        <span class="ln"> </span>
+        <span class="ln wrap34">shelf().push(someBook);           <span class="c">// the array changed, the signal did not: nobody is notified</span></span>
+        <span class="ln wrap34">shelf.set(shelf());               <span class="c">// same reference again: still nobody is notified</span></span>
+        <span class="ln wrap34">shelf.update((books) =&gt; [...books, someBook]); <span class="c">// new reference: every consumer is notified</span></span>
+      </div>
+    </div>
+
+    <!-- c1-9 a glitch from two views of one source (LESSON.md marbles), then computed -->
+    <div id="c1-glitch" class="clip world sunk" data-start="85.85" data-duration="9.84">
+      <div class="marbles" style="top: 70px; --fw: 80px">
+        <div id="c1-row1" class="mrow"><div class="mlabel">member$</div><div class="mtrack"><div id="c1-m1" class="m" style="--f: 0">a</div><div id="c1-m2" class="m" style="--f: 6">b</div></div></div>
+        <div id="c1-row2" class="mrow"><div class="mlabel">first$</div><div class="mtrack"><div id="c1-m3" class="m" style="--f: 0">a</div><div id="c1-m4" class="m" style="--f: 6">b</div></div></div>
+        <div id="c1-row3" class="mrow"><div class="mlabel">last$</div><div class="mtrack"><div id="c1-m5" class="m" style="--f: 0">a</div><div id="c1-m6" class="m" style="--f: 6">b</div></div></div>
+        <div id="c1-row4" class="mrow" style="height: 200px">
+          <div class="mlabel">fullName$</div>
+          <div class="mtrack"><div id="c1-m7" class="m" style="--f: 0">a</div><div id="c1-m8" class="m hot" style="--f: 6">c</div><div id="c1-m9" class="m" style="--f: 7">b</div></div>
+          <div id="c1-note" class="mnote">// c = new first name with the old last name</div>
+        </div>
+      </div>
+      <div id="c1-code3" class="code c1-code" style="top: 770px; font-size: 30px">
+        <span class="ln c">// signals: one source, read once per evaluation</span>
+        <span class="ln"><span class="k">const</span> fullName = computed(() =&gt; <span class="s">`${member().firstName} ${member().lastName}`</span>);</span>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c1-questions" class="clip world note" data-start="95.69" data-duration="18.5">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c1-q1" class="q">For each piece of state, list every path that writes it. Does each one produce new references for what it changed?</div>
+        <div id="c1-q2" class="q">Who can write this state, and through which API?</div>
+        <div id="c1-q3" class="q">Where do two consumers of the same data take different routes to it?</div>
+        <div id="c1-q4" class="q">Are any derived values recombined from streams that come from one source?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c1-pause" class="clip world" data-start="114.19" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c1-pause-2" class="pause-2">Now do exercise 01.</div>
+    </div>
+
+    <audio id="c1-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="15" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-bed2" class="clip" src="assets/music/bed.mp3" data-start="95.69" data-duration="18.5" data-media-start="23" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-vo1" class="clip" src="assets/vo/c1-1.wav" data-start="3" data-duration="9.579" data-volume="1"></audio>
+    <audio id="c1-vo2" class="clip" src="assets/vo/c1-2.wav" data-start="12.93" data-duration="8.832" data-volume="1"></audio>
+    <audio id="c1-vo3" class="clip" src="assets/vo/c1-3a.wav" data-start="22.11" data-duration="7.552" data-volume="1"></audio>
+    <audio id="c1-vo4" class="clip" src="assets/vo/c1-3b.wav" data-start="30.01" data-duration="5.568" data-volume="1"></audio>
+    <audio id="c1-vo5" class="clip" src="assets/vo/c1-4.wav" data-start="35.93" data-duration="8" data-volume="1"></audio>
+    <audio id="c1-vo6" class="clip" src="assets/vo/c1-5.wav" data-start="44.28" data-duration="6.507" data-volume="1"></audio>
+    <audio id="c1-vo7" class="clip" src="assets/vo/c1-6a.wav" data-start="51.14" data-duration="8.896" data-volume="1"></audio>
+    <audio id="c1-vo8" class="clip" src="assets/vo/c1-6b.wav" data-start="60.38" data-duration="5.12" data-volume="1"></audio>
+    <audio id="c1-vo9" class="clip" src="assets/vo/c1-7a.wav" data-start="65.85" data-duration="5.803" data-volume="1"></audio>
+    <audio id="c1-vo10" class="clip" src="assets/vo/c1-7b.wav" data-start="72.01" data-duration="4.459" data-volume="1"></audio>
+    <audio id="c1-vo11" class="clip" src="assets/vo/c1-8.wav" data-start="76.82" data-duration="8.683" data-volume="1"></audio>
+    <audio id="c1-vo12" class="clip" src="assets/vo/c1-9.wav" data-start="85.85" data-duration="9.493" data-volume="1"></audio>
+    <audio id="c1-vo13" class="clip" src="assets/vo/c1-end.wav" data-start="95.69" data-duration="2.347" data-volume="1"></audio>
+    <audio id="c1-tick1" class="clip" src="assets/sfx/tick-a.wav" data-start="88.4" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick2" class="clip" src="assets/sfx/tick-b.wav" data-start="88.46" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick3" class="clip" src="assets/sfx/tick-a.wav" data-start="88.52" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick4" class="clip" src="assets/sfx/tick-b.wav" data-start="88.58" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick5" class="clip" src="assets/sfx/tick-a.wav" data-start="89.48" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick6" class="clip" src="assets/sfx/tick-b.wav" data-start="89.54" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick7" class="clip" src="assets/sfx/tick-a.wav" data-start="89.6" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick8" class="clip" src="assets/sfx/tick-b.wav" data-start="89.66" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick9" class="clip" src="assets/sfx/tick-a.wav" data-start="89.84" data-duration="0.3" data-volume="0.25"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const print = (sel, at) =>
+      tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out" }, at);
+    const pulse = (sel, at) => {
+      tl.fromTo(sel, { scale: 1 }, { scale: 1.12, duration: 0.15, ease: "power2.out" }, at);
+      tl.to(sel, { scale: 1, duration: 0.15, ease: "power2.in" }, at + 0.15);
+    };
+    // band rows are 51 px (34 px code at 1.5); a wrapped line is two rows
+    const bandTo = (sel, row, rows, at) =>
+      tl.to(sel, { y: row * 51, scaleY: rows, transformOrigin: "top center", duration: 0.8, ease: "power2.inOut" }, at);
+
+    // chapter card: fully on screen from frame 0
+
+    // c1-1: the store, the open question, then who reads it
+    ["#c1-nav1", "#c1-nav2", "#c1-nav3", "#c1-nav4"].forEach((n, i) => fadeIn(n, 3.2 + i * 0.2, 0.4));
+    fadeIn("#c1-store", 6.6, 0.6);
+    fadeIn("#c1-held", 9.9, 0.4);
+    [["#c1-a1", "#c1-r1"], ["#c1-a2", "#c1-r2"], ["#c1-a3", "#c1-r3"]].forEach(([a, r], i) => {
+      fadeIn(a, 11.0 + i * 0.3, 0.3);
+      fadeIn(r, 11.1 + i * 0.3, 0.4);
+    });
+
+    // c1-2: readers that want the value now vs readers that want changes over time
+    fadeIn("#c1-st2", 13.1, 0.4);
+    fadeIn("#c1-wires2", 14.9, 0.4);
+    fadeIn("#c1-pl", 15.0, 0.4);
+    fadeIn("#c1-pr", 15.15, 0.4);
+    [["#c1-c1", 15.6], ["#c1-c2", 16.0], ["#c1-c3", 16.9], ["#c1-pl-h", 18.4], ["#c1-c4", 19.5], ["#c1-c5", 19.9], ["#c1-pr-h", 20.9]].forEach(([s, t]) => fadeIn(s, t, 0.4));
+
+    // c1-3a: BehaviorSubject serves pipelines directly, templates through a subscription or the back door
+    fadeIn("#c1-bs", 22.3, 0.4);
+    fadeIn(["#c1-l1", "#c1-bs-p"], 24.0, 0.4);
+    fadeIn("#c1-bs-pl", 24.15, 0.4);
+    fadeIn(["#c1-l2", "#c1-bs-t"], 25.7, 0.4);
+    fadeIn("#c1-bs-tl", 25.85, 0.4);
+    fadeIn("#c1-back", 27.5, 0.4);
+    fadeIn("#c1-back-l", 28.9, 0.4);
+
+    // c1-3b: the signal column, the reverse wiring
+    fadeIn("#c1-sg", 30.2, 0.4);
+    fadeIn(["#c1-l3", "#c1-sg-t"], 32.2, 0.4);
+    fadeIn("#c1-sg-tl", 32.35, 0.4);
+    fadeIn(["#c1-l4", "#c1-sg-p"], 34.0, 0.4);
+    fadeIn("#c1-sg-pl", 34.15, 0.4);
+
+    // c1-4: whole block cut in; band on the class, the derived value, then the state
+    tl.fromTo("#c1-band1", { opacity: 0, y: 51, scaleY: 1 }, { opacity: 1, duration: 0.3 }, 38.2);
+    bandTo("#c1-band1", 5, 2, 41.4);
+    bandTo("#c1-band1", 2, 1, 42.9);
+
+    // c1-5: band on asReadonly, then on the only write
+    bandTo("#c1-band1", 4, 1, 44.6);
+    bandTo("#c1-band1", 9, 2, 49.5);
+
+    // c1-6a: each case lands as it is named; the previous one steps back
+    fadeIn("#c1-keep-h", 51.3, 0.5);
+    fadeIn("#c1-k1", 52.0);
+    fadeIn("#c1-k2", 53.9);
+    fadeIn("#c1-k3", 56.3);
+
+    // c1-6b: the same rename in every consumer
+    ["#c1-f1", "#c1-f2", "#c1-f3", "#c1-f4"].forEach((f, i) => fadeIn(f, 60.5 + i * 0.12, 0.4));
+    [1, 2, 3, 4].forEach((k, i) => {
+      tl.fromTo("#c1-n" + k, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 61.8 + i * 0.3);
+      tl.fromTo("#c1-o" + k, { opacity: 1 }, { opacity: 0, duration: 0.2, ease: "power2.in" }, 61.8 + i * 0.3);
+    });
+    fadeIn("#c1-plan", 63.3, 0.5);
+
+    // c1-7a: Object.is and the three places that use it
+    fadeIn(["#c1-u1", "#c1-u1l"], 66.2, 0.4);
+    fadeIn("#c1-is", 68.5, 0.5);
+    fadeIn(["#c1-u2", "#c1-u2l"], 70.2, 0.4);
+    fadeIn(["#c1-u3", "#c1-u3l"], 70.8, 0.4);
+
+    // c1-7b: band on the push; c1-8: band to set, then to update
+    tl.fromTo("#c1-band2", { opacity: 0, y: 2 * 51 }, { opacity: 1, duration: 0.3 }, 72.4);
+    tl.to("#c1-band2", { y: 4 * 51, duration: 0.8, ease: "power2.inOut" }, 77.0);
+    tl.to("#c1-band2", { y: 6 * 51, duration: 0.8, ease: "power2.inOut" }, 80.6);
+
+    // c1-9: rows, then marbles printed 0.18 s per frame from 88.4 (rows 0.06 s apart), then computed
+    ["#c1-row1", "#c1-row2", "#c1-row3", "#c1-row4"].forEach((r, i) => fadeIn(r + " .mlabel, " + r + " .mtrack", 86.0 + i * 0.12, 0.4));
+    [[1, 0, 0], [3, 0, 1], [5, 0, 2], [7, 0, 3], [2, 6, 0], [4, 6, 1], [6, 6, 2], [8, 6, 3], [9, 7, 3]].forEach(([m, f, r]) =>
+      print("#c1-m" + m, 88.4 + f * 0.18 + r * 0.06),
+    );
+    fadeIn("#c1-note", 90.2, 0.4);
+    pulse("#c1-m8", 90.6);
+    fadeIn("#c1-code3", 92.2, 0.5);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c1-q1", "#c1-q2", "#c1-q3", "#c1-q4"].forEach((q, i) => fadeIn(q, 95.9 + i * 0.6));
+    fadeIn("#c1-pause-2", 114.7);
+
+    window.__timelines["c1"] = tl;
+  </script>
+</template>

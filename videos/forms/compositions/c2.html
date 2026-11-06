@@ -1,0 +1,475 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c2-svg { position: absolute; left: 0; top: 0; }
+    .c2-fb { box-sizing: border-box; padding: 0 24px; display: grid; place-items: center; }
+    .c2-fb.mono { font: 700 40px/1.2 var(--font-code); }
+    .c2-band { position: absolute; left: 0; right: 0; top: 40px; height: 51px; background: var(--accent-soft); }
+    .c2-code .ln { position: relative; }
+    .c2-code.small { font-size: 30px; padding: 40px 32px; }
+    .c2-code.small .c2-band { height: 45px; }
+
+    #c2-returns { position: absolute; left: 40px; top: 40px; width: 1000px; }
+    #c2-returns-h { font: 700 40px/1 var(--font-text); margin-bottom: 28px; }
+    .c2-rrow { display: grid; grid-template-columns: 420px 1fr; align-items: center; height: 92px; padding: 0 24px; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c2-rrow b { font: 400 34px/1 var(--font-code); }
+    .c2-rhead { height: 60px; font: 700 30px/1 var(--font-text); color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c2-cat { position: absolute; left: 1120px; top: 120px; width: 440px; height: 420px; box-sizing: border-box; padding: 40px; border: 3px solid var(--ink); border-radius: 8px; background: var(--paper); }
+    #c2-cat-h { font: 700 40px/1.2 var(--font-text); }
+    #c2-calls { margin-top: 60px; font: 700 72px/1 var(--font-text); color: var(--accent); font-variant-numeric: tabular-nums; }
+    .c2-chip { justify-self: end; padding: 8px 16px; border: 2px solid var(--rule-strong); border-radius: 6px; font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+
+    #c2-fc, #c2-acc { top: 240px; width: 400px; height: 640px; }
+    #c2-ng { position: absolute; left: 1360px; top: 904px; width: 400px; text-align: center; font: 700 30px/1 var(--font-code); color: var(--ink-muted); }
+    .c2-al { left: 560px; width: 800px; }
+    .c2-reg { position: absolute; left: 560px; width: 800px; text-align: center; font: 400 30px/1 var(--font-code); color: var(--ink-muted); }
+    #c2-opt { position: absolute; left: 560px; top: 800px; width: 800px; text-align: center; font: 700 30px/1 var(--font-text); color: var(--accent); }
+
+    .c2-x { background: transparent; border: 4px solid var(--ink-muted); }
+    .c2-x::after { content: ""; position: absolute; left: 50%; top: 50%; width: 92px; height: 4px; margin: -2px 0 0 -46px; background: var(--ink-muted); transform: rotate(-45deg); }
+    .c2-sent { position: absolute; left: 1500px; width: 300px; text-align: right; font: 700 30px/1 var(--font-text); color: var(--accent); }
+    .c2-rowband { position: absolute; left: 60px; width: 1760px; height: 140px; background: var(--accent-soft); border-radius: 8px; }
+
+    #c2-src-l { position: absolute; left: 0; top: 362px; width: 400px; text-align: right; font: 700 36px/1 var(--font-code); }
+    #c2-src-t { position: absolute; left: 440px; top: 380px; width: 560px; height: 3px; background: var(--rule-strong); }
+    #c2-src-tail { position: absolute; left: 1000px; top: 380px; width: 150px; height: 0; border-top: 3px dashed var(--rule-strong); }
+    .c2-dot { position: absolute; top: 381px; width: 64px; height: 64px; margin: -31px 0 0 -32px; border-radius: 50%; background: var(--ink); }
+    #c2-fj { left: 1300px; top: 320px; width: 420px; height: 120px; }
+    #c2-fj-note { left: 1150px; top: 474px; width: 660px; }
+    #c2-st-l { position: absolute; left: 0; top: 700px; width: 400px; text-align: right; font: 700 36px/1 var(--font-code); }
+    #c2-st { position: absolute; left: 440px; top: 676px; padding: 18px 28px; border: 4px solid var(--accent); border-radius: 8px; background: var(--paper-raised); color: var(--accent); font: 700 48px/1 var(--font-code); }
+
+    #c2-pband { position: absolute; left: 629px; top: 270px; width: 528px; height: 560px; background: var(--accent-soft); border-radius: 8px; }
+    .c2-wide .mrow { height: 220px; }
+    #c2-win { position: absolute; left: 629px; top: 330px; width: 528px; height: 470px; box-sizing: border-box; border: 4px dashed var(--rule-strong); border-radius: 8px; }
+    #c2-ask { position: absolute; left: 629px; top: 170px; width: 528px; text-align: center; font: 600 120px/1 var(--font-display); color: var(--accent); }
+
+    .c2-tn { top: 0; box-sizing: border-box; text-align: center; }
+    .c2-tn .badge { display: block; margin: 14px 0 0; }
+    #c2-err { position: absolute; left: 1240px; top: 504px; padding: 12px 20px; border: 3px solid var(--caution); border-radius: 8px; background: var(--caution-soft); color: var(--caution); font: 700 34px/1 var(--font-code); }
+
+    .q { font-size: 40px; margin-bottom: 30px; }
+    .q code { font: 400 38px/1 var(--font-code); }
+  </style>
+
+  <div id="root" data-composition-id="c2" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c2-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">12:00</div>
+      <div class="chapter-title">Custom controls, async validators, and rules across controls</div>
+    </div>
+
+    <!-- c2-1: returns desk, ISBN rows arriving, one catalog call per row -->
+    <div id="c2-desk" class="clip world" data-start="3" data-duration="9.65">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">12:00</span></div>
+        <div class="app-body">
+          <div id="c2-returns">
+            <div id="c2-returns-h">Returns</div>
+            <div class="c2-rrow c2-rhead"><span>ISBN</span><span>Title</span></div>
+            <div id="c2-rr1" class="c2-rrow"><b>978-0-441-47812-5</b><span>The Left Hand of Darkness</span></div>
+            <div id="c2-rr2" class="c2-rrow"><b>978-0-14-143954-4</b><span>Middlemarch</span></div>
+            <div id="c2-rr3" class="c2-rrow"><b>978-0-8070-8369-7</b><span>Kindred</span></div>
+            <div id="c2-rr4" class="c2-rrow"><b>978-0-679-73172-0</b><span>The Remains of the Day</span></div>
+            <div id="c2-rr5" class="c2-rrow"><b>978-0-547-77374-2</b><span>A Wizard of Earthsea</span></div>
+            <div id="c2-rr6" class="c2-rrow"><b>978-0-385-47454-2</b><span>Things Fall Apart</span></div>
+          </div>
+          <div id="c2-cat">
+            <div id="c2-cat-h">Catalog service</div>
+            <div id="c2-calls" data-hold>calls: 0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-2, c2-3, c2-4: the lesson's four-arrow ControlValueAccessor flow -->
+    <div id="c2-cva" class="clip world sunk" data-start="12.65" data-duration="30.55">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#1d1b18" stroke-width="4">
+        <g id="c2-a1"><path pathLength="1" d="M560 360 H1342" /><polygon points="1360,360 1342,350 1342,370" fill="#1d1b18" stroke="none" /></g>
+        <g id="c2-a2"><path pathLength="1" d="M1360 500 H578" /><polygon points="560,500 578,490 578,510" fill="#1d1b18" stroke="none" /></g>
+        <g id="c2-a3"><path pathLength="1" d="M1360 640 H578" /><polygon points="560,640 578,630 578,650" fill="#1d1b18" stroke="none" /></g>
+        <g id="c2-a4"><path pathLength="1" d="M560 780 H1342" /><polygon points="1360,780 1342,770 1342,790" fill="#1d1b18" stroke="none" /></g>
+      </svg>
+      <div id="c2-fc" class="fbox c2-fb mono" style="left: 160px">FormControl</div>
+      <div id="c2-acc" class="fbox c2-fb mono" style="left: 1360px">Accessor</div>
+      <div id="c2-ng">NG_VALUE_ACCESSOR</div>
+      <div id="c2-l1" class="flabel c2-al" style="top: 308px" data-hold>writeValue(value), model to view</div>
+      <div id="c2-l2" class="flabel c2-al" style="top: 448px">onChange(value), view to model</div>
+      <div id="c2-l3" class="flabel c2-al" style="top: 588px">onTouched(), the user left the control</div>
+      <div id="c2-l4" class="flabel c2-al" style="top: 728px">setDisabledState(isDisabled)</div>
+      <div id="c2-reg1" class="c2-reg" style="top: 520px">registerOnChange(fn)</div>
+      <div id="c2-reg2" class="c2-reg" style="top: 660px">registerOnTouched(fn)</div>
+      <div id="c2-opt" data-hold>optional</div>
+    </div>
+
+    <!-- c2-5: StarRating, band on rate -->
+    <div id="c2-star" class="clip world" data-start="43.2" data-duration="10.42">
+      <div class="code c2-code" style="left: 104px; top: 190px" data-hold>
+        <div id="c2-band1" class="c2-band"></div>
+        <span class="ln"><span class="k">export class</span> StarRating <span class="k">implements</span> ControlValueAccessor {</span>
+        <span class="ln c">  …</span>
+        <span class="ln">  writeValue(value: <span class="k">number</span>) { <span class="k">this</span>.rating.set(value); }</span>
+        <span class="ln">  registerOnChange(fn: (value: <span class="k">number</span>) =&gt; <span class="k">void</span>) { <span class="k">this</span>.onChange = fn; }</span>
+        <span class="ln">  registerOnTouched(fn: () =&gt; <span class="k">void</span>) { <span class="k">this</span>.onTouched = fn; }</span>
+        <span class="ln">  setDisabledState(isDisabled: <span class="k">boolean</span>) { <span class="k">this</span>.disabled.set(isDisabled); }</span>
+        <span class="ln"> </span>
+        <span class="ln">  <span class="k">protected</span> rate(star: <span class="k">number</span>) {</span>
+        <span class="ln">    <span class="k">this</span>.rating.set(star);</span>
+        <span class="ln">    <span class="k">this</span>.onChange(star);</span>
+        <span class="ln">  }</span>
+        <span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c2-6, c2-7: ISBN check marbles; then the check(a) and check(b) rows banded -->
+    <div id="c2-isbn" class="clip world sunk" data-start="53.62" data-duration="17.88">
+      <div class="marbles" style="top: 230px; --fw: 68px">
+        <div id="c2-rb" class="c2-rowband" style="top: 140px; height: 280px"></div>
+        <div id="c2-sent1" class="c2-sent" style="top: 192px">already sent</div>
+        <div id="c2-sent2" class="c2-sent" data-hold style="top: 332px">already sent</div>
+        <div id="c2-row1" class="mrow">
+          <div class="mlabel">isbn:</div>
+          <div class="mtrack">
+            <div id="c2-ma" class="m" style="--f: 0">a</div>
+            <div id="c2-mb" class="m" style="--f: 3">b</div>
+            <div id="c2-mc" class="m" style="--f: 6">c</div>
+          </div>
+        </div>
+        <div id="c2-row2" class="mrow">
+          <div class="mlabel">check(a):</div>
+          <div class="mtrack" style="right: auto; width: 204px"><div id="c2-xa" class="m c2-x" style="--f: 3"></div></div>
+          <div id="c2-n1" class="mnote">// unsubscribed when b arrives</div>
+        </div>
+        <div id="c2-row3" class="mrow">
+          <div class="mlabel">check(b):</div>
+          <div class="mtrack" style="left: 644px; right: auto; width: 204px"><div id="c2-xb" class="m c2-x" style="--f: 3"></div></div>
+          <div id="c2-n2" class="mnote" style="left: 644px">// unsubscribed when c arrives</div>
+        </div>
+        <div id="c2-row4" class="mrow">
+          <div class="mlabel">check(c):</div>
+          <div class="mtrack" style="left: 848px; right: auto; width: 476px">
+            <div id="c2-mr" class="m" style="--f: 6">r</div>
+            <div id="c2-md" class="m-done" style="--f: 7"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-8: forkJoin waits on a source with no completion; status stuck on PENDING -->
+    <div id="c2-fork" class="clip world sunk" data-start="71.5" data-duration="10.37">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#1d1b18" stroke-width="4">
+        <g id="c2-fe"><path pathLength="1" d="M1160 381 H1282" /><polygon points="1300,381 1282,371 1282,391" fill="#1d1b18" stroke="none" /></g>
+      </svg>
+      <div id="c2-src-l">valueChanges</div>
+      <div id="c2-src-t"></div>
+      <div id="c2-d1" class="c2-dot" style="left: 520px"></div>
+      <div id="c2-d2" class="c2-dot" style="left: 700px"></div>
+      <div id="c2-d3" class="c2-dot" style="left: 880px"></div>
+      <div id="c2-src-tail"></div>
+      <div id="c2-fj" class="fbox c2-fb mono">forkJoin</div>
+      <div id="c2-fj-note" class="flabel">emits only when every source completes</div>
+      <div id="c2-st-l">status</div>
+      <div id="c2-st" data-hold>PENDING</div>
+    </div>
+
+    <!-- c2-9: updateOn: 'blur', that line banded -->
+    <div id="c2-blur" class="clip world" data-start="81.87" data-duration="10.23">
+      <div class="code c2-code" style="left: 160px; top: 300px" data-hold>
+        <div id="c2-band2" class="c2-band"></div>
+        <span class="ln">isbn: <span class="k">this</span>.fb.control(<span class="s">''</span>, {</span>
+        <span class="ln">  validators: [Validators.required],</span>
+        <span class="ln">  asyncValidators: [isbnInCatalog(<span class="k">this</span>.catalog)],</span>
+        <span class="ln">  updateOn: <span class="s">'blur'</span>,</span>
+        <span class="ln">}),</span>
+      </div>
+    </div>
+
+    <!-- c2-10: status marbles from the lesson, the pending frames banded -->
+    <div id="c2-status" class="clip world sunk" data-start="92.1" data-duration="7.69">
+      <div id="c2-pband"></div>
+      <div class="marbles" style="top: 260px; --fw: 75.5px">
+        <div class="mrow">
+          <div class="mlabel">status:</div>
+          <div class="mtrack">
+            <div id="c2-s0" class="m" style="--f: 0">v</div>
+            <div id="c2-s3" class="m" style="--f: 3">p</div>
+            <div id="c2-s10" class="m" style="--f: 10">i</div>
+          </div>
+          <div class="mnote">// v = VALID, p = PENDING, i = INVALID</div>
+        </div>
+        <div class="mrow">
+          <div class="mlabel">valid:</div>
+          <div class="mtrack">
+            <div id="c2-v0" class="m" style="--f: 0">t</div>
+            <div id="c2-v3" class="m" style="--f: 3">f</div>
+            <div id="c2-v10" class="m" style="--f: 10">f</div>
+          </div>
+          <div class="mnote">// t = true, f = false</div>
+        </div>
+        <div class="mrow">
+          <div class="mlabel">invalid:</div>
+          <div class="mtrack">
+            <div id="c2-i0" class="m" style="--f: 0">f</div>
+            <div id="c2-i3" class="m" style="--f: 3">f</div>
+            <div id="c2-i10" class="m" style="--f: 10">t</div>
+          </div>
+        </div>
+        <div class="mrow">
+          <div class="mlabel">pending:</div>
+          <div class="mtrack">
+            <div id="c2-p0" class="m" style="--f: 0">f</div>
+            <div id="c2-p3" class="m" style="--f: 3">t</div>
+            <div id="c2-p10" class="m" style="--f: 10">f</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-10b: valid and invalid side by side, a question over the pending window -->
+    <div id="c2-guard" class="clip world sunk" data-start="99.79" data-duration="9.44">
+      <div id="c2-win"></div>
+      <div id="c2-ask" data-hold>?</div>
+      <div id="c2-rows2" class="marbles c2-wide" style="top: 340px; --fw: 75.5px">
+        <div class="mrow">
+          <div class="mlabel">valid:</div>
+          <div class="mtrack">
+            <div class="m" style="--f: 0">t</div>
+            <div class="m" style="--f: 3">f</div>
+            <div class="m" style="--f: 10">f</div>
+          </div>
+        </div>
+        <div class="mrow">
+          <div class="mlabel">invalid:</div>
+          <div class="mtrack">
+            <div class="m" style="--f: 0">f</div>
+            <div class="m" style="--f: 3">f</div>
+            <div class="m" style="--f: 10">t</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-11: the lesson's loan tree, dates and books hot -->
+    <div id="c2-tree" class="clip world sunk" data-start="109.23" data-duration="8.75">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#c4b9a6" stroke-width="4">
+        <path id="c2-te1" pathLength="1" d="M960 264 V300 H500 V340" />
+        <path id="c2-te2" pathLength="1" d="M960 264 V300 H1410 V340" />
+        <path id="c2-te3" pathLength="1" d="M500 484 V520 H320 V560" />
+        <path id="c2-te4" pathLength="1" d="M500 484 V520 H680 V560" />
+        <path id="c2-te5" pathLength="1" d="M1410 484 V560" />
+        <path id="c2-te6" pathLength="1" d="M1410 704 V740 H840 V780" />
+        <path id="c2-te7" pathLength="1" d="M1410 704 V740 H1480 V780" />
+      </svg>
+      <div id="c2-t-loan" class="node c2-tn" style="left: 750px; top: 120px; width: 420px">loan<span class="badge">[FormGroup]</span></div>
+      <div id="c2-t-dates" class="node c2-tn" style="left: 120px; top: 340px; width: 760px">dates<span class="badge">[FormGroup, validator: returnAfterPickup]</span></div>
+      <div id="c2-t-books" class="node c2-tn" style="left: 1020px; top: 340px; width: 780px" data-hold>books<span class="badge">[FormArray, a rule across items goes here]</span></div>
+      <div id="c2-t-pickup" class="node c2-tn" style="left: 170px; top: 560px; width: 300px">pickup<span class="badge">[FormControl]</span></div>
+      <div id="c2-t-due" class="node c2-tn" style="left: 530px; top: 560px; width: 300px">due<span class="badge">[FormControl]</span></div>
+      <div id="c2-t-0" class="node c2-tn" style="left: 1260px; top: 560px; width: 300px">0<span class="badge">[FormGroup]</span></div>
+      <div id="c2-t-isbn" class="node c2-tn" style="left: 560px; top: 780px; width: 560px">isbn<span class="badge">[FormControl, async validator]</span></div>
+      <div id="c2-t-rating" class="node c2-tn" style="left: 1140px; top: 780px; width: 680px">rating<span class="badge">[StarRating via ControlValueAccessor]</span></div>
+    </div>
+
+    <!-- c2-11b: returnAfterPickup, band on the getRawValue() line -->
+    <div id="c2-rap" class="clip world" data-start="117.98" data-duration="4.3">
+      <div class="code c2-code small" style="left: 104px; top: 390px" data-hold>
+        <div id="c2-band3" class="c2-band"></div>
+        <span class="ln"><span class="k">const</span> returnAfterPickup: ValidatorFn = (control) =&gt; {</span>
+        <span class="ln">  <span class="k">const</span> { pickup, due } =</span>
+        <span class="ln">    (control <span class="k">as</span> AbstractControl&lt;{ pickup: Date; due: Date }&gt;).getRawValue();</span>
+        <span class="ln">  <span class="k">return</span> due &gt; pickup ? <span class="k">null</span> : { dueBeforePickup: <span class="k">true</span> };</span>
+        <span class="ln">};</span>
+      </div>
+    </div>
+
+    <!-- c2-11c: the error lives on the group -->
+    <div id="c2-has" class="clip world sunk" data-start="122.28" data-duration="5.87">
+      <div id="c2-has-code" class="code" style="left: 160px; top: 150px; font-size: 40px">loan.controls.dates.hasError(<span class="s">'dueBeforePickup'</span>)</div>
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#c4b9a6" stroke-width="4">
+        <path id="c2-he1" pathLength="1" d="M800 584 V640 H520 V700" />
+        <path id="c2-he2" pathLength="1" d="M800 584 V640 H1080 V700" />
+      </svg>
+      <div id="c2-h-dates" class="node c2-tn" style="left: 420px; top: 440px; width: 760px">dates<span class="badge">[FormGroup, validator: returnAfterPickup]</span></div>
+      <div id="c2-err">dueBeforePickup</div>
+      <div id="c2-h-pickup" class="node c2-tn" style="left: 370px; top: 700px; width: 300px">pickup<span class="badge">[FormControl]</span></div>
+      <div id="c2-h-due" class="node c2-tn" style="left: 930px; top: 700px; width: 300px" data-hold>due<span class="badge">[FormControl]</span></div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c2-questions" class="clip world note" data-start="128.15" data-duration="25.7">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c2-q1" class="q">For each <code>ControlValueAccessor</code> method: is it implemented, and does anything ever call the functions it receives?</div>
+        <div id="c2-q2" class="q">When the form disables this control, what does the user see? When the user leaves it, does the form know?</div>
+        <div id="c2-q3" class="q">How many requests does typing one value cause? When does each one start?</div>
+        <div id="c2-q4" class="q">What does the submit guard do with a form whose status is <code>PENDING</code>?</div>
+        <div id="c2-q5" class="q">Is each rule attached to the control that can see all the values the rule talks about?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c2-pause" class="clip world" data-start="153.85" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c2-pause-2" class="pause-2" data-hold>Now do exercise 02.</div>
+    </div>
+
+    <audio id="c2-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="24" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-bed2" class="clip" src="assets/music/bed.mp3" data-start="128.15" data-duration="25.7" data-media-start="32" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c2-1" class="clip" src="assets/vo/c2-1.wav" data-start="3.0" data-duration="9.301" data-volume="1"></audio>
+    <audio id="vo-c2-2" class="clip" src="assets/vo/c2-2.wav" data-start="12.65" data-duration="9.643" data-volume="1"></audio>
+    <audio id="vo-c2-3" class="clip" src="assets/vo/c2-3.wav" data-start="22.64" data-duration="10.048" data-volume="1"></audio>
+    <audio id="vo-c2-4" class="clip" src="assets/vo/c2-4.wav" data-start="33.04" data-duration="9.813" data-volume="1"></audio>
+    <audio id="vo-c2-5" class="clip" src="assets/vo/c2-5.wav" data-start="43.2" data-duration="10.069" data-volume="1"></audio>
+    <audio id="vo-c2-6" class="clip" src="assets/vo/c2-6.wav" data-start="53.62" data-duration="10.304" data-volume="1"></audio>
+    <audio id="vo-c2-7" class="clip" src="assets/vo/c2-7.wav" data-start="64.28" data-duration="6.869" data-volume="1"></audio>
+    <audio id="vo-c2-8" class="clip" src="assets/vo/c2-8.wav" data-start="71.5" data-duration="10.027" data-volume="1"></audio>
+    <audio id="vo-c2-9" class="clip" src="assets/vo/c2-9.wav" data-start="81.87" data-duration="9.877" data-volume="1"></audio>
+    <audio id="vo-c2-10" class="clip" src="assets/vo/c2-10.wav" data-start="92.1" data-duration="7.339" data-volume="1"></audio>
+    <audio id="vo-c2-10b" class="clip" src="assets/vo/c2-10b.wav" data-start="99.79" data-duration="9.088" data-volume="1"></audio>
+    <audio id="vo-c2-11" class="clip" src="assets/vo/c2-11.wav" data-start="109.23" data-duration="8.405" data-volume="1"></audio>
+    <audio id="vo-c2-11b" class="clip" src="assets/vo/c2-11b.wav" data-start="117.98" data-duration="3.947" data-volume="1"></audio>
+    <audio id="vo-c2-11c" class="clip" src="assets/vo/c2-11c.wav" data-start="122.28" data-duration="5.525" data-volume="1"></audio>
+    <audio id="vo-c2-end" class="clip" src="assets/vo/c2-end.wav" data-start="128.15" data-duration="2.155" data-volume="1"></audio>
+    <audio id="c2-tick1" class="clip" src="assets/sfx/tick-a.wav" data-start="55.2" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick2" class="clip" src="assets/sfx/tick-b.wav" data-start="55.74" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick3" class="clip" src="assets/sfx/tick-a.wav" data-start="56.28" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick4" class="clip" src="assets/sfx/tick-b.wav" data-start="57.54" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick5" class="clip" src="assets/sfx/tick-a.wav" data-start="72.4" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick6" class="clip" src="assets/sfx/tick-b.wav" data-start="72.58" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick7" class="clip" src="assets/sfx/tick-a.wav" data-start="72.76" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick8" class="clip" src="assets/sfx/tick-b.wav" data-start="93.0" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick9" class="clip" src="assets/sfx/tick-a.wav" data-start="93.54" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick10" class="clip" src="assets/sfx/tick-b.wav" data-start="94.8" data-duration="0.3" data-volume="0.25"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const print = (sel, at) =>
+      tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out" }, at);
+    const pulse = (sel, at) =>
+      tl.to(sel, { scale: 1.12, duration: 0.2, ease: "power2.inOut", yoyo: true, repeat: 1 }, at);
+    const draw = (sel, at, d = 0.4) => {
+      tl.fromTo(sel + " path", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+      tl.fromTo(sel + " polygon", { opacity: 0 }, { opacity: 1, duration: 0.12 }, at + d - 0.08);
+    };
+    const line = (sel, at, d = 0.4) =>
+      tl.fromTo(sel, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+    const bandIn = (sel, line, at, lines = 1, lh = 51) =>
+      tl.fromTo(sel, { opacity: 0, y: line * lh, scaleY: lines, transformOrigin: "50% 0%" }, { opacity: 1, duration: 0.3 }, at);
+    const bandTo = (sel, line, at, lines = 1, lh = 51) =>
+      tl.to(sel, { y: line * lh, scaleY: lines, transformOrigin: "50% 0%", duration: 0.8, ease: "power2.inOut" }, at);
+    const dim = (sels, at, to = 0.25) => tl.to(sels, { opacity: to, duration: 0.4, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c2-1: rows arrive at the returns desk; each one costs a catalog call
+    fadeIn(".c2-rhead", 3.1, 0.4);
+    fadeIn("#c2-cat", 3.3, 0.4);
+    for (let i = 1; i <= 6; i++) fadeIn("#c2-rr" + i, 4.6 + (i - 1) * 0.55, 0.4);
+    for (let i = 1; i <= 6; i++) tl.set("#c2-calls", { textContent: "calls: " + i }, 9.6 + (i - 1) * 0.35);
+
+    // c2-2: the two parties, the registration, then the four arrows
+    fadeIn("#c2-fc", 12.8, 0.5);
+    fadeIn("#c2-acc", 12.95, 0.5);
+    fadeIn("#c2-ng", 15.6, 0.5);
+    ["#c2-a1", "#c2-a2", "#c2-a3", "#c2-a4"].forEach((a, i) => {
+      draw(a, 18.2 + i * 0.45, 0.4);
+      fadeIn("#c2-l" + (i + 1), 18.35 + i * 0.45, 0.4);
+    });
+    // c2-3: writeValue first, then the two callbacks the register methods hand over
+    dim(["#c2-a2", "#c2-a3", "#c2-a4", "#c2-l2", "#c2-l3", "#c2-l4"], 22.8);
+    tl.to(["#c2-a2", "#c2-a3", "#c2-l2", "#c2-l3"], { opacity: 1, duration: 0.4, ease: "power2.inOut" }, 27.4);
+    fadeIn("#c2-reg1", 27.6, 0.4);
+    fadeIn("#c2-reg2", 27.75, 0.4);
+    dim(["#c2-a1", "#c2-l1"], 27.4);
+    // c2-4: setDisabledState becomes the accent; it is optional
+    dim(["#c2-a2", "#c2-a3", "#c2-l2", "#c2-l3", "#c2-reg1", "#c2-reg2"], 33.2);
+    tl.to(["#c2-a4", "#c2-l4"], { opacity: 1, duration: 0.4, ease: "power2.inOut" }, 33.3);
+    tl.to("#c2-a4 path", { stroke: "#b8321f", duration: 0.3 }, 33.4);
+    tl.to("#c2-a4 polygon", { fill: "#b8321f", duration: 0.3 }, 33.4);
+    tl.to("#c2-l4", { color: "#b8321f", duration: 0.3 }, 33.4);
+    fadeIn("#c2-opt", 35.6, 0.4);
+
+    // c2-5: band on rate, then the display update, then telling the form
+    bandIn("#c2-band1", 7, 45.9, 4);
+    bandTo("#c2-band1", 8, 47.3);
+    bandTo("#c2-band1", 9, 48.6);
+
+    // c2-6: rows, then marbles printed at 0.18 s per frame; the notes
+    ["#c2-row1", "#c2-row2", "#c2-row3", "#c2-row4"].forEach((r, i) => fadeIn(r + " .mlabel, " + r + " .mtrack", 53.8 + i * 0.12, 0.4));
+    tl.set(["#c2-n1", "#c2-n2"], { opacity: 0 }, 53.62);
+    print("#c2-ma", 55.2);
+    print("#c2-mb", 55.74);
+    print("#c2-xa", 55.74);
+    print("#c2-mc", 56.28);
+    print("#c2-xb", 56.28);
+    print("#c2-mr", 57.54);
+    print("#c2-md", 57.72);
+    fadeIn("#c2-n1", 61.6, 0.4);
+    fadeIn("#c2-n2", 61.9, 0.4);
+    // c2-7: the two checks whose requests already left
+    fadeIn("#c2-rb", 64.5, 0.5);
+    fadeIn("#c2-sent1", 67.5, 0.4);
+    fadeIn("#c2-sent2", 67.8, 0.4);
+
+    // c2-8: a source with no end; forkJoin waits; status stays PENDING
+    fadeIn("#c2-src-l", 71.7, 0.4);
+    fadeIn("#c2-src-t", 71.8, 0.4);
+    print("#c2-d1", 72.4);
+    print("#c2-d2", 72.58);
+    print("#c2-d3", 72.76);
+    fadeIn("#c2-src-tail", 73.2, 0.6);
+    draw("#c2-fe", 75.8, 0.3);
+    fadeIn("#c2-fj", 76.0, 0.4);
+    fadeIn("#c2-fj-note", 76.6, 0.4);
+    fadeIn("#c2-st-l", 79.2, 0.4);
+    fadeIn("#c2-st", 79.35, 0.4);
+
+    // c2-9: band on updateOn: 'blur'
+    bandIn("#c2-band2", 3, 85.4);
+
+    // c2-10: status marbles printed by frame; the pending window banded
+    ["#c2-s0", "#c2-v0", "#c2-i0", "#c2-p0"].forEach((m) => print(m, 93.0));
+    ["#c2-s3", "#c2-v3", "#c2-i3", "#c2-p3"].forEach((m) => print(m, 93.54));
+    ["#c2-s10", "#c2-v10", "#c2-i10", "#c2-p10"].forEach((m) => print(m, 94.8));
+    fadeIn("#c2-pband", 95.2, 0.5);
+    pulse(["#c2-v3", "#c2-i3"], 97.4);
+    tl.to(["#c2-v3", "#c2-i3"], { boxShadow: "0 0 0 6px #b8321f", duration: 0.3 }, 97.4);
+
+    // c2-10b: the two getters a guard can pick, and the open question
+    fadeIn("#c2-rows2", 99.9, 0.4);
+    fadeIn("#c2-win", 102.2, 0.4);
+    fadeIn("#c2-ask", 105.4, 0.4);
+
+    // c2-11: the tree by level; dates, then books, become hot
+    fadeIn("#c2-t-loan", 109.4, 0.4);
+    line("#c2-te1", 109.7, 0.4);
+    line("#c2-te2", 109.7, 0.4);
+    fadeIn(["#c2-t-dates", "#c2-t-books"], 109.95, 0.4);
+    ["#c2-te3", "#c2-te4", "#c2-te5"].forEach((e) => line(e, 110.25, 0.4));
+    fadeIn(["#c2-t-pickup", "#c2-t-due", "#c2-t-0"], 110.5, 0.4);
+    ["#c2-te6", "#c2-te7"].forEach((e) => line(e, 110.8, 0.4));
+    fadeIn(["#c2-t-isbn", "#c2-t-rating"], 111.05, 0.4);
+    tl.to("#c2-t-dates", { borderColor: "#b8321f", duration: 0.3 }, 112.2);
+    tl.to("#c2-t-books", { borderColor: "#b8321f", duration: 0.3 }, 113.4);
+
+    // c2-11b: band on the typed getRawValue() line
+    bandIn("#c2-band3", 1, 118.2, 2, 45);
+
+    // c2-11c: the group carries the error; due stays as it is
+    fadeIn("#c2-h-dates", 122.6, 0.4);
+    line("#c2-he1", 122.9, 0.4);
+    line("#c2-he2", 122.9, 0.4);
+    fadeIn(["#c2-h-pickup", "#c2-h-due"], 123.15, 0.4);
+    tl.to("#c2-h-dates", { borderColor: "#b8321f", duration: 0.3 }, 123.6);
+    print("#c2-err", 123.8);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c2-q1", "#c2-q2", "#c2-q3", "#c2-q4", "#c2-q5"].forEach((q, i) => fadeIn(q, 128.45 + i * 0.6));
+    fadeIn("#c2-pause-2", 154.35);
+
+    window.__timelines["c2"] = tl;
+  </script>
+</template>
