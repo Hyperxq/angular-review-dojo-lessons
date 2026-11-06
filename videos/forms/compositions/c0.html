@@ -1,0 +1,353 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    #c0-d-title { position: absolute; left: 40px; top: 60px; width: 820px; font: 600 72px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c0-d-stack { position: absolute; left: 960px; top: 60px; width: 620px; }
+    .c0-api { font: 700 44px/1 var(--font-code); padding: 30px 0; border-bottom: 1px solid var(--rule); }
+
+    #c0-divider { position: absolute; left: 919px; top: 150px; width: 2px; height: 780px; background: var(--rule); }
+    .c0-col { position: absolute; top: 150px; width: 720px; }
+    .c0-col-h { font: 600 72px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-col-pkg { margin-top: 28px; font: 400 34px/1.3 var(--font-code); color: var(--ink-muted); }
+    .c0-col-note { margin-top: 16px; font: 400 34px/1.3 var(--font-text); color: var(--ink-muted); }
+    .c0-ex { position: absolute; top: 600px; padding: 28px 40px; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; font: 700 40px/1 var(--font-text); }
+
+    .c0-party { position: absolute; top: 150px; width: 480px; border-top: 6px solid var(--ink); padding-top: 32px; }
+    .c0-party-h { font: 600 60px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-need { margin-top: 40px; font: 400 40px/1.25 var(--font-text); }
+
+    .c0-nav { position: absolute; left: 48px; top: 40px; width: 300px; }
+    .c0-nav div { font: 400 40px/1 var(--font-text); color: var(--ink-muted); padding: 26px 0 26px 16px; border-bottom: 1px solid var(--rule); }
+    .c0-nav .on { color: var(--ink); font-weight: 700; }
+    #c0-hover { position: absolute; left: 48px; top: 226px; width: 300px; height: 93px; background: var(--paper-sunk); }
+    #c0-loan { position: absolute; left: 440px; top: 40px; width: 600px; }
+    .c0-ftitle { font: 600 56px/1.1 var(--font-display); margin-bottom: 20px; }
+    .c0-flabel { font: 700 32px/1 var(--font-text); margin: 32px 0 14px; }
+    .c0-input { height: 84px; border: 2px solid var(--rule-strong); border-radius: 8px; padding: 0 24px; display: flex; align-items: center; font: 400 40px/1 var(--font-text); background: var(--paper); box-sizing: border-box; }
+    .c0-tag2 { position: absolute; left: 1120px; width: 460px; padding: 26px 30px; border: 3px solid var(--ink); border-radius: 8px; background: var(--paper-raised); box-sizing: border-box; }
+    .c0-tag2 code { font: 700 40px/1 var(--font-code); }
+    .c0-tag2 .label { margin-top: 14px; }
+    #c0-dirty { border-color: var(--accent); }
+    #c0-cursor { position: absolute; left: 900px; top: 420px; }
+
+    .c0-dcol { position: absolute; top: 140px; width: 720px; }
+    .c0-dh { font: 600 64px/1.1 var(--font-display); letter-spacing: -0.01em; margin-bottom: 60px; }
+    #c0-slot { width: 680px; height: 300px; border: 4px dashed var(--rule-strong); border-radius: 8px; box-sizing: border-box; }
+    .c0-row { position: relative; height: 130px; border-bottom: 1px solid var(--rule); font: 700 44px/1 var(--font-code); }
+    .c0-row > * { position: absolute; top: 43px; }
+    .c0-lamp { width: 44px; height: 44px; border-radius: 50%; background: var(--paper-sunk); border: 4px solid var(--rule-strong); box-sizing: border-box; }
+    .c0-second { font: 400 32px/1 var(--font-text); color: var(--ink-muted); top: 50px !important; }
+
+    #c0-t1 { position: absolute; left: 200px; top: 200px; font: 700 64px/1 var(--font-code); white-space: nowrap; }
+    #c0-t1-note { position: absolute; left: 200px; top: 310px; }
+    #c0-t2 { position: absolute; left: 200px; top: 520px; font: 700 52px/1 var(--font-code); }
+    #c0-t3 { position: absolute; left: 200px; top: 660px; font: 400 40px/1.3 var(--font-text); display: flex; align-items: center; gap: 28px; }
+
+    .c0-code { left: 110px; top: 220px; width: 1700px; box-sizing: border-box; font-size: 32px; }
+    .c0-code .ln { position: relative; }
+    .c0-band { position: absolute; left: 0; right: 0; top: 40px; height: 48px; background: var(--accent-soft); }
+
+    #c0-tbl { position: absolute; left: 160px; top: 150px; width: 1600px; }
+    .c0-tr { display: grid; grid-template-columns: 400px 580px 620px; padding: 20px 0; border-bottom: 1px solid var(--rule); font: 400 30px/1.3 var(--font-text); }
+    .c0-tr > div { padding-right: 32px; }
+    .c0-tr > div:first-child { font-weight: 700; }
+    .c0-tr code { font: 400 30px/1.3 var(--font-code); }
+    #c0-th { font: 700 36px/1.2 var(--font-text); border-bottom: 2px solid var(--rule-strong); }
+
+    #c0-cx .fbox { height: 140px; display: flex; align-items: center; box-sizing: border-box; }
+    #c0-cx code { font-family: var(--font-code); }
+    #c0-ff { font-family: var(--font-code) !important; justify-content: center; }
+    #c0-pkg { position: absolute; left: 160px; top: 560px; width: 1600px; height: 400px; padding: 40px 48px; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; box-sizing: border-box; }
+    #c0-pkg-name { font: 700 44px/1 var(--font-code); }
+    .c0-chip { position: absolute; top: 150px; padding: 22px 32px; border: 3px solid var(--ink); border-radius: 8px; font: 700 40px/1 var(--font-code); }
+    #c0-pkg-note { position: absolute; left: 48px; top: 300px; }
+
+    #c0-ch-h { position: absolute; left: 200px; top: 90px; font: 600 64px/1 var(--font-display); letter-spacing: -0.01em; }
+    #c0-cband { position: absolute; left: 180px; top: 486px; width: 1560px; height: 96px; background: var(--accent-soft); border-radius: 8px; }
+    .c0-cr { position: absolute; left: 200px; width: 1520px; display: grid; grid-template-columns: 440px 1080px; padding: 22px 0; border-bottom: 1px solid var(--rule); font: 400 38px/1.3 var(--font-text); }
+    .c0-cr > div:first-child { font-weight: 700; }
+    #c0-keep { position: absolute; left: 200px; top: 700px; width: 760px; height: 270px; padding: 32px 40px; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow); box-sizing: border-box; }
+    #c0-keep-title { font: 700 36px/1 var(--font-text); }
+    .c0-kf { display: flex; align-items: center; gap: 24px; margin-top: 28px; font: 400 32px/1 var(--font-text); }
+    .c0-kf span:first-child { width: 180px; color: var(--ink-muted); }
+    .c0-kf span:last-child { width: 420px; height: 60px; border: 2px solid var(--rule-strong); border-radius: 8px; display: flex; align-items: center; padding: 0 20px; box-sizing: border-box; }
+    #c0-keep-tag { position: absolute; left: 1010px; top: 800px; padding: 20px 36px; background: var(--tip-soft); border: 3px solid var(--tip); border-radius: 8px; font: 700 40px/1 var(--font-text); color: var(--tip); }
+  </style>
+
+  <div id="root" data-composition-id="c0" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c0-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c0-card-time" class="chapter-time">08:55</div>
+      <div id="c0-card-title" class="chapter-title">What moved since Angular 17</div>
+    </div>
+
+    <!-- c0-1 the desk before opening, the forms API you know -->
+    <div id="c0-desk" class="clip world" data-start="3" data-duration="7.82">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div id="c0-d-title" data-hold>What moved since Angular 17</div>
+          <div id="c0-d-stack">
+            <div id="c0-api1" class="c0-api">FormGroup</div>
+            <div id="c0-api2" class="c0-api">formControlName</div>
+            <div id="c0-api3" class="c0-api">Validators.required</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-2 two systems, and which exercise uses which -->
+    <div id="c0-sys" class="clip world" data-start="10.82" data-duration="13.23">
+      <div id="c0-divider"></div>
+      <div id="c0-col1" data-hold class="c0-col" style="left: 160px">
+        <div class="c0-col-h">Reactive forms</div>
+        <div class="c0-col-pkg">@angular/forms</div>
+      </div>
+      <div id="c0-col2" class="c0-col" style="left: 1000px">
+        <div class="c0-col-h">Signal Forms</div>
+        <div class="c0-col-pkg">@angular/forms/signals</div>
+        <div id="c0-col2-note" class="c0-col-note">stable API in Angular 22</div>
+      </div>
+      <div id="c0-ex1" class="c0-ex" style="left: 160px">Exercise 01</div>
+      <div id="c0-ex2" class="c0-ex" style="left: 500px">Exercise 02</div>
+      <div id="c0-ex3" class="c0-ex" style="left: 1000px">Exercise 03</div>
+    </div>
+
+    <!-- c0-3, c0-3b three parties -->
+    <div id="c0-parties" class="clip world" data-start="24.05" data-duration="14.85">
+      <div id="c0-p1" class="c0-party" style="left: 160px">
+        <div class="c0-party-h">The person</div>
+        <div id="c0-n1" class="c0-need">does not lose their input</div>
+        <div id="c0-n2" class="c0-need">knows what is wrong, and when</div>
+        <div id="c0-n3" class="c0-need">does not submit twice</div>
+      </div>
+      <div id="c0-p2" class="c0-party" style="left: 720px">
+        <div class="c0-party-h">The business</div>
+        <div id="c0-n4" class="c0-need">a complete, valid payload</div>
+      </div>
+      <div id="c0-p3" class="c0-party" style="left: 1280px">
+        <div class="c0-party-h">The server</div>
+        <div id="c0-n5" class="c0-need">no flood of checks nobody needed</div>
+      </div>
+    </div>
+
+    <!-- c0-4 a loan form half filled, the pointer on another menu item -->
+    <div id="c0-leave" class="clip world" data-start="38.9" data-duration="11.97">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div id="c0-hover"></div>
+          <div class="c0-nav"><div>Members</div><div class="on">Loans</div><div>Returns</div><div>Holds</div></div>
+          <div id="c0-loan">
+            <div class="c0-ftitle">New loan</div>
+            <div class="c0-flabel">Member ID</div>
+            <div class="c0-input">M-1187</div>
+            <div class="c0-flabel">Days</div>
+            <div class="c0-input"></div>
+          </div>
+          <div id="c0-dirty" class="c0-tag2" style="top: 120px"><code>form.dirty</code><div class="label">true: the user changed something</div></div>
+          <div id="c0-guard" class="c0-tag2" style="top: 380px"><code>CanDeactivate</code><div class="label">a route guard that can ask before leaving</div></div>
+          <svg id="c0-cursor" width="40" height="56" viewBox="0 0 40 56">
+            <path d="M2,2 L2,46 L13,36 L21,54 L29,50 L21,33 L36,33 Z" fill="#1d1b18" stroke="#fffdf9" stroke-width="3" stroke-linejoin="round" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-5 double submits: Signal Forms refuses, reactive forms have nothing -->
+    <div id="c0-double" class="clip world" data-start="50.87" data-duration="10.44">
+      <div class="c0-dcol" style="left: 160px">
+        <div class="c0-dh">Reactive forms</div>
+        <div id="c0-slot"></div>
+      </div>
+      <div class="c0-dcol" style="left: 1000px">
+        <div class="c0-dh">Signal Forms</div>
+        <div class="c0-row">
+          <div id="c0-lamp" class="c0-lamp" style="left: 0"></div>
+          <div style="left: 76px">submitting()</div>
+          <div id="c0-true" style="left: 520px; color: var(--note)">true</div>
+        </div>
+        <div id="c0-row2" class="c0-row">
+          <div class="c0-second" style="left: 0">second</div>
+          <div style="left: 160px">submit()</div>
+          <div style="left: 400px">→</div>
+          <div id="c0-false" style="left: 520px; color: var(--accent)">false</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-6 untyped is FormGroup<any> -->
+    <div id="c0-typed" class="clip world" data-start="61.31" data-duration="11.58">
+      <div id="c0-t1"><span id="c0-t1a">UntypedFormGroup</span><span id="c0-t1b"> = FormGroup&lt;<span style="color: var(--accent)">any</span>&gt;</span></div>
+      <div id="c0-t1-note" class="label">exists for migration</div>
+      <div id="c0-t2">form.value: <span class="k">any</span></div>
+      <div id="c0-t3">
+        <span>anything you emit from it type-checks</span>
+        <svg id="c0-check" width="56" height="56" viewBox="0 0 56 56"><path d="M8,30 L22,44 L48,12" fill="none" stroke="#356b3f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </div>
+    </div>
+
+    <!-- c0-7 NonNullableFormBuilder (LESSON.md) -->
+    <div id="c0-builder" class="clip world" data-start="72.89" data-duration="9.88">
+      <div class="code c0-code">
+        <div id="c0-band" class="c0-band"></div>
+        <span class="ln"><span class="k">private readonly</span> fb = inject(NonNullableFormBuilder);</span>
+        <span class="ln"> </span>
+        <span class="ln"><span class="k">readonly</span> loan = <span class="k">this</span>.fb.group({</span>
+        <span class="ln">  memberId: [<span class="s">''</span>, Validators.required],</span>
+        <span class="ln">  days: [<span class="n">14</span>, [Validators.min(<span class="n">1</span>), Validators.max(<span class="n">28</span>)]],</span>
+        <span class="ln">});</span>
+        <span class="ln c">// loan.controls.days is FormControl&lt;number&gt;, not FormControl&lt;number | null&gt;</span>
+        <span class="ln c">// loan.reset() goes back to '' and 14, not to null</span>
+      </div>
+    </div>
+
+    <!-- c0-9 the two models side by side (LESSON.md table) -->
+    <div id="c0-table" class="clip world" data-start="82.77" data-duration="8.05">
+      <div id="c0-tbl">
+        <div id="c0-th" class="c0-tr"><div></div><div>Reactive forms</div><div>Signal Forms</div></div>
+        <div id="c0-r1" class="c0-tr"><div>Where the data lives</div><div>Inside the controls (<code>control.value</code>)</div><div>In your signal; the form writes to it</div></div>
+        <div id="c0-r2" class="c0-tr"><div>How you declare rules</div><div>Validator functions passed to each control</div><div>A schema function that registers rules on paths</div></div>
+        <div id="c0-r3" class="c0-tr"><div>How you read state</div><div>Properties (<code>valid</code>, <code>touched</code>) and observables</div><div>Signals (<code>valid()</code>, <code>touched()</code>)</div></div>
+        <div id="c0-r4" class="c0-tr"><div>Template binding</div><div><code>formControlName</code>, <code>[formGroup]</code></div><div><code>[formField]</code>, <code>[formRoot]</code></div></div>
+        <div id="c0-r5" class="c0-tr"><div>Custom controls</div><div><code>ControlValueAccessor</code></div><div>A component with a <code>value = model()</code></div></div>
+      </div>
+    </div>
+
+    <!-- c0-10 migration paths -->
+    <div id="c0-compat" class="clip world sunk" data-start="90.82" data-duration="11.68">
+      <div id="c0-cx">
+        <div id="c0-ff" class="fbox" style="left: 160px; top: 160px; width: 400px">[formField]</div>
+        <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+          <line id="c0-cx-line" x1="564" y1="230" x2="740" y2="230" stroke="#1d1b18" stroke-width="4" stroke-dasharray="176" />
+          <polygon id="c0-cx-head" points="740,218 760,230 740,242" fill="#1d1b18" />
+        </svg>
+        <div id="c0-cx-lbl" class="flabel" style="left: 564px; top: 170px; width: 196px">binds to</div>
+        <div id="c0-va" class="fbox" style="left: 780px; top: 160px; width: 980px; padding-left: 40px"><span>a component that provides <code>NG_VALUE_ACCESSOR</code></span></div>
+        <div id="c0-mat" class="label" style="position: absolute; left: 780px; top: 340px; width: 980px; font-size: 36px">component libraries built on value accessors, Angular Material among them, keep working</div>
+        <div id="c0-pkg">
+          <div id="c0-pkg-name">@angular/forms/signals/compat</div>
+          <div id="c0-chip1" class="c0-chip" style="left: 48px">compatForm</div>
+          <div id="c0-chip2" class="c0-chip" style="left: 400px">SignalFormControl</div>
+          <div id="c0-pkg-note" class="label">both models in one form, during migration</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-11, c0-11b when to choose which (LESSON.md list) -->
+    <div id="c0-choose" class="clip world" data-start="102.5" data-duration="21.92">
+      <div id="c0-ch-h">When to choose which</div>
+      <div id="c0-cband"></div>
+      <div id="c0-c1" data-hold class="c0-cr" style="top: 190px"><div>Reactive forms</div><div>existing code, and forms that lean on a deep ecosystem of value-accessor components.</div></div>
+      <div id="c0-c2" data-hold class="c0-cr" style="top: 338px"><div>Signal Forms</div><div>new forms that start from a data model, especially with rules that read several fields.</div></div>
+      <div id="c0-c3" class="c0-cr" style="top: 486px"><div>Template-driven forms</div><div>trivial forms with one or two fields and no cross-field rules.</div></div>
+      <div id="c0-keep">
+        <div id="c0-keep-title">Loan form, reactive, working</div>
+        <div class="c0-kf"><span>Member ID</span><span>M-1187</span></div>
+        <div class="c0-kf"><span>Days</span><span>14</span></div>
+      </div>
+      <div id="c0-keep-tag" data-hold>keep</div>
+    </div>
+
+    <audio id="c0-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="0" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c0-1" class="clip" src="assets/vo/c0-1.wav" data-start="3" data-duration="7.467" data-volume="1"></audio>
+    <audio id="vo-c0-2" class="clip" src="assets/vo/c0-2.wav" data-start="10.82" data-duration="12.885" data-volume="1"></audio>
+    <audio id="vo-c0-3" class="clip" src="assets/vo/c0-3.wav" data-start="24.05" data-duration="7.851" data-volume="1"></audio>
+    <audio id="vo-c0-3b" class="clip" src="assets/vo/c0-3b.wav" data-start="32.25" data-duration="6.293" data-volume="1"></audio>
+    <audio id="vo-c0-4" class="clip" src="assets/vo/c0-4.wav" data-start="38.9" data-duration="11.627" data-volume="1"></audio>
+    <audio id="vo-c0-5" class="clip" src="assets/vo/c0-5.wav" data-start="50.87" data-duration="10.091" data-volume="1"></audio>
+    <audio id="vo-c0-6" class="clip" src="assets/vo/c0-6.wav" data-start="61.31" data-duration="11.221" data-volume="1"></audio>
+    <audio id="vo-c0-7" class="clip" src="assets/vo/c0-7.wav" data-start="72.89" data-duration="9.536" data-volume="1"></audio>
+    <audio id="vo-c0-9" class="clip" src="assets/vo/c0-9.wav" data-start="82.77" data-duration="7.701" data-volume="1"></audio>
+    <audio id="vo-c0-10" class="clip" src="assets/vo/c0-10.wav" data-start="90.82" data-duration="11.328" data-volume="1"></audio>
+    <audio id="vo-c0-11" class="clip" src="assets/vo/c0-11.wav" data-start="102.5" data-duration="11.691" data-volume="1"></audio>
+    <audio id="vo-c0-11b" class="clip" src="assets/vo/c0-11b.wav" data-start="114.54" data-duration="8.875" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const draw = (sel, len, at, d = 0.5) =>
+      tl.fromTo(sel, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0
+
+    // c0-1: the title, then the API stack on "forms in Angular seventeen"
+    fadeIn("#c0-d-title", 3.3, 0.6);
+    fadeIn("#c0-api1", 7.6, 0.4);
+    fadeIn("#c0-api2", 7.75, 0.4);
+    fadeIn("#c0-api3", 7.9, 0.4);
+
+    // c0-2: reactive forms, then Signal Forms, then the exercises under each
+    fadeIn("#c0-col1", 11.0, 0.6);
+    fadeIn("#c0-col2", 16.4, 0.6);
+    fadeIn("#c0-col2-note", 18.0, 0.4);
+    fadeIn("#c0-ex1", 19.0, 0.4);
+    fadeIn("#c0-ex2", 19.15, 0.4);
+    fadeIn("#c0-ex3", 21.6, 0.4);
+
+    // c0-3: three parties, the person's needs; c0-3b: business and server
+    fadeIn("#c0-p1", 24.6, 0.6);
+    fadeIn("#c0-p2", 24.75, 0.6);
+    fadeIn("#c0-p3", 24.9, 0.6);
+    fadeIn("#c0-n1", 28.0);
+    fadeIn("#c0-n2", 30.0);
+    fadeIn("#c0-n3", 31.3);
+    fadeIn("#c0-n4", 33.6);
+    fadeIn("#c0-n5", 36.4);
+
+    // c0-4: the pointer leaves the half-filled form for another menu item
+    fadeIn("#c0-cursor", 39.4, 0.3);
+    tl.fromTo("#c0-cursor", { x: 0, y: 0 }, { x: -660, y: -150, duration: 0.8, ease: "power2.inOut" }, 42.6);
+    fadeIn("#c0-hover", 43.4, 0.2);
+    fadeIn("#c0-dirty", 45.0);
+    fadeIn("#c0-guard", 46.8);
+
+    // c0-5: submitting() lit, the second submit() refused; the reactive slot stays empty
+    tl.fromTo("#c0-lamp", { backgroundColor: "#efe9de", borderColor: "#c4b9a6" }, { backgroundColor: "#2a5a86", borderColor: "#2a5a86", duration: 0.3 }, 53.6);
+    fadeIn("#c0-true", 53.6, 0.3);
+    fadeIn("#c0-row2", 54.6, 0.4);
+    fadeIn("#c0-false", 55.2, 0.3);
+    fadeIn("#c0-slot", 57.3);
+
+    // c0-6: the alias, then what it does to the compiler
+    fadeIn("#c0-t1a", 63.6, 0.5);
+    fadeIn("#c0-t1b", 64.8, 0.5);
+    fadeIn("#c0-t1-note", 66.6, 0.4);
+    fadeIn("#c0-t2", 68.6);
+    fadeIn("#c0-t3", 70.6);
+    tl.fromTo("#c0-check", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 70.75);
+
+    // c0-7: code cut in whole; the band on the first comment line, then the second
+    tl.fromTo("#c0-band", { opacity: 0, y: 6 * 48 }, { opacity: 1, duration: 0.3 }, 76.0);
+    tl.to("#c0-band", { y: 7 * 48, duration: 0.8, ease: "power2.inOut" }, 79.4);
+
+    // c0-9: header, then the rows one by one
+    fadeIn("#c0-th", 83.0, 0.4);
+    for (let i = 1; i <= 5; i++) fadeIn("#c0-r" + i, 83.9 + (i - 1) * 1.0, 0.4);
+
+    // c0-10: [formField] still binds to value accessors; the compat package
+    fadeIn("#c0-ff", 92.6, 0.4);
+    draw("#c0-cx-line", 176, 94.2, 0.4);
+    fadeIn("#c0-cx-head", 94.55, 0.1);
+    fadeIn("#c0-cx-lbl", 94.35, 0.4);
+    fadeIn("#c0-va", 94.6, 0.4);
+    fadeIn("#c0-mat", 97.0);
+    fadeIn("#c0-pkg", 99.0, 0.4);
+    fadeIn("#c0-chip1", 99.6, 0.4);
+    fadeIn("#c0-chip2", 99.75, 0.4);
+    fadeIn("#c0-pkg-note", 100.4, 0.4);
+
+    // c0-11: the first two rows; c0-11b: the third, then a working form to keep
+    fadeIn("#c0-c1", 102.7);
+    fadeIn("#c0-c2", 108.2);
+    fadeIn("#c0-c3", 114.7);
+    fadeIn("#c0-cband", 115.0, 0.3);
+    fadeIn("#c0-keep", 117.0);
+    tl.fromTo("#c0-keep-tag", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.4, ease: "power3.out" }, 118.6);
+
+    window.__timelines["c0"] = tl;
+  </script>
+</template>

@@ -1,0 +1,480 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c3-svg { position: absolute; left: 0; top: 0; }
+    .c3-fb { box-sizing: border-box; padding: 0 24px; display: grid; place-items: center; }
+    .c3-fb.mono { font: 700 36px/1.2 var(--font-code); }
+    .c3-band { position: absolute; left: 0; right: 0; top: 40px; height: 51px; background: var(--accent-soft); }
+    .c3-code .ln { position: relative; }
+    .c3-code.s28 { font-size: 28px; padding: 40px 32px; }
+    .c3-code.s28 .c3-band { height: 42px; }
+    .c3-code.s30 { font-size: 30px; padding: 40px 32px; }
+    .c3-code.s30 .c3-band { height: 45px; }
+
+    #c3-app { width: 700px; }
+    .c3-mrow { height: 76px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; gap: 24px; }
+    .c3-mrow i { display: block; height: 24px; border-radius: 4px; background: var(--rule); }
+    #c3-page { position: absolute; left: 900px; top: 80px; width: 900px; height: 920px; box-sizing: border-box; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
+    #c3-page-bar { height: 72px; padding: 0 32px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+    #c3-page-t { margin: 40px 56px 0; font: 600 64px/1 var(--font-display); }
+    .c3-f { margin: 30px 56px 0; }
+    .c3-f span { display: block; font: 700 30px/1 var(--font-text); color: var(--ink-muted); margin-bottom: 10px; }
+    .c3-f div { height: 76px; box-sizing: border-box; padding: 0 22px; display: flex; align-items: center; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper); font: 400 36px/1 var(--font-text); }
+    #c3-join { margin: 36px 56px 0; display: inline-block; padding: 20px 32px; border-radius: 8px; background: var(--ink); color: var(--paper); font: 700 34px/1 var(--font-text); }
+
+    #c3-table { position: absolute; left: 160px; top: 170px; width: 1600px; display: grid; grid-template-columns: 700px 900px; font: 400 32px/1.3 var(--font-text); }
+    #c3-table > div, #c3-table2 > div { display: contents; }
+    #c3-table span, #c3-table2 span { padding: 20px 24px; border-bottom: 1px solid var(--rule); }
+    #c3-table span:first-child, #c3-table2 span:first-child { font: 400 32px/1.3 var(--font-code); }
+    #c3-table code, #c3-table2 code { font: 400 30px/1 var(--font-code); }
+    .c3-th span { font: 700 30px/1.3 var(--font-text) !important; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong) !important; }
+    #c3-table2 { position: absolute; left: 160px; top: 170px; width: 1600px; display: grid; grid-template-columns: 700px 900px; font: 400 32px/1.3 var(--font-text); }
+
+    .c3-chip { position: absolute; padding: 14px 24px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 36px/1 var(--font-code); }
+
+    .c3-fl { position: absolute; font: 400 32px/1.2 var(--font-text); color: var(--ink-muted); text-align: center; }
+
+    #c3-ctx-head { position: absolute; left: 200px; top: 420px; font: 700 40px/1 var(--font-text); }
+    .c3-ctx { position: absolute; left: 200px; width: 1520px; display: grid; grid-template-columns: 600px 920px; align-items: baseline; }
+    .c3-ctx b { font: 700 40px/1.3 var(--font-code); }
+    .c3-ctx span { font: 400 40px/1.3 var(--font-text); }
+    .c3-ctx code { font: 400 36px/1 var(--font-code); }
+
+    .c3-call { position: absolute; left: 160px; top: 200px; width: 1600px; box-sizing: border-box; padding: 44px 56px 52px; border-left: 10px solid; border-radius: 8px; }
+    .c3-call.note { border-color: var(--note); background: var(--note-soft); }
+    .c3-call.warn { border-color: var(--warning); background: var(--warning-soft); }
+    .c3-call-h { font: 700 32px/1 var(--font-text); letter-spacing: 0.06em; }
+    .c3-call.note .c3-call-h { color: var(--note); }
+    .c3-call.warn .c3-call-h { color: var(--warning); }
+    .c3-call p { margin: 28px 0 0; font: 400 42px/1.45 var(--font-text); }
+    .c3-call code { font: 400 40px/1 var(--font-code); padding: 0 6px; border-radius: 6px; }
+
+    #c3-steps-h { position: absolute; left: 200px; top: 180px; font: 700 40px/1 var(--font-text); color: var(--ink-muted); }
+    #c3-steps-h code { font: 700 40px/1 var(--font-code); }
+    .c3-step { position: absolute; left: 200px; width: 1520px; display: grid; grid-template-columns: 90px 1430px; font: 400 44px/1.35 var(--font-text); }
+    .c3-step b { font: 700 44px/1.35 var(--font-text); color: var(--ink-muted); }
+    .c3-step code { font: 400 40px/1 var(--font-code); }
+
+    .q { font-size: 40px; margin-bottom: 28px; }
+    .q code { font: 400 38px/1 var(--font-code); }
+
+    #c3-after-title { position: absolute; left: 200px; top: 150px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+    #c3-sol { position: absolute; left: 200px; top: 320px; padding: 20px 32px; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; font: 700 40px/1 var(--font-code); }
+    #c3-comment { position: absolute; left: 200px; top: 440px; width: 1520px; height: 360px; padding: 36px 48px; box-sizing: border-box; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; }
+    .c3-cline { display: flex; align-items: flex-end; gap: 28px; height: 100px; font: 700 40px/1 var(--font-text); color: var(--ink-muted); }
+    .c3-cline i { flex: 1; height: 3px; margin-bottom: 8px; background: var(--rule-strong); }
+    #c3-reread { position: absolute; left: 200px; top: 850px; font-size: 36px; }
+    #c3-closed { position: absolute; left: 480px; top: 300px; font: 600 88px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c3-lights { position: absolute; inset: 0; background: var(--ink); }
+  </style>
+
+  <div id="root" data-composition-id="c3" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c3-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">15:00</div>
+      <div class="chapter-title">Signal Forms</div>
+    </div>
+
+    <!-- c3-1: an online sign-up page beside the desk app -->
+    <div id="c3-desk" class="clip world" data-start="3" data-duration="10.95">
+      <div id="c3-app" class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">15:00</span></div>
+        <div class="app-body">
+          <div class="label" style="margin-bottom: 16px">Members</div>
+          <div class="c3-mrow"><i style="width: 260px"></i><i style="width: 140px"></i></div>
+          <div class="c3-mrow"><i style="width: 220px"></i><i style="width: 180px"></i></div>
+          <div class="c3-mrow"><i style="width: 300px"></i><i style="width: 120px"></i></div>
+          <div class="c3-mrow"><i style="width: 240px"></i><i style="width: 160px"></i></div>
+          <div class="c3-mrow"><i style="width: 280px"></i><i style="width: 130px"></i></div>
+        </div>
+      </div>
+      <div id="c3-page">
+        <div id="c3-page-bar">library.example/join</div>
+        <div id="c3-page-t">Become a member</div>
+        <div id="c3-f1" class="c3-f"><span>Name</span><div>Grace Mensah</div></div>
+        <div id="c3-f2" class="c3-f"><span>Age</span><div>12</div></div>
+        <div id="c3-f3" class="c3-f"><span>Guardian</span><div></div></div>
+        <div id="c3-f4" class="c3-f"><span>Plan</span><div style="background: var(--paper-sunk); color: var(--ink-muted); border-style: dashed">single</div></div>
+        <div id="c3-join" data-hold>Join the library</div>
+      </div>
+    </div>
+
+    <!-- c3-2: Membership and form(), band on the model line -->
+    <div id="c3-model" class="clip world" data-start="13.95" data-duration="9.27">
+      <div class="code c3-code s28" style="left: 104px; top: 220px" data-hold>
+        <div id="c3-band1" class="c3-band"></div>
+        <span class="ln"><span class="k">interface</span> Membership {</span>
+        <span class="ln">  name: <span class="k">string</span>;</span>
+        <span class="ln">  age: <span class="k">number</span>;</span>
+        <span class="ln">  guardian: <span class="k">string</span>;</span>
+        <span class="ln">  plan: <span class="s">'single'</span> | <span class="s">'family'</span>;</span>
+        <span class="ln">}</span>
+        <span class="ln"> </span>
+        <span class="ln"><span class="k">protected readonly</span> model =</span>
+        <span class="ln">  signal&lt;Membership&gt;({ name: <span class="s">''</span>, age: <span class="n">18</span>, guardian: <span class="s">''</span>, plan: <span class="s">'single'</span> });</span>
+        <span class="ln"><span class="k">protected readonly</span> signup = form(<span class="k">this</span>.model, (path) =&gt; {</span>
+        <span class="ln">  required(path.name, { message: <span class="s">'Name is required'</span> });</span>
+        <span class="ln">  min(path.age, <span class="n">5</span>, { message: <span class="s">'Members are at least 5 years old'</span> });</span>
+        <span class="ln">});</span>
+      </div>
+    </div>
+
+    <!-- c3-3: FieldState table, the valid/invalid/pending row banded -->
+    <div id="c3-state" class="clip world" data-start="23.22" data-duration="9.57">
+      <div id="c3-table" data-hold>
+        <div class="c3-th"><span>Signal</span><span>Meaning</span></div>
+        <div><span>value()</span><span>The field's value (writable)</span></div>
+        <div><span>errors() / errorSummary()</span><span>Errors of this field / of this field and its children</span></div>
+        <div id="c3-trow3"><span>valid() / invalid() / pending()</span><span>Same three-state logic as <code>PENDING</code> in chapter 2: <code>valid()</code> is not <code>!invalid()</code></span></div>
+        <div><span>touched() / dirty()</span><span>Interaction state, as in reactive forms</span></div>
+        <div><span>disabled() / readonly() / hidden() / required()</span><span>Results of the rules registered in the schema</span></div>
+        <div><span>submitting()</span><span>A submission is running</span></div>
+      </div>
+    </div>
+
+    <!-- c3-4: the [formField] snippet, band on the @for over errors() -->
+    <div id="c3-snip" class="clip world" data-start="32.79" data-duration="5.74">
+      <div class="code c3-code" style="left: 160px; top: 340px" data-hold>
+        <div id="c3-band2" class="c3-band"></div>
+        <span class="ln">&lt;label&gt;Name &lt;input [formField]=<span class="s">"signup.name"</span> /&gt;&lt;/label&gt;</span>
+        <span class="ln"><span class="k">@for</span> (error of signup.name().errors(); track error.kind) {</span>
+        <span class="ln">  &lt;p role=<span class="s">"alert"</span>&gt;{{ error.message }}&lt;/p&gt;</span>
+        <span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c3-4b: FieldState table, the touched/dirty row banded -->
+    <div id="c3-state2" class="clip world" data-start="38.53" data-duration="5.05">
+      <div id="c3-table2" data-hold>
+        <div class="c3-th"><span>Signal</span><span>Meaning</span></div>
+        <div><span>value()</span><span>The field's value (writable)</span></div>
+        <div><span>errors() / errorSummary()</span><span>Errors of this field / of this field and its children</span></div>
+        <div><span>valid() / invalid() / pending()</span><span>Same three-state logic as <code>PENDING</code> in chapter 2: <code>valid()</code> is not <code>!invalid()</code></span></div>
+        <div id="c3-trow4"><span>touched() / dirty()</span><span>Interaction state, as in reactive forms</span></div>
+        <div><span>disabled() / readonly() / hidden() / required()</span><span>Results of the rules registered in the schema</span></div>
+        <div><span>submitting()</span><span>A submission is running</span></div>
+      </div>
+    </div>
+
+    <!-- c3-5: same snippet, band on role="alert"; aria-describedby and aria-invalid -->
+    <div id="c3-snip2" class="clip world" data-start="43.58" data-duration="10.67">
+      <div class="code c3-code" style="left: 160px; top: 260px">
+        <div id="c3-band3" class="c3-band"></div>
+        <span class="ln">&lt;label&gt;Name &lt;input [formField]=<span class="s">"signup.name"</span> /&gt;&lt;/label&gt;</span>
+        <span class="ln"><span class="k">@for</span> (error of signup.name().errors(); track error.kind) {</span>
+        <span class="ln">  &lt;p role=<span class="s">"alert"</span>&gt;{{ error.message }}&lt;/p&gt;</span>
+        <span class="ln">}</span>
+      </div>
+      <div id="c3-keep" class="label" data-hold style="position: absolute; left: 160px; top: 600px">keep <code style="font-family: var(--font-code)">role="alert"</code> for a summary shown after submitting</div>
+      <div id="c3-aria1" class="c3-chip" style="left: 160px; top: 700px">aria-describedby</div>
+      <div id="c3-aria2" class="c3-chip" style="left: 640px; top: 700px" data-hold>aria-invalid</div>
+    </div>
+
+    <!-- c3-6, c3-7: the lesson's schema flow -->
+    <div id="c3-flow" class="clip world sunk" data-start="54.25" data-duration="17.36">
+      <svg class="c3-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#1d1b18" stroke-width="4">
+        <g id="c3-fe1"><path pathLength="1" d="M580 325 H882" /><polygon points="900,325 882,315 882,335" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-fe2"><path pathLength="1" d="M1280 325 H1422" /><polygon points="1440,325 1422,315 1422,335" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-fe3"><path pathLength="1" d="M1610 390 V622" /><polygon points="1610,640 1600,622 1620,622" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-fe4"><path pathLength="1" d="M580 705 H1422" /><polygon points="1440,705 1422,695 1422,715" fill="#1d1b18" stroke="none" /></g>
+      </svg>
+      <div id="c3-fa" class="fbox c3-fb mono" style="left: 140px; top: 260px; width: 440px; height: 130px">form(model, schema)</div>
+      <div id="c3-fb" class="fbox c3-fb" style="left: 900px; top: 260px; width: 380px; height: 130px">schema function</div>
+      <div id="c3-fc" class="fbox c3-fb" style="left: 1440px; top: 260px; width: 340px; height: 130px">rules on paths</div>
+      <div id="c3-fd" class="fbox c3-fb" style="left: 1440px; top: 640px; width: 340px; height: 130px">logic functions</div>
+      <div id="c3-fx" class="fbox c3-fb" style="left: 140px; top: 640px; width: 440px; height: 130px">model signal</div>
+      <div id="c3-paths" class="c3-fl" style="left: 860px; top: 412px; width: 460px">receives paths, not values</div>
+      <div id="c3-fl1" class="c3-fl" style="left: 580px; top: 222px; width: 320px">runs once, at creation</div>
+      <div id="c3-fl2" class="c3-fl" style="left: 1260px; top: 262px; width: 200px">registers</div>
+      <div id="c3-fl3" class="c3-fl" style="left: 1630px; top: 495px; width: 120px">keep</div>
+      <div id="c3-fl4" class="c3-fl" style="left: 600px; top: 650px; width: 820px" data-hold>re-run them when what they read changes</div>
+    </div>
+
+    <!-- c3-8: what the context gives you -->
+    <div id="c3-context" class="clip world" data-start="71.61" data-duration="9.57">
+      <div id="c3-once" class="fbox c3-fb" style="left: 200px; top: 170px; width: 380px; height: 120px">schema function</div>
+      <div id="c3-once-l" class="flabel" style="left: 620px; top: 214px">runs once, at creation</div>
+      <div id="c3-ctx-head">The context gives you:</div>
+      <div id="c3-x1" class="c3-ctx" style="top: 510px"><b>value()</b><span>the current field's value, as a signal;</span></div>
+      <div id="c3-x2" class="c3-ctx" style="top: 610px"><b>valueOf(path.other)</b><span>the current value of another field;</span></div>
+      <div id="c3-x3" class="c3-ctx" style="top: 710px" data-hold><b>stateOf(path.other)</b><span>another field's whole state (<code>touched()</code>, <code>valid()</code> and so on).</span></div>
+    </div>
+
+    <!-- c3-9: loanModel, band on read once, then on read on every run -->
+    <div id="c3-loan" class="clip world" data-start="81.18" data-duration="9.2">
+      <div class="code c3-code s30" style="left: 104px; top: 300px" data-hold>
+        <div id="c3-band4" class="c3-band"></div>
+        <span class="ln">form(<span class="k">this</span>.loanModel, (path) =&gt; {</span>
+        <span class="ln">  <span class="k">const</span> limit = <span class="k">this</span>.loanModel().plan === <span class="s">'family'</span> ? <span class="n">28</span> : <span class="n">14</span>; <span class="c">// read once, never again</span></span>
+        <span class="ln"> </span>
+        <span class="ln">  validate(path.days, ({ value, valueOf }) =&gt; {</span>
+        <span class="ln">    <span class="k">const</span> max = valueOf(path.plan) === <span class="s">'family'</span> ? <span class="n">28</span> : <span class="n">14</span>;    <span class="c">// read on every run</span></span>
+        <span class="ln">    <span class="k">return</span> value() &lt;= max ? <span class="k">null</span> : { kind: <span class="s">'tooLong'</span>, message: <span class="s">`At most ${max} days`</span> };</span>
+        <span class="ln">  });</span>
+        <span class="ln">});</span>
+      </div>
+    </div>
+
+    <!-- c3-10: conditional rules, band on when, then on hidden and disabled -->
+    <div id="c3-cond" class="clip world" data-start="90.38" data-duration="7.35">
+      <div class="code c3-code" style="left: 160px; top: 230px" data-hold>
+        <div id="c3-band5" class="c3-band"></div>
+        <span class="ln">form(<span class="k">this</span>.model, (path) =&gt; {</span>
+        <span class="ln">  required(path.guardian, {</span>
+        <span class="ln">    message: <span class="s">'Young members need a guardian'</span>,</span>
+        <span class="ln">    when: ({ valueOf }) =&gt; valueOf(path.age) &lt; <span class="n">16</span>,</span>
+        <span class="ln">  });</span>
+        <span class="ln">  hidden(path.guardian, ({ valueOf }) =&gt; valueOf(path.age) &gt;= <span class="n">16</span>);</span>
+        <span class="ln">  disabled(path.plan, ({ valueOf }) =&gt; valueOf(path.age) &lt; <span class="n">16</span>);</span>
+        <span class="ln">});</span>
+      </div>
+    </div>
+
+    <!-- c3-11: the IMPORTANT callout -->
+    <div id="c3-imp" class="clip world" data-start="97.73" data-duration="10.18">
+      <div class="c3-call note">
+        <div class="c3-call-h">IMPORTANT</div>
+        <p id="c3-ip1"><code>hidden</code> changes state, not the DOM.</p>
+        <p id="c3-ip2" data-hold>A hidden field is ignored when Angular computes <code>valid</code>, <code>touched</code> and <code>dirty</code> for the form, but the template still renders it until you wrap it in <code id="c3-if">@if</code>. Rendering is always your decision.</p>
+      </div>
+    </div>
+
+    <!-- c3-12: a plain submit handler, then the lesson's submission options -->
+    <div id="c3-sub" class="clip world" data-start="107.91" data-duration="10.25">
+      <div id="c3-plain" class="code c3-code" style="left: 104px; top: 96px">(submit)=<span class="s">"save($event)"</span></div>
+      <div id="c3-dom" class="label" style="position: absolute; left: 744px; top: 142px">just a DOM event handler</div>
+      <div id="c3-subcode" class="code c3-code s28" style="left: 104px; top: 272px" data-hold>
+        <span class="ln"><span class="k">protected readonly</span> signup = form(</span>
+        <span class="ln">  <span class="k">this</span>.model,</span>
+        <span class="ln">  (path) =&gt; { <span class="c">&#47;* rules *&#47;</span> },</span>
+        <span class="ln">  {</span>
+        <span class="ln">    submission: {</span>
+        <span class="ln">      action: <span class="k">async</span> (field) =&gt; {</span>
+        <span class="ln">        <span class="k">await</span> <span class="k">this</span>.members.register(field().value());</span>
+        <span class="ln">        <span class="k">return</span> <span class="k">undefined</span>;</span>
+        <span class="ln c">        // or errors to attach to fields, for example a "card already exists" from the server</span>
+        <span class="ln">      },</span>
+        <span class="ln">      onInvalid: (field) =&gt; field().errorSummary()[<span class="n">0</span>]?.fieldTree().focusBoundControl(),</span>
+        <span class="ln">    },</span>
+        <span class="ln">  },</span>
+        <span class="ln">);</span>
+      </div>
+    </div>
+
+    <!-- c3-13: the four numbered steps of submit -->
+    <div id="c3-steps" class="clip world" data-start="118.16" data-duration="9.35">
+      <div id="c3-steps-h">Either way, <code>submit</code>:</div>
+      <div id="c3-st1" class="c3-step" style="top: 280px"><b>1.</b><span>marks every field as touched,</span></div>
+      <div id="c3-st2" class="c3-step" style="top: 400px"><b>2.</b><span>checks validity and runs the action only if the check passes, or calls <code>onInvalid</code> if it does not,</span></div>
+      <div id="c3-st3" class="c3-step" style="top: 580px"><b>3.</b><span>sets <code>submitting()</code> while the action runs and refuses a second submit until it ends,</span></div>
+      <div id="c3-st4" class="c3-step" style="top: 760px" data-hold><b>4.</b><span>attaches any errors the action returns to the fields they name.</span></div>
+    </div>
+
+    <!-- c3-14: the first WARNING callout -->
+    <div id="c3-w1" class="clip world" data-start="127.51" data-duration="11.02">
+      <div class="c3-call warn">
+        <div class="c3-call-h">WARNING</div>
+        <p id="c3-w1p1"><code>formRoot</code> always calls <code>preventDefault()</code>, but it calls <code>submit()</code> only when the form was created with <code id="c3-subopt">submission</code> options.</p>
+        <p id="c3-w1p2" data-hold>A <code>&lt;form [formRoot]&gt;</code> without them swallows the submit silently: no error, no request.</p>
+      </div>
+    </div>
+
+    <!-- c3-15, c3-15b: the second WARNING callout; band on 'pending', then on 'none'; onInvalid -->
+    <div id="c3-w2" class="clip world" data-start="138.53" data-duration="16.85">
+      <div class="c3-call warn" style="top: 130px">
+        <div class="c3-call-h">WARNING</div>
+        <p id="c3-w2p1">The default check is "not invalid" (<code id="c3-pend">ignoreValidators: 'pending'</code>), so pending async validators do not block the action. <span id="c3-trap">It is the same three-state trap as in chapter 2.</span></p>
+        <p id="c3-w2p2">Set <code id="c3-none">ignoreValidators: 'none'</code> … either in the <code>submission</code> options of <code>form()</code> (which is where <code>formRoot</code> reads it) or in the options you pass to <code>submit()</code>.</p>
+      </div>
+      <div id="c3-pl" class="label" style="position: absolute; left: 160px; top: 740px">pending → onInvalid</div>
+      <div id="c3-oninv" class="code c3-code s30" style="left: 160px; top: 790px" data-hold>onInvalid: (field) =&gt; field().errorSummary()[<span class="n">0</span>]?.fieldTree().focusBoundControl(),</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c3-questions" class="clip world note" data-start="155.38" data-duration="31.4">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c3-q1" class="q">Which lines in the schema body run once, and do any of them read a value that can change later?</div>
+        <div id="c3-q2" class="q">Does each cross-field rule read the other field through its context, or from a variable captured outside it?</div>
+        <div id="c3-q3" class="q">For each error message: under what state does it first appear? What does the user see on a form they have not touched?</div>
+        <div id="c3-q4" class="q">For each conditional field: is the rule conditional, and is the rendering conditional, and do both use the same condition?</div>
+        <div id="c3-q5" class="q">What runs when the user presses submit? Does anything check validity before the data leaves the component?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c3-pause" class="clip world" data-start="186.78" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c3-pause-2" class="pause-2" data-hold>Now do exercise 03.</div>
+    </div>
+
+    <!-- c3-after -->
+    <div id="c3-after" class="clip world" data-start="190.28" data-duration="10.32">
+      <div id="c3-after-title">After the lesson</div>
+      <div id="c3-sol">SOLUTION.md · solutions branch</div>
+      <div id="c3-comment">
+        <div class="label">Your review comment for the author</div>
+        <div class="c3-cline">1<i id="c3-cl1"></i></div>
+        <div class="c3-cline">2<i id="c3-cl2"></i></div>
+      </div>
+      <div id="c3-reread" class="label" data-hold>can't write it? reread the chapter</div>
+    </div>
+
+    <!-- c3-close: 18:00, the desk closes, lights down to the end -->
+    <div id="c3-close" class="clip world" data-start="200.6" data-duration="5.44">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock" style="color: var(--accent)">18:00</span></div>
+        <div class="app-body">
+          <div id="c3-closed">Opens again at 09:00</div>
+        </div>
+      </div>
+      <div id="c3-lights" data-hold></div>
+    </div>
+
+    <audio id="c3-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="48" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c3-bed2" class="clip" src="assets/music/bed.mp3" data-start="155.38" data-duration="31.4" data-media-start="56" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c3-1" class="clip" src="assets/vo/c3-1.wav" data-start="3.0" data-duration="10.603" data-volume="1"></audio>
+    <audio id="vo-c3-2" class="clip" src="assets/vo/c3-2.wav" data-start="13.95" data-duration="8.917" data-volume="1"></audio>
+    <audio id="vo-c3-3" class="clip" src="assets/vo/c3-3.wav" data-start="23.22" data-duration="9.216" data-volume="1"></audio>
+    <audio id="vo-c3-4" class="clip" src="assets/vo/c3-4.wav" data-start="32.79" data-duration="5.397" data-volume="1"></audio>
+    <audio id="vo-c3-4b" class="clip" src="assets/vo/c3-4b.wav" data-start="38.53" data-duration="4.693" data-volume="1"></audio>
+    <audio id="vo-c3-5" class="clip" src="assets/vo/c3-5.wav" data-start="43.58" data-duration="10.325" data-volume="1"></audio>
+    <audio id="vo-c3-6" class="clip" src="assets/vo/c3-6.wav" data-start="54.25" data-duration="9.92" data-volume="1"></audio>
+    <audio id="vo-c3-7" class="clip" src="assets/vo/c3-7.wav" data-start="64.52" data-duration="6.741" data-volume="1"></audio>
+    <audio id="vo-c3-8" class="clip" src="assets/vo/c3-8.wav" data-start="71.61" data-duration="9.216" data-volume="1"></audio>
+    <audio id="vo-c3-9" class="clip" src="assets/vo/c3-9.wav" data-start="81.18" data-duration="8.853" data-volume="1"></audio>
+    <audio id="vo-c3-10" class="clip" src="assets/vo/c3-10.wav" data-start="90.38" data-duration="6.997" data-volume="1"></audio>
+    <audio id="vo-c3-11" class="clip" src="assets/vo/c3-11.wav" data-start="97.73" data-duration="9.835" data-volume="1"></audio>
+    <audio id="vo-c3-12" class="clip" src="assets/vo/c3-12.wav" data-start="107.91" data-duration="9.899" data-volume="1"></audio>
+    <audio id="vo-c3-13" class="clip" src="assets/vo/c3-13.wav" data-start="118.16" data-duration="9.003" data-volume="1"></audio>
+    <audio id="vo-c3-14" class="clip" src="assets/vo/c3-14.wav" data-start="127.51" data-duration="10.667" data-volume="1"></audio>
+    <audio id="vo-c3-15" class="clip" src="assets/vo/c3-15.wav" data-start="138.53" data-duration="6.443" data-volume="1"></audio>
+    <audio id="vo-c3-15b" class="clip" src="assets/vo/c3-15b.wav" data-start="145.32" data-duration="9.707" data-volume="1"></audio>
+    <audio id="vo-c3-end" class="clip" src="assets/vo/c3-end.wav" data-start="155.38" data-duration="2.197" data-volume="1"></audio>
+    <audio id="vo-c3-after" class="clip" src="assets/vo/c3-after.wav" data-start="190.63" data-duration="9.621" data-volume="1"></audio>
+    <audio id="vo-c3-close" class="clip" src="assets/vo/c3-close.wav" data-start="200.6" data-duration="4.437" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const draw = (sel, at, d = 0.4) => {
+      tl.fromTo(sel + " path", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+      tl.fromTo(sel + " polygon", { opacity: 0 }, { opacity: 1, duration: 0.12 }, at + d - 0.08);
+    };
+    const bandIn = (sel, line, at, lines = 1, lh = 51) =>
+      tl.fromTo(sel, { opacity: 0, y: line * lh, scaleY: lines, transformOrigin: "50% 0%" }, { opacity: 1, duration: 0.3 }, at);
+    const bandTo = (sel, line, at, lines = 1, lh = 51) =>
+      tl.to(sel, { y: line * lh, scaleY: lines, transformOrigin: "50% 0%", duration: 0.8, ease: "power2.inOut" }, at);
+    const rowBand = (sel, at) =>
+      tl.fromTo(sel + " span", { backgroundColor: "rgba(245,226,217,0)" }, { backgroundColor: "rgba(245,226,217,1)", duration: 0.4 }, at);
+    const mark = (sel, at) => tl.fromTo(sel, { backgroundColor: "rgba(245,226,217,0)" }, { backgroundColor: "rgba(245,226,217,1)", color: "#b8321f", duration: 0.3 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c3-1: the desk app, then the sign-up page beside it; the age is typed in
+    fadeIn("#c3-app .app-body", 3.1, 0.4);
+    fadeIn("#c3-page", 4.0, 0.5);
+    ["#c3-f1", "#c3-f2", "#c3-f3", "#c3-f4"].forEach((f, i) => fadeIn(f, 4.5 + i * 0.15, 0.4));
+    fadeIn("#c3-join", 5.2, 0.4);
+
+    // c3-2: band on the model line
+    bandIn("#c3-band1", 7, 15.3, 2, 42);
+
+    // c3-3: valid is not the opposite of invalid
+    rowBand("#c3-trow3", 28.8);
+    // c3-4: errors() exists from the start
+    bandIn("#c3-band2", 1, 33.0);
+    // c3-4b: touched and dirty decide when to show them
+    rowBand("#c3-trow4", 40.4);
+    // c3-5: role="alert" on every message; the two aria attributes
+    bandIn("#c3-band3", 2, 43.9);
+    fadeIn("#c3-keep", 46.8, 0.4);
+    fadeIn("#c3-aria1", 51.3, 0.4);
+    fadeIn("#c3-aria2", 51.6, 0.4);
+
+    // c3-6: runs once, then registers
+    fadeIn("#c3-fa", 54.4, 0.4);
+    draw("#c3-fe1", 57.3, 0.4);
+    fadeIn("#c3-fl1", 57.45, 0.4);
+    fadeIn("#c3-fb", 57.6, 0.4);
+    fadeIn("#c3-paths", 59.8, 0.4);
+    draw("#c3-fe2", 62.2, 0.3);
+    fadeIn("#c3-fl2", 62.35, 0.4);
+    fadeIn("#c3-fc", 62.45, 0.4);
+    // c3-7: the logic functions are kept and re-run from the model
+    draw("#c3-fe3", 65.6, 0.4);
+    fadeIn("#c3-fl3", 65.75, 0.4);
+    fadeIn("#c3-fd", 65.9, 0.4);
+    fadeIn("#c3-fx", 68.2, 0.4);
+    draw("#c3-fe4", 68.5, 0.6);
+    fadeIn("#c3-fl4", 68.8, 0.4);
+
+    // c3-8: the schema body runs once; the context reads stay current
+    fadeIn("#c3-once", 71.8, 0.4);
+    fadeIn("#c3-once-l", 71.95, 0.4);
+    fadeIn("#c3-ctx-head", 74.0, 0.4);
+    fadeIn("#c3-x1", 76.9, 0.4);
+    fadeIn("#c3-x2", 77.8, 0.4);
+    fadeIn("#c3-x3", 78.4, 0.4);
+
+    // c3-9: read once, then read on every run
+    bandIn("#c3-band4", 1, 84.0, 1, 45);
+    bandTo("#c3-band4", 4, 88.3, 1, 45);
+
+    // c3-10: the when condition, then the rules that are conditions
+    bandIn("#c3-band5", 3, 91.6);
+    bandTo("#c3-band5", 5, 94.7, 2);
+
+    // c3-11: state, not the DOM; rendering waits for @if
+    fadeIn("#c3-ip1", 97.9, 0.4);
+    fadeIn("#c3-ip2", 100.3, 0.4);
+    mark("#c3-if", 105.2);
+
+    // c3-12: a plain handler, then the submission flow
+    fadeIn("#c3-plain", 108.1, 0.4);
+    fadeIn("#c3-dom", 110.4, 0.4);
+    fadeIn("#c3-subcode", 113.4, 0.5);
+
+    // c3-13: the steps one by one
+    fadeIn("#c3-steps-h", 118.3, 0.4);
+    fadeIn("#c3-st1", 119.3, 0.4);
+    fadeIn("#c3-st2", 120.6, 0.4);
+    fadeIn("#c3-st3", 122.4, 0.4);
+    fadeIn("#c3-st4", 123.6, 0.4);
+
+    // c3-14: the first warning
+    fadeIn("#c3-w1p1", 127.7, 0.4);
+    mark("#c3-subopt", 130.9);
+    fadeIn("#c3-w1p2", 133.9, 0.4);
+
+    // c3-15: 'pending' is the default; c3-15b: 'none', and onInvalid while pending
+    fadeIn("#c3-w2p1", 138.7, 0.4);
+    mark("#c3-pend", 140.2);
+    fadeIn("#c3-trap", 142.4, 0.4);
+    fadeIn("#c3-w2p2", 145.45, 0.4);
+    tl.to("#c3-pend", { backgroundColor: "rgba(245,226,217,0)", color: "#1d1b18", duration: 0.3 }, 145.9);
+    mark("#c3-none", 145.9);
+    fadeIn("#c3-oninv", 148.6, 0.4);
+    fadeIn("#c3-pl", 151.2, 0.4);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c3-q1", "#c3-q2", "#c3-q3", "#c3-q4", "#c3-q5"].forEach((q, i) => fadeIn(q, 155.68 + i * 0.6));
+    fadeIn("#c3-pause-2", 187.28);
+
+    // after the lesson: compare, then write the comment
+    fadeIn("#c3-after-title", 190.4, 0.5);
+    fadeIn("#c3-sol", 192.8);
+    fadeIn("#c3-comment", 194.6);
+    tl.fromTo("#c3-cl1", { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 195.1);
+    tl.fromTo("#c3-cl2", { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 195.5);
+    fadeIn("#c3-reread", 198.4);
+
+    // close: 18:00, the lights go down and stay down to the last frame
+    fadeIn("#c3-closed", 200.9);
+    tl.fromTo("#c3-lights", { opacity: 0 }, { opacity: 0.62, duration: 2.6, ease: "power2.inOut" }, 202.4);
+
+    window.__timelines["c3"] = tl;
+  </script>
+</template>
