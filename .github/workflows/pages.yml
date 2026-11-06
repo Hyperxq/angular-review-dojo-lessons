@@ -4,6 +4,9 @@ on:
   push:
     branches: [master]
   workflow_dispatch:
+  # A new batch of lesson videos is a new release; publishing it redeploys the site with its files.
+  release:
+    types: [published]
 
 permissions:
   contents: read
@@ -15,7 +18,20 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # A release run is on a tag ref, and the github-pages environment only lets master deploy, so hand over to a
+  # master run instead of building here.
+  redeploy-master:
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - run: gh workflow run pages.yml --repo "$GITHUB_REPOSITORY" --ref master
+        env:
+          GH_TOKEN: ${{ github.token }}
+
   build:
+    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -40,6 +56,20 @@ jobs:
           DOJO_ROOT: dojo
 
       - run: bunx ng build --base-href /angular-review-dojo-lessons/
+
+      # The videos are release assets, not in git; each entry of public/videos.json names its release and file.
+      - name: Download lesson videos
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SITE: dist/angular-review-dojo-lessons/browser
+        run: |
+          mkdir -p "$SITE/videos"
+          jq -r '.videos[] | [.release, .file] | @tsv' public/videos.json |
+            while IFS=$'\t' read -r release file; do
+              gh release download "$release" --repo "$GITHUB_REPOSITORY" --pattern "$file" --dir "$SITE/videos" --clobber || exit 1
+            done
+          du -sh "$SITE"
 
       # GitHub Pages has no SPA fallback; serving index.html as 404.html keeps deep links working.
       - run: cp dist/angular-review-dojo-lessons/browser/index.html dist/angular-review-dojo-lessons/browser/404.html

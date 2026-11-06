@@ -15,6 +15,21 @@ export interface LessonEntry {
   }[];
 }
 
+/** public/videos.json: each lesson video is an asset of a GitHub release, downloaded into videos/ at deploy time. */
+export interface VideoIndex {
+  readonly videos: readonly LessonVideo[];
+}
+
+export interface LessonVideo {
+  readonly topic: string;
+  readonly release: string;
+  readonly file: string;
+  /** Seconds. */
+  readonly duration: number;
+  /** Second at which each lesson chapter starts in the video. */
+  readonly chapters: readonly { readonly number: number; readonly start: number }[];
+}
+
 export interface LessonPage {
   readonly slug: string;
   readonly title: string;
@@ -26,6 +41,8 @@ export interface LessonPage {
 export class Catalog {
   readonly index = httpResource<LessonEntry[]>(() => 'lessons/index.json', { defaultValue: [] });
 
+  readonly videos = httpResource<VideoIndex>(() => 'videos.json', { defaultValue: { videos: [] } });
+
   readonly parts = computed(() => {
     const entries = this.index.hasValue() ? this.index.value() : [];
     return [1, 2, null]
@@ -36,7 +53,15 @@ export class Catalog {
   entry(topic: string): LessonEntry | undefined {
     return this.index.hasValue() ? this.index.value().find((entry) => entry.topic === topic) : undefined;
   }
+
+  video(topic: string): LessonVideo | undefined {
+    return this.videos.hasValue() ? this.videos.value().videos.find((video) => video.topic === topic) : undefined;
+  }
 }
+
+/** 190.4 → "3:10". */
+export const clock = (seconds: number) =>
+  `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
 
 export const chapterSlug = (chapter: { readonly number: number }) => `chapter-${chapter.number}`;
 

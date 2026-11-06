@@ -47,6 +47,30 @@ a field, and the arrows stay with the marble player when focus is inside it.
 - `src/app/lessons/progress.ts` keeps done chapters and ticked review questions in `localStorage`, and keeps working in
   memory when storage is blocked.
 
+- `src/app/lessons/catalog.ts` also loads `public/videos.json`, which lists the lesson videos (see below).
+
+## Lesson videos
+
+A topic's intro page plays its lesson video, and each chapter page has a "Watch this chapter" button that opens the
+video cut to that chapter (a `#t=start,end` media fragment, so it starts there and stops where the next chapter
+begins). Topics without a video show none. Reading mode hides it.
+
+The mp4 files are not in git. They are assets of GitHub releases of this repo, and the deploy downloads each one into
+the site as `videos/<file>`. To add videos:
+
+1. Publish a release with the mp4 files as assets, for example `gh release create videos-batch-2 *.mp4`.
+2. Add one entry per video to `public/videos.json` and push it to `master`:
+
+   ```json
+   { "topic": "signals", "release": "videos-batch-2", "file": "signals-lesson.mp4", "duration": 540.2,
+     "chapters": [{ "number": 0, "start": 0 }, { "number": 1, "start": 92.5 }] }
+   ```
+
+   `duration` and each chapter's `start` are seconds into the video; `number` is the lesson's chapter number.
+
+Publishing a release also redeploys the site (the workflow hands over to a `master` run, the only ref the
+`github-pages` environment lets deploy). Pages sites are limited to 1 GB, so keep the videos well under that.
+
 The exercise command on each chapter is the one from the dojo README:
 `npm test -- --watch=false --include='src/app/exercises/<topic>/<NN-slug>/**/*.spec.ts'`.
 

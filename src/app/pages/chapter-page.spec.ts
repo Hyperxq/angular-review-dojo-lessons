@@ -2,7 +2,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
-import type { LessonEntry } from '../lessons/catalog';
+import type { LessonEntry, VideoIndex } from '../lessons/catalog';
 import { ChapterPage } from './chapter-page';
 
 const LESSON = `# Forms in modern Angular: a lesson before the exercises
@@ -42,7 +42,22 @@ const INDEX: LessonEntry[] = [
   },
 ];
 
-async function render(page: string) {
+const VIDEOS: VideoIndex = {
+  videos: [
+    {
+      topic: 'forms',
+      release: 'videos-batch-1',
+      file: 'forms-lesson.mp4',
+      duration: 190.4,
+      chapters: [
+        { number: 1, start: 65.2 },
+        { number: 2, start: 130 },
+      ],
+    },
+  ],
+};
+
+async function render(page: string, videos: VideoIndex = VIDEOS) {
   TestBed.configureTestingModule({
     providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
   });
@@ -53,6 +68,7 @@ async function render(page: string) {
   const http = TestBed.inject(HttpTestingController);
   http.expectOne('lessons/forms.md').flush(LESSON);
   http.match('lessons/index.json').forEach((req) => req.flush(INDEX));
+  http.match('videos.json').forEach((req) => req.flush(videos));
   await fixture.whenStable();
   fixture.detectChanges();
   const el: HTMLElement = fixture.nativeElement;
@@ -105,6 +121,59 @@ describe('ChapterPage', () => {
     const links = [...el.querySelectorAll<HTMLAnchorElement>('.pager a')].map((a) => a.getAttribute('href'));
 
     expect(links).toEqual(['/forms/intro', '/forms/chapter-2']);
+  });
+
+  describe('lesson video', () => {
+    it('plays the whole lesson on the intro page', async () => {
+      const { el } = await render('intro');
+      const video = el.querySelector<HTMLVideoElement>('.watch video')!;
+
+      expect(el.querySelector('.watch h2')!.textContent).toBe('Watch the lesson');
+      expect(video.getAttribute('src')).toBe('videos/forms-lesson.mp4');
+      expect(video.getAttribute('aria-label')).toBe('Forms lesson video');
+      expect(video.controls).toBe(true);
+      expect(video.getAttribute('preload')).toBe('metadata');
+      expect(video.autoplay).toBe(false);
+      expect(el.querySelector('.watch')!.textContent).toContain('3:10');
+    });
+
+    it('shows nothing for a topic without a video', async () => {
+      const { el } = await render('intro', { videos: [] });
+
+      expect(el.querySelector('.watch')).toBeNull();
+      expect(el.querySelector('video')).toBeNull();
+    });
+
+    it('opens the video at the start of the chapter and stops where the next one begins', async () => {
+      const { el, fixture } = await render('chapter-1');
+      const button = el.querySelector<HTMLButtonElement>('.watch button')!;
+      expect(button.textContent).toContain('Watch this chapter (1:05)');
+      expect(button.getAttribute('aria-expanded')).toBe('false');
+      expect(el.querySelector('video')).toBeNull();
+
+      button.click();
+      fixture.detectChanges();
+      const video = el.querySelector<HTMLVideoElement>('.watch video')!;
+      expect(button.getAttribute('aria-expanded')).toBe('true');
+      expect(video.getAttribute('src')).toBe('videos/forms-lesson.mp4#t=65.2,130');
+      expect(video.getAttribute('aria-label')).toBe('Forms lesson video, chapter 1');
+    });
+
+    it('plays the last chapter to the end of the video', async () => {
+      const { el, fixture } = await render('chapter-2');
+      el.querySelector<HTMLButtonElement>('.watch button')!.click();
+      fixture.detectChanges();
+
+      expect(el.querySelector('.watch video')!.getAttribute('src')).toBe('videos/forms-lesson.mp4#t=130');
+    });
+
+    it('is hidden in reading mode', async () => {
+      const { el, fixture } = await render('intro');
+      el.querySelector<HTMLButtonElement>('.reading-toggle')!.click();
+      fixture.detectChanges();
+
+      expect(el.querySelector('.watch')).toBeNull();
+    });
   });
 
   describe('reading mode', () => {

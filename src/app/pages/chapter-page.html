@@ -107,6 +107,30 @@
         </button>
       </header>
 
+      @if (!reading.on() && video(); as clip) {
+        <section class="watch" [attr.aria-labelledby]="clip.start === null ? 'watch-title' : null">
+          @if (clip.start === null) {
+            <h2 id="watch-title">Watch the lesson</h2>
+            <video controls preload="metadata" [src]="clip.src" [attr.aria-label]="clip.label"></video>
+            <p class="watch__caption">The whole lesson in one video, {{ clip.length }} long. Each chapter page opens it at that chapter.</p>
+          } @else {
+            <button
+              type="button"
+              class="button button--quiet"
+              aria-controls="chapter-video"
+              [attr.aria-expanded]="watching()"
+              (click)="watching.set(!watching())"
+            >
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" /></svg>
+              Watch this chapter ({{ clip.start }})
+            </button>
+            @if (watching()) {
+              <video id="chapter-video" controls preload="metadata" [src]="clip.src" [attr.aria-label]="clip.label"></video>
+            }
+          }
+        </section>
+      }
+
       <app-lesson-body [markdown]="current().body" />
 
       @if (current().chapter; as chapter) {

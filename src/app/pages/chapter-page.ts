@@ -17,7 +17,7 @@ import { Router, RouterLink } from '@angular/router';
 import { splitLesson } from '../lesson/parse/lesson';
 import { LessonBody } from '../lesson/render/lesson-body';
 import { renderInline } from '../lesson/render/segments';
-import { Catalog, chapterSlug, lessonPages } from '../lessons/catalog';
+import { Catalog, chapterSlug, clock, lessonPages } from '../lessons/catalog';
 import { Progress, chapterKey, questionKey } from '../lessons/progress';
 import { CopyButton } from '../shared/copy-button';
 import { ReadingMode, readingCommand } from '../shell/reading-mode';
@@ -70,6 +70,30 @@ export class ChapterPage {
   );
   protected readonly chapterCount = computed(() => this.pages().filter((page) => page.chapter).length);
 
+  /**
+   * The intro plays the whole lesson; a chapter page opens it on request, cut to that chapter with a media fragment
+   * (#t=start,end) so the browser seeks and stops at the next chapter by itself.
+   */
+  protected readonly video = computed(() => {
+    const video = this.catalog.video(this.topic());
+    const page = this.current();
+    if (!video || !page) return null;
+    const src = `videos/${video.file}`;
+    const label = `${this.name()} lesson video`;
+    if (page.slug === 'intro') return { src, label, length: clock(video.duration), start: null };
+    const i = video.chapters.findIndex((c) => c.number === page.chapter?.number);
+    if (i < 0) return null;
+    const { start } = video.chapters[i];
+    const end = video.chapters[i + 1]?.start;
+    return {
+      src: `${src}#t=${start}${end === undefined ? '' : `,${end}`}`,
+      label: `${label}, chapter ${page.chapter!.number}`,
+      length: null,
+      start: clock(start),
+    };
+  });
+  protected readonly watching = signal(false);
+
   protected readonly railOpen = signal(false);
   /** Percent of the page scrolled, for the reading-mode progress bar. */
   protected readonly readProgress = signal(0);
@@ -96,6 +120,7 @@ export class ChapterPage {
       if (this.lastSlug !== null && this.lastSlug !== slug) heading.nativeElement.focus({ preventScroll: true });
       this.lastSlug = slug;
       this.railOpen.set(false);
+      this.watching.set(false);
     });
   }
 
