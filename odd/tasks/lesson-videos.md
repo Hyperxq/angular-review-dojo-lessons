@@ -25,7 +25,7 @@ Delivery: ask-on-risk. Runner: `npx hyperframes check --json` and `snapshot --re
 | T4 | S1 S2 S3 | c0 + kit inline; c1-c8 delegated, 4 parallel writers × 2 scenes | done: check ok, 0 errors; seam check = full check + review snapshot | see T5 |
 | T5 | S1 | inline | done: user approved ("Si dale"); rendered 11:50, loudness normalized to -16.9 LUFS | see Log |
 | T6 | S2 | inline | done: user chose "Tanda de 3 ahora (Recommended)" | |
-| T9 | S1 S3 | same pipeline as T8, plus the on-screen spoiler check | in progress: batch 2 memory, directives, forms; batch 1 renders running | |
+| T9 | S1 S3 | same pipeline as T8, plus the on-screen spoiler check | done: memory, directives, forms in preview (3006-3008), not rendered | 1b0ff0d 18c036c fe6b9a5 |
 | T8 | S1 S3 | per topic: narration writer → expert review → correction → recheck; voice + timing inline; scenes by 2 parallel writers | done: three videos in preview, not rendered; each scene set passed a spoiler check (change-detection and lifecycle needed fixes) | fc1a7bd + this commit |
 
 ## Log
@@ -44,3 +44,5 @@ Delivery: ask-on-risk. Runner: `npx hyperframes check --json` and `snapshot --re
 - L11 Voice runs failed at random: bare `npx hyperframes` resolved 0.9.19, whose tarball npm returned 404. Pinned `hyperframes@0.9.17` in render.sh and the voice script, which now retries and resumes. Totals: directives 596.8 s, forms 624.6 s, memory 604.4 s. Scenes: 6 parallel writers, 2 scenes each (Writer trigger (a)).
 - L12 (2026-11-06) Batch 1 rendered: rxjs-to-signals 10:00 -16.4 LUFS, change-detection 8:45 -16.5, lifecycle 8:22 -16.6 (afbbd98).
 - L13 (2026-11-06) User asked "subamolos a Releases de GitHub?" and checked the music on ende.app. Licence verified at https://ende.app/en/standard-license: CC BY 4.0 with attribution optional, commercial and YouTube use allowed; no Content ID registration, no standalone upload. Credit given in release notes: "Music by Sascha Ende at ende.app". SFX by Kenney (CC0). The mp3 stays gitignored.
+- L14 (2026-11-06) Batch 2 scenes: 6 writers; on-screen spoiler checks found no blockers, fixes applied (memory DOM Nodes step 12 -> 14, forms red-on-load caption, forms sign-up state). User: "si, corregí los errores y pusheá feat/visual-lessons", then "mergea a main": dojo main fast-forwarded to a86ecd1. Reader deployed to https://hyperxq.github.io/angular-review-dojo-lessons/ (workflow on master).
+- L15 (2026-11-06) "puedes ir agregando en paralelo el video a la pagina publicada?"
