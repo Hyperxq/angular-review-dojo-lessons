@@ -25,6 +25,7 @@ Delivery: ask-on-risk. Runner: `npx hyperframes check --json` and `snapshot --re
 | T4 | S1 S2 S3 | c0 + kit inline; c1-c8 delegated, 4 parallel writers × 2 scenes | done: check ok, 0 errors; seam check = full check + review snapshot | see T5 |
 | T5 | S1 | inline | done: user approved ("Si dale"); rendered 11:50, loudness normalized to -16.9 LUFS | see Log |
 | T6 | S2 | inline | done: user chose "Tanda de 3 ahora (Recommended)" | |
+| T9 | S1 S3 | same pipeline as T8, plus the on-screen spoiler check | in progress: batch 2 memory, directives, forms; batch 1 renders running | |
 | T8 | S1 S3 | per topic: narration writer → expert review → correction → recheck; voice + timing inline; scenes by 2 parallel writers | done: three videos in preview, not rendered; each scene set passed a spoiler check (change-detection and lifecycle needed fixes) | fc1a7bd + this commit |
 
 ## Log
@@ -38,3 +39,4 @@ Delivery: ask-on-risk. Runner: `npx hyperframes check --json` and `snapshot --re
 - L6 (2026-11-06) "hay una voz que suene menos robotica?" -> Gemini samples; Sulafat picked, but the free tier caps gemini-3.8-flash-tts at 10 requests a day. Decision: "dejemos kokoro por el momento, quita los cambios de gemini". Narration stays Kokoro af_heart.
 - L7 (2026-11-06) Render approved: "Si dale". Then "puedes ir tirando en paralelo los otros videos?" -> answer "Tanda de 3 ahora (Recommended)": rxjs-to-signals, change-detection, lifecycle, same format as the pilot.
 - L8 Scene writers invent props beyond LESSON.md; invented code in change-detection c3 copied exercise 03. Every video now gets a read-only spoiler check of its on-screen text by the reviewer that read the exercises.
+- L9 (2026-11-06) "Si me gustan, continuemos" -> render batch 1 (videos/scripts/render.sh) and continue in batches of 3: memory/directives/forms, routing/performance/testing, security/ssr/di, a11y/state/http-errors, architecture/capstone.
