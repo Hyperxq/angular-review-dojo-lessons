@@ -19,10 +19,10 @@ Delivery: ask-on-risk. Runner: `npx hyperframes check --json` and `snapshot --re
 
 | ID | Specs | Route | Status | Commit |
 |----|-------|-------|--------|--------|
-| T1 | S4 | inline | waiting: user picks a storyline | |
-| T2 | S1 S3 | inline | pending: SPEC.md + narration script, humanizer, expert review | |
-| T3 | S1 | inline | pending: Kokoro voiceover per chapter | |
-| T4 | S1 S2 | pending route decision (chapter scenes are disjoint files) | pending: compositions | |
+| T1 | S4 | inline | done: user picked "A. Un día en el mostrador (Recommended)" | 6f587d3 |
+| T2 | S1 S3 | inline | done: SPEC.md, NARRATION.md; humanizer; expert review rework (1 blocker c7 contract, 8 should-fix) → 1 correction batch → recheck: all 21 fixed | 6f587d3 |
+| T3 | S1 | inline | done: 63 clips (wav gitignored), durations.json, timing.json via videos/scripts/timing.py; 710 s total | 6f587d3 |
+| T4 | S1 S2 S3 | c0 + kit inline; c1-c8 delegated, 4 parallel writers × 2 scenes | in progress | |
 | T5 | S1 | inline | pending: check, snapshot review, Studio preview, render after approval | |
 | T6 | S2 | inline | pending: user decides the other 17 | |
 
@@ -30,3 +30,6 @@ Delivery: ask-on-risk. Runner: `npx hyperframes check --json` and `snapshot --re
 
 - L1 (2026-11-06) "puedes crear un video por cada leccion usando /brag:brag ?"
 - L2 (2026-11-06) Goal answer: "Video que enseñe". Pilot answer: "Piloto rxjs (Recommended)".
+- L3 (2026-11-06) Storyline answer: "A. Un día en el mostrador (Recommended)".
+- L4 Route evidence T4: Writer trigger (a) parallelism. Eight scene files with disjoint edit surfaces, each 200+ lines; parent owns
+  index.html, kit.css and timing.json. Kokoro needs a Python 3.14 venv (3.15 has no onnxruntime wheels).

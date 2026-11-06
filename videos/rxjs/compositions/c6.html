@@ -1,0 +1,12 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>#root { position: absolute; inset: 0; overflow: hidden; }</style>
+  <div id="root" data-composition-id="c6" data-width="1920" data-height="1080">
+    <div id="c6-card" class="clip world" data-start="0" data-duration="76.54"><div class="chapter-title">c6 placeholder</div></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#c6-card .chapter-title", { opacity: 0.99 }, { opacity: 1, duration: 0.1 }, 0);
+    window.__timelines["c6"] = tl;
+  </script>
+</template>
