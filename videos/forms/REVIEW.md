@@ -32,3 +32,9 @@
 
 - c0-6 opens on an empty paper frame for about 1.5 s (61.3-62.8 s) before `UntypedFormGroup` types in. With more time: land
   the first token on the cut.
+
+## Delivery
+
+- `renders/forms-lesson.mp4` (gitignored; published in release `videos-batch-2`): 1920x1080, 30 fps, 10:25, about 27 MB.
+- Mix normalized with ffmpeg `loudnorm` (I=-16, TP=-1.5): -16.4 LUFS integrated, true peak -1.3 dBTP, no clipping.
+- Frame 0 is chapter 0's card, which serves as the thumbnail.

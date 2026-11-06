@@ -119,6 +119,78 @@
           "start": 336.2
         }
       ]
+    },
+    {
+      "topic": "memory",
+      "release": "videos-batch-2",
+      "file": "memory-lesson.mp4",
+      "duration": 604.4,
+      "chapters": [
+        {
+          "number": 0,
+          "start": 0.0
+        },
+        {
+          "number": 1,
+          "start": 147.3
+        },
+        {
+          "number": 2,
+          "start": 274.2
+        },
+        {
+          "number": 3,
+          "start": 429.7
+        }
+      ]
+    },
+    {
+      "topic": "directives",
+      "release": "videos-batch-2",
+      "file": "directives-lesson.mp4",
+      "duration": 596.8,
+      "chapters": [
+        {
+          "number": 0,
+          "start": 0.0
+        },
+        {
+          "number": 1,
+          "start": 126.3
+        },
+        {
+          "number": 2,
+          "start": 290.3
+        },
+        {
+          "number": 3,
+          "start": 431.4
+        }
+      ]
+    },
+    {
+      "topic": "forms",
+      "release": "videos-batch-2",
+      "file": "forms-lesson.mp4",
+      "duration": 624.6,
+      "chapters": [
+        {
+          "number": 0,
+          "start": 0.0
+        },
+        {
+          "number": 1,
+          "start": 124.4
+        },
+        {
+          "number": 2,
+          "start": 261.2
+        },
+        {
+          "number": 3,
+          "start": 418.5
+        }
+      ]
     }
   ]
 }

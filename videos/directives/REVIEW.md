@@ -33,3 +33,9 @@
 ## Weakest shot
 
 - c2 at 368-378 s holds one code frame for about 10 s while the narration covers the context guard.
+
+## Delivery
+
+- `renders/directives-lesson.mp4` (gitignored; published in release `videos-batch-2`): 1920x1080, 30 fps, 9:57, about 28 MB.
+- Mix normalized with ffmpeg `loudnorm` (I=-16, TP=-1.5): -16.4 LUFS integrated, true peak -1.5 dBTP, no clipping.
+- Frame 0 is chapter 0's card, which serves as the thumbnail.
