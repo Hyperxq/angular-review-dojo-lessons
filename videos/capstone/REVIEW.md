@@ -32,3 +32,9 @@
 ## Weakest shot
 
 - c0-9: the side-by-side recap shows only the first column of the habits table, because both tables do not fit at 28 px.
+
+## Delivery
+
+- `renders/capstone-lesson.mp4` (gitignored; published in release `videos-batch-6`): 1920x1080, 30 fps, 9:15, about 24 MB.
+- Mix normalized with ffmpeg `loudnorm` (I=-16, TP=-1.5): -16.3 LUFS integrated, true peak -1.4 dBTP, clipping count 0.
+- Frame 0 is chapter 0's card, which serves as the thumbnail.

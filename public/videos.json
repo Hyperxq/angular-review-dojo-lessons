@@ -419,6 +419,46 @@
           "start": 539.8
         }
       ]
+    },
+    {
+      "topic": "capstone",
+      "release": "videos-batch-6",
+      "file": "capstone-lesson.mp4",
+      "duration": 555.5,
+      "chapters": [
+        {
+          "number": 0,
+          "start": 0.0
+        },
+        {
+          "number": 1,
+          "start": 142.8
+        }
+      ]
+    },
+    {
+      "topic": "architecture",
+      "release": "videos-batch-6",
+      "file": "architecture-lesson.mp4",
+      "duration": 654.0,
+      "chapters": [
+        {
+          "number": 0,
+          "start": 0.0
+        },
+        {
+          "number": 1,
+          "start": 125.6
+        },
+        {
+          "number": 2,
+          "start": 263.2
+        },
+        {
+          "number": 3,
+          "start": 463.4
+        }
+      ]
     }
   ]
 }

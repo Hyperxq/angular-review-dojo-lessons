@@ -32,3 +32,9 @@
 ## Weakest shot
 
 - c1-2: the "container" and "presentational" labels hold one layout for about 18.5 s, longer than the SPEC's 4 s rhythm.
+
+## Delivery
+
+- `renders/architecture-lesson.mp4` (gitignored; published in release `videos-batch-6`): 1920x1080, 30 fps, 10:54, about 30 MB.
+- Mix normalized with ffmpeg `loudnorm` (I=-16, TP=-1.5): -16.4 LUFS integrated, true peak -0.6 dBTP, clipping count 0.
+- Frame 0 is chapter 0's card, which serves as the thumbnail.
