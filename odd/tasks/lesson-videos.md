@@ -34,3 +34,4 @@ Delivery: ask-on-risk. Runner: `npx hyperframes check --json` and `snapshot --re
 - L4 Route evidence T4: Writer trigger (a) parallelism. Eight scene files with disjoint edit surfaces, each 200+ lines; parent owns
   index.html, kit.css and timing.json. Kokoro needs a Python 3.14 venv (3.15 has no onnxruntime wheels).
 - L5 (2026-11-06) User asked "ya hay un video para ver el resultado?" -> Studio preview started before render, per the hyperframes work loop.
+- L6 (2026-11-06) "hay una voz que suene menos robotica?" -> Gemini samples; Sulafat picked, but the free tier caps gemini-3.8-flash-tts at 10 requests a day. Decision: "dejemos kokoro por el momento, quita los cambios de gemini". Narration stays Kokoro af_heart.
