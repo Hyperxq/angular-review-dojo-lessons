@@ -1,0 +1,268 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c1-h { position: absolute; left: 140px; top: 84px; width: 1640px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c1-code { left: 120px; width: 1680px; box-sizing: border-box; padding: 40px; }
+    .c1-code .ln { white-space: pre-wrap; margin: 0 -40px; padding: 0 40px; background-color: rgba(245, 226, 217, 0); }
+    .c1-code .s { white-space: nowrap; }
+    .c1-code .wrap { padding-left: calc(40px + 6ch); text-indent: -6ch; }
+    .c1-prose code { font-family: var(--font-code); font-size: 0.9em; white-space: nowrap; }
+
+    /* desk app */
+    .c1-panel-h { font: 600 48px/1.1 var(--font-display); letter-spacing: -0.01em; margin-bottom: 24px; }
+    .c1-mem { display: grid; grid-template-columns: 640px 1fr; align-items: center; height: 92px; padding: 0 24px; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c1-mem b { font-weight: 700; }
+    .c1-mem span:last-child { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+
+    /* the two roles as labels */
+    .c1-role { position: absolute; top: 420px; padding: 32px 48px; border: 3px solid var(--ink); border-radius: 8px; background: var(--paper-raised); font: 700 60px/1 var(--font-text); white-space: nowrap; }
+
+    /* BookCover tree under the split code */
+    .c1-tree .node { box-sizing: border-box; height: 72px; padding: 0 24px; display: flex; align-items: center; justify-content: center; font-size: 34px; }
+    .c1-tree .node .badge { font-size: 28px; }
+    .c1-edges path { stroke: var(--rule-strong); stroke-width: 4; fill: none; }
+
+    /* the three rule sentences */
+    .c1-rules { position: absolute; left: 200px; top: 300px; width: 1520px; }
+    .c1-rule { font: 400 48px/1.3 var(--font-text); margin-bottom: 56px; }
+
+    /* WARNING callout */
+    #c1-warn { position: absolute; left: 200px; top: 250px; width: 1520px; box-sizing: border-box; padding: 40px 48px; border-left: 8px solid var(--warning); border-radius: 8px; background: var(--warning-soft); }
+    #c1-warn-h { font: 700 34px/1 var(--font-text); color: var(--warning); margin-bottom: 28px; }
+    #c1-warn-p { font: 400 44px/1.5 var(--font-text); }
+    #c1-warn-p span { border-radius: 4px; background-color: rgba(245, 226, 217, 0); }
+
+    /* When not to split */
+    .c1-list { position: absolute; left: 160px; top: 220px; width: 1600px; }
+    .c1-li { display: grid; grid-template-columns: 56px 1fr; margin-bottom: 40px; font: 400 40px/1.4 var(--font-text); }
+    .c1-li span:first-child { color: var(--ink-muted); }
+
+    /* review comment */
+    #c1-cmt { position: absolute; left: 160px; top: 260px; width: 1600px; box-sizing: border-box; padding: 44px 56px; border-left: 8px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); box-shadow: var(--shadow); font: 400 44px/1.5 var(--font-text); }
+    #c1-cmt code { font: 400 40px/1 var(--font-code); white-space: nowrap; }
+    #c1-cmt-l { font-weight: 700; }
+
+    #c1-questions .q { font-size: 42px; }
+  </style>
+
+  <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c1-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c1-card-time" class="chapter-time">09:00</div>
+      <div id="c1-card-title" class="chapter-title">Who knows what</div>
+    </div>
+
+    <!-- c1-1 the desk app, member list -->
+    <div id="c1-desk" class="clip world" data-start="3" data-duration="6.62">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-panel-h">Members</div>
+          <div data-hold>
+            <div id="c1-m1" class="c1-mem"><span><b>Ada Brooks</b></span><span>card 1042</span></div>
+            <div id="c1-m2" class="c1-mem"><span><b>Tom Okafor</b></span><span>card 1187</span></div>
+            <div id="c1-m3" class="c1-mem"><span><b>Mei Lin</b></span><span>card 1203</span></div>
+            <div id="c1-m4" class="c1-mem"><span><b>Sara Diaz</b></span><span>card 1251</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-2, c1-2b container, then presentational -->
+    <div id="c1-roles" class="clip world" data-start="9.62" data-duration="18.51">
+      <div class="c1-h">Containers and presentational components</div>
+      <div id="c1-role-c" class="c1-role" style="left: 200px">container</div>
+      <div id="c1-role-p" class="c1-role" style="left: 760px" data-hold>presentational</div>
+    </div>
+
+    <!-- c1-3 the first BookCover, cut in whole; band on the two inject lines -->
+    <div id="c1-cover1" class="clip world" data-start="28.13" data-duration="9.76">
+      <div class="code c1-code" style="top: 190px; font-size: 32px" data-hold>
+<span class="ln"><span class="k">export class</span> BookCover {</span>
+<span id="c1-i1" class="ln">  <span class="k">private readonly</span> flags = inject(FeatureFlags);</span>
+<span id="c1-i2" class="ln">  <span class="k">private readonly</span> analytics = inject(Analytics);</span>
+<span class="ln"> </span>
+<span class="ln">  <span class="k">readonly</span> book = input.required&lt;Book&gt;();</span>
+<span class="ln"> </span>
+<span class="ln wrap">  <span class="k">protected readonly</span> showNewBadge = computed(() =&gt; <span class="k">this</span>.flags.isOn(<span class="s">'new-badge'</span>) &amp;&amp; <span class="k">this</span>.book().isNew);</span>
+<span class="ln"> </span>
+<span class="ln">  open(): <span class="k">void</span> {</span>
+<span class="ln">    <span class="k">this</span>.analytics.track(<span class="s">'cover_opened'</span>, { bookId: <span class="k">this</span>.book().id });</span>
+<span class="ln">  }</span>
+<span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c1-3b CoverView and the split BookCover, then the tree draws on; c1-4 a BookCover node turns hot -->
+    <div id="c1-split" class="clip world c1-tree" data-start="37.89" data-duration="17.96">
+      <div class="code c1-code" style="top: 64px; font-size: 30px; padding-top: 30px; padding-bottom: 30px">
+<span class="ln"><span class="k">export interface</span> CoverView {</span>
+<span class="ln">  title: string;</span>
+<span class="ln">  imageUrl: string;</span>
+<span class="ln">  badge?: <span class="s">'new'</span> | <span class="s">'staff-pick'</span>;</span>
+<span class="ln">}</span>
+<span class="ln"> </span>
+<span class="ln"><span class="k">export class</span> BookCover {</span>
+<span class="ln">  <span class="k">readonly</span> cover = input.required&lt;CoverView&gt;();</span>
+<span class="ln">  <span class="k">readonly</span> opened = output&lt;<span class="k">void</span>&gt;();</span>
+<span class="ln">}</span>
+      </div>
+      <svg class="c1-edges" style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <path id="c1-e0" pathLength="1" stroke-dasharray="1" d="M960,672 V696 H600 V720" />
+        <path id="c1-e1" pathLength="1" stroke-dasharray="1" d="M960,696 H1320 V720" />
+        <path id="c1-e2" pathLength="1" stroke-dasharray="1" d="M600,792 V840" />
+        <path id="c1-e3" pathLength="1" stroke-dasharray="1" d="M1320,792 V840" />
+      </svg>
+      <div id="c1-n-routes" class="node" style="left: 840px; top: 600px; width: 240px">routes</div>
+      <div id="c1-n-search" class="node" style="left: 360px; top: 720px; width: 480px">SearchPage<span class="badge">[container]</span></div>
+      <div id="c1-n-kiosk" class="node" style="left: 1080px; top: 720px; width: 480px">KioskPage<span class="badge">[container]</span></div>
+      <div id="c1-n-bc1" class="node" style="left: 330px; top: 840px; width: 540px">BookCover<span class="badge">[presentational]</span></div>
+      <div id="c1-n-bc2" class="node" style="left: 1050px; top: 840px; width: 540px" data-hold>BookCover<span class="badge">[presentational]</span></div>
+    </div>
+
+    <!-- c1-5 one place per rule, the three sentences one by one -->
+    <div id="c1-rulesw" class="clip world" data-start="55.85" data-duration="8.67">
+      <div class="c1-h">One place per rule</div>
+      <div class="c1-rules" data-hold>
+        <div id="c1-r1" class="c1-rule">"reference books never leave the building"</div>
+        <div id="c1-r2" class="c1-rule">"a suspended member cannot borrow"</div>
+        <div id="c1-r3" class="c1-rule">"children's cards borrow only from the children's collection"</div>
+      </div>
+    </div>
+
+    <!-- c1-5b circulation-rules.ts, cut in whole; band on borrowDecision -->
+    <div id="c1-circ" class="clip world" data-start="64.52" data-duration="7.8">
+      <div class="code c1-code" style="top: 200px; font-size: 30px" data-hold>
+<span class="ln"><span class="c">// circulation-rules.ts</span></span>
+<span class="ln wrap"><span class="k">export type</span> BorrowDecision = <span class="s">'allowed'</span> | <span class="s">'reference-only'</span> | <span class="s">'member-suspended'</span> | <span class="s">'wrong-collection'</span>;</span>
+<span class="ln"> </span>
+<span id="c1-fn" class="ln"><span class="k">export function</span> borrowDecision(member: Member, copy: Copy): BorrowDecision {</span>
+<span class="ln">  <span class="k">if</span> (copy.kind === <span class="s">'reference'</span>) <span class="k">return</span> <span class="s">'reference-only'</span>;</span>
+<span class="ln">  <span class="k">if</span> (member.status === <span class="s">'suspended'</span>) <span class="k">return</span> <span class="s">'member-suspended'</span>;</span>
+<span class="ln wrap">  <span class="k">if</span> (member.card === <span class="s">'child'</span> &amp;&amp; copy.collection !== <span class="s">'children'</span>) <span class="k">return</span> <span class="s">'wrong-collection'</span>;</span>
+<span class="ln">  <span class="k">return</span> <span class="s">'allowed'</span>;</span>
+<span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c1-6 the WARNING callout -->
+    <div id="c1-warnw" class="clip world" data-start="72.32" data-duration="10.98">
+      <div id="c1-warn" data-hold>
+        <div id="c1-warn-h">Warning</div>
+        <div id="c1-warn-p">Duplicated rules drift: each copy is right the day it is written, and the next change reaches only one of them. <span id="c1-w1">For every rule you see, find its single owner, then check whether each screen asks that owner or works the answer out again on its own.</span></div>
+      </div>
+    </div>
+
+    <!-- c1-7, c1-7b when not to split, items one by one -->
+    <div id="c1-notw" class="clip world" data-start="83.3" data-duration="17.89">
+      <div class="c1-h">When not to split</div>
+      <div class="c1-list c1-prose" data-hold>
+        <div id="c1-li1" class="c1-li"><span>–</span><span>A leaf component used once, with one trivial dependency, does not need a container. Splitting it adds a file and buys nothing until a second use appears.</span></div>
+        <div id="c1-li2" class="c1-li"><span>–</span><span>Not every condition is a business rule. "Truncate titles after 40 characters" is presentation and can stay in the component.</span></div>
+        <div id="c1-li3" class="c1-li"><span>–</span><span>A presentational component may read a store, if the store can be provided with a fake in a test. The test that matters is "no I/O", not "no providers".</span></div>
+      </div>
+    </div>
+
+    <!-- c1-8 the HoldButton comment, should-fix as the accent -->
+    <div id="c1-cmtw" class="clip world" data-start="101.19" data-duration="10.78">
+      <div class="c1-h">Saying it in a review</div>
+      <div id="c1-cmt" data-hold><span id="c1-cmt-l">Should-fix:</span> <code>HoldButton</code> injects <code>Router</code> and navigates to <code>/holds</code> after placing a hold. The button is also used on the search page, where that navigation is unwanted. Emit a <code>placed</code> output and let each page decide where to go.</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c1-questions" class="clip world note" data-start="111.97" data-duration="22.1">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c1-q1" class="q">Could you render this component in a test with nothing but its inputs and fakes? Which dependency stops you, and does the component need it to draw itself?</div>
+        <div id="c1-q2" class="q">For each piece of data on the screen: which single place decides where it comes from?</div>
+        <div id="c1-q3" class="q">For each sentence the product owner could say about this feature: who owns it in code, and does every screen ask that owner?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c1-pause" class="clip world" data-start="134.07" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c1-pause-2" class="pause-2" data-hold>Now do exercise 01.</div>
+    </div>
+
+    <audio id="c1-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="40" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-bed2" class="clip" src="assets/music/bed.mp3" data-start="111.97" data-duration="22.1" data-media-start="118" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c1-1" class="clip" src="assets/vo/c1-1.wav" data-start="3" data-duration="6.272" data-volume="1"></audio>
+    <audio id="vo-c1-2" class="clip" src="assets/vo/c1-2.wav" data-start="9.62" data-duration="8.469" data-volume="1"></audio>
+    <audio id="vo-c1-2b" class="clip" src="assets/vo/c1-2b.wav" data-start="18.44" data-duration="9.344" data-volume="1"></audio>
+    <audio id="vo-c1-3" class="clip" src="assets/vo/c1-3.wav" data-start="28.13" data-duration="9.408" data-volume="1"></audio>
+    <audio id="vo-c1-3b" class="clip" src="assets/vo/c1-3b.wav" data-start="37.89" data-duration="7.936" data-volume="1"></audio>
+    <audio id="vo-c1-4" class="clip" src="assets/vo/c1-4.wav" data-start="46.18" data-duration="9.323" data-volume="1"></audio>
+    <audio id="vo-c1-5" class="clip" src="assets/vo/c1-5.wav" data-start="55.85" data-duration="8.32" data-volume="1"></audio>
+    <audio id="vo-c1-5b" class="clip" src="assets/vo/c1-5b.wav" data-start="64.52" data-duration="7.445" data-volume="1"></audio>
+    <audio id="vo-c1-6" class="clip" src="assets/vo/c1-6.wav" data-start="72.32" data-duration="9.6" data-volume="1"></audio>
+    <audio id="vo-c1-7" class="clip" src="assets/vo/c1-7.wav" data-start="82.27" data-duration="9.749" data-volume="1"></audio>
+    <audio id="vo-c1-7b" class="clip" src="assets/vo/c1-7b.wav" data-start="92.37" data-duration="8.469" data-volume="1"></audio>
+    <audio id="vo-c1-8" class="clip" src="assets/vo/c1-8.wav" data-start="101.19" data-duration="10.432" data-volume="1"></audio>
+    <audio id="vo-c1-end" class="clip" src="assets/vo/c1-end.wav" data-start="111.97" data-duration="2.091" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "#f5e2d9", SOFT0 = "rgba(245, 226, 217, 0)";
+    const INK = "#1d1b18", RULE = "#c4b9a6", ACCENT = "#b8321f";
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const draw = (sel, at, d = 0.5) => tl.fromTo(sel, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+    const lit = (sel, at) => tl.fromTo(sel, { borderColor: RULE, color: INK }, { borderColor: ACCENT, color: ACCENT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+
+    // chapter card: on screen from frame 0, the time with no fade
+
+    // c1-1: the members queue on "Members queue at the desk"
+    for (let i = 1; i <= 4; i++) fadeIn("#c1-m" + i, 4.2 + (i - 1) * 0.15, 0.5);
+
+    // c1-2: "container" on "A container"; c1-2b: "presentational" on "A presentational component"
+    fadeIn("#c1-role-c", 9.8);
+    fadeIn("#c1-role-p", 18.6);
+
+    // c1-3: band on the two inject lines on "once injected feature flags and analytics"
+    band("#c1-i1", 30.2);
+    band("#c1-i2", 30.2);
+
+    // c1-3b: the tree draws on as the containers are named
+    fadeIn("#c1-n-routes", 39.6, 0.5);
+    draw("#c1-e0", 40.0);
+    fadeIn("#c1-n-search", 40.3, 0.5);
+    draw("#c1-e1", 40.6);
+    fadeIn("#c1-n-kiosk", 40.9, 0.5);
+    draw("#c1-e2", 41.3);
+    fadeIn("#c1-n-bc1", 41.6, 0.5);
+    draw("#c1-e3", 41.8);
+    fadeIn("#c1-n-bc2", 42.1, 0.5);
+
+    // c1-4: one BookCover turns hot on "can this render with its inputs alone"
+    lit("#c1-n-bc1", 48.6);
+
+    // c1-5: the three rule sentences one by one from "reference books never leave the building"
+    fadeIn("#c1-r1", 59.4, 0.5);
+    fadeIn("#c1-r2", 60.0, 0.5);
+    fadeIn("#c1-r3", 60.6, 0.5);
+
+    // c1-5b: band on the borrowDecision line on "That function"
+    band("#c1-fn", 64.8);
+
+    // c1-6: band on the owner sentence on "For every rule"
+    band("#c1-w1", 76.5);
+
+    // c1-7: the callout holds through "Not everything splits", then items one by one as they are named; c1-7b: the third
+    fadeIn("#c1-li1", 83.5);
+    fadeIn("#c1-li2", 87.6);
+    fadeIn("#c1-li3", 91.9);
+
+    // c1-8: the should-fix label takes the accent on "usually should-fix"
+    tl.fromTo("#c1-cmt-l", { color: INK }, { color: ACCENT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, 107.6);
+
+    // questions 0.6 s apart, then hold; pause card
+    for (let i = 1; i <= 3; i++) fadeIn("#c1-q" + i, 112.3 + (i - 1) * 0.6);
+    fadeIn("#c1-pause-2", 134.57);
+
+    window.__timelines["c1"] = tl;
+  </script>
+</template>

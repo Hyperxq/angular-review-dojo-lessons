@@ -1,0 +1,292 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    code { font-family: var(--font-code); font-size: 0.92em; white-space: nowrap; }
+    .c3-h { position: absolute; left: 200px; top: 110px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c3-chip { position: absolute; box-sizing: border-box; padding: 22px 36px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 40px/1 var(--font-text); white-space: nowrap; }
+    .c3-chip.mono { font-family: var(--font-code); }
+    .c3-chip.big { padding: 28px 48px; font-size: 64px; }
+
+    .c3-nav { position: absolute; left: 40px; top: 40px; width: 300px; }
+    .c3-nav div { height: 72px; padding: 0 20px; display: flex; align-items: center; border-radius: 8px; font: 400 34px/1 var(--font-text); color: var(--ink-muted); }
+    .c3-nav div.on { background: var(--paper-sunk); color: var(--ink); font-weight: 700; }
+    .c3-panel { position: absolute; left: 380px; right: 40px; top: 40px; }
+    .c3-panel .label { margin-bottom: 14px; }
+    .c3-empty { height: 260px; display: flex; align-items: center; justify-content: center; border: 2px dashed var(--rule); border-radius: 8px; font: 400 36px/1 var(--font-text); color: var(--ink-muted); }
+
+    .c3-sub { position: absolute; left: 200px; width: 1520px; font: 400 40px/1.45 var(--font-text); color: var(--ink-muted); }
+
+    #c3-cutlist { position: absolute; left: 200px; top: 250px; width: 1520px; }
+    .c3-item { padding: 12px 24px; margin-bottom: 22px; border-radius: 8px; font: 400 38px/1.45 var(--font-text); display: grid; grid-template-columns: 56px 1fr; }
+    .c3-item > b { color: var(--ink-muted); }
+    .c3-item span { border-radius: 4px; }
+    .c3-cmd { margin: 14px 0 0; box-sizing: border-box; padding: 20px 28px; background: var(--paper-raised); border: 1px solid rgb(221 212 197 / 0.7); border-radius: 8px; box-shadow: var(--shadow); font: 400 30px/45px var(--font-code); white-space: pre-wrap; padding-left: calc(28px + 4ch); text-indent: -4ch; }
+
+    #c3-strangler { position: absolute; left: 200px; top: 240px; width: 1520px; font: 400 38px/1.45 var(--font-text); }
+    #c3-trade { position: absolute; left: 200px; top: 470px; width: 1520px; }
+    #c3-trade .c3-item { font-size: 34px; margin-bottom: 16px; }
+
+    .c3-callout { position: absolute; left: 200px; width: 1520px; box-sizing: border-box; padding: 40px 48px; border-left: 8px solid var(--tip); border-radius: 8px; background: var(--tip-soft); font: 400 44px/1.45 var(--font-text); }
+    .c3-callout .c3-ctag { display: block; margin-bottom: 18px; font: 700 32px/1 var(--font-text); color: var(--tip); }
+
+    #c3-notdo { position: absolute; left: 200px; top: 290px; width: 1520px; }
+
+    .c3-para { position: absolute; left: 200px; width: 1520px; font: 400 36px/1.45 var(--font-text); }
+    #c3-cmt { position: absolute; left: 200px; top: 610px; width: 1520px; box-sizing: border-box; padding: 32px 48px; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; box-shadow: var(--shadow); font: 400 36px/1.5 var(--font-text); }
+    #c3-qchip { display: inline-block; margin-bottom: 20px; padding: 14px 28px; border: 3px solid var(--rule-strong); border-radius: 8px; font: 700 34px/1 var(--font-code); }
+
+    .q { font-size: 40px; margin-bottom: 30px; }
+
+    #c3-after-title { position: absolute; left: 200px; top: 130px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+    .c3-ap { position: absolute; left: 200px; width: 1520px; font: 400 44px/1.5 var(--font-text); }
+    .c3-ap span { border-radius: 4px; }
+    #c3-closed { position: absolute; left: 80px; top: 280px; font: 600 88px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c3-lights { position: absolute; inset: 0; background: var(--ink); }
+  </style>
+
+  <div id="root" data-composition-id="c3" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c3-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">15:00</div>
+      <div class="chapter-title">Changing structure without changing behaviour</div>
+    </div>
+
+    <!-- c3-1: 15:00, the desk at rest; LegacyCatalogClient as a label -->
+    <div id="c3-desk" class="clip world sunk" data-start="3" data-duration="10.72">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">15:00</span></div>
+        <div class="app-body">
+          <div class="c3-nav">
+            <div class="on">Members</div>
+            <div>Loans</div>
+            <div>Holds</div>
+            <div>Admin</div>
+            <div>Staff</div>
+            <div>Settings</div>
+          </div>
+          <div class="c3-panel">
+            <div class="label">Desk queue</div>
+            <div class="c3-empty">No one waiting</div>
+          </div>
+        </div>
+      </div>
+      <div id="c3-legacy" class="c3-chip mono" style="left: 500px; top: 660px" data-hold>LegacyCatalogClient</div>
+    </div>
+
+    <!-- c3-2: heading, the principle as a label; c3-2b: cohesion and coupling -->
+    <div id="c3-reasons" class="clip world" data-start="13.72" data-duration="19.79">
+      <div class="c3-h" data-hold>Reasons to change</div>
+      <div id="c3-srp" class="c3-chip" style="left: 200px; top: 400px">single responsibility principle</div>
+      <div id="c3-coh" class="c3-chip big" style="left: 200px; top: 330px" data-hold>cohesion</div>
+      <div id="c3-cou" class="c3-chip big" style="left: 200px; top: 560px" data-hold>coupling</div>
+      <div id="c3-cou-p" class="c3-sub" style="top: 740px" data-hold>High coupling means a change in one place forces changes elsewhere.</div>
+    </div>
+
+    <!-- c3-3: heading and the lesson's git log command; c3-3b: the third item banded -->
+    <div id="c3-cut" class="clip world" data-start="33.51" data-duration="16.76">
+      <div class="c3-h" data-hold>Finding where to cut</div>
+      <div id="c3-cutlist" data-hold>
+        <div id="c3-f1" class="c3-item"><b>–</b><span>Ask who requests changes to each part. Code that changes for different people belongs in different places.</span></div>
+        <div id="c3-f2" class="c3-item"><b>–</b><div><span>Look at history. Files that always change together belong together; a file that changes with everything is doing too much.</span>
+          <div id="c3-cmd" class="c3-cmd">git log --since=6.months --name-only --format= -- src/app | rg -v '^$' | sort | uniq -c | sort -rn | head</div></div></div>
+        <div id="c3-f3" class="c3-item"><b>–</b><span>Look at state. Whoever writes a piece of state owns it; code that writes state owned somewhere else is coupled to it, whatever the names say.</span></div>
+      </div>
+    </div>
+
+    <!-- c3-4: folders by kind as labels; c3-4b: replaced by features; c3-4c: shared as the accent -->
+    <div id="c3-folders" class="clip world" data-start="50.27" data-duration="26.78">
+      <div class="c3-h" data-hold>Folders by kind, folders by feature</div>
+      <div id="c3-k1" class="c3-chip mono c3-kind" style="left: 200px; top: 420px">services</div>
+      <div id="c3-k2" class="c3-chip mono c3-kind" style="left: 520px; top: 420px">components</div>
+      <div id="c3-k3" class="c3-chip mono c3-kind" style="left: 891px; top: 420px">models</div>
+      <div id="c3-k4" class="c3-chip mono c3-kind" style="left: 1161px; top: 420px">utils</div>
+      <div id="c3-d1" class="c3-chip mono" style="left: 200px; top: 420px" data-hold>admin</div>
+      <div id="c3-d2" class="c3-chip mono" style="left: 444px; top: 420px" data-hold>loans</div>
+      <div id="c3-d3" class="c3-chip mono" style="left: 688px; top: 420px" data-hold>members</div>
+      <div id="c3-shared" class="c3-chip mono" style="left: 200px; top: 620px; border-color: var(--accent); color: var(--accent)" data-hold>shared</div>
+    </div>
+
+    <!-- c3-5: heading; c3-5b: the strangler fig paragraph; c3-5c: tradeoffs one and two; c3-5d: tradeoff three -->
+    <div id="c3-refactor" class="clip world" data-start="77.05" data-duration="30.95">
+      <div class="c3-h" data-hold>Refactoring without changing behaviour</div>
+      <div id="c3-char" class="c3-chip" style="left: 200px; top: 400px">characterization tests</div>
+      <div id="c3-strangler" data-hold>The strangler fig pattern replaces old code gradually. New code grows beside the old, callers move over one by one, and the old code is removed when nothing calls it. It has real tradeoffs you should look for in a review:</div>
+      <div id="c3-trade" data-hold>
+        <div id="c3-t1" class="c3-item"><b>–</b><span>For a while there are two code paths for the same job, and a bug fix may be needed in both.</span></div>
+        <div id="c3-t2" class="c3-item"><b>–</b><span>Something often sits in front of the old code to route calls (a facade or an adapter). Decide how long it may live; a facade without an end date becomes the next legacy layer.</span></div>
+        <div id="c3-t3" class="c3-item"><b>–</b><span>The old behaviour may be wrong. Characterization tests pin bugs too, so decide on purpose whether the migration keeps a bug (and fixes it after) or fixes it during (and accepts that the tests change).</span></div>
+      </div>
+    </div>
+
+    <!-- c3-6: heading and the TIP callout -->
+    <div id="c3-adr" class="clip world" data-start="108" data-duration="11.62">
+      <div class="c3-h" data-hold>Why write the decision down</div>
+      <div id="c3-tip" class="c3-callout" style="top: 300px" data-hold>
+        <span class="c3-ctag">Tip</span>
+        <span>Most decomposition questions have more than one defensible answer.</span> <span>A review of a restructuring is less about finding the one right tree than about whether the author chose on purpose, wrote down what they rejected, and can enforce the result.</span>
+      </div>
+    </div>
+
+    <!-- c3-7: heading and the list, items one by one -->
+    <div id="c3-when" class="clip world" data-start="119.62" data-duration="11.2">
+      <div class="c3-h" data-hold>When not to do it</div>
+      <div id="c3-notdo" data-hold>
+        <div id="c3-w1" class="c3-item"><b>–</b><span>Not without characterization tests. A refactor you cannot prove behaviour-preserving is a rewrite with extra risk.</span></div>
+        <div id="c3-w2" class="c3-item"><b>–</b><span>Not in one big change. A restructuring that moves everything at once cannot be reviewed.</span></div>
+        <div id="c3-w3" class="c3-item"><b>–</b><span>Not because a file is long. Length is a smoke alarm; the reason to split is several reasons to change.</span></div>
+      </div>
+    </div>
+
+    <!-- c3-8: the severity paragraph, the label should-fix; c3-8b: the shared/dates.ts comment, the label question as the accent -->
+    <div id="c3-weigh" class="clip world" data-start="130.82" data-duration="15.94">
+      <div id="c3-sev" class="c3-para" style="top: 80px" data-hold>Severity depends on what the PR does to the cost: does it create the cost, make an existing one worse, or merely sit next to it? A PR that creates a new tangle earns a should-fix or worse. A PR that adds a little to an existing one deserves a comment and a ticket.</div>
+      <div id="c3-sev2" class="c3-para" style="top: 300px" data-hold>A PR that only sits next to an old problem gets a question or a nit at most, because asking a small PR to fix what it did not cause is scope creep.</div>
+      <div id="c3-sf" class="c3-chip mono" style="left: 200px; top: 480px" data-hold>should-fix</div>
+      <div id="c3-cmt" data-hold>
+        <div id="c3-qchip">question</div>
+        <div><span><b>Question:</b> this PR adds a third date formatter to <code>shared/dates.ts</code>, next to two that look similar.</span> <span>Is there a reason they differ?</span> <span>If not, I'm happy to leave the merge for a cleanup ticket.</span></div>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c3-questions" class="clip world note" data-start="146.76" data-duration="21.2">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c3-q1" class="q">Who asks for changes to each part of this code? Do parts that change for different people live apart?</div>
+        <div id="c3-q2" class="q">What would you have to bring along if you extracted this piece tomorrow?</div>
+        <div id="c3-q3" class="q">What proves that users see the same thing after the change?</div>
+        <div id="c3-q4" class="q">Is the decision written down with what it rejected, and is the new structure checked by something that runs in CI?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c3-pause" class="clip world" data-start="167.96" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c3-pause-2" class="pause-2" data-hold>Now do exercise 03.</div>
+    </div>
+
+    <!-- c3-after, c3-afterb: the "After the lesson" card, its last sentence banded -->
+    <div id="c3-after" class="clip world" data-start="171.46" data-duration="16.15">
+      <div id="c3-after-title">After the lesson</div>
+      <div id="c3-after-p" class="c3-ap" style="top: 320px" data-hold><span>When you finish an exercise, read its <code>SOLUTION.md</code> on the <code>solutions</code> branch.</span> <span>In this track, pay most attention to the tradeoffs section and, for the third exercise, the ADR: compare its alternatives with the ones you thought of.</span></div>
+      <div class="c3-ap" style="top: 540px" data-hold><span id="c3-a3">Then write the PR comment you would leave, and check that it says what it costs if nobody fixes it.</span></div>
+    </div>
+
+    <!-- c3-close: 18:00, the desk closes, lights down to the end -->
+    <div id="c3-close" class="clip world" data-start="187.61" data-duration="2.96">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock" style="color: var(--accent)">18:00</span></div>
+        <div class="app-body">
+          <div id="c3-closed">Opens again at 09:00</div>
+        </div>
+      </div>
+      <div id="c3-lights" data-hold></div>
+    </div>
+
+    <audio id="c3-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="36" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c3-bed2" class="clip" src="assets/music/bed.mp3" data-start="146.76" data-duration="21.2" data-media-start="118" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c3-1" class="clip" src="assets/vo/c3-1.wav" data-start="3.0" data-duration="10.368" data-volume="1"></audio>
+    <audio id="vo-c3-2" class="clip" src="assets/vo/c3-2.wav" data-start="13.72" data-duration="10.624" data-volume="1"></audio>
+    <audio id="vo-c3-2b" class="clip" src="assets/vo/c3-2b.wav" data-start="24.69" data-duration="8.469" data-volume="1"></audio>
+    <audio id="vo-c3-3" class="clip" src="assets/vo/c3-3.wav" data-start="33.51" data-duration="8.043" data-volume="1"></audio>
+    <audio id="vo-c3-3b" class="clip" src="assets/vo/c3-3b.wav" data-start="41.9" data-duration="8.021" data-volume="1"></audio>
+    <audio id="vo-c3-4" class="clip" src="assets/vo/c3-4.wav" data-start="50.27" data-duration="9.323" data-volume="1"></audio>
+    <audio id="vo-c3-4b" class="clip" src="assets/vo/c3-4b.wav" data-start="59.95" data-duration="9.515" data-volume="1"></audio>
+    <audio id="vo-c3-4c" class="clip" src="assets/vo/c3-4c.wav" data-start="69.81" data-duration="6.891" data-volume="1"></audio>
+    <audio id="vo-c3-5" class="clip" src="assets/vo/c3-5.wav" data-start="77.05" data-duration="6.08" data-volume="1"></audio>
+    <audio id="vo-c3-5b" class="clip" src="assets/vo/c3-5b.wav" data-start="83.48" data-duration="7.595" data-volume="1"></audio>
+    <audio id="vo-c3-5c" class="clip" src="assets/vo/c3-5c.wav" data-start="91.43" data-duration="7.829" data-volume="1"></audio>
+    <audio id="vo-c3-5d" class="clip" src="assets/vo/c3-5d.wav" data-start="99.61" data-duration="8.043" data-volume="1"></audio>
+    <audio id="vo-c3-6" class="clip" src="assets/vo/c3-6.wav" data-start="108.0" data-duration="11.264" data-volume="1"></audio>
+    <audio id="vo-c3-7" class="clip" src="assets/vo/c3-7.wav" data-start="119.62" data-duration="10.859" data-volume="1"></audio>
+    <audio id="vo-c3-8" class="clip" src="assets/vo/c3-8.wav" data-start="130.82" data-duration="7.893" data-volume="1"></audio>
+    <audio id="vo-c3-8b" class="clip" src="assets/vo/c3-8b.wav" data-start="139.07" data-duration="7.339" data-volume="1"></audio>
+    <audio id="vo-c3-end" class="clip" src="assets/vo/c3-end.wav" data-start="146.76" data-duration="2.091" data-volume="1"></audio>
+    <audio id="vo-c3-after" class="clip" src="assets/vo/c3-after.wav" data-start="171.81" data-duration="10.091" data-volume="1"></audio>
+    <audio id="vo-c3-afterb" class="clip" src="assets/vo/c3-afterb.wav" data-start="182.25" data-duration="5.013" data-volume="1"></audio>
+    <audio id="vo-c3-close" class="clip" src="assets/vo/c3-close.wav" data-start="187.61" data-duration="1.963" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const RULE = "#c4b9a6";
+    const INK = "#1d1b18";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c3-1: the desk at rest, then the label on its name
+    fadeIn("#c3-legacy", 6.9, 0.5);
+
+    // c3-2: heading, the principle; c3-2b: the label swaps to cohesion, then coupling
+    fadeIn("#c3-reasons .c3-h", 13.8, 0.5);
+    fadeIn("#c3-srp", 14.6, 0.5);
+    fadeOut("#c3-srp", 24.3, 0.3);
+    fadeIn("#c3-coh", 24.75, 0.5);
+    fadeIn("#c3-cou", 27.9, 0.5);
+    fadeIn("#c3-cou-p", 28.05, 0.5);
+
+    // c3-3: heading, people, then history with its command; c3-3b: the third item, banded
+    fadeIn("#c3-cut .c3-h", 33.6, 0.5);
+    fadeIn("#c3-f1", 33.8, 0.5);
+    fadeIn("#c3-f2", 37.5, 0.5);
+    fadeIn("#c3-f3", 41.95, 0.5);
+    band("#c3-f3", 42.3);
+
+    // c3-4: the kinds as they are named; c3-4b: features replace them; c3-4c: shared, the accent
+    fadeIn("#c3-folders .c3-h", 50.35, 0.5);
+    ["#c3-k1", "#c3-k2", "#c3-k3", "#c3-k4"].forEach((k, i) => fadeIn(k, 50.9 + i * 0.3, 0.4));
+    fadeOut(".c3-kind", 59.95, 0.4);
+    ["#c3-d1", "#c3-d2", "#c3-d3"].forEach((k, i) => fadeIn(k, 60.4 + i * 0.15, 0.5));
+    fadeIn("#c3-shared", 74.4, 0.5);
+
+    // c3-5: heading and its label; c3-5b: the paragraph; c3-5c, c3-5d: the tradeoffs
+    fadeIn("#c3-refactor .c3-h", 77.1, 0.5);
+    fadeIn("#c3-char", 78.2, 0.5);
+    fadeOut("#c3-char", 83.1, 0.3);
+    fadeIn("#c3-strangler", 83.5, 0.5);
+    fadeIn("#c3-t1", 92.4, 0.5);
+    fadeIn("#c3-t2", 96.6, 0.5);
+    fadeIn("#c3-t3", 99.3, 0.5);
+
+    // c3-6: heading, then the tip
+    fadeIn("#c3-adr .c3-h", 108.05, 0.5);
+    fadeIn("#c3-tip", 108.4, 0.5);
+
+    // c3-7: heading, then each item as it is said
+    fadeIn("#c3-when .c3-h", 119.7, 0.5);
+    fadeIn("#c3-w1", 119.9, 0.5);
+    fadeIn("#c3-w2", 121.4, 0.5);
+    fadeIn("#c3-w3", 122.9, 0.5);
+
+    // c3-8: the paragraph, should-fix as the accent; c3-8b: the comment, question takes the accent
+    fadeIn("#c3-sev", 130.9, 0.5);
+    fadeIn("#c3-sf", 133.4, 0.4);
+    fadeIn("#c3-sev2", 137.4, 0.5);
+    tl.fromTo("#c3-sf", { borderColor: RULE, color: INK }, { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 133.6);
+    tl.to("#c3-sf", { borderColor: RULE, color: INK, duration: 0.3 }, 139.1);
+    fadeIn("#c3-cmt", 137.9, 0.5);
+    tl.fromTo("#c3-qchip", { borderColor: RULE, color: INK }, { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 139.5);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c3-q1", "#c3-q2", "#c3-q3", "#c3-q4"].forEach((q, i) => fadeIn(q, 147.0 + i * 0.6));
+    fadeIn("#c3-pause-2", 168.44);
+
+    // after the lesson: the card, then its last sentence banded
+    fadeIn("#c3-after-title", 171.5, 0.4);
+    fadeIn(".c3-ap", 171.8, 0.5);
+    band("#c3-a3", 182.35);
+
+    // close: 18:00, the lights go down and stay down to the last frame
+    fadeIn("#c3-closed", 187.75, 0.4);
+    tl.fromTo("#c3-lights", { opacity: 0 }, { opacity: 0.62, duration: 2.0, ease: "power2.inOut" }, 188.3);
+
+    window.__timelines["c3"] = tl;
+  </script>
+</template>

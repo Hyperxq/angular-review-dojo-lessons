@@ -1,0 +1,372 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    code { font-family: var(--font-code); font-size: 0.92em; white-space: nowrap; }
+    .c2-svg { position: absolute; left: 0; top: 0; }
+    .c2-h { position: absolute; left: 200px; top: 110px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c2-chip { position: absolute; box-sizing: border-box; padding: 22px 36px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 40px/1 var(--font-text); white-space: nowrap; }
+    .c2-chip.mono { font-family: var(--font-code); }
+
+    .c2-nav { position: absolute; left: 40px; top: 40px; width: 300px; }
+    .c2-nav div { height: 72px; padding: 0 20px; display: flex; align-items: center; border-radius: 8px; font: 400 34px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-nav div.on { background: var(--paper-sunk); color: var(--ink); font-weight: 700; }
+    .c2-nav div.grp { font: 700 30px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-panel { position: absolute; left: 380px; right: 40px; top: 40px; }
+    .c2-panel .label { margin-bottom: 14px; }
+    .c2-row { height: 92px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 400 36px/1 var(--font-text); }
+    .c2-row span { margin-left: auto; font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-tag { position: absolute; padding: 12px 22px; border-radius: 8px; background: var(--accent); color: var(--paper); font: 700 34px/1 var(--font-code); }
+
+    .c2-force { position: absolute; top: 380px; width: 720px; box-sizing: border-box; padding: 36px 44px; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; box-shadow: var(--shadow); font: 400 40px/1.4 var(--font-text); }
+    .c2-force .label { margin-bottom: 16px; }
+
+    .c2n { box-sizing: border-box; height: 116px; padding: 0 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 32px; line-height: 1.1; }
+    .c2n .badge { display: block; margin: 8px 0 0; font-size: 28px; }
+
+    .c2-callout { position: absolute; left: 200px; width: 1520px; box-sizing: border-box; padding: 40px 48px; border-left: 8px solid var(--note); border-radius: 8px; background: var(--note-soft); font: 400 44px/1.45 var(--font-text); }
+    .c2-callout .c2-ctag { display: block; margin-bottom: 18px; font: 700 32px/1 var(--font-text); color: var(--note); }
+    .c2-callout span { border-radius: 4px; }
+
+    .c2-table { position: absolute; display: flex; flex-direction: column; }
+    .c2-tr { display: grid; border-bottom: 1px solid var(--rule); border-radius: 4px; }
+    .c2-tr > span { padding: 20px 22px; }
+    .c2-tr.th { border-bottom: 2px solid var(--rule-strong); }
+    .c2-tr.th > span { font: 700 30px/1.3 var(--font-text); color: var(--ink-muted); }
+    #c2-kinds { left: 100px; top: 200px; width: 1720px; font: 400 34px/1.4 var(--font-text); }
+    #c2-kinds .c2-tr { grid-template-columns: 540px 1180px; }
+    #c2-kinds .c2-tr > span:first-child { font-weight: 700; }
+    #c2-moves { left: 104px; top: 120px; width: 1712px; font: 400 30px/1.35 var(--font-text); }
+    #c2-moves .c2-tr { grid-template-columns: 360px 700px 652px; }
+    #c2-moves .c2-tr > span { padding: 16px 20px; }
+    #c2-moves .c2-tr > span:first-child { font-weight: 700; }
+    #c2-moves .cost { border-radius: 4px; }
+
+    .c2-fbox { height: 240px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; }
+    .c2-flab { white-space: nowrap; }
+
+    #c2-conv { position: absolute; left: 200px; top: 420px; width: 1520px; font: 400 44px/1.45 var(--font-text); color: var(--ink-muted); }
+
+    .c2-code { left: 104px; width: 1712px; box-sizing: border-box; padding: 32px 44px; font-size: 30px; line-height: 45px; }
+    .c2-code .ln { position: relative; min-height: 45px; }
+    .c2-wrap4 { white-space: pre-wrap !important; padding-left: 4ch; text-indent: -4ch; }
+    .c2-wrap8 { white-space: pre-wrap !important; padding-left: 8ch; text-indent: -8ch; }
+    #c2-fband { position: absolute; left: 0; right: 0; top: 122px; height: 90px; background: var(--accent-soft); }
+
+    #c2-list { position: absolute; left: 200px; top: 290px; width: 1520px; }
+    .c2-item { padding: 12px 24px; margin-bottom: 26px; border-radius: 8px; font: 400 40px/1.45 var(--font-text); display: grid; grid-template-columns: 56px 1fr; }
+    .c2-item > b { color: var(--ink-muted); }
+
+    #c2-cmt { position: absolute; left: 200px; top: 330px; width: 1520px; box-sizing: border-box; padding: 40px 48px; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; box-shadow: var(--shadow); font: 400 40px/1.5 var(--font-text); }
+    #c2-cmt span { border-radius: 4px; }
+    #c2-cmt .label { margin-bottom: 18px; }
+
+    .q { font-size: 40px; margin-bottom: 34px; }
+  </style>
+
+  <div id="root" data-composition-id="c2" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c2-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">11:30</div>
+      <div class="chapter-title">Boundaries you can test</div>
+    </div>
+
+    <!-- c2-1: 11:30, the desk; an annotation tag "lazy" on the admin area, drawn outside the app's own UI -->
+    <div id="c2-desk" class="clip world sunk" data-start="3" data-duration="8.44">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">11:30</span></div>
+        <div class="app-body">
+          <div class="c2-nav">
+            <div class="on">Members</div>
+            <div>Loans</div>
+            <div>Holds</div>
+            <div class="grp">Admin</div>
+            <div>Staff</div>
+            <div>Settings</div>
+          </div>
+          <div class="c2-panel" data-hold>
+            <div class="label">Members · today</div>
+            <div class="c2-row">Ada Brooks<span>2 loans</span></div>
+            <div class="c2-row">Ravi Menon<span>1 hold</span></div>
+            <div class="c2-row">Mia Lindqvist<span>3 loans</span></div>
+            <div class="c2-row">Tom Okafor<span>returning</span></div>
+            <div class="c2-row">Leo Park<span>1 loan</span></div>
+          </div>
+        </div>
+      </div>
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#b8321f" stroke-width="4">
+        <rect id="c2-zone" x="148" y="428" width="324" height="220" rx="8" stroke-dasharray="14 10" />
+        <path id="c2-zline" d="M260 650 V720" />
+      </svg>
+      <div id="c2-lazy" class="c2-tag" style="left: 200px; top: 722px" data-hold>lazy</div>
+    </div>
+
+    <!-- c2-2: heading; the two forces, each with who pays -->
+    <div id="c2-bound" class="clip world" data-start="11.44" data-duration="10.88">
+      <div class="c2-h" data-hold>Boundaries you can test</div>
+      <div id="c2-force1" class="c2-force" style="left: 200px" data-hold><div class="label">Lazy loading · who pays</div>members on slow phones downloading code for screens they never open</div>
+      <div id="c2-force2" class="c2-force" style="left: 1000px" data-hold><div class="label">Team boundaries · who pays</div>the owners, whose internals turn into a contract they never agreed to</div>
+    </div>
+
+    <!-- c2-3: the lesson's tree; index.ts [public] as the accent, then shell [eager] -->
+    <div id="c2-tree" class="clip world sunk" data-start="22.32" data-duration="10.36">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#c4b9a6" stroke-width="4">
+        <path d="M960 206 V228 H380 V250 M960 228 H1043 V250" />
+        <path d="M1043 366 V388 H630 V410 M1043 388 H1457 V410" />
+        <path d="M630 526 V548 H260 V570 M630 548 V570 M630 548 H960 V570" />
+        <path d="M1457 526 V548 H1280 V570 M1457 548 H1635 V570" />
+        <path d="M960 686 V760" />
+      </svg>
+      <div class="node c2n" style="left: 880px; top: 90px; width: 160px">app</div>
+      <div id="c2-shell" class="node c2n" style="left: 260px; top: 250px; width: 240px">shell<span class="badge">[eager]</span></div>
+      <div class="node c2n" style="left: 923px; top: 250px; width: 240px">features</div>
+      <div class="node c2n" style="left: 510px; top: 410px; width: 240px">admin<span class="badge">[lazy]</span></div>
+      <div class="node c2n" style="left: 1347px; top: 410px; width: 220px">loans</div>
+      <div class="node c2n c2-pub" style="left: 110px; top: 570px; width: 300px">index.ts<span class="badge">[public]</span></div>
+      <div class="node c2n" style="left: 440px; top: 570px; width: 380px">admin.routes.ts</div>
+      <div class="node c2n" style="left: 840px; top: 570px; width: 240px">internal</div>
+      <div class="node c2n c2-pub" style="left: 1130px; top: 570px; width: 300px">index.ts<span class="badge">[public]</span></div>
+      <div class="node c2n" style="left: 1460px; top: 570px; width: 350px">loans-store.ts</div>
+      <div class="node c2n" style="left: 800px; top: 760px; width: 320px" data-hold>audit-log.ts<span class="badge">[internal]</span></div>
+    </div>
+
+    <!-- c2-4: the NOTE callout; its last sentence banded -->
+    <div id="c2-note" class="clip world" data-start="32.68" data-duration="11.57">
+      <div class="c2-callout" style="top: 260px" data-hold>
+        <span class="c2-ctag">Note</span>
+        <span>A barrel makes cycles easier to create and can hide what a file really imports.</span> <span>Keep each one short, with named exports.</span> <span>Whether files inside a feature import each other directly is the feature team's call;</span> <span id="c2-door">across features, the barrel is the only door.</span>
+      </div>
+    </div>
+
+    <!-- c2-5: heading; imports and injections as labels -->
+    <div id="c2-oneway" class="clip world" data-start="44.25" data-duration="9.29">
+      <div class="c2-h" data-hold>Dependencies point one way</div>
+      <div id="c2-imp" class="c2-chip" style="left: 200px; top: 400px" data-hold>imports</div>
+      <div id="c2-inj" class="c2-chip" style="left: 480px; top: 400px" data-hold>injections</div>
+    </div>
+
+    <!-- c2-5b: Kind / What happens, the ES module cycle row; c2-5c: the DI cycle row -->
+    <div id="c2-kindsw" class="clip world" data-start="53.54" data-duration="19.52">
+      <div id="c2-kinds" class="c2-table" data-hold>
+        <div class="c2-tr th"><span>Kind</span><span>What happens</span></div>
+        <div id="c2-k1" class="c2-tr"><span>ES module cycle (<code>a.ts</code> imports <code>b.ts</code> imports <code>a.ts</code>)</span><span><span>The module that is evaluated first runs before the other one has; if it reads the other's export at top level, the binding is not initialized yet.</span> <span>For a <code>class</code>, <code>let</code> or <code>const</code> export that is a <code>ReferenceError</code> ("Cannot access 'X' before initialization"); with <code>var</code> or CommonJS you get <code>undefined</code> instead.</span> <span>Which one fails depends on load order.</span></span></div>
+        <div id="c2-k2" class="c2-tr"><span>DI cycle (service A injects B, B injects A)</span><span><code>NG0200</code>, a circular dependency in DI, when Angular resolves the <code>inject()</code> calls. It needs the cycle in construction, not merely in imports.</span></div>
+      </div>
+    </div>
+
+    <!-- c2-6: the lesson's first flow, both arrows drawing on -->
+    <div id="c2-flow1" class="clip world sunk" data-start="73.06" data-duration="9.69">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#1d1b18" stroke-width="4">
+        <path id="c2-a1" pathLength="1" d="M566 460 H1350" />
+        <path id="c2-h1" d="M1338 448 L1354 460 L1338 472" />
+        <path id="c2-a2" pathLength="1" d="M1354 590 H570" />
+        <path id="c2-h2" d="M582 578 L566 590 L582 602" />
+      </svg>
+      <div class="fbox c2-fbox" style="left: 160px; top: 400px; width: 400px">HoldsService</div>
+      <div class="fbox c2-fbox" style="left: 1360px; top: 400px; width: 400px">LoansService</div>
+      <div id="c2-l1" class="flabel c2-flab" style="left: 560px; top: 404px; width: 800px">asks whether a copy is on loan</div>
+      <div id="c2-l2" class="flabel c2-flab" style="left: 560px; top: 534px; width: 800px" data-hold>notifies the next hold when a copy returns</div>
+    </div>
+
+    <!-- c2-7: Move / When it fits / What it costs, rows one by one; c2-7b: the cost column banded -->
+    <div id="c2-movesw" class="clip world" data-start="82.75" data-duration="18.68">
+      <div id="c2-moves" class="c2-table" data-hold>
+        <div class="c2-tr th"><span>Move</span><span>When it fits</span><span>What it costs</span></div>
+        <div id="c2-m1" class="c2-tr"><span>Move the shared piece down</span><span>Both sides use something that belongs to neither (a type, a constant, a date helper).</span><span class="cost">A new file or a new lower feature.</span></div>
+        <div id="c2-m2" class="c2-tr"><span>Invert with an event</span><span>One side only needs to announce that something happened.</span><span class="cost">Control flow becomes implicit: you cannot read "who reacts" from the announcing code, and the order of reactions is harder to reason about.</span></div>
+        <div id="c2-m3" class="c2-tr"><span>Invert with a port</span><span><span>One side needs a capability, not a particular implementation.</span> <span>It declares an <code>InjectionToken</code> or an abstract class; the other side provides it (the hexagonal architecture answer).</span></span><span class="cost">One more abstraction, and the wiring lives in providers instead of imports.</span></div>
+        <div id="c2-m4" class="c2-tr"><span>Merge</span><span>The two "features" change together for the same people. They are one feature.</span><span class="cost">A bigger folder, which is fine if it has one owner.</span></div>
+      </div>
+    </div>
+
+    <!-- c2-8: the lesson's second flow, the single arrow as the accent -->
+    <div id="c2-flow2" class="clip world sunk" data-start="101.43" data-duration="9.57">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#b8321f" stroke-width="4">
+        <path id="c2-b1" pathLength="1" d="M566 520 H1350" />
+        <path id="c2-bh1" d="M1338 508 L1354 520 L1338 532" />
+      </svg>
+      <div class="fbox c2-fbox" style="left: 160px; top: 400px; width: 400px">HoldsService</div>
+      <div class="fbox c2-fbox" style="left: 1360px; top: 400px; width: 400px">LoansService</div>
+      <div id="c2-bl1" class="flabel c2-flab" style="left: 560px; top: 464px; width: 800px" data-hold>asks about loans and listens for returned copies</div>
+    </div>
+
+    <!-- c2-9: heading; the lesson's line about a convention written as a test -->
+    <div id="c2-fit" class="clip world" data-start="111" data-duration="10.61">
+      <div class="c2-h" data-hold>Fitness functions</div>
+      <div id="c2-conv" data-hold>A convention written as a test is enforced on every run.</div>
+    </div>
+
+    <!-- c2-9b: the fitness test, cut in whole, band on the toBeGreaterThan(0) line -->
+    <div id="c2-test" class="clip world" data-start="121.61" data-duration="7.35">
+      <div class="code c2-code" style="top: 270px" data-hold>
+        <div id="c2-fband"></div>
+        <span class="ln">it(<span class="s">'the shell imports admin only through its routes file'</span>, () =&gt; {</span>
+        <span class="ln">  <span class="k">const</span> files = sourceFilesUnder(<span class="s">'src/app/shell'</span>);</span>
+        <span class="ln c2-wrap4">  expect(files.length).toBeGreaterThan(<span class="n">0</span>); <span class="c">// the check must see code, or it proves nothing</span></span>
+        <span class="ln">  <span class="k">for</span> (<span class="k">const</span> file <span class="k">of</span> files) {</span>
+        <span class="ln c2-wrap8">    <span class="k">const</span> adminImports = importsOf(file).filter((path) =&gt; path.includes(<span class="s">'/features/admin/'</span>));</span>
+        <span class="ln">    expect(adminImports.every((path) =&gt; path.endsWith(<span class="s">'admin.routes'</span>))).toBe(<span class="k">true</span>);</span>
+        <span class="ln">  }</span>
+        <span class="ln">});</span>
+      </div>
+    </div>
+
+    <!-- c2-9c: the four tools from the lesson as labels -->
+    <div id="c2-tools" class="clip world" data-start="128.96" data-duration="10.2">
+      <div id="c2-t1" class="c2-chip" style="left: 200px; top: 300px">boundary rules for ESLint</div>
+      <div id="c2-t2" class="c2-chip" style="left: 200px; top: 440px">Nx's module boundary lint rule</div>
+      <div id="c2-t3" class="c2-chip mono" style="left: 200px; top: 580px">dependency-cruiser</div>
+      <div id="c2-t4" class="c2-chip" style="left: 200px; top: 720px" data-hold><code>madge</code> to list cycles</div>
+    </div>
+
+    <!-- c2-10: heading and the first two items one by one; c2-10b: the third item -->
+    <div id="c2-notuse" class="clip world" data-start="139.16" data-duration="18.43">
+      <div class="c2-h" data-hold>When not to use them</div>
+      <div id="c2-list" data-hold>
+        <div id="c2-n1" class="c2-item"><b>–</b><span>A small app with one team and a handful of folders does not need barrels or boundary tests yet. Add them when a second team or a lazy boundary appears.</span></div>
+        <div id="c2-n2" class="c2-item"><b>–</b><span>Do not encode a rule nobody has agreed on. A fitness function turns an opinion into a red build; agree first, then automate.</span></div>
+        <div id="c2-n3" class="c2-item"><b>–</b><span>Do not invert every dependency "for decoupling". Each inversion hides a call; use it where the arrow really points the wrong way.</span></div>
+      </div>
+    </div>
+
+    <!-- c2-11: the lesson's should-fix comment, the label should-fix; c2-11b: its last sentence banded -->
+    <div id="c2-review" class="clip world" data-start="157.59" data-duration="14.08">
+      <div id="c2-sf" class="c2-chip mono" style="left: 200px; top: 180px" data-hold>should-fix</div>
+      <div id="c2-cmt" data-hold>
+        <div class="label">Review comment</div>
+        <span><b>Should-fix:</b> <code>features/members/index.ts</code> does <code>export * from './internal/member-directory'</code> and two other internal files, so the public API is now every export in the folder.</span> <span>Please export only <code>MemberDirectory</code> and the <code>Member</code> type.</span> <span id="c2-ask">Could we add a fitness test so the barrel stays small?</span>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c2-questions" class="clip world note" data-start="171.67" data-duration="25.1">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c2-q1" class="q">For each new import or injection across folders: which feature owns the target, and did the owner choose to make it public?</div>
+        <div id="c2-q2" class="q">Draw the arrows this PR adds. Does any arrow point up a layer, or close a loop? If it closes a loop, which of the four moves matches what the arrows mean?</div>
+        <div id="c2-q3" class="q">Which rule protects this boundary today: a test, a lint rule, or someone's memory? Would the check fail if it found no files?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c2-pause" class="clip world" data-start="196.77" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c2-pause-2" class="pause-2" data-hold>Now do exercise 02.</div>
+    </div>
+
+    <audio id="c2-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="22" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-bed2" class="clip" src="assets/music/bed.mp3" data-start="171.67" data-duration="25.1" data-media-start="72" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c2-1" class="clip" src="assets/vo/c2-1.wav" data-start="3.0" data-duration="8.085" data-volume="1"></audio>
+    <audio id="vo-c2-2" class="clip" src="assets/vo/c2-2.wav" data-start="11.44" data-duration="10.539" data-volume="1"></audio>
+    <audio id="vo-c2-3" class="clip" src="assets/vo/c2-3.wav" data-start="22.32" data-duration="10.005" data-volume="1"></audio>
+    <audio id="vo-c2-4" class="clip" src="assets/vo/c2-4.wav" data-start="32.68" data-duration="11.221" data-volume="1"></audio>
+    <audio id="vo-c2-5" class="clip" src="assets/vo/c2-5.wav" data-start="44.25" data-duration="8.939" data-volume="1"></audio>
+    <audio id="vo-c2-5b" class="clip" src="assets/vo/c2-5b.wav" data-start="53.54" data-duration="8.341" data-volume="1"></audio>
+    <audio id="vo-c2-5c" class="clip" src="assets/vo/c2-5c.wav" data-start="62.23" data-duration="10.475" data-volume="1"></audio>
+    <audio id="vo-c2-6" class="clip" src="assets/vo/c2-6.wav" data-start="73.06" data-duration="9.344" data-volume="1"></audio>
+    <audio id="vo-c2-7" class="clip" src="assets/vo/c2-7.wav" data-start="82.75" data-duration="8.576" data-volume="1"></audio>
+    <audio id="vo-c2-7b" class="clip" src="assets/vo/c2-7b.wav" data-start="91.68" data-duration="9.408" data-volume="1"></audio>
+    <audio id="vo-c2-8" class="clip" src="assets/vo/c2-8.wav" data-start="101.43" data-duration="9.216" data-volume="1"></audio>
+    <audio id="vo-c2-9" class="clip" src="assets/vo/c2-9.wav" data-start="111.0" data-duration="10.261" data-volume="1"></audio>
+    <audio id="vo-c2-9b" class="clip" src="assets/vo/c2-9b.wav" data-start="121.61" data-duration="6.997" data-volume="1"></audio>
+    <audio id="vo-c2-9c" class="clip" src="assets/vo/c2-9c.wav" data-start="128.96" data-duration="9.856" data-volume="1"></audio>
+    <audio id="vo-c2-10" class="clip" src="assets/vo/c2-10.wav" data-start="139.16" data-duration="9.621" data-volume="1"></audio>
+    <audio id="vo-c2-10b" class="clip" src="assets/vo/c2-10b.wav" data-start="149.13" data-duration="8.107" data-volume="1"></audio>
+    <audio id="vo-c2-11" class="clip" src="assets/vo/c2-11.wav" data-start="157.59" data-duration="8.747" data-volume="1"></audio>
+    <audio id="vo-c2-11b" class="clip" src="assets/vo/c2-11b.wav" data-start="166.69" data-duration="4.629" data-volume="1"></audio>
+    <audio id="vo-c2-end" class="clip" src="assets/vo/c2-end.wav" data-start="171.67" data-duration="2.112" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const RULE = "#c4b9a6";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: CLEAR, duration: 0.4 }, at);
+    const draw = (sel, at, d) => tl.fromTo(sel, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c2-1: the desk cut in whole; the annotation lands on "load lazily"
+    fadeIn("#c2-zone", 4.3, 0.4);
+    fadeIn("#c2-zline", 4.6, 0.3);
+    fadeIn("#c2-lazy", 4.7, 0.4);
+
+    // c2-2: heading, then each force as it is named
+    fadeIn("#c2-bound .c2-h", 11.5, 0.5);
+    fadeIn("#c2-force1", 12.0, 0.5);
+    fadeIn("#c2-force2", 15.6, 0.5);
+
+    // c2-3: the tree cut in whole; the public files, then the eager shell
+    tl.to(".c2-pub", { borderColor: ACCENT, duration: 0.3 }, 25.3);
+    tl.to(".c2-pub", { borderColor: RULE, duration: 0.3 }, 28.2);
+    tl.to("#c2-shell", { borderColor: ACCENT, duration: 0.3 }, 28.2);
+
+    // c2-4: the callout cut in whole; its last sentence banded
+    band("#c2-door", 41.4);
+
+    // c2-5: heading, then the two kinds of arrow
+    fadeIn("#c2-oneway .c2-h", 44.3, 0.5);
+    fadeIn("#c2-imp", 47.0, 0.4);
+    fadeIn("#c2-inj", 47.6, 0.4);
+
+    // c2-5b: header and the ES module cycle row, banded; c2-5c: the DI cycle row takes the band
+    band("#c2-k1", 53.8);
+    fadeIn("#c2-k2", 62.25, 0.5);
+    unband("#c2-k1", 62.25);
+    band("#c2-k2", 62.4);
+
+    // c2-6: boxes cut in; each arrow as its direction is named
+    draw("#c2-a1", 75.0, 0.6);
+    fadeIn("#c2-h1", 75.5, 0.2);
+    fadeIn("#c2-l1", 75.15, 0.4);
+    draw("#c2-a2", 78.4, 0.6);
+    fadeIn("#c2-h2", 78.9, 0.2);
+    fadeIn("#c2-l2", 78.55, 0.4);
+
+    // c2-7: header, then each move as it is named; c2-7b: the cost column banded
+    fadeIn("#c2-m1", 84.4, 0.4);
+    fadeIn("#c2-m2", 86.0, 0.4);
+    fadeIn("#c2-m3", 87.5, 0.4);
+    fadeIn("#c2-m4", 88.8, 0.4);
+    band("#c2-moves .cost", 91.9);
+
+    // c2-8: boxes cut in, the single arrow on "listens"
+    draw("#c2-b1", 104.6, 0.6);
+    fadeIn("#c2-bh1", 105.1, 0.2);
+    fadeIn("#c2-bl1", 104.75, 0.4);
+
+    // c2-9: heading, then the line about tests
+    fadeIn("#c2-fit .c2-h", 111.1, 0.5);
+    fadeIn("#c2-conv", 112.0, 0.5);
+
+    // c2-9b: the test cut in whole, then the band
+    fadeIn("#c2-fband", 122.4, 0.4);
+
+    // c2-9c: each tool as it is named
+    fadeIn("#c2-t1", 131.9, 0.4);
+    fadeIn("#c2-t2", 133.4, 0.4);
+    fadeIn("#c2-t3", 135.2, 0.4);
+    fadeIn("#c2-t4", 136.3, 0.4);
+
+    // c2-10: heading and the first two items; c2-10b: the third
+    fadeIn("#c2-notuse .c2-h", 139.2, 0.5);
+    fadeIn("#c2-n1", 139.4, 0.5);
+    fadeIn("#c2-n2", 146.5, 0.5);
+    fadeIn("#c2-n3", 149.15, 0.5);
+
+    // c2-11: the comment cut in whole, the label as the accent; c2-11b: the last sentence banded
+    tl.to("#c2-sf", { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 158.0);
+    band("#c2-ask", 166.8);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c2-q1", "#c2-q2", "#c2-q3"].forEach((q, i) => fadeIn(q, 171.9 + i * 0.6));
+    fadeIn("#c2-pause-2", 197.25);
+
+    window.__timelines["c2"] = tl;
+  </script>
+</template>

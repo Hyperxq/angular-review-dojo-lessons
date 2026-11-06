@@ -1,0 +1,260 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c0-h { position: absolute; left: 140px; top: 84px; width: 1640px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-prose code, .c0-tr code, .c0-row code { font-family: var(--font-code); font-size: 0.88em; white-space: nowrap; }
+    .c0-chip { display: inline-block; padding: 10px 20px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 34px/1 var(--font-code); white-space: nowrap; }
+    .c0-chip.txt { font-family: var(--font-text); }
+
+    /* desk */
+    .c0-page-title { font: 600 52px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-status { position: absolute; left: 40px; top: 130px; display: flex; align-items: center; gap: 18px; }
+    .c0-pill { position: relative; width: 150px; height: 52px; }
+    .c0-pill > span { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 26px; font: 700 30px/1 var(--font-text); }
+    .c0-closed { background: var(--paper-sunk); color: var(--ink-muted); border: 2px solid var(--rule-strong); }
+    .c0-open { background: var(--tip-soft); color: var(--tip); border: 2px solid var(--tip); }
+    .c0-members { position: absolute; left: 40px; top: 230px; width: 760px; }
+    .c0-mem { display: flex; justify-content: space-between; padding: 22px 0; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c0-mem b { font-weight: 700; }
+    .c0-mem span:last-child { color: var(--ink-muted); }
+    .c0-side { position: absolute; left: 880px; top: 230px; width: 700px; }
+    .c0-side .label { margin-bottom: 10px; }
+    .c0-half { padding: 26px 0; border-bottom: 1px solid var(--rule); font: 600 46px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c0-clock { position: relative; display: inline-block; }
+    #c0-t9 { position: absolute; right: 0; top: 0; }
+
+    /* tables: grid rows */
+    .c0-table { position: absolute; left: 120px; width: 1680px; }
+    .c0-tr { display: grid; column-gap: 28px; padding: 16px 24px; border-bottom: 1px solid var(--rule); border-radius: 6px; font: 400 30px/1.3 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c0-th { font-weight: 700; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    .c0-tr > div:first-child { font-weight: 700; }
+    .c0-th > div:first-child { font-weight: 700; }
+    #c0-f-table { top: 176px; }
+    #c0-f-table .c0-tr { grid-template-columns: 440px 640px 1fr; }
+    #c0-w-table { top: 200px; }
+    #c0-w-table .c0-tr { grid-template-columns: 240px 1fr; font-size: 34px; padding: 22px 24px; }
+
+    /* what moved: standalone, the public surface, the router */
+    #c0-mv-list { position: absolute; left: 120px; top: 290px; width: 1680px; }
+    .c0-row { display: grid; grid-template-columns: 420px 1fr; column-gap: 32px; align-items: center; padding: 22px 32px; border-bottom: 1px solid var(--rule); border-radius: 6px; font: 400 36px/1.3 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c0-row > span:first-child { font-weight: 700; color: var(--ink-muted); }
+    .c0-row .c0-chips { display: flex; flex-wrap: wrap; gap: 20px; }
+
+    /* code */
+    .c0-code { left: 120px; width: 1680px; font-size: 32px; padding: 40px 48px; }
+    .c0-code .ln { margin: 0 -48px; padding: 0 48px; background-color: rgba(245, 226, 217, 0); }
+    .c0-code .ln.wrap { white-space: pre-wrap; padding-left: calc(48px + 6ch); text-indent: -6ch; }
+    #c0-lr-code { top: 220px; }
+    #c0-sv-code { top: 220px; }
+  </style>
+
+  <div id="root" data-composition-id="c0" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c0-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c0-card-time" class="chapter-time">08:55</div>
+      <div id="c0-card-title" class="chapter-title">What moved since Angular 17</div>
+    </div>
+
+    <!-- c0-1, c0-1b: the desk before opening; the lesson's two halves -->
+    <div id="c0-desk" class="clip world" data-start="3" data-duration="17.92">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div class="c0-page-title">Members</div>
+          <div class="c0-status"><span class="label">Desk</span><span id="c0-pill1" class="c0-pill"><span class="c0-closed">Closed</span></span></div>
+          <div id="c0-members" class="c0-members" data-hold>
+            <div class="c0-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div class="c0-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div class="c0-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div class="c0-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+          <div id="c0-halves" class="c0-side" data-hold>
+            <div id="c0-half0" class="label">This track trains both halves:</div>
+            <div id="c0-half1" class="c0-half">seeing the structural problem</div>
+            <div id="c0-half2" class="c0-half">deciding how much it should weigh in this pull request</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-2, c0-2b: the forces behind structure (LESSON.md table), rows one by one -->
+    <div id="c0-forces" class="clip world" data-start="20.92" data-duration="20.43">
+      <div class="c0-h">The forces behind structure</div>
+      <div id="c0-f-table" class="c0-table" data-hold>
+        <div id="c0-f0" class="c0-tr c0-th"><div>Force</div><div>How it shows up when ignored</div><div>What structure buys</div></div>
+        <div id="c0-f1" class="c0-tr"><div>Change cost</div><div>A small change touches many files; unrelated changes collide in the same file.</div><div>A change stays inside one place.</div></div>
+        <div id="c0-f2" class="c0-tr"><div>Team boundaries (Conway's law: systems end up shaped like the teams that build them)</div><div>Teams wait on each other, merge conflicts between teams, ownership decided in meetings.</div><div>Each part has one owner, and the code says who.</div></div>
+        <div id="c0-f3" class="c0-tr"><div>Testability</div><div>A test has to wire up half the app to check one behaviour.</div><div>Units small enough to construct with fakes.</div></div>
+        <div id="c0-f4" class="c0-tr"><div>Onboarding</div><div>A new engineer needs days to find where a feature lives.</div><div>Names and folders that say what the app does.</div></div>
+        <div id="c0-f5" class="c0-tr"><div>Extraction</div><div>Moving a part to a lazy route or a library turns into archaeology.</div><div>Dependencies you can read and follow.</div></div>
+      </div>
+    </div>
+
+    <!-- c0-3, c0-3b: how much a structural finding weighs (LESSON.md table), rows on their words -->
+    <div id="c0-weigh" class="clip world" data-start="41.35" data-duration="21.05">
+      <div class="c0-h">How much a structural finding weighs</div>
+      <div id="c0-w-table" class="c0-table" data-hold>
+        <div id="c0-w0" class="c0-tr c0-th"><div>Label</div><div>Library example</div></div>
+        <div id="c0-w1" class="c0-tr"><div>blocking</div><div>Members see wrong data (the opening hours of another branch); something hard to undo (a public URL members have bookmarked changes shape); a contract another team consumes breaks (an export the holds team imports from <code>loans/index.ts</code> is renamed).</div></div>
+        <div id="c0-w2" class="c0-tr"><div>should-fix</div><div>A real cost with a clear fix: a new import that reaches into another team's internals (blocking once a change on their side has already broken the build), a reusable component that navigates on its own.</div></div>
+        <div id="c0-w3" class="c0-tr"><div>nit</div><div>A file name that does not match the class inside it.</div></div>
+        <div id="c0-w4" class="c0-tr"><div>question</div><div>Taste or an open design choice: "would <code>fines</code> be better as its own feature?"</div></div>
+      </div>
+    </div>
+
+    <!-- c0-4 to c0-4c: standalone is the default; where the public surface and feature scoping moved -->
+    <div id="c0-moved" class="clip world" data-start="62.4" data-duration="31.07">
+      <div class="c0-h">Standalone is the default, so the public surface needs a new home</div>
+      <div id="c0-mv-list" class="c0-prose" data-hold>
+        <div id="c0-m1" class="c0-row"><span>v17</span><span><span class="c0-chip">standalone: true</span></span></div>
+        <div id="c0-m2" class="c0-row"><span>22.2.2</span><span><code>standalone</code> defaults to <code>true</code></span></div>
+        <div id="c0-m3" class="c0-row"><span>public surface</span><span><span class="c0-chip">index.ts</span></span></div>
+        <div id="c0-m4" class="c0-row"><span>Feature scoping moved to the router</span><span class="c0-chips"><span id="c0-r1" class="c0-chip">loadChildren</span><span id="c0-r2" class="c0-chip">loadComponent</span><span id="c0-r3" class="c0-chip txt">route <code>providers</code></span></span></div>
+      </div>
+    </div>
+
+    <!-- c0-5: the lesson's LoanRow code cut in whole; band on input.required, then on computed -->
+    <div id="c0-contract" class="clip world" data-start="93.47" data-duration="10.95">
+      <div class="c0-h">Component contracts are signal inputs and outputs</div>
+      <div id="c0-lr-code" class="code c0-code" data-hold>
+        <span class="ln"><span class="k">export class</span> LoanRow {</span>
+        <span id="c0-ln-req" class="ln">  <span class="k">readonly</span> loan = input.required&lt;Loan&gt;();</span>
+        <span class="ln">  <span class="k">readonly</span> compact = input(<span class="k">false</span>);</span>
+        <span class="ln">  <span class="k">readonly</span> renew = output&lt;<span class="k">number</span>&gt;();</span>
+        <span class="ln"> </span>
+        <span id="c0-ln-comp" class="ln wrap">  <span class="k">protected readonly</span> label = computed(() =&gt; <span class="s">`${this.loan().title} (copy ${this.loan().copyId})`</span>);</span>
+        <span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c0-6, c0-6b: the lesson's @Service() code; band on the first line, then on autoProvided: false -->
+    <div id="c0-service" class="clip world" data-start="104.42" data-duration="17.38">
+      <div class="c0-h"><code style="font-family: var(--font-code); font-size: 0.88em;">@Service()</code></div>
+      <div id="c0-sv-code" class="code c0-code" data-hold>
+        <span id="c0-ln-svc" class="ln">@Service()                          <span class="c">// provided in root automatically</span></span>
+        <span class="ln"><span class="k">export class</span> Catalogue {}</span>
+        <span class="ln"> </span>
+        <span id="c0-ln-auto" class="ln">@Service({ autoProvided: <span class="k">false</span> })   <span class="c">// must be listed in some providers array</span></span>
+        <span class="ln"><span class="k">export class</span> ShelfEditorState {}</span>
+      </div>
+    </div>
+
+    <!-- c0-6b end: the desk again; the clock turns to 09:00 and the desk opens -->
+    <div id="c0-desk2" class="clip world" data-start="121.8" data-duration="3.81">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock c0-clock"><span id="c0-t8">08:59</span><span id="c0-t9">09:00</span></span></div>
+        <div class="app-body">
+          <div class="c0-page-title">Members</div>
+          <div class="c0-status"><span class="label">Desk</span><span class="c0-pill"><span id="c0-closed2" class="c0-closed">Closed</span><span id="c0-open2" class="c0-open">Open</span></span></div>
+          <div class="c0-members" data-hold>
+            <div class="c0-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div class="c0-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div class="c0-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div class="c0-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <audio id="c0-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="0" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c0-1" class="clip" src="assets/vo/c0-1.wav" data-start="3.0" data-duration="9.6" data-volume="1"></audio>
+    <audio id="vo-c0-1b" class="clip" src="assets/vo/c0-1b.wav" data-start="12.95" data-duration="7.616" data-volume="1"></audio>
+    <audio id="vo-c0-2" class="clip" src="assets/vo/c0-2.wav" data-start="20.92" data-duration="11.563" data-volume="1"></audio>
+    <audio id="vo-c0-2b" class="clip" src="assets/vo/c0-2b.wav" data-start="32.83" data-duration="8.171" data-volume="1"></audio>
+    <audio id="vo-c0-3" class="clip" src="assets/vo/c0-3.wav" data-start="41.35" data-duration="9.472" data-volume="1"></audio>
+    <audio id="vo-c0-3b" class="clip" src="assets/vo/c0-3b.wav" data-start="51.17" data-duration="9.344" data-volume="1"></audio>
+    <audio id="vo-c0-4" class="clip" src="assets/vo/c0-4.wav" data-start="60.87" data-duration="10.688" data-volume="1"></audio>
+    <audio id="vo-c0-4b" class="clip" src="assets/vo/c0-4b.wav" data-start="71.9" data-duration="11.499" data-volume="1"></audio>
+    <audio id="vo-c0-4c" class="clip" src="assets/vo/c0-4c.wav" data-start="83.75" data-duration="9.365" data-volume="1"></audio>
+    <audio id="vo-c0-5" class="clip" src="assets/vo/c0-5.wav" data-start="93.47" data-duration="10.603" data-volume="1"></audio>
+    <audio id="vo-c0-6" class="clip" src="assets/vo/c0-6.wav" data-start="104.42" data-duration="9.429" data-volume="1"></audio>
+    <audio id="vo-c0-6b" class="clip" src="assets/vo/c0-6b.wav" data-start="114.2" data-duration="10.411" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "rgba(245, 226, 217, 1)", SOFT0 = "rgba(245, 226, 217, 0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0
+
+    // c0-1: members in the queue; the closed desk on "opens at nine"
+    tl.fromTo("#c0-members .c0-mem", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.15 }, 3.2);
+    fadeIn("#c0-pill1", 6.0);
+
+    // c0-1b: the two halves on "this topic trains both halves" (lead first, so the long half is read in time)
+    fadeIn("#c0-half0", 13.1);
+    fadeIn("#c0-half1", 14.3);
+    fadeIn("#c0-half2", 15.5);
+
+    // c0-2: header, then each force row on its word; Team boundaries as the accent on "Conway's law"
+    fadeIn("#c0-f0", 21.05, 0.4);
+    fadeIn("#c0-f1", 23.45);
+    fadeIn("#c0-f2", 24.28);
+    fadeIn("#c0-f3", 25.82);
+    fadeIn("#c0-f4", 26.59);
+    fadeIn("#c0-f5", 27.67);
+    band("#c0-f2", 28.63);
+
+    // c0-2b: the band moves to Testability on "a test"
+    unband("#c0-f2", 34.73);
+    band("#c0-f3", 34.73);
+
+    // c0-3: header and the blocking row as the accent
+    fadeIn("#c0-w0", 41.45, 0.4);
+    fadeIn("#c0-w1", 41.6);
+    band("#c0-w1", 43.21);
+
+    // c0-3b: should-fix early in the gap so its long cell is read in time; nit and question on their words; the table holds into "Now what moved"
+    unband("#c0-w1", 50.6);
+    fadeIn("#c0-w2", 50.6);
+    band("#c0-w2", 50.6 + 0.15);
+    unband("#c0-w2", 54.31);
+    fadeIn("#c0-w3", 54.31);
+    band("#c0-w3", 54.31 + 0.15);
+    unband("#c0-w3", 57.57);
+    fadeIn("#c0-w4", 57.57);
+    band("#c0-w4", 57.57 + 0.15);
+
+    // c0-4: standalone: true on "standalone true"; the 22.2.2 default on "twenty-two point two"
+    fadeIn("#c0-m1", 64.05);
+    band("#c0-m1", 64.05 + 0.15);
+    unband("#c0-m1", 66.41);
+    fadeIn("#c0-m2", 66.41);
+
+    // c0-4b: index.ts on "public surface", banded
+    fadeIn("#c0-m3", 79.1);
+    band("#c0-m3", 79.1 + 0.15);
+
+    // c0-4c: the router row on "router"; each chip on its word
+    unband("#c0-m3", 83.86);
+    fadeIn("#c0-m4", 83.86);
+    band("#c0-m4", 83.86 + 0.15);
+    fadeIn("#c0-r1", 86.5);
+    fadeIn("#c0-r2", 87.48);
+    fadeIn("#c0-r3", 90.07);
+
+    // c0-5: the code is cut in whole; band on input.required, then on the computed line on "A computed"
+    band("#c0-ln-req", 93.6);
+    unband("#c0-ln-req", 98.47);
+    band("#c0-ln-comp", 98.47);
+
+    // c0-6: band on the first line, then on autoProvided: false
+    band("#c0-ln-svc", 104.55);
+    unband("#c0-ln-svc", 110.1);
+    band("#c0-ln-auto", 110.1);
+
+    // c0-6b end: the desk cuts in on "states ownership"; the clock turns to 09:00 on "Then", the desk opens on "opens"
+    fadeOut("#c0-t8", 123.33, 0.2);
+    fadeIn("#c0-t9", 123.43, 0.3);
+    fadeOut("#c0-closed2", 124.05, 0.3);
+    fadeIn("#c0-open2", 124.15);
+
+    window.__timelines["c0"] = tl;
+  </script>
+</template>
