@@ -1,0 +1,689 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    code { font-family: var(--font-code); font-size: 0.92em; white-space: nowrap; }
+    .c1-h { position: absolute; left: 200px; top: 120px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c1-chip { position: absolute; box-sizing: border-box; padding: 22px 36px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 40px/1 var(--font-text); white-space: nowrap; }
+    .c1-chip.mono { font-family: var(--font-code); }
+
+    /* review editor inside the desk app: placeholder lines are bars, never text */
+    .c1-pane { position: absolute; left: 40px; right: 40px; top: 32px; }
+    .c1-plabel { font: 700 32px/1 var(--font-text); color: var(--ink-muted); margin-bottom: 24px; }
+    .c1-dl { height: 42px; display: flex; align-items: center; padding-left: 24px; border-radius: 4px; }
+    .c1-dl.add { background: var(--tip-soft); }
+    .c1-dl i, .c1-cm i, .c1-desc i, .c1-file i, .c1-sum i { display: block; height: 18px; border-radius: 4px; background: var(--rule); }
+    .c1-win { position: absolute; left: 40px; top: 96px; width: 1380px; height: 630px; overflow: hidden; border: 1px solid var(--rule); border-radius: 8px; }
+    #c1-scroll { padding: 12px 0; }
+    #c1-marks { position: absolute; left: 1460px; top: 108px; }
+    .c1-mk { width: 52px; height: 34px; margin-bottom: 8px; box-sizing: border-box; border: 3px solid var(--ink-muted); border-radius: 8px; background: var(--paper-raised); }
+    .c1-cm { box-sizing: border-box; width: 1180px; margin: 12px 0 12px 24px; padding: 20px 28px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper); }
+    .c1-cm i { margin-top: 16px; }
+    .c1-tag { display: inline-block; padding: 8px 18px; border-radius: 6px; background: var(--paper-sunk); font: 700 30px/1 var(--font-text); white-space: nowrap; }
+    .c1-tag.blank { width: 120px; height: 46px; box-sizing: border-box; padding: 0; }
+    .c1-desc { box-sizing: border-box; width: 1180px; padding: 28px 32px; border: 2px solid var(--rule); border-radius: 8px; background: var(--paper); }
+    .c1-desc i + i { margin-top: 22px; }
+    #c1-tested { margin-top: 40px; font: 700 36px/1 var(--font-text); }
+    .c1-file { height: 72px; display: flex; align-items: center; padding-left: 72px; border-bottom: 1px solid var(--rule); position: relative; width: 900px; box-sizing: border-box; border-radius: 4px; }
+    .c1-dot { position: absolute; left: 24px; top: 24px; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); }
+    #c1-path { position: absolute; left: 34px; top: 112px; width: 4px; height: 432px; background: var(--accent); transform-origin: 50% 0; }
+    .c1-text { font: 400 36px/1.5 var(--font-text); }
+    .c1-text code { font-size: 32px; }
+    .c1-text span { border-radius: 4px; }
+    .c1-sum { box-sizing: border-box; width: 1280px; padding: 24px 32px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper); }
+    .c1-sum i { margin-top: 18px; }
+
+    /* flow diagram: one column, top-down, edge labels beside their arrows; undrawn steps sit at 30% */
+    .c1-fb { position: absolute; left: 200px; height: 64px; box-sizing: border-box; padding: 0 28px; display: flex; align-items: center; border: 3px solid var(--ink); border-radius: 8px; background: var(--paper-raised); font: 700 32px/1 var(--font-text); white-space: nowrap; opacity: 0.3; }
+    .c1-fl { position: absolute; left: 280px; font: 400 30px/1 var(--font-text); color: var(--ink-muted); white-space: nowrap; opacity: 0.3; }
+    #c1-flow svg { position: absolute; left: 0; top: 0; }
+    #c1-size { left: 1240px; top: 150px; font-size: 36px; color: var(--ink-muted); }
+    #c1-rub { position: absolute; left: 1240px; top: 70px; }
+    #c1-rub div { height: 62px; font: 700 36px/1 var(--font-text); white-space: nowrap; }
+    #c1-rub #c1-r7 { margin-top: 28px; }
+
+    #c1-sinks .c1-chip { font-size: 38px; }
+
+    .c1-table { position: absolute; left: 150px; top: 280px; width: 1620px; font: 400 36px/1.4 var(--font-text); }
+    .c1-tr { display: grid; grid-template-columns: 300px 880px 440px; border-bottom: 1px solid var(--rule); border-radius: 4px; }
+    .c1-tr span { padding: 20px 22px; }
+    .c1-tr span:first-child { font-weight: 700; }
+    .c1-tr.th { border-bottom: 2px solid var(--rule-strong); }
+    .c1-tr.th span { font: 700 30px/1.3 var(--font-text); color: var(--ink-muted); }
+
+    .c1-quote { position: absolute; left: 200px; width: 1520px; padding: 18px 28px; box-sizing: border-box; border-left: 6px solid var(--rule-strong); border-radius: 4px; font: 400 42px/1.45 var(--font-text); }
+    .c1-quote code { font-size: 38px; }
+
+    .c1-call { position: absolute; left: 160px; top: 240px; width: 1600px; box-sizing: border-box; padding: 44px 56px 52px; border-radius: 8px; }
+    .c1-call-h { font: 700 32px/1 var(--font-text); letter-spacing: 0.06em; }
+    .c1-call p { margin: 28px 0 0; font: 400 42px/1.5 var(--font-text); }
+    .c1-call span { border-radius: 4px; }
+
+    .c1-card { position: absolute; box-sizing: border-box; padding: 32px 40px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 400 34px/1.45 var(--font-text); }
+    .c1-card code { font-size: 30px; }
+
+    .c1-list { position: absolute; left: 200px; top: 290px; width: 1520px; }
+    .c1-item { padding: 14px 24px; margin-bottom: 22px; border-radius: 8px; font: 400 38px/1.45 var(--font-text); display: grid; grid-template-columns: 56px 1fr; }
+    .c1-item > b { color: var(--ink-muted); }
+
+    .c1-four { position: absolute; left: 1290px; font: 700 34px/1 var(--font-text); white-space: nowrap; }
+
+    .c1-clock { position: relative; display: inline-block; color: var(--accent); }
+    #c1-t45 { position: absolute; right: 0; top: 0; }
+
+    #c1-questions .q-head { left: 120px; top: 96px; }
+    #c1-qlist { position: absolute; left: 120px; top: 160px; width: 1680px; }
+    #c1-qlist .q { font-size: 38px; margin-bottom: 18px; }
+
+    #c1-after-title { position: absolute; left: 200px; top: 130px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+    #c1-after-p { position: absolute; left: 200px; top: 300px; width: 1520px; font: 400 42px/1.5 var(--font-text); }
+    #c1-after-p span { border-radius: 4px; }
+    #c1-after-p code { font-size: 38px; }
+    #c1-closed { position: absolute; left: 80px; top: 280px; font: 600 88px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c1-lights { position: absolute; inset: 0; background: var(--ink); }
+  </style>
+
+  <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c1-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">09:00</div>
+      <div class="chapter-title">Reviewing a pull request</div>
+    </div>
+
+    <!-- c1-1: 09:00, the review editor with a long diff of placeholder lines scrolling past; c1-1b: a column of identical comment markers -->
+    <div id="c1-desk" class="clip world sunk" data-start="3" data-duration="18.96">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-pane"><div class="c1-plabel">Files changed</div></div>
+          <div class="c1-win" data-layout-allow-overflow>
+            <div id="c1-scroll">
+              <div class="c1-dl"><i style="width: 46%"></i></div>
+              <div class="c1-dl"><i style="width: 62%"></i></div>
+              <div class="c1-dl add"><i style="width: 38%"></i></div>
+              <div class="c1-dl add"><i style="width: 71%"></i></div>
+              <div class="c1-dl"><i style="width: 55%"></i></div>
+              <div class="c1-dl"><i style="width: 29%"></i></div>
+              <div class="c1-dl add"><i style="width: 66%"></i></div>
+              <div class="c1-dl"><i style="width: 48%"></i></div>
+              <div class="c1-dl"><i style="width: 74%"></i></div>
+              <div class="c1-dl add"><i style="width: 35%"></i></div>
+              <div class="c1-dl add"><i style="width: 58%"></i></div>
+              <div class="c1-dl add"><i style="width: 43%"></i></div>
+              <div class="c1-dl"><i style="width: 67%"></i></div>
+              <div class="c1-dl"><i style="width: 31%"></i></div>
+              <div class="c1-dl add"><i style="width: 52%"></i></div>
+              <div class="c1-dl"><i style="width: 70%"></i></div>
+              <div class="c1-dl"><i style="width: 40%"></i></div>
+              <div class="c1-dl add"><i style="width: 61%"></i></div>
+              <div class="c1-dl add"><i style="width: 47%"></i></div>
+              <div class="c1-dl"><i style="width: 33%"></i></div>
+              <div class="c1-dl"><i style="width: 69%"></i></div>
+              <div class="c1-dl add"><i style="width: 54%"></i></div>
+              <div class="c1-dl"><i style="width: 42%"></i></div>
+              <div class="c1-dl"><i style="width: 63%"></i></div>
+              <div class="c1-dl add"><i style="width: 37%"></i></div>
+              <div class="c1-dl add"><i style="width: 72%"></i></div>
+              <div class="c1-dl"><i style="width: 50%"></i></div>
+              <div class="c1-dl"><i style="width: 28%"></i></div>
+              <div class="c1-dl add"><i style="width: 65%"></i></div>
+              <div class="c1-dl"><i style="width: 45%"></i></div>
+            </div>
+          </div>
+          <div id="c1-marks">
+            <div class="c1-mk"></div><div class="c1-mk"></div><div class="c1-mk"></div><div class="c1-mk"></div>
+            <div class="c1-mk"></div><div class="c1-mk"></div><div class="c1-mk"></div><div class="c1-mk"></div>
+            <div class="c1-mk"></div><div class="c1-mk"></div><div class="c1-mk"></div><div class="c1-mk"></div>
+            <div class="c1-mk"></div><div class="c1-mk"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-2: what a review protects; then "a preference" as the accent -->
+    <div id="c1-protect" class="clip world" data-start="21.96" data-duration="8.88">
+      <div id="c1-protect-h" class="c1-h" data-hold>A review protects two things</div>
+      <div id="c1-p1" class="c1-chip" style="left: 200px; top: 360px">the people who use the feature</div>
+      <div id="c1-p2" class="c1-chip" style="left: 200px; top: 500px">the team's ability to keep changing the code</div>
+      <div id="c1-pref" class="c1-chip" style="left: 200px; top: 720px; border-color: var(--accent); color: var(--accent); background: var(--accent-soft)" data-hold>a preference</div>
+    </div>
+
+    <!-- c1-3 .. c1-8b: the lesson's flow diagram, each step drawing on as it is named; editor, file list and sinks cut over it -->
+    <div id="c1-flow" class="clip world" data-start="30.84" data-duration="112.28" data-layout-allow-overlap>
+      <svg width="1920" height="1080" viewBox="0 0 1920 1080">
+        <g stroke="#ddd4c5" stroke-width="4">
+          <line x1="240" y1="124" x2="240" y2="172" /><line x1="240" y1="236" x2="240" y2="284" />
+          <line x1="240" y1="348" x2="240" y2="396" /><line x1="240" y1="460" x2="240" y2="508" />
+          <line x1="240" y1="572" x2="240" y2="620" /><line x1="240" y1="684" x2="240" y2="732" />
+          <line x1="240" y1="796" x2="240" y2="844" /><line x1="240" y1="908" x2="240" y2="956" />
+        </g>
+        <g stroke="#1d1b18" stroke-width="4" stroke-dasharray="38" stroke-dashoffset="38">
+          <line id="c1-e1" x1="240" y1="124" x2="240" y2="162" />
+          <line id="c1-e2" x1="240" y1="236" x2="240" y2="274" />
+          <line id="c1-e3" x1="240" y1="348" x2="240" y2="386" />
+          <line id="c1-e4" x1="240" y1="460" x2="240" y2="498" />
+          <line id="c1-e5" x1="240" y1="572" x2="240" y2="610" />
+          <line id="c1-e6" x1="240" y1="684" x2="240" y2="722" />
+        </g>
+        <g fill="#1d1b18">
+          <polygon id="c1-a1" points="229,158 251,158 240,172" />
+          <polygon id="c1-a2" points="229,270 251,270 240,284" />
+          <polygon id="c1-a3" points="229,382 251,382 240,396" />
+          <polygon id="c1-a4" points="229,494 251,494 240,508" />
+          <polygon id="c1-a5" points="229,606 251,606 240,620" />
+          <polygon id="c1-a6" points="229,718 251,718 240,732" />
+        </g>
+      </svg>
+      <div id="c1-b0" class="c1-fb" style="top: 60px">Ticket</div>
+      <div id="c1-b1" class="c1-fb" style="top: 172px">Description</div>
+      <div id="c1-b2" class="c1-fb" style="top: 284px">Claims to check</div>
+      <div id="c1-b3" class="c1-fb" style="top: 396px">One user action end to end</div>
+      <div id="c1-b4" class="c1-fb" style="top: 508px">Data from other people</div>
+      <div id="c1-b5" class="c1-fb" style="top: 620px">Rubric pass</div>
+      <div id="c1-b6" class="c1-fb" style="top: 732px">Unhappy paths</div>
+      <div id="c1-b7" class="c1-fb" style="top: 844px">Triage</div>
+      <div id="c1-b8" class="c1-fb" style="top: 956px">Summary comment</div>
+      <div id="c1-l1" class="c1-fl" style="top: 133px">what problem, for whom</div>
+      <div id="c1-l2" class="c1-fl" style="top: 245px">every "because" and every "I had to"</div>
+      <div id="c1-l3" class="c1-fl" style="top: 357px">follow it file by file</div>
+      <div id="c1-l4" class="c1-fl" style="top: 469px">follow it to every sink</div>
+      <div id="c1-l5" class="c1-fl" style="top: 581px">correctness, security, architecture, performance, tests, style</div>
+      <div id="c1-l6" class="c1-fl" style="top: 693px">failure, slowness, repetition</div>
+      <div id="c1-l7" class="c1-fl" style="top: 805px">label, order, and cut</div>
+      <div id="c1-l8" class="c1-fl" style="top: 917px">verdict first</div>
+      <div id="c1-size" class="c1-chip">about 400 changed lines</div>
+      <div id="c1-rub" data-hold>
+        <div id="c1-r1">correctness</div>
+        <div id="c1-r2">security</div>
+        <div id="c1-r3">architecture and maintainability</div>
+        <div id="c1-r4">performance</div>
+        <div id="c1-r5">tests</div>
+        <div id="c1-r6">style</div>
+        <div id="c1-r7">accessibility</div>
+      </div>
+    </div>
+
+    <!-- c1-4c: a description panel of placeholder lines; "How I tested" as a bare label with nothing under it -->
+    <div id="c1-descw" class="clip world sunk" data-start="70.74" data-duration="5.4" data-layout-allow-overlap>
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-pane">
+            <div class="c1-plabel">Description</div>
+            <div class="c1-desc">
+              <i style="width: 92%"></i><i style="width: 84%"></i><i style="width: 88%"></i><i style="width: 61%"></i>
+              <i style="width: 90%"></i><i style="width: 47%"></i>
+            </div>
+            <div id="c1-tested" data-hold>How I tested</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-5b: the file list with placeholder names, then one path through several of them -->
+    <div id="c1-files" class="clip world sunk" data-start="84.49" data-duration="8.84" data-layout-allow-overlap>
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-pane">
+            <div class="c1-plabel">Files changed</div>
+            <div id="c1-path"></div>
+            <div id="c1-f0" class="c1-file"><span id="c1-d0" class="c1-dot"></span><i style="width: 300px"></i></div>
+            <div class="c1-file"><i style="width: 420px"></i></div>
+            <div id="c1-f2" class="c1-file"><span id="c1-d2" class="c1-dot"></span><i style="width: 360px"></i></div>
+            <div id="c1-f3" class="c1-file"><span id="c1-d3" class="c1-dot"></span><i style="width: 260px"></i></div>
+            <div class="c1-file"><i style="width: 480px"></i></div>
+            <div id="c1-f5" class="c1-file"><span id="c1-d5" class="c1-dot"></span><i style="width: 340px"></i></div>
+            <div class="c1-file"><i style="width: 390px"></i></div>
+            <div id="c1-f7" class="c1-file"><span id="c1-d7" class="c1-dot"></span><i style="width: 280px"></i></div>
+            <div class="c1-file"><i style="width: 440px"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-6b: the lesson's sinks as labels -->
+    <div id="c1-sinks" class="clip world" data-start="102.88" data-duration="7.73" data-layout-allow-overlap>
+      <div class="c1-h" style="font-size: 48px; color: var(--ink-muted)">Data from other people</div>
+      <div id="c1-s1" class="c1-chip" style="left: 200px; top: 320px">template interpolation</div>
+      <div id="c1-s2" class="c1-chip" style="left: 760px; top: 320px">URL</div>
+      <div id="c1-s3" class="c1-chip mono" style="left: 200px; top: 480px"><code>innerHTML</code></div>
+      <div id="c1-s4" class="c1-chip" style="left: 580px; top: 480px">log line</div>
+      <div id="c1-s5" class="c1-chip" style="left: 200px; top: 640px" data-hold>request to a third party</div>
+    </div>
+
+    <!-- c1-9 .. c1-9c: the triage table cut in whole, the row under discussion banded -->
+    <div id="c1-triage" class="clip world" data-start="143.12" data-duration="21.85">
+      <div class="c1-h">Triage: four labels</div>
+      <div class="c1-table" data-hold>
+        <div class="c1-tr th"><span>Label</span><span>Meaning</span><span>Merge?</span></div>
+        <div id="c1-t1" class="c1-tr"><span>blocking</span><span>Wrong behaviour, a security hole, data loss, or something expensive to undo later.</span><span>No, until fixed.</span></div>
+        <div id="c1-t2" class="c1-tr"><span>should-fix</span><span>A real defect or maintainability cost with a clear fix, not an emergency.</span><span>In this PR, or in a linked ticket.</span></div>
+        <div id="c1-t3" class="c1-tr"><span>nit</span><span>Taste or small polish.</span><span>Yes. Keep them few.</span></div>
+        <div id="c1-t4" class="c1-tr"><span>question</span><span>You cannot tell whether it is a problem. Ask for the reason.</span><span>Depends on the answer.</span></div>
+      </div>
+    </div>
+
+    <!-- c1-10: the heading, the lesson's rule-versus-impact pair; c1-10b: question as a label -->
+    <div id="c1-impact" class="clip world" data-start="164.97" data-duration="16.84">
+      <div class="c1-h" data-hold>Decide by impact, not by the rule that was broken.</div>
+      <div id="c1-qr" class="c1-quote" style="top: 380px; color: var(--ink-muted)">"Violates our rule against <code>any</code>"</div>
+      <div id="c1-qi" class="c1-quote" style="top: 510px" data-hold>"The API sends the hold count as the string <code>'3'</code>, so <code>count + 1</code> shows 31 holds"</div>
+      <div id="c1-qtag" class="c1-chip" style="left: 200px; top: 800px" data-hold>question</div>
+    </div>
+
+    <!-- c1-11: an inline comment of placeholder lines carrying the question label -->
+    <div id="c1-ask" class="clip world sunk" data-start="181.81" data-duration="9.38">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-pane">
+            <div class="c1-plabel">Files changed</div>
+            <div class="c1-dl"><i style="width: 44%"></i></div>
+            <div class="c1-dl add"><i style="width: 61%"></i></div>
+            <div class="c1-dl add"><i style="width: 38%"></i></div>
+            <div id="c1-askc" class="c1-cm" data-hold><span class="c1-tag" style="background: var(--accent-soft); color: var(--accent)">question</span><i style="width: 86%"></i><i style="width: 52%"></i></div>
+            <div class="c1-dl"><i style="width: 57%"></i></div>
+            <div class="c1-dl add"><i style="width: 33%"></i></div>
+            <div class="c1-dl"><i style="width: 49%"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-12: three comments carrying the nit label -->
+    <div id="c1-nits" class="clip world sunk" data-start="191.19" data-duration="6.15">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-pane">
+            <div class="c1-plabel">Files changed</div>
+            <div class="c1-dl"><i style="width: 52%"></i></div>
+            <div id="c1-n1" class="c1-cm"><span class="c1-tag">nit</span><i style="width: 64%"></i></div>
+            <div class="c1-dl add"><i style="width: 41%"></i></div>
+            <div id="c1-n2" class="c1-cm"><span class="c1-tag">nit</span><i style="width: 48%"></i></div>
+            <div class="c1-dl"><i style="width: 66%"></i></div>
+            <div id="c1-n3" class="c1-cm" data-hold><span class="c1-tag">nit</span><i style="width: 57%"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-13: heading "Looks wrong, but is fine" -->
+    <div id="c1-fine" class="clip world" data-start="197.34" data-duration="7.71">
+      <div class="c1-h" style="top: 380px; font-size: 96px; letter-spacing: -0.015em">"Looks wrong, but is fine"</div>
+      <div id="c1-fine-s" class="label" style="position: absolute; left: 200px; top: 520px; font-size: 40px" data-hold>The most underrated part of a review.</div>
+    </div>
+
+    <!-- c1-13b: the lesson's HoldRules comment, verbatim; c1-13c: its opening clause banded -->
+    <div id="c1-hold" class="clip world sunk" data-start="205.05" data-duration="15.7">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-pane">
+            <div class="c1-plabel">Files changed</div>
+            <div class="c1-dl"><i style="width: 47%"></i></div>
+            <div class="c1-dl add"><i style="width: 58%"></i></div>
+            <div class="c1-cm c1-text" style="width: 1500px" data-hold><span id="c1-open">Looked twice at <code>HoldRules</code> being a <code>@Service()</code> that uses <code>inject()</code> instead of constructor parameters</span>: <code>@Service()</code> classes cannot use constructor injection, so this is the required form. Fine as is.</div>
+            <div class="c1-dl"><i style="width: 39%"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-13d: the lesson's TIP callout -->
+    <div id="c1-tip" class="clip world" data-start="220.75" data-duration="7.85">
+      <div class="c1-call" style="background: var(--tip-soft)" data-hold>
+        <div class="c1-call-h" style="color: var(--tip)">TIP</div>
+        <p>For each "looks wrong" moment, write down the reason it would be wrong before you check. If you cannot name the failure, it was a shape you recognised, not a defect you found.</p>
+      </div>
+    </div>
+
+    <!-- c1-14: an inline comment; its four parts labelled in order -->
+    <div id="c1-parts" class="clip world sunk" data-start="228.6" data-duration="7.04">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-pane">
+            <div class="c1-plabel">Files changed</div>
+            <div class="c1-dl add"><i style="width: 42%"></i></div>
+            <div class="c1-cm" style="width: 1080px" data-hold>
+              <span class="c1-tag blank"></span>
+              <i style="width: 92%; margin-top: 52px"></i><i style="width: 70%"></i>
+              <i style="width: 88%; margin-top: 52px"></i><i style="width: 60%"></i>
+              <i style="width: 76%; margin-top: 52px"></i>
+            </div>
+            <div class="c1-dl"><i style="width: 51%"></i></div>
+          </div>
+          <div id="c1-k1" class="c1-four" style="top: 166px">label</div>
+          <div id="c1-k2" class="c1-four" style="top: 260px">impact</div>
+          <div id="c1-k3" class="c1-four" style="top: 362px">cause</div>
+          <div id="c1-k4" class="c1-four" style="top: 448px" data-hold>suggested fix</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-14b: the weak comment beside the four-part due-date comment, both verbatim; the four-part one as the accent -->
+    <div id="c1-compare" class="clip world" data-start="235.64" data-duration="7.56">
+      <div id="c1-weak" class="c1-card" style="left: 120px; top: 260px; width: 560px; color: var(--ink-muted)">This date handling looks off, can you double-check time zones?</div>
+      <div id="c1-strong" class="c1-card" style="left: 740px; top: 260px; width: 1060px; border: 3px solid var(--accent)" data-hold><b>Blocking:</b> due dates are computed with <code>new Date().setHours(0, 0, 0, 0)</code> in the browser's time zone, while the API stores them in UTC. A member in UTC−5 who borrows after 7 pm sees a due date one day earlier than the one we use for fines. Suggest taking the due date from the API response instead of recomputing it.</div>
+    </div>
+
+    <!-- c1-15 .. c1-15c: "More habits worth keeping", cut in whole, the item under discussion banded -->
+    <div id="c1-habits" class="clip world" data-start="243.2" data-duration="17.66">
+      <div class="c1-h">More habits worth keeping</div>
+      <div class="c1-list" style="top: 270px" data-hold>
+        <div id="c1-h1" class="c1-item"><b>–</b><span>Suggest, do not rewrite. A short code suggestion helps; rewriting their file in a comment takes the change away from them.</span></div>
+        <div id="c1-h2" class="c1-item"><b>–</b><span>Comment on the code, never on the person. "This recomputes the due date" works; "you forgot" does not.</span></div>
+        <div id="c1-h3" class="c1-item"><b>–</b><span>Ask for the test with the fix. For every blocking item, describe the test that would have caught it. A blocking fix without a test is a finding of its own.</span></div>
+        <div id="c1-h4" class="c1-item"><b>–</b><span>Say what is good, specifically. "The hold rules are pure functions with their own tests, nice" tells the author what to keep doing.</span></div>
+      </div>
+    </div>
+
+    <!-- c1-16: the summary box above the inline comments -->
+    <div id="c1-summary" class="clip world sunk" data-start="260.86" data-duration="7.46">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-pane">
+            <div id="c1-sumbox" class="c1-sum" data-hold><span class="c1-plabel">Summary</span><i style="width: 90%"></i><i style="width: 78%"></i><i style="width: 54%"></i></div>
+            <div class="c1-plabel" style="margin-top: 40px">Files changed</div>
+            <div class="c1-dl add"><i style="width: 46%"></i></div>
+            <div id="c1-ic1" class="c1-cm"><span class="c1-tag blank"></span><i style="width: 72%"></i></div>
+            <div class="c1-dl"><i style="width: 59%"></i></div>
+            <div id="c1-ic2" class="c1-cm"><span class="c1-tag blank"></span><i style="width: 58%"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-16b .. c1-16d: the lesson's verdict list, cut in whole, the verdict under discussion banded -->
+    <div id="c1-verdict" class="clip world" data-start="268.32" data-duration="21.13">
+      <div class="c1-h">A verdict follows from the labels:</div>
+      <div class="c1-list" data-hold>
+        <div id="c1-v1" class="c1-item"><b>–</b><span><b>Approve</b> when nothing blocks. Should-fix items can go to a follow-up ticket, provided the ticket is linked in the PR.</span></div>
+        <div id="c1-v2" class="c1-item"><b>–</b><span><b>Request changes</b> when anything blocks. Good code elsewhere in the PR does not offset a known security hole or a path to data loss.</span></div>
+        <div id="c1-v3" class="c1-item"><b>–</b><span><b>Comment</b> when you only have questions and the answers decide the verdict.</span></div>
+      </div>
+    </div>
+
+    <!-- c1-17: the lesson's IMPORTANT callout, its last sentence banded -->
+    <div id="c1-urgent" class="clip world" data-start="289.45" data-duration="10.33">
+      <div class="c1-call" style="background: var(--note-soft)" data-hold>
+        <div class="c1-call-h" style="color: var(--note)">IMPORTANT</div>
+        <p>Urgency in the description ("we need this before Friday") is information about the author's schedule. It does not change any label. <span id="c1-last">If something blocks, say so early and kindly, and offer help: pairing on the fix is often faster than another round of review.</span></p>
+      </div>
+    </div>
+
+    <!-- c1-18: heading "Timeboxing" and the desk clock running forty-five minutes; c1-18b: the summary box -->
+    <div id="c1-timebox" class="clip world sunk" data-start="299.78" data-duration="12.77">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock c1-clock"><span id="c1-t0">09:00</span><span id="c1-t45">09:45</span></span></div>
+        <div class="app-body">
+          <div class="c1-pane">
+            <div style="font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em">Timeboxing</div>
+            <div id="c1-tsum" class="c1-sum" style="margin-top: 60px" data-hold><span class="c1-plabel">Summary</span><i style="width: 88%"></i><i style="width: 70%"></i><div class="c1-text" style="margin-top: 20px">I did not review the CSS or the seed data for the catalogue</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-19 .. c1-19c: "When not to comment, and when not to block", item by item -->
+    <div id="c1-dont" class="clip world" data-start="312.55" data-duration="23.75">
+      <div class="c1-h">When not to comment, and when not to block</div>
+      <div class="c1-list" data-hold>
+        <div id="c1-w1" class="c1-item"><b>–</b><span>Do not comment on what a formatter or linter would catch; ask for the tool once, if the team lacks it.</span></div>
+        <div id="c1-w2" class="c1-item"><b>–</b><span>Do not block on taste, on a refactor the PR did not set out to do, or on a finding whose impact you cannot state.</span></div>
+        <div id="c1-w3" class="c1-item"><b>–</b><span>Do not start over on the second round. A second round checks the answers to your comments and the new commits, not the whole PR again.</span></div>
+        <div id="c1-w4" class="c1-item"><b>–</b><span>Do not hold a question hostage: if the answer would not change your verdict, label it so the author knows it can wait.</span></div>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c1-questions" class="clip world note" data-start="336.3" data-duration="50.3">
+      <div class="q-head">Review questions</div>
+      <div id="c1-qlist" data-hold>
+        <div id="c1-q1" class="q">Which sentences in the description are reasons for an unusual choice? What would you have to read to know whether each reason is true?</div>
+        <div id="c1-q2" class="q">Pick the main thing a user does with the feature. Have you seen every file that action touches, and every place that shows its result?</div>
+        <div id="c1-q3" class="q">For every value that comes from outside the code (users, URLs, other services): what is the last place it reaches?</div>
+        <div id="c1-q4" class="q">What does the user see when each request fails, is slow, or arrives twice?</div>
+        <div id="c1-q5" class="q">What happens if the user acts again before the first action finishes?</div>
+        <div id="c1-q6" class="q">For each finding: can you state the impact in one sentence, and does the label follow from it?</div>
+        <div id="c1-q7" class="q">Before each comment that says "this is wrong": can you name the failure, or only the shape you recognised?</div>
+        <div id="c1-q8" class="q">Does every blocking comment say what to do and which test would have caught it?</div>
+        <div id="c1-q9" class="q">If the author read only your summary, would they know what to fix first?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c1-pause" class="clip world" data-start="386.6" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c1-pause-2" class="pause-2" data-hold>Now do exercise 01.</div>
+    </div>
+
+    <!-- c1-after: the "After the lesson" card, REVIEW.md as the accent; c1-afterb: the comparison order banded; c1-afterc: the last sentence banded -->
+    <div id="c1-after" class="clip world" data-start="390.1" data-duration="19.68">
+      <div id="c1-after-title">After the lesson</div>
+      <div id="c1-after-p" data-hold>Compare your review with <span id="c1-a0"><code>REVIEW.md</code></span> on the <code>solutions</code> branch in this order: <span id="c1-a1">the verdict, then the blocking items, then the "looks wrong, but is fine" list, then everything else.</span> Note which findings you missed and which you labelled differently, and for each difference write down whose reasoning you find stronger and why. <span id="c1-a2">Then do the dojo's suggested second pass: review a real pull request from your own work with the same steps.</span></div>
+    </div>
+
+    <!-- c1-close: 18:00, the desk closes, lights down to the end -->
+    <div id="c1-close" class="clip world" data-start="409.78" data-duration="2.97">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock" style="color: var(--accent)">18:00</span></div>
+        <div class="app-body">
+          <div id="c1-closed">Opens again at 09:00</div>
+        </div>
+      </div>
+      <div id="c1-lights" data-hold></div>
+    </div>
+
+    <audio id="c1-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="30" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-bed2" class="clip" src="assets/music/bed.mp3" data-start="336.3" data-duration="50.3" data-media-start="110" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c1-1" class="clip" src="assets/vo/c1-1.wav" data-start="3.0" data-duration="8.832" data-volume="1"></audio>
+    <audio id="vo-c1-1b" class="clip" src="assets/vo/c1-1b.wav" data-start="12.18" data-duration="9.429" data-volume="1"></audio>
+    <audio id="vo-c1-2" class="clip" src="assets/vo/c1-2.wav" data-start="21.96" data-duration="8.533" data-volume="1"></audio>
+    <audio id="vo-c1-3" class="clip" src="assets/vo/c1-3.wav" data-start="30.84" data-duration="7.253" data-volume="1"></audio>
+    <audio id="vo-c1-3b" class="clip" src="assets/vo/c1-3b.wav" data-start="38.45" data-duration="7.168" data-volume="1"></audio>
+    <audio id="vo-c1-3c" class="clip" src="assets/vo/c1-3c.wav" data-start="45.96" data-duration="7.659" data-volume="1"></audio>
+    <audio id="vo-c1-4" class="clip" src="assets/vo/c1-4.wav" data-start="53.97" data-duration="6.699" data-volume="1"></audio>
+    <audio id="vo-c1-4b" class="clip" src="assets/vo/c1-4b.wav" data-start="61.02" data-duration="9.365" data-volume="1"></audio>
+    <audio id="vo-c1-4c" class="clip" src="assets/vo/c1-4c.wav" data-start="70.74" data-duration="5.056" data-volume="1"></audio>
+    <audio id="vo-c1-5" class="clip" src="assets/vo/c1-5.wav" data-start="76.14" data-duration="8.0" data-volume="1"></audio>
+    <audio id="vo-c1-5b" class="clip" src="assets/vo/c1-5b.wav" data-start="84.49" data-duration="8.491" data-volume="1"></audio>
+    <audio id="vo-c1-6" class="clip" src="assets/vo/c1-6.wav" data-start="93.33" data-duration="9.195" data-volume="1"></audio>
+    <audio id="vo-c1-6b" class="clip" src="assets/vo/c1-6b.wav" data-start="102.88" data-duration="7.381" data-volume="1"></audio>
+    <audio id="vo-c1-7" class="clip" src="assets/vo/c1-7.wav" data-start="110.61" data-duration="13.163" data-volume="1"></audio>
+    <audio id="vo-c1-7b" class="clip" src="assets/vo/c1-7b.wav" data-start="124.12" data-duration="6.016" data-volume="1"></audio>
+    <audio id="vo-c1-8" class="clip" src="assets/vo/c1-8.wav" data-start="130.49" data-duration="7.339" data-volume="1"></audio>
+    <audio id="vo-c1-8b" class="clip" src="assets/vo/c1-8b.wav" data-start="138.18" data-duration="4.587" data-volume="1"></audio>
+    <audio id="vo-c1-9" class="clip" src="assets/vo/c1-9.wav" data-start="143.12" data-duration="9.003" data-volume="1"></audio>
+    <audio id="vo-c1-9b" class="clip" src="assets/vo/c1-9b.wav" data-start="152.47" data-duration="7.744" data-volume="1"></audio>
+    <audio id="vo-c1-9c" class="clip" src="assets/vo/c1-9c.wav" data-start="160.56" data-duration="4.053" data-volume="1"></audio>
+    <audio id="vo-c1-10" class="clip" src="assets/vo/c1-10.wav" data-start="164.97" data-duration="9.6" data-volume="1"></audio>
+    <audio id="vo-c1-10b" class="clip" src="assets/vo/c1-10b.wav" data-start="174.92" data-duration="6.549" data-volume="1"></audio>
+    <audio id="vo-c1-11" class="clip" src="assets/vo/c1-11.wav" data-start="181.81" data-duration="9.024" data-volume="1"></audio>
+    <audio id="vo-c1-12" class="clip" src="assets/vo/c1-12.wav" data-start="191.19" data-duration="5.803" data-volume="1"></audio>
+    <audio id="vo-c1-13" class="clip" src="assets/vo/c1-13.wav" data-start="197.34" data-duration="7.36" data-volume="1"></audio>
+    <audio id="vo-c1-13b" class="clip" src="assets/vo/c1-13b.wav" data-start="205.05" data-duration="7.168" data-volume="1"></audio>
+    <audio id="vo-c1-13c" class="clip" src="assets/vo/c1-13c.wav" data-start="212.57" data-duration="8.384" data-volume="1"></audio>
+    <audio id="vo-c1-13d" class="clip" src="assets/vo/c1-13d.wav" data-start="221.3" data-duration="6.613" data-volume="1"></audio>
+    <audio id="vo-c1-14" class="clip" src="assets/vo/c1-14.wav" data-start="228.27" data-duration="7.019" data-volume="1"></audio>
+    <audio id="vo-c1-14b" class="clip" src="assets/vo/c1-14b.wav" data-start="235.64" data-duration="7.211" data-volume="1"></audio>
+    <audio id="vo-c1-15" class="clip" src="assets/vo/c1-15.wav" data-start="243.2" data-duration="5.781" data-volume="1"></audio>
+    <audio id="vo-c1-15b" class="clip" src="assets/vo/c1-15b.wav" data-start="249.33" data-duration="7.061" data-volume="1"></audio>
+    <audio id="vo-c1-15c" class="clip" src="assets/vo/c1-15c.wav" data-start="256.74" data-duration="3.776" data-volume="1"></audio>
+    <audio id="vo-c1-16" class="clip" src="assets/vo/c1-16.wav" data-start="260.86" data-duration="7.104" data-volume="1"></audio>
+    <audio id="vo-c1-16b" class="clip" src="assets/vo/c1-16b.wav" data-start="268.32" data-duration="8.875" data-volume="1"></audio>
+    <audio id="vo-c1-16c" class="clip" src="assets/vo/c1-16c.wav" data-start="277.54" data-duration="7.424" data-volume="1"></audio>
+    <audio id="vo-c1-16d" class="clip" src="assets/vo/c1-16d.wav" data-start="285.32" data-duration="3.968" data-volume="1"></audio>
+    <audio id="vo-c1-17" class="clip" src="assets/vo/c1-17.wav" data-start="289.64" data-duration="9.792" data-volume="1"></audio>
+    <audio id="vo-c1-18" class="clip" src="assets/vo/c1-18.wav" data-start="299.78" data-duration="7.424" data-volume="1"></audio>
+    <audio id="vo-c1-18b" class="clip" src="assets/vo/c1-18b.wav" data-start="307.55" data-duration="4.651" data-volume="1"></audio>
+    <audio id="vo-c1-19" class="clip" src="assets/vo/c1-19.wav" data-start="312.55" data-duration="6.08" data-volume="1"></audio>
+    <audio id="vo-c1-19b" class="clip" src="assets/vo/c1-19b.wav" data-start="318.98" data-duration="7.659" data-volume="1"></audio>
+    <audio id="vo-c1-19c" class="clip" src="assets/vo/c1-19c.wav" data-start="326.99" data-duration="8.96" data-volume="1"></audio>
+    <audio id="vo-c1-end" class="clip" src="assets/vo/c1-end.wav" data-start="336.3" data-duration="2.112" data-volume="1"></audio>
+    <audio id="vo-c1-after" class="clip" src="assets/vo/c1-after.wav" data-start="390.45" data-duration="7.829" data-volume="1"></audio>
+    <audio id="vo-c1-afterb" class="clip" src="assets/vo/c1-afterb.wav" data-start="398.63" data-duration="6.571" data-volume="1"></audio>
+    <audio id="vo-c1-afterc" class="clip" src="assets/vo/c1-afterc.wav" data-start="405.55" data-duration="3.883" data-volume="1"></audio>
+    <audio id="vo-c1-close" class="clip" src="assets/vo/c1-close.wav" data-start="409.78" data-duration="1.963" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const INK = "#1d1b18";
+    const MUTED = "#5f584d";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: CLEAR, duration: 0.4 }, at);
+    // a flow step draws on: its incoming arrow, its edge label, then its box, from the 30% skeleton
+    const step = (n, at) => {
+      tl.fromTo(`#c1-e${n}`, { strokeDashoffset: 38 }, { strokeDashoffset: 0, duration: 0.4, ease: "power2.inOut" }, at);
+      fadeIn(`#c1-a${n}`, at + 0.3, 0.2);
+      tl.fromTo(`#c1-l${n}`, { opacity: 0.3 }, { opacity: 1, duration: 0.4 }, at + 0.15);
+      tl.fromTo(`#c1-b${n}`, { opacity: 0.3 }, { opacity: 1, duration: 0.5, ease: "power3.out" }, at + 0.4);
+    };
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c1-1: the diff scrolls past top to bottom, faster than anyone reads
+    tl.fromTo("#c1-scroll", { y: 0 }, { y: -640, duration: 7.5, ease: "power1.inOut" }, 3.6);
+    // c1-1b: forty comments of equal weight, one identical marker after another
+    tl.fromTo("#c1-marks .c1-mk", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out", stagger: 0.12 }, 16.2);
+
+    // c1-2: the two things a review protects, then "a preference"
+    fadeIn("#c1-protect-h", 22.05, 0.5);
+    fadeIn("#c1-p1", 22.9);
+    fadeIn("#c1-p2", 24.9);
+    fadeIn("#c1-pref", 28.1);
+
+    // c1-3: Ticket, then its arrow to Description
+    tl.fromTo("#c1-b0", { opacity: 0.3 }, { opacity: 1, duration: 0.5, ease: "power3.out" }, 34.0);
+    step(1, 35.4);
+    // c1-3b: Ticket as the accent
+    tl.to("#c1-b0", { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 38.5);
+    // c1-3c: the size as a label
+    tl.to("#c1-b0", { borderColor: INK, color: INK, duration: 0.3 }, 46.0);
+    fadeIn("#c1-size", 47.3);
+    fadeOut("#c1-size", 53.6);
+    // c1-4: Claims to check, its edge label as the accent (held through c1-4b)
+    step(2, 55.4);
+    tl.to("#c1-l2", { color: ACCENT, duration: 0.3 }, 56.2);
+    tl.to("#c1-l2", { color: MUTED, duration: 0.3 }, 70.8);
+    // c1-4c: "How I tested", with nothing under it
+    fadeIn("#c1-tested", 71.4, 0.4);
+    // c1-5: One user action end to end
+    step(3, 77.5);
+    // c1-5b: one path through several files
+    tl.fromTo("#c1-path", { scaleY: 0 }, { scaleY: 1, duration: 1.4, ease: "power2.inOut" }, 88.4);
+    ["#c1-d0", "#c1-d2", "#c1-d3", "#c1-d5", "#c1-d7"].forEach((d, i) => tl.fromTo(d, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out" }, 88.4 + i * 0.3));
+    ["#c1-f0", "#c1-f2", "#c1-f3", "#c1-f5", "#c1-f7"].forEach((f, i) => band(f, 88.55 + i * 0.3));
+    // c1-6: Data from other people
+    step(4, 95.3);
+    // c1-6b: the sinks, one per name
+    fadeIn("#c1-s1", 102.95, 0.4);
+    fadeIn("#c1-s2", 103.7, 0.4);
+    fadeIn("#c1-s3", 104.4, 0.4);
+    fadeIn("#c1-s4", 105.2, 0.4);
+    fadeIn("#c1-s5", 105.9, 0.4);
+    // c1-7: Rubric pass, the rubric words in order, then accessibility
+    step(5, 111.5);
+    ["#c1-r1", "#c1-r2", "#c1-r3", "#c1-r4", "#c1-r5", "#c1-r6"].forEach((r, i) => fadeIn(r, [114.0, 114.7, 115.4, 116.8, 117.4, 117.9][i], 0.4));
+    fadeIn("#c1-r7", 119.1, 0.4);
+    // c1-7b: correctness first
+    tl.to("#c1-r1", { color: ACCENT, duration: 0.3 }, 124.2);
+    // c1-8: Unhappy paths; c1-8b: its edge label as the accent
+    tl.to("#c1-r1", { color: INK, duration: 0.3 }, 130.5);
+    step(6, 131.7);
+    tl.to("#c1-l6", { color: ACCENT, duration: 0.3 }, 138.3);
+
+    // c1-9 .. c1-9c: the row under discussion
+    band("#c1-t1", 143.3);
+    unband("#c1-t1", 152.5);
+    band("#c1-t2", 152.55);
+    unband("#c1-t2", 157.9);
+    band("#c1-t3", 157.95);
+    unband("#c1-t3", 160.6);
+    band("#c1-t4", 160.65);
+
+    // c1-10: the rule, then the impact as the accent; c1-10b: question
+    fadeIn("#c1-qr", 168.0);
+    fadeIn("#c1-qi", 170.8);
+    band("#c1-qi", 171.4);
+    unband("#c1-qi", 177.6);
+    fadeIn("#c1-qtag", 177.7);
+    tl.to("#c1-qtag", { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 178.3);
+
+    // c1-11: the question comment opens under its line
+    fadeIn("#c1-askc", 182.3);
+
+    // c1-12: three nits
+    fadeIn("#c1-n1", 191.4, 0.4);
+    fadeIn("#c1-n2", 192.0, 0.4);
+    fadeIn("#c1-n3", 192.6, 0.4);
+
+    // c1-13: the heading, then the lesson's line under it
+    fadeIn("#c1-fine-s", 199.6);
+
+    // c1-13c: the opening clause, the line that was checked
+    band("#c1-open", 212.7);
+
+    // c1-14: the four parts in order
+    fadeIn("#c1-k1", 231.5, 0.4);
+    fadeIn("#c1-k2", 232.2, 0.4);
+    fadeIn("#c1-k3", 232.9, 0.4);
+    fadeIn("#c1-k4", 233.6, 0.4);
+
+    // c1-15 .. c1-15c: items one and two, item three, item four
+    band(["#c1-h1", "#c1-h2"], 243.3);
+    unband(["#c1-h1", "#c1-h2"], 249.35);
+    band("#c1-h3", 249.4);
+    unband("#c1-h3", 256.75);
+    band("#c1-h4", 256.8);
+
+    // c1-16: the summary box, then the inline comments under it
+    tl.to("#c1-sumbox", { borderColor: ACCENT, duration: 0.3 }, 261.6);
+
+    // c1-16b .. c1-16d: Approve, Request changes, Comment
+    band("#c1-v1", 268.4);
+    unband("#c1-v1", 277.55);
+    band("#c1-v2", 277.6);
+    unband("#c1-v2", 285.35);
+    band("#c1-v3", 285.4);
+
+    // c1-17: the last sentence
+    band("#c1-last", 294.6);
+
+    // c1-18: forty-five minutes on the desk clock; c1-18b: the summary with what was not covered
+    tl.fromTo("#c1-t45", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 303.4);
+    tl.to("#c1-t0", { opacity: 0, duration: 0.4 }, 303.4);
+    fadeIn("#c1-tsum", 307.65);
+
+    // c1-19 .. c1-19c: item one, item two, items three and four
+    fadeIn("#c1-w1", 312.65);
+    fadeIn("#c1-w2", 319.05);
+    fadeIn("#c1-w3", 327.05);
+    fadeIn("#c1-w4", 327.65);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c1-q1", "#c1-q2", "#c1-q3", "#c1-q4", "#c1-q5", "#c1-q6", "#c1-q7", "#c1-q8", "#c1-q9"].forEach((q, i) => fadeIn(q, 336.54 + i * 0.6));
+    fadeIn("#c1-pause-2", 387.1);
+
+    // after the lesson: REVIEW.md, the comparison order, the last sentence
+    band("#c1-a0", 390.6);
+    unband("#c1-a0", 398.6);
+    band("#c1-a1", 398.7);
+    unband("#c1-a1", 405.5);
+    band("#c1-a2", 405.6);
+
+    // close: 18:00, the lights go down and stay down to the last frame
+    tl.fromTo("#c1-lights", { opacity: 0 }, { opacity: 0.62, duration: 2.0, ease: "power2.inOut" }, 410.3);
+
+    window.__timelines["c1"] = tl;
+  </script>
+</template>

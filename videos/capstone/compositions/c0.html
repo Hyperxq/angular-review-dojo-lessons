@@ -1,0 +1,343 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c0-h { position: absolute; left: 140px; top: 84px; width: 1640px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-lead { position: absolute; left: 144px; top: 92px; width: 1640px; font: 600 44px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c0-tr code, .c0-item code { font: 400 28px/1.3 var(--font-code); white-space: nowrap; }
+    .c0-chip { display: inline-block; padding: 10px 20px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 34px/1 var(--font-code); white-space: nowrap; }
+    .c0-chip.txt { font-family: var(--font-text); }
+    .c0-chip.hot { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+
+    /* desk */
+    .c0-page-title { font: 600 52px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-status { position: absolute; left: 40px; top: 140px; display: flex; align-items: center; gap: 18px; }
+    .c0-pill { position: relative; width: 150px; height: 52px; }
+    .c0-pill > span { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 26px; font: 700 30px/1 var(--font-text); }
+    .c0-closed { background: var(--paper-sunk); color: var(--ink-muted); border: 2px solid var(--rule-strong); }
+    .c0-open { background: var(--tip-soft); color: var(--tip); border: 2px solid var(--tip); }
+    .c0-members { position: absolute; left: 40px; top: 240px; width: 900px; }
+    .c0-mem { display: flex; justify-content: space-between; padding: 22px 0; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c0-mem b { font-weight: 700; }
+    .c0-mem span:last-child { color: var(--ink-muted); }
+    .c0-clock { position: relative; display: inline-block; }
+    #c0-t9 { position: absolute; right: 0; top: 0; }
+
+    /* review editor: neutral placeholder text only */
+    #c0-desc { position: absolute; left: 40px; top: 130px; width: 620px; height: 660px; padding: 32px; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; }
+    #c0-desc .label { margin-bottom: 28px; }
+    .c0-bar { height: 22px; margin-bottom: 22px; border-radius: 4px; background: var(--rule); }
+    #c0-diff { position: absolute; left: 700px; top: 130px; width: 900px; height: 660px; padding: 24px 0; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+    .c0-dl { display: flex; align-items: center; height: 46px; padding: 0 28px; }
+    .c0-dl i { flex: none; width: 48px; height: 18px; margin-right: 28px; border-radius: 4px; background: var(--paper-sunk); }
+    .c0-dl b { height: 18px; border-radius: 4px; background: var(--rule-strong); }
+    .c0-dl.add { background: var(--tip-soft); }
+    #c0-size { position: absolute; right: 80px; top: 34px; }
+
+    /* three labels */
+    .c0-three { position: absolute; left: 200px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+
+    /* how to use the lesson */
+    #c0-use { position: absolute; left: 120px; top: 190px; width: 1680px; }
+    .c0-item { display: flex; gap: 28px; padding: 26px 32px; border-bottom: 1px solid var(--rule); border-radius: 6px; font: 400 38px/1.4 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c0-item > span:first-child { flex: none; width: 24px; font-weight: 700; }
+    .c0-item code { font-size: 34px; }
+    #c0-timer { position: absolute; left: 152px; top: 640px; display: flex; align-items: center; gap: 36px; padding: 28px 36px; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow); }
+    #c0-timer .app-clock { font-size: 48px; }
+    .c0-timebox { display: flex; flex-direction: column; gap: 10px; }
+    .c0-timer-val { font: 700 48px/1 var(--font-text); font-variant-numeric: tabular-nums; color: var(--accent); }
+    #c0-review-md { position: absolute; left: 152px; top: 640px; }
+
+    /* chapter 0 heading */
+    #c0-ch-h { top: 300px; }
+    #c0-dirs { position: absolute; left: 200px; top: 520px; width: 1520px; }
+    .c0-dir { padding: 24px 0; border-bottom: 1px solid var(--rule); font: 400 40px/1.3 var(--font-text); }
+
+    /* tables: grid rows */
+    .c0-table { position: absolute; left: 120px; width: 1680px; }
+    .c0-tr { display: grid; column-gap: 32px; padding: 16px 24px; border-bottom: 1px solid var(--rule); border-radius: 6px; font: 400 30px/1.3 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c0-th { font-weight: 700; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c0-h1-table { top: 168px; }
+    #c0-h1-table .c0-tr { grid-template-columns: 560px 1fr; }
+    #c0-dtc { color: var(--ink); }
+    #c0-sf { position: absolute; left: 736px; top: 940px; }
+    #c0-p-table { top: 200px; }
+    #c0-p-table .c0-tr { grid-template-columns: 900px 1fr; font-size: 36px; padding: 28px 24px; }
+    #c0-p-table .c0-tr code { font-size: 32px; }
+
+    /* both tables side by side */
+    #c0-both-a { left: 120px; top: 200px; width: 760px; }
+    #c0-both-b { left: 940px; top: 200px; width: 860px; }
+    #c0-both-b .c0-tr { grid-template-columns: 420px 1fr; column-gap: 24px; padding: 16px 20px; }
+    #c0-both-a .c0-tr { padding: 18px 20px; }
+    #c0-lead-a { left: 120px; top: 110px; width: 760px; font-size: 32px; }
+    #c0-lead-b { left: 940px; top: 110px; width: 860px; font-size: 32px; }
+  </style>
+
+  <div id="root" data-composition-id="c0" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c0-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c0-card-time" class="chapter-time">08:55</div>
+      <div id="c0-card-title" class="chapter-title">Reflexes to recalibrate since Angular 17</div>
+    </div>
+
+    <!-- c0-1: the desk before opening, the lesson's title -->
+    <div id="c0-desk" class="clip world" data-start="3" data-duration="9.42">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div class="c0-page-title">Capstone: a lesson before the exercises</div>
+          <div class="c0-status"><span class="label">Desk</span><span id="c0-pill1" class="c0-pill"><span class="c0-closed">Closed</span></span></div>
+          <div id="c0-members" class="c0-members" data-hold>
+            <div class="c0-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div class="c0-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div class="c0-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div class="c0-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-1b, c0-1c: the review editor, description and diff in neutral placeholder text -->
+    <div id="c0-editor" class="clip world" data-start="12.42" data-duration="14.54">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div class="c0-page-title">Review</div>
+          <span id="c0-size" class="c0-chip txt">about 400 lines of code</span>
+          <div id="c0-desc" data-hold>
+            <div class="label">Description</div>
+            <div class="c0-bar" style="width: 92%"></div>
+            <div class="c0-bar" style="width: 84%"></div>
+            <div class="c0-bar" style="width: 96%"></div>
+            <div class="c0-bar" style="width: 58%"></div>
+            <div class="c0-bar" style="width: 0; background: none"></div>
+            <div class="c0-bar" style="width: 88%"></div>
+            <div class="c0-bar" style="width: 94%"></div>
+            <div class="c0-bar" style="width: 72%"></div>
+            <div class="c0-bar" style="width: 0; background: none"></div>
+            <div class="c0-bar" style="width: 90%"></div>
+            <div class="c0-bar" style="width: 46%"></div>
+          </div>
+          <div id="c0-diff" data-hold>
+            <div class="c0-dl"><i></i><b style="width: 380px"></b></div>
+            <div class="c0-dl"><i></i><b style="width: 520px"></b></div>
+            <div class="c0-dl add"><i></i><b style="width: 460px"></b></div>
+            <div class="c0-dl add"><i></i><b style="width: 610px"></b></div>
+            <div class="c0-dl add"><i></i><b style="width: 340px"></b></div>
+            <div class="c0-dl"><i></i><b style="width: 280px"></b></div>
+            <div class="c0-dl"><i></i><b style="width: 540px"></b></div>
+            <div class="c0-dl add"><i></i><b style="width: 660px"></b></div>
+            <div class="c0-dl add"><i></i><b style="width: 420px"></b></div>
+            <div class="c0-dl"><i></i><b style="width: 500px"></b></div>
+            <div class="c0-dl add"><i></i><b style="width: 580px"></b></div>
+            <div class="c0-dl add"><i></i><b style="width: 300px"></b></div>
+            <div class="c0-dl"><i></i><b style="width: 450px"></b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-2: three labels from the lesson's opening -->
+    <div id="c0-pieces" class="clip world" data-start="26.96" data-duration="7.65">
+      <div id="c0-p1" class="c0-three" style="top: 300px">the order you read in</div>
+      <div id="c0-p2" class="c0-three" style="top: 460px">what each finding is worth</div>
+      <div id="c0-p3" class="c0-three" style="top: 620px">how you write it down</div>
+    </div>
+
+    <!-- c0-3, c0-3b: How to use the lesson, item one with the timer, then item two with REVIEW.md -->
+    <div id="c0-howto" class="clip world" data-start="34.61" data-duration="15.18">
+      <div class="c0-h">How to use the lesson:</div>
+      <div id="c0-use" data-hold>
+        <div id="c0-u1" class="c0-item"><span>–</span><span>Read chapter 0 and chapter 1, then do the exercise with a timer (the dojo suggests 45 minutes).</span></div>
+        <div id="c0-u2" class="c0-item"><span>–</span><span>Write your whole review before you open <code>REVIEW.md</code> on the <code>solutions</code> branch. The comparison only teaches you something if your review was finished first.</span></div>
+      </div>
+      <div id="c0-timer" data-hold>
+        <div class="c0-timebox"><span class="label">Desk clock</span><span class="app-clock">08:55</span></div>
+        <div class="c0-timebox"><span class="label">Timer</span><span class="c0-timer-val">45:00</span></div>
+      </div>
+      <span id="c0-review-md" class="c0-chip">REVIEW.md</span>
+    </div>
+
+    <!-- c0-4: the chapter 0 heading; the two directions as the lesson's two table leads -->
+    <div id="c0-ch0" class="clip world" data-start="49.79" data-duration="7.5">
+      <div id="c0-ch-h" class="line">Chapter 0: reflexes to recalibrate since Angular 17</div>
+      <div id="c0-dirs" data-hold>
+        <div id="c0-d1" class="c0-dir">Habits that no longer point at a finding, or point at a different one:</div>
+        <div id="c0-d2" class="c0-dir">Things that used to work and now are findings:</div>
+      </div>
+    </div>
+
+    <!-- c0-5 to c0-7c: the habits table (LESSON.md) cut in whole, one row banded at a time -->
+    <div id="c0-habits" class="clip world" data-start="57.29" data-duration="53.44">
+      <div class="c0-lead">Habits that no longer point at a finding, or point at a different one:</div>
+      <div id="c0-h1-table" class="c0-table" data-hold>
+        <div class="c0-tr c0-th"><div>Habit from pre-v17 code</div><div>In 22.2.2</div></div>
+        <div id="c0-r1" class="c0-tr"><div>"Missing <code>standalone: true</code>"</div><div><code>standalone</code> defaults to <code>true</code>. Not a finding.</div></div>
+        <div id="c0-r2" class="c0-tr"><div>"Add <code>ChangeDetectionStrategy.OnPush</code>"</div><div>OnPush is the default. An explicit <code>Eager</code> is the thing to ask about; <code>Default</code> is a deprecated alias of it.</div></div>
+        <div id="c0-r3" class="c0-tr"><div>"Every stream needs <code>takeUntil(this.destroy$)</code>"</div><div>A stream that completes on its own (one HTTP response) has nothing to leak. A stream that never completes (timers, store selections, router events) needs an owner that ends it. Ask <span id="c0-dtc">"does this complete?"</span>, not "is there an unsubscribe?".</div></div>
+        <div id="c0-r4" class="c0-tr"><div>"Inject through the constructor"</div><div><code>inject()</code> is the normal form, and <code>@Service()</code> classes cannot use constructor injection at all.</div></div>
+        <div id="c0-r5" class="c0-tr"><div>"<code>*ngIf</code> and <code>*ngFor</code> are fine"</div><div><code>NgIf</code> and <code>NgForOf</code> are <code>@deprecated 20.0</code>. Old code the PR does not touch is out of scope: no comment. New code in the PR that uses them is should-fix, because the team pays for it at the next upgrade.</div></div>
+      </div>
+      <span id="c0-sf" class="c0-chip txt hot">should-fix</span>
+    </div>
+
+    <!-- c0-8 to c0-8c: the patterns table (LESSON.md) cut in whole, one row banded at a time -->
+    <div id="c0-patterns" class="clip world" data-start="110.73" data-duration="24.52">
+      <div class="c0-lead">Things that used to work and now are findings:</div>
+      <div id="c0-p-table" class="c0-table" data-hold>
+        <div class="c0-tr c0-th"><div>Pattern</div><div>Why it fails now</div></div>
+        <div id="c0-q1" class="c0-tr"><div>A plain field assigned inside <code>subscribe</code> and read by the template</div><div>The app is zoneless. Nothing tells Angular to render.</div></div>
+        <div id="c0-q2" class="c0-tr"><div>Mutating an object or array in place and expecting the view to update</div><div>OnPush and signals compare by reference. Same reference, no update.</div></div>
+        <div id="c0-q3" class="c0-tr"><div>Reading <code>resource.value()</code> without checking <code>error()</code> or <code>hasValue()</code></div><div><code>value()</code> throws in the error state.</div></div>
+      </div>
+    </div>
+
+    <!-- c0-9: both tables side by side, the first one dimmed -->
+    <div id="c0-both" class="clip world" data-start="135.25" data-duration="4.85">
+      <div id="c0-both-l" data-hold>
+        <div id="c0-lead-a" class="c0-lead">Habits that no longer point at a finding, or point at a different one:</div>
+        <div id="c0-both-a" class="c0-table">
+          <div class="c0-tr c0-th"><div>Habit from pre-v17 code</div></div>
+          <div class="c0-tr"><div>"Missing <code>standalone: true</code>"</div></div>
+          <div class="c0-tr"><div>"Add <code>ChangeDetectionStrategy.OnPush</code>"</div></div>
+          <div class="c0-tr"><div>"Every stream needs <code>takeUntil(this.destroy$)</code>"</div></div>
+          <div class="c0-tr"><div>"Inject through the constructor"</div></div>
+          <div class="c0-tr"><div>"<code>*ngIf</code> and <code>*ngFor</code> are fine"</div></div>
+        </div>
+      </div>
+      <div id="c0-both-r" data-hold>
+        <div id="c0-lead-b" class="c0-lead">Things that used to work and now are findings:</div>
+        <div id="c0-both-b" class="c0-table">
+          <div class="c0-tr c0-th"><div>Pattern</div><div>Why it fails now</div></div>
+          <div class="c0-tr"><div>A plain field assigned inside <code>subscribe</code> and read by the template</div><div>The app is zoneless. Nothing tells Angular to render.</div></div>
+          <div class="c0-tr"><div>Mutating an object or array in place and expecting the view to update</div><div>OnPush and signals compare by reference. Same reference, no update.</div></div>
+          <div class="c0-tr"><div>Reading <code>resource.value()</code> without checking <code>error()</code> or <code>hasValue()</code></div><div><code>value()</code> throws in the error state.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-9 end: the desk again; the clock turns to 09:00 and the desk opens -->
+    <div id="c0-desk2" class="clip world" data-start="140.1" data-duration="2.65">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock c0-clock"><span id="c0-t8">08:59</span><span id="c0-t9">09:00</span></span></div>
+        <div class="app-body">
+          <div class="c0-page-title">Members</div>
+          <div class="c0-status"><span class="label">Desk</span><span class="c0-pill"><span id="c0-closed2" class="c0-closed">Closed</span><span id="c0-open2" class="c0-open">Open</span></span></div>
+          <div class="c0-members" data-hold>
+            <div class="c0-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div class="c0-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div class="c0-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div class="c0-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <audio id="c0-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="0" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c0-1" class="clip" src="assets/vo/c0-1.wav" data-start="3.0" data-duration="9.067" data-volume="1"></audio>
+    <audio id="vo-c0-1b" class="clip" src="assets/vo/c0-1b.wav" data-start="12.42" data-duration="7.573" data-volume="1"></audio>
+    <audio id="vo-c0-1c" class="clip" src="assets/vo/c0-1c.wav" data-start="20.34" data-duration="6.272" data-volume="1"></audio>
+    <audio id="vo-c0-2" class="clip" src="assets/vo/c0-2.wav" data-start="26.96" data-duration="7.296" data-volume="1"></audio>
+    <audio id="vo-c0-3" class="clip" src="assets/vo/c0-3.wav" data-start="34.61" data-duration="6.699" data-volume="1"></audio>
+    <audio id="vo-c0-3b" class="clip" src="assets/vo/c0-3b.wav" data-start="41.66" data-duration="7.787" data-volume="1"></audio>
+    <audio id="vo-c0-4" class="clip" src="assets/vo/c0-4.wav" data-start="49.79" data-duration="7.147" data-volume="1"></audio>
+    <audio id="vo-c0-5" class="clip" src="assets/vo/c0-5.wav" data-start="57.29" data-duration="7.339" data-volume="1"></audio>
+    <audio id="vo-c0-5b" class="clip" src="assets/vo/c0-5b.wav" data-start="64.98" data-duration="8.299" data-volume="1"></audio>
+    <audio id="vo-c0-6" class="clip" src="assets/vo/c0-6.wav" data-start="73.63" data-duration="7.403" data-volume="1"></audio>
+    <audio id="vo-c0-6b" class="clip" src="assets/vo/c0-6b.wav" data-start="81.38" data-duration="7.317" data-volume="1"></audio>
+    <audio id="vo-c0-7" class="clip" src="assets/vo/c0-7.wav" data-start="89.05" data-duration="7.232" data-volume="1"></audio>
+    <audio id="vo-c0-7b" class="clip" src="assets/vo/c0-7b.wav" data-start="96.63" data-duration="8.405" data-volume="1"></audio>
+    <audio id="vo-c0-7c" class="clip" src="assets/vo/c0-7c.wav" data-start="105.39" data-duration="4.992" data-volume="1"></audio>
+    <audio id="vo-c0-8" class="clip" src="assets/vo/c0-8.wav" data-start="110.73" data-duration="10.496" data-volume="1"></audio>
+    <audio id="vo-c0-8b" class="clip" src="assets/vo/c0-8b.wav" data-start="121.57" data-duration="7.467" data-volume="1"></audio>
+    <audio id="vo-c0-8c" class="clip" src="assets/vo/c0-8c.wav" data-start="129.39" data-duration="5.504" data-volume="1"></audio>
+    <audio id="vo-c0-9" class="clip" src="assets/vo/c0-9.wav" data-start="135.25" data-duration="6.507" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "rgba(245, 226, 217, 1)", SOFT0 = "rgba(245, 226, 217, 0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0
+
+    // c0-1: members in the queue; the closed desk on "opens at nine"
+    tl.fromTo("#c0-members .c0-mem", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.15 }, 3.2);
+    fadeIn("#c0-pill1", 4.9);
+
+    // c0-1b: the editor cuts in whole; the size label on "about four hundred lines"
+    fadeIn("#c0-size", 15.2);
+
+    // c0-1c: the editor and its description panel held
+
+    // c0-2: the three labels, each on its words
+    fadeIn("#c0-p1", 29.0);
+    fadeIn("#c0-p2", 30.4);
+    fadeIn("#c0-p3", 32.0);
+
+    // c0-3: item one banded at the cut; the clock and the 45-minute timer on "timer"
+    band("#c0-u1", 34.7);
+    fadeIn("#c0-timer", 38.5);
+
+    // c0-3b: item two lands banded, the timer leaves; REVIEW.md on "solutions branch"
+    unband("#c0-u1", 41.75);
+    fadeIn("#c0-u2", 41.75);
+    band("#c0-u2", 41.9);
+    fadeOut("#c0-timer", 41.75, 0.3);
+    fadeIn("#c0-review-md", 44.2);
+
+    // c0-4: the heading holds; the two directions on "both directions"
+    tl.fromTo(["#c0-d1", "#c0-d2"], { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.15 }, 52.6);
+
+    // c0-5: the table cuts in whole; the standalone row on "Standalone"
+    band("#c0-r1", 60.1);
+
+    // c0-5b: the OnPush row
+    unband("#c0-r1", 65.05);
+    band("#c0-r2", 65.05);
+
+    // c0-6: the takeUntil row
+    unband("#c0-r2", 73.7);
+    band("#c0-r3", 73.7);
+
+    // c0-6b: "does this complete?" as the accent on "Ask whether it completes"
+    tl.fromTo("#c0-dtc", { color: "#1d1b18" }, { color: "#b8321f", duration: 0.4, ease: "power2.inOut", immediateRender: false }, 86.8);
+
+    // c0-7: the constructor row
+    tl.to("#c0-dtc", { color: "#1d1b18", duration: 0.4, ease: "power2.inOut" }, 89.1);
+    unband("#c0-r3", 89.1);
+    band("#c0-r4", 89.1);
+
+    // c0-7b: the ngIf / ngFor row
+    unband("#c0-r4", 96.7);
+    band("#c0-r5", 96.7);
+
+    // c0-7c: should-fix as a label on "is should-fix"
+    fadeIn("#c0-sf", 106.8);
+
+    // c0-8: the patterns table cuts in whole; the first row on "The app is zoneless"
+    band("#c0-q1", 113.8);
+
+    // c0-8b, c0-8c: the second and third rows
+    unband("#c0-q1", 121.65);
+    band("#c0-q2", 121.65);
+    unband("#c0-q2", 129.45);
+    band("#c0-q3", 129.45);
+
+    // c0-9: both tables side by side; the first dims on "keep the first table out"
+    tl.fromTo("#c0-both-l", { opacity: 1 }, { opacity: 0.35, duration: 0.6, ease: "power2.inOut", immediateRender: false }, 138.6);
+
+    // c0-9 end: the desk cuts in on "Then"; the clock turns to 09:00 and the desk opens on "opens"
+    fadeOut("#c0-t8", 141.5, 0.2);
+    fadeIn("#c0-t9", 141.6, 0.3);
+    fadeOut("#c0-closed2", 141.75, 0.3);
+    fadeIn("#c0-open2", 141.85);
+
+    window.__timelines["c0"] = tl;
+  </script>
+</template>
