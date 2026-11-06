@@ -1,0 +1,275 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    /* desk: the catalogue screen, one genre shelf in pages of twenty */
+    #c2-picker { position: absolute; left: 40px; top: 36px; display: flex; align-items: center; gap: 20px; }
+    #c2-picker .label { margin-right: 8px; }
+    .c2-chip { padding: 18px 30px; border: 2px solid var(--rule-strong); border-radius: 8px; font: 700 36px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-chip.on { border-color: var(--ink); color: var(--ink); }
+    #c2-pager { position: absolute; right: 40px; top: 36px; display: flex; align-items: baseline; gap: 18px; font: 700 40px/1.4 var(--font-text); font-variant-numeric: tabular-nums; }
+    #c2-pager-of { color: var(--ink-muted); font-weight: 400; opacity: 0; }
+    #c2-per { position: absolute; right: 40px; top: 108px; }
+    #c2-set { position: absolute; right: 40px; top: 108px; opacity: 0; }
+    #c2-grid { position: absolute; left: 40px; top: 170px; width: 1600px; height: 610px; }
+    #c2-empty { position: absolute; inset: 0; opacity: 0; border: 3px dashed var(--rule-strong); border-radius: 8px; }
+    #c2-tiles { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(4, 1fr); gap: 22px 28px; }
+    .c2-book { position: relative; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; }
+    .c2-book::before { content: ""; position: absolute; left: 18px; top: 18px; bottom: 18px; width: 52px; border-radius: 4px; background: var(--rule-strong); }
+    .c2-book::after { content: ""; position: absolute; left: 90px; top: 34px; width: 150px; height: 14px; border-radius: 7px; background: var(--rule); box-shadow: 0 34px 0 -2px var(--rule); }
+
+    /* code world */
+    #c2-old { position: absolute; left: 200px; top: 460px; font: 400 128px/1 var(--font-code); }
+    #c2-old-strike { position: absolute; left: -12px; right: -12px; top: 50%; height: 10px; margin-top: -5px; background: var(--accent); transform-origin: left center; }
+    #c2-shelf { left: 120px; top: 150px; }
+    .c2-code .ln { margin: 0 -48px; padding: 0 48px; }
+    #c2-linked { left: 120px; top: 70px; }
+    #c2-keep { left: 120px; top: 640px; }
+
+    /* flow: genre (input) and user clicks next both reach page; page reaches the template */
+    #c2-flow .fbox { box-sizing: border-box; }
+    #c2-edges, #c2-reset-svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+    /* what counts as "the source changed" */
+    #c2-src, #c2-page { box-sizing: border-box; top: 400px; padding: 34px 40px; font-size: 48px; }
+    #c2-src { width: 540px; }
+    #c2-page { width: 620px; }
+    #c2-src { left: 200px; }
+    #c2-page { left: 1120px; }
+    #c2-eq { position: absolute; left: 200px; top: 620px; width: 1540px; font: 400 36px/1.75 var(--font-text); color: var(--ink-muted); }
+    #c2-eq code { font: 700 36px/1 var(--font-code); color: var(--ink); padding: 6px 14px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); }
+    #c2-pulse { position: absolute; left: 740px; top: 448px; width: 36px; height: 36px; margin: -18px 0 0 -18px; border-radius: 50%; background: var(--accent); opacity: 0; }
+    #c2-reset-l { left: 830px; top: 380px; width: 200px; }
+
+    /* when not to use it */
+    #c2-not-head { top: 210px; }
+    #c2-not { position: absolute; left: 200px; top: 360px; width: 1520px; }
+    .c2-tr { display: flex; align-items: baseline; padding: 44px 0; border-bottom: 1px solid var(--rule); font: 400 44px/1.3 var(--font-text); }
+    .c2-tr > code { width: 400px; flex: none; font: 700 52px/1 var(--font-code); }
+    .q code { font-family: var(--font-code); font-size: 0.9em; }
+  </style>
+
+  <div id="root" data-composition-id="c2" data-width="1920" data-height="1080">
+    <!-- 0.0 chapter card -->
+    <div id="c2-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c2-card-time" class="chapter-time">11:00</div>
+      <div id="c2-card-title" class="chapter-title">Local state that belongs to something else</div>
+    </div>
+
+    <!-- c2-1, c2-2 page 4 of science fiction, then poetry -->
+    <div id="c2-desk" class="clip world" data-start="3" data-duration="19.6">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">11:00</span></div>
+        <div class="app-body">
+          <div id="c2-picker">
+            <span class="label">Genre</span>
+            <div id="c2-sf" class="c2-chip on">Science fiction</div>
+            <div id="c2-po" class="c2-chip">Poetry</div>
+          </div>
+          <div id="c2-pager"><span id="c2-pager-n">Page 4</span><span id="c2-pager-of">of 2</span></div>
+          <div id="c2-per" class="label">20 books a page</div>
+          <div id="c2-set" class="label">moved by the user</div>
+          <div id="c2-grid">
+            <div id="c2-empty"></div>
+            <div id="c2-tiles">
+              <div class="c2-book"></div><div class="c2-book"></div><div class="c2-book"></div><div class="c2-book"></div><div class="c2-book"></div>
+              <div class="c2-book"></div><div class="c2-book"></div><div class="c2-book"></div><div class="c2-book"></div><div class="c2-book"></div>
+              <div class="c2-book"></div><div class="c2-book"></div><div class="c2-book"></div><div class="c2-book"></div><div class="c2-book"></div>
+              <div class="c2-book"></div><div class="c2-book"></div><div class="c2-book"></div><div class="c2-book"></div><div class="c2-book"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-3, c2-4 ngOnChanges struck, then inputs as signals -->
+    <div id="c2-inputs" class="clip world" data-start="22.6" data-duration="18.41">
+      <div id="c2-old" data-hold>ngOnChanges<div id="c2-old-strike"></div></div>
+      <div id="c2-shelf" class="code c2-code">
+        <span class="ln"><span class="k">export class</span> GenreShelf {</span>
+        <span class="ln c2-in">  <span class="k">readonly</span> genre = input.required&lt;string&gt;();</span>
+        <span class="ln c2-in">  <span class="k">readonly</span> books = input.required&lt;Book[]&gt;();</span>
+        <span class="ln"> </span>
+        <span class="ln c2-match">  <span class="k">protected readonly</span> matching = computed(() =&gt;</span>
+        <span class="ln c2-match">    <span class="k">this</span>.books().filter((b) =&gt; b.genre === <span class="k">this</span>.genre()));</span>
+        <span class="ln c2-count">  <span class="k">protected readonly</span> pageCount = computed(() =&gt;</span>
+        <span class="ln c2-count">    Math.ceil(<span class="k">this</span>.matching().length / <span class="n">20</span>));</span>
+        <span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c2-5, c2-6 linkedSignal and its flow, then a computation that keeps a valid page -->
+    <div id="c2-link" class="clip world sunk" data-start="41.01" data-duration="17.42">
+      <div id="c2-linked" class="code c2-code" data-hold>
+        <span id="c2-l1" class="ln"><span class="k">protected readonly</span> page = linkedSignal({</span>
+        <span class="ln">  source: <span class="k">this</span>.genre,</span>
+        <span id="c2-l3" class="ln">  computation: () =&gt; <span class="n">0</span>,</span>
+        <span class="ln">});</span>
+        <span class="ln"> </span>
+        <span class="ln"><span class="k">protected</span> next() {</span>
+        <span class="ln">  <span class="k">this</span>.page.update((p) =&gt; Math.min(p + <span class="n">1</span>, <span class="k">this</span>.pageCount() - <span class="n">1</span>));</span>
+        <span class="ln">}</span>
+      </div>
+      <div id="c2-flow">
+        <div id="c2-fa" class="fbox" style="left: 120px; top: 620px; width: 440px">genre (input)</div>
+        <div id="c2-fb" class="fbox" style="left: 120px; top: 860px; width: 440px">user clicks next</div>
+        <div id="c2-fp" class="fbox" style="left: 800px; top: 740px; width: 500px">page (linkedSignal)</div>
+        <div id="c2-ft" class="fbox" style="left: 1460px; top: 740px; width: 340px">template</div>
+        <svg id="c2-edges" viewBox="0 0 1920 1080">
+          <defs><marker id="c2-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1d1b18" /></marker></defs>
+          <path id="c2-e-src" d="M560 672 C 680 672, 690 780, 796 780" stroke="#1d1b18" stroke-width="4" fill="none" marker-end="url(#c2-head)" />
+          <path id="c2-e-user" d="M560 912 C 680 912, 690 806, 796 806" stroke="#1d1b18" stroke-width="4" fill="none" marker-end="url(#c2-head)" />
+          <path id="c2-e-tpl" d="M1300 793 H 1456" stroke="#1d1b18" stroke-width="4" fill="none" marker-end="url(#c2-head)" />
+        </svg>
+      </div>
+      <div id="c2-keep" class="code c2-code">
+        <span class="ln c2-kl">computation: (genre, previous) =&gt;</span>
+        <span class="ln c2-kl">  (previous &amp;&amp; previous.value &lt; <span class="k">this</span>.pageCount() ? previous.value : <span class="n">0</span>),</span>
+      </div>
+    </div>
+
+    <!-- c2-7a, c2-7b the source's equality decides the reset -->
+    <div id="c2-eqw" class="clip world sunk" data-start="58.43" data-duration="13.36">
+      <div id="c2-src" class="fbox">genre (input)</div>
+      <div id="c2-eq">notifies when its new value is not equal to the old one: <code>Object.is</code> by default, or the <code>equal</code> function you gave it</div>
+      <svg id="c2-reset-svg" viewBox="0 0 1920 1080">
+        <defs><marker id="c2-head2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1d1b18" /></marker></defs>
+        <path id="c2-e-reset" d="M740 448 H 1116" stroke="#1d1b18" stroke-width="4" fill="none" marker-end="url(#c2-head2)" />
+      </svg>
+      <div id="c2-reset-l" class="flabel">reset</div>
+      <div id="c2-page" class="fbox">page (linkedSignal)</div>
+      <div id="c2-pulse"></div>
+    </div>
+
+    <!-- c2-8 when not to use it -->
+    <div id="c2-notw" class="clip world" data-start="71.79" data-duration="7.71">
+      <div id="c2-not-head" class="line">When not to use it</div>
+      <div id="c2-not">
+        <div id="c2-r1" class="c2-tr"><code>computed</code><span>the state never needs to be written locally</span></div>
+        <div id="c2-r2" class="c2-tr"><code>signal</code><span>it must survive every change of its input</span></div>
+      </div>
+    </div>
+
+    <!-- questions card -->
+    <div id="c2-q" class="clip world note" data-start="79.5" data-duration="18.8">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c2-q1" class="q">For each piece of local state, which outside value does it belong to?</div>
+        <div id="c2-q2" class="q">Which state is derived (and should be <code>computed</code>), and which is chosen by the user?</div>
+        <div id="c2-q3" class="q">For state the user chooses, what event should reset it, and what should not?</div>
+        <div id="c2-q4" class="q">Is there code whose only job is to turn an input into something reactive?</div>
+      </div>
+    </div>
+
+    <!-- pause card -->
+    <div id="c2-pause" class="clip world" data-start="98.3" data-duration="3.5">
+      <div id="c2-pause-1" class="pause-1">Pause here.</div>
+      <div id="c2-pause-2" class="pause-2">Now do exercise 02.</div>
+    </div>
+
+    <audio id="c2-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="30" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-bed2" class="clip" src="assets/music/bed.mp3" data-start="79.5" data-duration="18.8" data-media-start="38" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-vo1" class="clip" src="assets/vo/c2-1.wav" data-start="3" data-duration="10.155" data-volume="1"></audio>
+    <audio id="c2-vo2" class="clip" src="assets/vo/c2-2.wav" data-start="13.5" data-duration="8.747" data-volume="1"></audio>
+    <audio id="c2-vo3" class="clip" src="assets/vo/c2-3.wav" data-start="22.6" data-duration="10.475" data-volume="1"></audio>
+    <audio id="c2-vo4" class="clip" src="assets/vo/c2-4.wav" data-start="33.43" data-duration="7.232" data-volume="1"></audio>
+    <audio id="c2-vo5" class="clip" src="assets/vo/c2-5.wav" data-start="41.01" data-duration="10.219" data-volume="1"></audio>
+    <audio id="c2-vo6" class="clip" src="assets/vo/c2-6.wav" data-start="51.58" data-duration="6.507" data-volume="1"></audio>
+    <audio id="c2-vo7" class="clip" src="assets/vo/c2-7a.wav" data-start="58.43" data-duration="6.272" data-volume="1"></audio>
+    <audio id="c2-vo8" class="clip" src="assets/vo/c2-7b.wav" data-start="65.06" data-duration="6.379" data-volume="1"></audio>
+    <audio id="c2-vo9" class="clip" src="assets/vo/c2-8.wav" data-start="71.79" data-duration="7.36" data-volume="1"></audio>
+    <audio id="c2-vo10" class="clip" src="assets/vo/c2-end.wav" data-start="79.5" data-duration="2.027" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const enter = { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" };
+    const fade = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const out = (sel, at) => tl.to(sel, { opacity: 0, duration: 0.4, ease: "power2.in" }, at);
+    const pulse = (sel, at) =>
+      tl.fromTo(sel, { scale: 1 }, { scale: 1.12, duration: 0.2, ease: "power2.inOut", yoyo: true, repeat: 1 }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: "rgba(245,226,217,0)" }, { backgroundColor: "rgba(245,226,217,1)", duration: 0.3 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: "rgba(245,226,217,0)", duration: 0.3 }, at);
+    const draw = (sel, at) =>
+      tl.fromTo(sel, { strokeDasharray: 600, strokeDashoffset: 600, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: 0.7, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c2-1: a science fiction shelf at page 4, then the picker switches to poetry
+    fade("#c2-picker", 3.3);
+    fade("#c2-pager", 3.45);
+    fade("#c2-tiles", 3.6);
+    fade("#c2-per", 7.3);
+    tl.fromTo("#c2-pager-n", { scale: 1 }, { scale: 1.1, duration: 0.2, ease: "power2.inOut", yoyo: true, repeat: 1, transformOrigin: "right center" }, 9.6);
+    tl.to("#c2-sf", { borderColor: "#c4b9a6", color: "#5f584d", duration: 0.2 }, 11.4);
+    tl.to("#c2-po", { borderColor: "#1d1b18", color: "#1d1b18", duration: 0.2 }, 11.4);
+    pulse("#c2-po", 11.4);
+
+    // c2-2: the index survives, the page is empty, and the indicator goes wrong
+    out("#c2-tiles", 14.2);
+    fade("#c2-empty", 14.4);
+    out("#c2-per", 16.0);
+    tl.to("#c2-pager-n", { color: "#b8321f", duration: 0.3 }, 17.9);
+    fade("#c2-pager-of", 18.0);
+    fade("#c2-set", 19.2);
+
+    // c2-3: the old reset place struck, then the inputs-as-signals class
+    fade("#c2-old", 22.8, 0.4);
+    tl.fromTo("#c2-old-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.inOut" }, 25.4);
+    tl.set("#c2-old", { opacity: 0 }, 30.3);
+    tl.fromTo("#c2-shelf", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 30.3);
+
+    band(".c2-in", 31.6);
+
+    // c2-4: the band lands on the derived lines
+    tl.to(".c2-in", { backgroundColor: "rgba(245,226,217,0)", duration: 0.3 }, 33.6);
+    band(".c2-match", 36.9);
+    band(".c2-count", 38.4);
+
+    // c2-5: the linkedSignal block, then the flow edges as the narration names them
+    fade("#c2-linked", 41.2, 0.3);
+    band("#c2-l1", 45.3);
+    fade(["#c2-fa", "#c2-fb", "#c2-fp", "#c2-ft"], 46.0, 0.4);
+    draw("#c2-e-user", 47.2);
+    draw("#c2-e-src", 49.0);
+    draw("#c2-e-tpl", 50.3);
+    pulse("#c2-fp", 50.6);
+
+    // c2-6: the computation that receives the source and the previous value
+    unband("#c2-l1", 51.6);
+    out("#c2-flow", 51.6);
+    fade("#c2-keep", 52.0, 0.3);
+    band(".c2-kl", 52.5);
+    tl.to("#c2-l3", { opacity: 0.45, duration: 0.3 }, 55.4);
+
+    // c2-7a: the source and its equality
+    fade("#c2-src", 58.6, 0.4);
+    pulse("#c2-src", 61.3);
+    fade("#c2-eq", 62.4);
+
+    // c2-7b: the reset arrow from the source to page fires once
+    fade("#c2-page", 65.3, 0.4);
+    draw("#c2-e-reset", 67.6);
+    fade("#c2-reset-l", 68.0);
+    tl.set("#c2-pulse", { opacity: 1 }, 68.4);
+    tl.fromTo("#c2-pulse", { x: 0 }, { x: 370, duration: 0.8, ease: "power2.inOut" }, 68.4);
+    tl.set("#c2-pulse", { opacity: 0 }, 69.2);
+    tl.fromTo("#c2-page", { borderColor: "#b8321f" }, { borderColor: "#1d1b18", duration: 1.2, ease: "power2.in" }, 69.2);
+    pulse("#c2-src", 70.4);
+
+    // c2-8: when not to use it
+    fade("#c2-not-head", 71.95);
+    tl.fromTo("#c2-r1", { opacity: 0, y: 20 }, enter, 72.6);
+    tl.fromTo("#c2-r2", { opacity: 0, y: 20 }, enter, 76.6);
+
+    // questions card: one by one, 0.6 s apart, then hold
+    ["#c2-q1", "#c2-q2", "#c2-q3", "#c2-q4"].forEach((q, i) => fade(q, 79.8 + i * 0.6));
+
+    // pause card
+    fade("#c2-pause-1", 98.45);
+    tl.fromTo("#c2-pause-2", { opacity: 0, y: 16 }, enter, 98.95);
+
+    window.__timelines["c2"] = tl;
+  </script>
+</template>
