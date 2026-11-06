@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-06T01:26:05.407Z",
+        "reason": "storyline A picked by the user specifies the visual reader's own light tokens (--paper #f7f4ee) so the video matches the reader app"
+      }
+    ]
+  }
+}

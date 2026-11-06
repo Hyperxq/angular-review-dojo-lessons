@@ -22,8 +22,8 @@ Delivery: ask-on-risk. Runner: `npx hyperframes check --json` and `snapshot --re
 | T1 | S4 | inline | done: user picked "A. Un día en el mostrador (Recommended)" | 6f587d3 |
 | T2 | S1 S3 | inline | done: SPEC.md, NARRATION.md; humanizer; expert review rework (1 blocker c7 contract, 8 should-fix) → 1 correction batch → recheck: all 21 fixed | 6f587d3 |
 | T3 | S1 | inline | done: 63 clips (wav gitignored), durations.json, timing.json via videos/scripts/timing.py; 710 s total | 6f587d3 |
-| T4 | S1 S2 S3 | c0 + kit inline; c1-c8 delegated, 4 parallel writers × 2 scenes | in progress | |
-| T5 | S1 | inline | pending: check, snapshot review, Studio preview, render after approval | |
+| T4 | S1 S2 S3 | c0 + kit inline; c1-c8 delegated, 4 parallel writers × 2 scenes | done: check ok, 0 errors; seam check = full check + review snapshot | see T5 |
+| T5 | S1 | inline | in progress: REVIEW.md written, preview at localhost:3002; render waits for user approval | |
 | T6 | S2 | inline | pending: user decides the other 17 | |
 
 ## Log
@@ -33,3 +33,4 @@ Delivery: ask-on-risk. Runner: `npx hyperframes check --json` and `snapshot --re
 - L3 (2026-11-06) Storyline answer: "A. Un día en el mostrador (Recommended)".
 - L4 Route evidence T4: Writer trigger (a) parallelism. Eight scene files with disjoint edit surfaces, each 200+ lines; parent owns
   index.html, kit.css and timing.json. Kokoro needs a Python 3.14 venv (3.15 has no onnxruntime wheels).
+- L5 (2026-11-06) User asked "ya hay un video para ver el resultado?" -> Studio preview started before render, per the hyperframes work loop.

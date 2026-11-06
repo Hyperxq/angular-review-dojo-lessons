@@ -1,12 +1,355 @@
 <template>
   <link rel="stylesheet" href="assets/kit.css" />
-  <style>#root { position: absolute; inset: 0; overflow: hidden; }</style>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    #c4-feed-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    #c4-feed-title { font: 600 60px/1 var(--font-display); }
+    #c4-live { padding: 14px 24px; border: 2px solid var(--rule-strong); border-radius: 8px; font: 700 30px/1 var(--font-text); color: var(--note); }
+    .c4-row { display: grid; grid-template-columns: 160px 1fr 360px 220px; align-items: center; height: 128px; padding: 0 24px; border-bottom: 1px solid var(--rule); }
+    .c4-row .t { font: 700 34px/1 var(--font-text); font-variant-numeric: tabular-nums; color: var(--ink-muted); }
+    .c4-row .b { font: 700 42px/1.1 var(--font-text); }
+    .c4-row .who { font: 400 32px/1 var(--font-text); color: var(--ink-muted); }
+    .c4-row .st { justify-self: end; padding: 10px 18px; border-radius: 8px; background: var(--tip-soft); color: var(--tip); font: 700 30px/1 var(--font-text); }
+
+    #c4-contract .mrow { height: 220px; }
+    .c4-colhead { position: absolute; top: 230px; font: 700 32px/1 var(--font-text); color: var(--ink-muted); }
+    #c4-good { position: absolute; left: calc(440px + 13 * 85px - 130px); top: 760px; width: 300px; text-align: center; }
+
+    #c4-break .mnote, #c4-drop .mnote { top: 126px; }
+    .c4-code { left: 96px; top: 96px; width: 1728px; font-size: 30px; }
+    .c4-code .band { margin: 0 -48px; padding: 0 48px; }
+
+    .c4-box { position: absolute; left: 200px; width: 1200px; height: 120px; padding: 0 40px; display: flex; align-items: center; border: 3px solid var(--ink); border-radius: 8px; background: var(--paper-raised); font: 700 44px/1 var(--font-code); }
+    .c4-box .c { font: 400 30px/1 var(--font-code); margin-left: 24px; }
+    .c4-link { position: absolute; left: 796px; width: 8px; height: 80px; background: var(--rule-strong); }
+    .c4-over { position: absolute; left: 1440px; font: 700 32px/1 var(--font-text); color: var(--ink-muted); }
+    #c4-marker { position: absolute; left: 1336px; top: 400px; }
+    #c4-handled { border-style: dashed; color: var(--ink-muted); }
+
+    #c4-retry-head { position: absolute; left: 160px; top: 120px; font: 700 52px/1 var(--font-code); }
+    #c4-heal { position: absolute; left: 420px; top: 112px; padding: 14px 24px; border-radius: 8px; background: var(--note-soft); color: var(--note); font: 700 32px/1 var(--font-text); }
+    #c4-axis { position: absolute; left: 160px; top: 860px; width: 880px; height: 3px; background: var(--ink); }
+    #c4-ceil { position: absolute; left: 160px; top: 436px; width: 880px; height: 0; border-top: 5px dashed var(--accent); transform-origin: left center; }
+    #c4-ceil-label { position: absolute; left: 160px; top: 380px; font: 700 32px/1 var(--font-text); color: var(--accent); }
+    .c4-bar { position: absolute; bottom: 220px; width: 100px; background: var(--ink); border-radius: 8px 8px 0 0; transform-origin: center bottom; }
+    .c4-att { position: absolute; top: 880px; width: 100px; text-align: center; }
+    #c4-att-label { position: absolute; left: 160px; top: 940px; }
+    #c4-wires { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .c4-tab { position: absolute; left: 1130px; width: 170px; height: 64px; border: 3px solid var(--ink); border-radius: 8px 8px 0 0; background: var(--paper-raised); display: grid; place-items: center; font: 700 30px/1 var(--font-text); }
+    #c4-server { position: absolute; left: 1500px; top: 420px; width: 300px; height: 220px; border: 4px solid var(--ink); border-radius: 8px; background: var(--paper-raised); display: grid; place-items: center; font: 700 44px/1 var(--font-text); }
+
+    .c4-stage { position: absolute; left: 360px; width: 900px; height: 116px; padding: 0 40px; display: flex; align-items: center; border: 3px solid var(--ink); border-radius: 8px; background: var(--paper-raised); font: 700 48px/1 var(--font-code); }
+    #c4-st4 { border-color: var(--accent); color: var(--accent); }
+    .c4-resub { position: absolute; left: 1310px; font: 700 34px/1 var(--font-text); color: var(--warning); }
+    #c4-fail { position: absolute; left: 1196px; top: 528px; }
+  </style>
+
   <div id="root" data-composition-id="c4" data-width="1920" data-height="1080">
-    <div id="c4-card" class="clip world" data-start="0" data-duration="81.84"><div class="chapter-title">c4 placeholder</div></div>
+    <!-- 0.0 chapter card -->
+    <div id="c4-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c4-card-time" class="chapter-time">13:00</div>
+      <div id="c4-card-title" class="chapter-title">An error is the end of the stream</div>
+    </div>
+
+    <!-- c4-1 the returns desk, live over a WebSocket -->
+    <div id="c4-desk" class="clip world" data-start="3" data-duration="5.13">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">13:00</span></div>
+        <div class="app-body">
+          <div id="c4-feed-head"><div id="c4-feed-title">Returns</div><div id="c4-live">Live · WebSocket</div></div>
+          <div id="c4-r1" class="c4-row"><span class="t">12:57</span><span class="b">Middlemarch</span><span class="who">counter 2</span><span class="st">Returned</span></div>
+          <div id="c4-r2" class="c4-row"><span class="t">12:58</span><span class="b">Invisible Cities</span><span class="who">book drop</span><span class="st">Returned</span></div>
+          <div id="c4-r3" class="c4-row"><span class="t">12:59</span><span class="b">The Dispossessed</span><span class="who">counter 1</span><span class="st">Returned</span></div>
+          <div id="c4-r4" class="c4-row"><span class="t">13:00</span><span class="b">Kindred</span><span class="who">book drop</span><span class="st">Returned</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c4-2 a malformed message ends the feed -->
+    <div id="c4-break" class="clip world sunk" data-start="8.13" data-duration="6.17">
+      <div class="marbles" style="top: 300px; --fw: 90px">
+        <div class="mrow" style="height: 200px">
+          <div class="mlabel">messages$:</div>
+          <div class="mtrack">
+            <div id="c4-ma" class="m" style="--f: 0">a</div>
+            <div id="c4-mb" class="m" style="--f: 3">b</div>
+            <div id="c4-mz" class="m hot" style="--f: 6">z</div>
+            <div id="c4-mc" class="m" style="--f: 9">c</div>
+            <div id="c4-md" class="m" style="--f: 12">d</div>
+          </div>
+          <div id="c4-n1" class="mnote">// z is malformed</div>
+        </div>
+        <div class="mrow" style="height: 200px">
+          <div class="mlabel">returns$:</div>
+          <div class="mtrack">
+            <div id="c4-ra" class="m" style="--f: 0">a</div>
+            <div id="c4-rb" class="m" style="--f: 3">b</div>
+            <div id="c4-rx" class="m-err" style="--f: 6">#</div>
+          </div>
+          <div id="c4-n2" class="mnote" data-hold>// the throw becomes an error; the feed is over</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c4-3 the contract: values, then at most one error or completion -->
+    <div id="c4-contract" class="clip world sunk" data-start="14.3" data-duration="8.37">
+      <div id="c4-h1" class="c4-colhead" style="left: calc(440px + 85px - 40px)">any number of next</div>
+      <div id="c4-h2" class="c4-colhead" style="left: calc(440px + 10 * 85px - 90px)">at most one</div>
+      <div class="marbles" style="top: 300px; --fw: 85px">
+        <div class="mrow">
+          <div class="mlabel">error</div>
+          <div class="mtrack">
+            <div id="c4-e1" class="m" style="--f: 1">a</div>
+            <div id="c4-e2" class="m" style="--f: 4">b</div>
+            <div id="c4-e3" class="m" style="--f: 7">c</div>
+            <div id="c4-ex" class="m-err" style="--f: 10">#</div>
+            <div id="c4-eg" class="m cut" style="--f: 13">d</div>
+          </div>
+        </div>
+        <div class="mrow">
+          <div class="mlabel">complete</div>
+          <div class="mtrack">
+            <div id="c4-c1" class="m" style="--f: 1">a</div>
+            <div id="c4-c2" class="m" style="--f: 4">b</div>
+            <div id="c4-c3" class="m" style="--f: 7">c</div>
+            <div id="c4-cx" class="m-done" style="--f: 10"></div>
+            <div id="c4-cg" class="m cut" style="--f: 13">d</div>
+          </div>
+        </div>
+      </div>
+      <div id="c4-good" class="label" data-hold>finished for good</div>
+    </div>
+
+    <!-- c4-4 drop the bad message, keep the feed -->
+    <div id="c4-drop" class="clip world" data-start="22.67" data-duration="7.42">
+      <div id="c4-code" class="code c4-code">
+        <span class="ln"><span class="k">readonly</span> returns$ = <span class="k">this</span>.socket.messages$.pipe(</span>
+        <span id="c4-band1" class="ln band">  map((raw) =&gt; tryParseReturn(raw)), <span class="c">// returns undefined for a malformed message</span></span>
+        <span id="c4-band2" class="ln band">  filter((entry) =&gt; entry !== <span class="k">undefined</span>),</span>
+        <span class="ln">);</span>
+      </div>
+      <div class="marbles" style="top: 480px; --fw: 90px">
+        <div class="mrow" style="height: 180px">
+          <div class="mlabel">messages$:</div>
+          <div class="mtrack">
+            <div id="c4-da" class="m" style="--f: 0">a</div>
+            <div id="c4-db" class="m" style="--f: 3">b</div>
+            <div id="c4-dz" class="m hot" style="--f: 6">z</div>
+            <div id="c4-dc" class="m" style="--f: 9">c</div>
+            <div id="c4-dd" class="m" style="--f: 12">d</div>
+          </div>
+        </div>
+        <div class="mrow" style="height: 180px">
+          <div class="mlabel">returns$:</div>
+          <div class="mtrack">
+            <div id="c4-fa" class="m" style="--f: 0">a</div>
+            <div id="c4-fb" class="m" style="--f: 3">b</div>
+            <div id="c4-fc" class="m" style="--f: 9">c</div>
+            <div id="c4-fd" class="m" style="--f: 12">d</div>
+          </div>
+          <div id="c4-n3" class="mnote">// z was dropped; the feed goes on</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c4-5 follow the error down the pipe -->
+    <div id="c4-follow" class="clip world" data-start="30.09" data-duration="9.45">
+      <div id="c4-b1" class="c4-box" style="top: 140px">this.socket.messages$</div>
+      <div class="c4-link" style="top: 260px"></div>
+      <div id="c4-b2" class="c4-box" style="top: 340px">map((raw) =&gt; parseReturn(raw))<span class="c">// throws</span></div>
+      <div class="c4-link" style="top: 460px"></div>
+      <div id="c4-b3" class="c4-box" style="top: 540px">returns$</div>
+      <div class="c4-link" style="top: 660px"></div>
+      <div id="c4-b4" class="c4-box" style="top: 740px">subscriber</div>
+      <div id="c4-o1" class="c4-over" style="top: 184px">over</div>
+      <div id="c4-o2" class="c4-over" style="top: 384px">over</div>
+      <div id="c4-o3" class="c4-over" style="top: 584px">over</div>
+      <div id="c4-o4" class="c4-over" style="top: 784px" data-hold>over</div>
+      <div id="c4-marker" class="m-err">#</div>
+    </div>
+
+    <!-- c4-6 retry with a growing, capped wait; many tabs, one server -->
+    <div id="c4-backoff" class="clip world" data-start="39.54" data-duration="11.73">
+      <div id="c4-retry-head">retry</div>
+      <div id="c4-heal">a dropped connection</div>
+      <div id="c4-ceil-label">ceiling</div>
+      <div id="c4-ceil"></div>
+      <div id="c4-bar1" class="c4-bar" style="left: 200px; height: 52px"></div>
+      <div id="c4-bar2" class="c4-bar" style="left: 340px; height: 105px"></div>
+      <div id="c4-bar3" class="c4-bar" style="left: 480px; height: 210px"></div>
+      <div id="c4-bar4" class="c4-bar" style="left: 620px; height: 420px"></div>
+      <div id="c4-bar5" class="c4-bar" style="left: 760px; height: 420px"></div>
+      <div id="c4-bar6" class="c4-bar" style="left: 900px; height: 420px"></div>
+      <div id="c4-axis"></div>
+      <div class="c4-att label" style="left: 200px">1</div><div class="c4-att label" style="left: 340px">2</div><div class="c4-att label" style="left: 480px">3</div>
+      <div class="c4-att label" style="left: 620px">4</div><div class="c4-att label" style="left: 760px">5</div><div class="c4-att label" style="left: 900px">6</div>
+      <div id="c4-att-label" class="label">attempt → wait before it</div>
+      <svg id="c4-wires" viewBox="0 0 1920 1080">
+        <line id="c4-w1" x1="1300" y1="282" x2="1500" y2="470" stroke="#c4b9a6" stroke-width="4" />
+        <line id="c4-w2" x1="1300" y1="372" x2="1500" y2="500" stroke="#c4b9a6" stroke-width="4" />
+        <line id="c4-w3" x1="1300" y1="462" x2="1500" y2="530" stroke="#c4b9a6" stroke-width="4" />
+        <line id="c4-w4" x1="1300" y1="552" x2="1500" y2="560" stroke="#c4b9a6" stroke-width="4" />
+        <line id="c4-w5" x1="1300" y1="642" x2="1500" y2="590" stroke="#c4b9a6" stroke-width="4" />
+        <line id="c4-w6" x1="1300" y1="732" x2="1500" y2="610" stroke="#c4b9a6" stroke-width="4" />
+      </svg>
+      <div id="c4-t1" class="c4-tab" style="top: 250px">tab</div>
+      <div id="c4-t2" class="c4-tab" style="top: 340px">tab</div>
+      <div id="c4-t3" class="c4-tab" style="top: 430px">tab</div>
+      <div id="c4-t4" class="c4-tab" style="top: 520px">tab</div>
+      <div id="c4-t5" class="c4-tab" style="top: 610px">tab</div>
+      <div id="c4-t6" class="c4-tab" style="top: 700px">tab</div>
+      <div id="c4-server" data-hold>server</div>
+    </div>
+
+    <!-- c4-7 retry resubscribes to every source above it -->
+    <div id="c4-above" class="clip world" data-start="51.27" data-duration="6.17">
+      <div id="c4-st1" class="c4-stage" style="top: 130px">source</div>
+      <div id="c4-st2" class="c4-stage" style="top: 300px">operator</div>
+      <div id="c4-st3" class="c4-stage" style="top: 470px">operator</div>
+      <div id="c4-st4" class="c4-stage" style="top: 640px">retry</div>
+      <div id="c4-st5" class="c4-stage" style="top: 810px">subscriber</div>
+      <div id="c4-rs1" class="c4-resub" style="top: 170px">resubscribed</div>
+      <div id="c4-rs2" class="c4-resub" style="top: 340px">resubscribed</div>
+      <div id="c4-rs3" class="c4-resub" style="top: 510px">resubscribed</div>
+      <div id="c4-fail" class="m-err" data-hold>#</div>
+    </div>
+
+    <!-- 57.44 review questions -->
+    <div id="c4-questions" class="clip world note" data-start="57.44" data-duration="20.9">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c4-q1" class="q">For each operator that can throw and each request that can fail: which stream does the error end? Is that the stream you want to end?</div>
+        <div id="c4-q2" class="q">After the failure, what does the user see, and what has to happen before the feature works again?</div>
+        <div id="c4-q3" class="q">For each retry: what does one attempt cost, and can a second attempt succeed for this kind of failure?</div>
+      </div>
+    </div>
+
+    <!-- 78.34 pause card -->
+    <div id="c4-pause" class="clip world" data-start="78.34" data-duration="3.5">
+      <div id="c4-pause-1" class="pause-1">Pause here.</div>
+      <div id="c4-pause-2" class="pause-2" data-hold>Now do exercise 04.</div>
+    </div>
+
+    <audio id="c4-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="60" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c4-bed2" class="clip" src="assets/music/bed.mp3" data-start="57.44" data-duration="20.9" data-media-start="68" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c4-vo1" class="clip" src="assets/vo/c4-1.wav" data-start="3" data-duration="4.779" data-volume="1"></audio>
+    <audio id="c4-vo2" class="clip" src="assets/vo/c4-2.wav" data-start="8.13" data-duration="5.824" data-volume="1"></audio>
+    <audio id="c4-vo3" class="clip" src="assets/vo/c4-3.wav" data-start="14.3" data-duration="8.021" data-volume="1"></audio>
+    <audio id="c4-vo4" class="clip" src="assets/vo/c4-4.wav" data-start="22.67" data-duration="7.061" data-volume="1"></audio>
+    <audio id="c4-vo5" class="clip" src="assets/vo/c4-5.wav" data-start="30.09" data-duration="9.109" data-volume="1"></audio>
+    <audio id="c4-vo6" class="clip" src="assets/vo/c4-6.wav" data-start="39.54" data-duration="11.371" data-volume="1"></audio>
+    <audio id="c4-vo7" class="clip" src="assets/vo/c4-7.wav" data-start="51.27" data-duration="5.824" data-volume="1"></audio>
+    <audio id="c4-vo8" class="clip" src="assets/vo/c4-end.wav" data-start="57.44" data-duration="1.963" data-volume="1"></audio>
+    <audio id="c4-tick1" class="clip" src="assets/sfx/tick-a.wav" data-start="8.3" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick2" class="clip" src="assets/sfx/tick-b.wav" data-start="8.84" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick3" class="clip" src="assets/sfx/tick-a.wav" data-start="9.38" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick4" class="clip" src="assets/sfx/tick-b.wav" data-start="9.92" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick5" class="clip" src="assets/sfx/tick-a.wav" data-start="10.46" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick6" class="clip" src="assets/sfx/tick-b.wav" data-start="10.6" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick7" class="clip" src="assets/sfx/tick-a.wav" data-start="11.14" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick8" class="clip" src="assets/sfx/tick-b.wav" data-start="11.68" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick9" class="clip" src="assets/sfx/tick-a.wav" data-start="15.9" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick10" class="clip" src="assets/sfx/tick-b.wav" data-start="16.44" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick11" class="clip" src="assets/sfx/tick-a.wav" data-start="16.98" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick12" class="clip" src="assets/sfx/tick-b.wav" data-start="18.3" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick13" class="clip" src="assets/sfx/tick-a.wav" data-start="19.3" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick14" class="clip" src="assets/sfx/tick-b.wav" data-start="23" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick15" class="clip" src="assets/sfx/tick-a.wav" data-start="23.54" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick16" class="clip" src="assets/sfx/tick-b.wav" data-start="24.08" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick17" class="clip" src="assets/sfx/tick-a.wav" data-start="24.62" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c4-tick18" class="clip" src="assets/sfx/tick-b.wav" data-start="25.16" data-duration="0.3" data-volume="0.25"></audio>
   </div>
+
   <script>
     const tl = gsap.timeline({ paused: true });
-    tl.fromTo("#c4-card .chapter-title", { opacity: 0.99 }, { opacity: 1, duration: 0.1 }, 0);
+    const fade = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const print = (sel, at) =>
+      tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out" }, at);
+    const pulse = (sel, at) =>
+      tl.fromTo(sel, { scale: 1 }, { scale: 1.12, duration: 0.2, ease: "power2.inOut", yoyo: true, repeat: 1 }, at);
+    const dim = (sel, at) =>
+      tl.fromTo(sel, { opacity: 1, borderColor: "#1d1b18" }, { opacity: 0.35, borderColor: "#c4b9a6", duration: 0.4, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0; the time lands a beat later
+
+    // c4-1: returns arrive one by one; the live chip lands on "WebSocket"
+    ["#c4-r1", "#c4-r2", "#c4-r3"].forEach((r, i) =>
+      tl.fromTo(r, { opacity: 0, backgroundColor: "rgba(245,226,217,1)" }, { opacity: 1, backgroundColor: "rgba(245,226,217,0)", duration: 0.8, ease: "power3.out" }, 3.4 + i * 0.8),
+    );
+    fade("#c4-live", 6.3, 0.4);
+    tl.fromTo("#c4-r4", { opacity: 0, backgroundColor: "rgba(245,226,217,1)" }, { opacity: 1, backgroundColor: "rgba(245,226,217,0)", duration: 0.8, ease: "power3.out" }, 7.0);
+
+    // c4-2: messages print, z is malformed; then returns$ prints up to the error on "throws"
+    [["#c4-ma", 0], ["#c4-mb", 3], ["#c4-mz", 6], ["#c4-mc", 9], ["#c4-md", 12]].forEach(([m, f]) => print(m, 8.3 + f * 0.18));
+    fade("#c4-n1", 9.6, 0.4);
+    [["#c4-ra", 0], ["#c4-rb", 3], ["#c4-rx", 6]].forEach(([m, f]) => print(m, 10.6 + f * 0.18));
+    pulse("#c4-rx", 11.95);
+    fade("#c4-n2", 12.2, 0.4);
+
+    // c4-3: values on "any number of values", # on "one error", | on "one completion", ghosts on "finished for good"
+    fade("#c4-h1", 15.6, 0.4);
+    [["#c4-e1", "#c4-c1"], ["#c4-e2", "#c4-c2"], ["#c4-e3", "#c4-c3"]].forEach((pair, i) => print(pair, 15.9 + i * 0.54));
+    fade("#c4-h2", 18.0, 0.4);
+    print("#c4-ex", 18.3);
+    print("#c4-cx", 19.3);
+    tl.fromTo(["#c4-eg", "#c4-cg"], { opacity: 0 }, { opacity: 0.6, duration: 0.5, ease: "power3.out" }, 20.8);
+    fade("#c4-good", 21.0, 0.4);
+
+    // c4-4: both rows print on one clock, z never reaches returns$; the code cuts in on "plainest answer"
+    [[["#c4-da", "#c4-fa"], 0], [["#c4-db", "#c4-fb"], 3], [["#c4-dz"], 6], [["#c4-dc", "#c4-fc"], 9], [["#c4-dd", "#c4-fd"], 12]].forEach(([m, f]) =>
+      print(m, 23.0 + f * 0.18),
+    );
+    fade("#c4-n3", 25.5, 0.4);
+    tl.fromTo("#c4-code", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power3.out" }, 26.0);
+    tl.fromTo("#c4-band1", { backgroundColor: "rgba(245,226,217,0)" }, { backgroundColor: "rgba(245,226,217,1)", duration: 0.3 }, 26.6);
+    tl.fromTo("#c4-band2", { backgroundColor: "rgba(245,226,217,0)" }, { backgroundColor: "rgba(245,226,217,1)", duration: 0.3 }, 28.7);
+    tl.to("#c4-band1", { backgroundColor: "rgba(245,226,217,0)", duration: 0.3 }, 28.7);
+
+    // c4-5: the pipe lands; # appears at map on "thrown", travels down, each stage it passes goes dark
+    ["#c4-b1", "#c4-b2", "#c4-b3", "#c4-b4"].forEach((b, i) => fade(b, 30.3 + i * 0.15, 0.4));
+    print("#c4-marker", 32.1);
+    tl.fromTo("#c4-marker", { y: 0 }, { y: 200, duration: 0.8, ease: "power2.inOut" }, 33.4);
+    dim("#c4-b2", 33.6);
+    fade("#c4-o2", 33.6, 0.3);
+    tl.to("#c4-marker", { y: 400, duration: 0.8, ease: "power2.inOut" }, 34.8);
+    dim("#c4-b3", 35.0);
+    fade("#c4-o3", 35.0, 0.3);
+    dim("#c4-b4", 36.8);
+    fade("#c4-o4", 36.8, 0.3);
+    dim("#c4-b1", 37.5);
+    fade("#c4-o1", 37.5, 0.3);
+
+    // c4-6: retry for a healable failure; waits grow, the ceiling caps them; then many tabs on one server
+    fade("#c4-retry-head", 39.8, 0.4);
+    fade(["#c4-axis", "#c4-att-label", "#c4-backoff .c4-att"], 40.0, 0.4);
+    fade("#c4-heal", 42.6, 0.4);
+    [["#c4-bar1", 43.7], ["#c4-bar2", 44.5], ["#c4-bar3", 45.3], ["#c4-bar4", 45.9]].forEach(([b, at]) =>
+      tl.fromTo(b, { scaleY: 0 }, { scaleY: 1, duration: 0.6, ease: "power3.out" }, at),
+    );
+    tl.fromTo("#c4-ceil", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 46.5);
+    fade("#c4-ceil-label", 46.6, 0.4);
+    [["#c4-bar5", 47.1], ["#c4-bar6", 47.4]].forEach(([b, at]) => tl.fromTo(b, { scaleY: 0 }, { scaleY: 1, duration: 0.6, ease: "power3.out" }, at));
+    fade("#c4-server", 47.6, 0.4);
+    for (let i = 1; i <= 6; i++) {
+      fade(`#c4-t${i}`, 48.4 + i * 0.12, 0.3);
+      tl.fromTo(`#c4-w${i}`, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 49.6 + i * 0.1);
+    }
+    tl.fromTo("#c4-server", { borderColor: "#1d1b18" }, { borderColor: "#a3222c", duration: 0.4, ease: "power2.inOut" }, 50.3);
+
+    // c4-7: retry joins the pipe on "add it"; sources above it light upward; the failed one gets its #
+    ["#c4-st1", "#c4-st2", "#c4-st3", "#c4-st5"].forEach((s, i) => fade(s, 51.5 + i * 0.12, 0.4));
+    tl.fromTo("#c4-st4", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, 52.2);
+    [["#c4-st3", "#c4-rs3"], ["#c4-st2", "#c4-rs2"], ["#c4-st1", "#c4-rs1"]].forEach(([s, r], i) => {
+      tl.fromTo(s, { backgroundColor: "#fffdf9", borderColor: "#1d1b18" }, { backgroundColor: "#f6ead3", borderColor: "#8a5300", duration: 0.4, ease: "power2.inOut" }, 54.3 + i * 0.3);
+      fade(r, 54.45 + i * 0.3, 0.3);
+    });
+    print("#c4-fail", 56.3);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c4-q1", "#c4-q2", "#c4-q3"].forEach((q, i) => fade(q, 57.44 + 0.3 + i * 0.6));
+    fade("#c4-pause-2", 78.84);
+
     window.__timelines["c4"] = tl;
   </script>
 </template>

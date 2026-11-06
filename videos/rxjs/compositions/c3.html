@@ -1,12 +1,313 @@
 <template>
   <link rel="stylesheet" href="assets/kit.css" />
-  <style>#root { position: absolute; inset: 0; overflow: hidden; }</style>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c3-sig { position: absolute; left: 160px; height: 110px; display: flex; align-items: center; font: 700 88px/1 var(--font-code); }
+    .c3-op { width: 600px; text-align: right; }
+    .c3-fn { color: var(--ink-muted); }
+    .c3-ok { position: absolute; left: 1140px; font: 700 32px/1 var(--font-text); color: var(--tip); }
+    #c3-fnbox { position: absolute; left: 748px; top: 140px; width: 230px; height: 480px; border: 4px solid var(--rule-strong); border-radius: 8px; }
+    #c3-detail { position: absolute; left: 160px; top: 700px; font: 600 64px/1 var(--font-display); color: var(--ink-muted); }
+    #c3-detail-strike { position: absolute; left: -8px; right: -8px; top: 34px; height: 5px; background: var(--ink-muted); transform-origin: left center; }
+    #c3-decision { position: absolute; left: 160px; top: 810px; font: 600 64px/1 var(--font-display); }
+    #c3-decision em { font-style: normal; color: var(--accent); }
+    #c3-demo { position: absolute; left: 1180px; top: 800px; width: 580px; height: 120px; }
+    #c3-demo-rule { position: absolute; left: 0; right: 0; top: 40px; height: 2px; background: var(--rule-strong); }
+    .c3-dm { position: absolute; top: 12px; width: 56px; height: 56px; border-radius: 50%; background: var(--ink); }
+    #c3-demo .label { position: absolute; left: 0; top: 80px; }
+
+    .c3-job { width: 900px; height: 28px; margin-top: -14px; border-radius: 14px; background: var(--ink-muted); transform-origin: left center; }
+    #c3-what { position: absolute; left: calc(3 * 85px); top: -230px; margin-left: -30px; font: 600 140px/1 var(--font-display); color: var(--accent); }
+
+    #c3-table { position: absolute; left: 120px; top: 120px; width: 1680px; }
+    .c3-tr { display: grid; grid-template-columns: 300px 520px 860px; border-top: 2px solid var(--rule); padding: 26px 0; }
+    .c3-th { font: 700 30px/1 var(--font-text); color: var(--ink-muted); padding: 0 0 18px; border-top: none; }
+    .c3-tr .op { font: 700 38px/1.3 var(--font-code); }
+    .c3-tr .ans { font: 700 34px/1.3 var(--font-text); padding-right: 40px; }
+    .c3-tr .case { font: 400 30px/1.35 var(--font-text); color: var(--ink-muted); }
+
+    #c3-rule { position: absolute; left: 160px; top: 170px; width: 1600px; font: 600 76px/1.2 var(--font-display); letter-spacing: -0.01em; }
+    #c3-rule span { display: inline-block; }
+    #c3-blank { display: inline-block; width: 420px; height: 0.9em; border-bottom: 8px solid var(--accent); transform-origin: left center; vertical-align: -0.18em; }
+    .c3-pick { position: absolute; width: 780px; border-top: 2px solid var(--rule-strong); padding-top: 24px; }
+    .c3-pick .op { font: 700 40px/1 var(--font-code); margin-bottom: 14px; }
+    .c3-pick .ans { font: 400 36px/1.3 var(--font-text); color: var(--ink-muted); }
+
+    .c3-head { position: absolute; top: 140px; font: 700 52px/1 var(--font-code); }
+    .c3-sub { position: absolute; top: 216px; }
+    .c3-count { position: absolute; top: 290px; font: 700 40px/1 var(--font-text); font-variant-numeric: tabular-nums; }
+    #c3-queue { position: absolute; left: 160px; top: 380px; width: 760px; display: grid; grid-template-columns: repeat(4, 170px); gap: 20px; }
+    .c3-qb { height: 140px; border: 3px solid var(--ink); border-radius: 8px; background: var(--paper-raised); display: grid; place-items: center; font: 700 44px/1 var(--font-code); }
+    #c3-par { position: absolute; left: 1040px; top: 380px; width: 720px; }
+    .c3-pb { height: 26px; margin-bottom: 14px; border-radius: 13px; background: var(--ink); transform-origin: left center; }
+
+    #c3-deb-head { position: absolute; left: 440px; top: 200px; font: 700 52px/1 var(--font-code); }
+
+    .c3-pane { position: absolute; top: 40px; width: 760px; height: 740px; }
+    .c3-pane-name { font: 700 40px/1 var(--font-code); margin-bottom: 18px; }
+    .c3-loan { margin-top: 48px; padding: 40px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
+    .c3-book { font: 700 44px/1.2 var(--font-text); }
+    .c3-btn { display: inline-block; margin-top: 36px; padding: 24px 48px; border-radius: 8px; background: var(--ink); color: var(--paper); font: 700 40px/1 var(--font-text); }
+    .c3-wait { margin-top: 44px; height: 16px; border-radius: 8px; background: var(--rule-strong); transform-origin: left center; }
+    .c3-fb { margin-top: 36px; font: 700 40px/1 var(--font-text); color: var(--tip); }
+    #c3-fb-b { color: var(--accent); }
+  </style>
+
   <div id="root" data-composition-id="c3" data-width="1920" data-height="1080">
-    <div id="c3-card" class="clip world" data-start="0" data-duration="78.78"><div class="chapter-title">c3 placeholder</div></div>
+    <!-- 0.0 chapter card -->
+    <div id="c3-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c3-card-time" class="chapter-time">11:45</div>
+      <div id="c3-card-title" class="chapter-title">The flattening operator is a business decision</div>
+    </div>
+
+    <!-- c3-1 four operators, one signature -->
+    <div id="c3-sigs" class="clip world" data-start="3" data-duration="14.47">
+      <div id="c3-fnbox"></div>
+      <div id="c3-s1" class="c3-sig" style="top: 150px"><span class="c3-op">switchMap</span><span class="c3-fn">(fn)</span></div>
+      <div id="c3-s2" class="c3-sig" style="top: 270px"><span class="c3-op">mergeMap</span><span class="c3-fn">(fn)</span></div>
+      <div id="c3-s3" class="c3-sig" style="top: 390px"><span class="c3-op">concatMap</span><span class="c3-fn">(fn)</span></div>
+      <div id="c3-s4" class="c3-sig" style="top: 510px"><span class="c3-op">exhaustMap</span><span class="c3-fn">(fn)</span></div>
+      <div id="c3-ok1" class="c3-ok" style="top: 190px">compiles</div>
+      <div id="c3-ok2" class="c3-ok" style="top: 310px">compiles</div>
+      <div id="c3-ok3" class="c3-ok" style="top: 430px">compiles</div>
+      <div id="c3-ok4" class="c3-ok" style="top: 550px">compiles</div>
+      <div id="c3-detail">a detail<div id="c3-detail-strike"></div></div>
+      <div id="c3-decision">a product <em>decision</em></div>
+      <div id="c3-demo" data-hold>
+        <div id="c3-demo-rule"></div>
+        <div id="c3-dm1" class="c3-dm" style="left: 20px"></div>
+        <div id="c3-dm2" class="c3-dm" style="left: 500px"></div>
+        <div class="label">a demo: events never overlap</div>
+      </div>
+    </div>
+
+    <!-- c3-2 a job is running and a second event arrives -->
+    <div id="c3-overlap" class="clip world sunk" data-start="17.47" data-duration="5.88">
+      <div class="marbles" style="top: 380px; --fw: 85px">
+        <div class="mrow">
+          <div class="mlabel">outer:</div>
+          <div class="mtrack">
+            <div id="c3-oa" class="m" style="--f: 0">a</div>
+            <div id="c3-ob" class="m hot" style="--f: 3">b</div>
+            <div id="c3-what">?</div>
+          </div>
+        </div>
+        <div class="mrow">
+          <div class="mlabel">inner a:</div>
+          <div class="mtrack"><div id="c3-job" class="c3-job" style="--f: 0"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3-3 the four answers (lesson table) -->
+    <div id="c3-answers" class="clip world" data-start="23.35" data-duration="4.27">
+      <div id="c3-table">
+        <div class="c3-tr c3-th"><div>Operator</div><div>Answer</div><div>Library case</div></div>
+        <div id="c3-r1" class="c3-tr"><div class="op">switchMap</div><div class="ans">Cancel the old one, start the new one.</div><div class="case">The floor plan view: the member picked floor 3, so floor 2's plan no longer matters.</div></div>
+        <div id="c3-r2" class="c3-tr"><div class="op">mergeMap</div><div class="ans">Run them side by side, emit results as they come.</div><div class="case">Prefetching the covers of the next page of results, at most four at a time.</div></div>
+        <div id="c3-r3" class="c3-tr"><div class="op">concatMap</div><div class="ans">Queue the new one until the old one completes.</div><div class="case">Autosaving a review draft: every save must land, in order, so the server ends on the latest text.</div></div>
+        <div id="c3-r4" class="c3-tr"><div class="op">exhaustMap</div><div class="ans">Ignore the new one while the old one runs.</div><div class="case">Resyncing loans when the connection comes back: if the network flaps and reports "online" again during a resync, the running resync already covers it.</div></div>
+      </div>
+    </div>
+
+    <!-- c3-4 say the rule, then pick the operator -->
+    <div id="c3-say" class="clip world" data-start="27.62" data-duration="6.3">
+      <div id="c3-rule">
+        <span id="c3-w1">“if</span> <span id="c3-w2">a</span> <span id="c3-w3">second</span> <span id="c3-w4">save</span> <span id="c3-w5">starts</span>
+        <span id="c3-w6">while</span> <span id="c3-w7">one</span> <span id="c3-w8">is</span> <span id="c3-w9">running,</span> <span id="c3-tail" style="white-space: nowrap"><span id="c3-blank"></span>”</span>
+      </div>
+      <div id="c3-p1" class="c3-pick" style="left: 160px; top: 560px"><div class="op">switchMap</div><div class="ans">Cancel the old one, start the new one.</div></div>
+      <div id="c3-p2" class="c3-pick" style="left: 980px; top: 560px"><div class="op">mergeMap</div><div class="ans">Run them side by side, emit results as they come.</div></div>
+      <div id="c3-p3" class="c3-pick" style="left: 160px; top: 760px"><div class="op">concatMap</div><div class="ans">Queue the new one until the old one completes.</div></div>
+      <div id="c3-p4" class="c3-pick" style="left: 980px; top: 760px"><div class="op">exhaustMap</div><div class="ans">Ignore the new one while the old one runs.</div></div>
+    </div>
+
+    <!-- c3-5 the bill: an unbounded queue, unlimited parallel work -->
+    <div id="c3-bill" class="clip world" data-start="33.92" data-duration="7.35">
+      <div id="c3-qhead" class="c3-head" style="left: 160px">concatMap</div>
+      <div id="c3-qsub" class="c3-sub label" style="left: 160px">buffers waiting values with no upper bound</div>
+      <div id="c3-qcount" class="c3-count" style="left: 160px">0 waiting</div>
+      <div id="c3-queue">
+        <div class="c3-qb">a</div><div class="c3-qb">b</div><div class="c3-qb">c</div><div class="c3-qb">d</div>
+        <div class="c3-qb">e</div><div class="c3-qb">f</div><div class="c3-qb">g</div><div class="c3-qb">h</div>
+        <div class="c3-qb">i</div><div class="c3-qb">j</div><div class="c3-qb">k</div><div class="c3-qb">l</div>
+      </div>
+      <div id="c3-phead" class="c3-head" style="left: 1040px">mergeMap</div>
+      <div id="c3-psub" class="c3-sub label" style="left: 1040px">without a concurrency limit</div>
+      <div id="c3-pcount" class="c3-count" style="left: 1040px">0 running</div>
+      <div id="c3-par">
+        <div class="c3-pb" style="width: 680px"></div><div class="c3-pb" style="width: 610px"></div><div class="c3-pb" style="width: 700px"></div>
+        <div class="c3-pb" style="width: 540px"></div><div class="c3-pb" style="width: 660px"></div><div class="c3-pb" style="width: 590px"></div>
+        <div class="c3-pb" style="width: 720px"></div><div class="c3-pb" style="width: 630px"></div><div class="c3-pb" style="width: 560px"></div>
+        <div class="c3-pb" style="width: 690px"></div><div class="c3-pb" style="width: 600px"></div><div class="c3-pb" style="width: 650px"></div>
+      </div>
+    </div>
+
+    <!-- c3-6 shaping events: debounceTime -->
+    <div id="c3-shape" class="clip world sunk" data-start="41.27" data-duration="8.78">
+      <div id="c3-deb-head">debounceTime(ms)</div>
+      <div class="marbles" style="top: 380px; --fw: 59px">
+        <div class="mrow">
+          <div class="mlabel">slider:</div>
+          <div class="mtrack">
+            <div id="c3-sa" class="m" style="--f: 0">a</div>
+            <div id="c3-sb" class="m" style="--f: 2">b</div>
+            <div id="c3-sc" class="m" style="--f: 4">c</div>
+            <div id="c3-sd" class="m" style="--f: 6">d</div>
+            <div id="c3-se" class="m" style="--f: 15">e</div>
+          </div>
+        </div>
+        <div class="mrow">
+          <div class="mlabel">save:</div>
+          <div class="mtrack">
+            <div id="c3-vd" class="m hot" style="--f: 9">d</div>
+            <div id="c3-ve" class="m" style="--f: 18">e</div>
+          </div>
+        </div>
+      </div>
+      <div id="c3-deb-note" class="label" style="position: absolute; left: 440px; top: 720px" data-hold>Here it waits three frames.</div>
+    </div>
+
+    <!-- c3-7 back at the desk: a press wants the first value -->
+    <div id="c3-desk" class="clip world" data-start="50.05" data-duration="7.03">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">11:45</span></div>
+        <div class="app-body">
+          <div id="c3-pane-a" class="c3-pane" style="left: 40px">
+            <div class="c3-pane-name">debounceTime</div>
+            <div class="label">the last value, after a quiet time</div>
+            <div class="c3-loan">
+              <div class="c3-book">Renew loan</div>
+              <div id="c3-btn-a" class="c3-btn">Renew</div>
+              <div id="c3-wait-a" class="c3-wait"></div>
+              <div id="c3-fb-a" class="c3-fb">Renewed</div>
+            </div>
+          </div>
+          <div id="c3-pane-b" class="c3-pane" style="left: 880px">
+            <div class="c3-pane-name">throttleTime</div>
+            <div class="label">the first value of a burst</div>
+            <div class="c3-loan">
+              <div class="c3-book">Renew loan</div>
+              <div id="c3-btn-b" class="c3-btn">Renew</div>
+              <div id="c3-fb-b" class="c3-fb" data-hold>Renewed</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 57.08 review questions -->
+    <div id="c3-questions" class="clip world note" data-start="57.08" data-duration="18.2">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c3-q1" class="q">Say the business rule for the case where a second event arrives while the first is still being handled. Which operator says the same thing?</div>
+        <div id="c3-q2" class="q">What changes if the user double-clicks, or if the network is ten times slower?</div>
+        <div id="c3-q3" class="q">How many units of work does one human action produce, and what does each cost?</div>
+      </div>
+    </div>
+
+    <!-- 75.28 pause card -->
+    <div id="c3-pause" class="clip world" data-start="75.28" data-duration="3.5">
+      <div id="c3-pause-1" class="pause-1">Pause here.</div>
+      <div id="c3-pause-2" class="pause-2" data-hold>Now do exercise 03.</div>
+    </div>
+
+    <audio id="c3-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="45" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c3-bed2" class="clip" src="assets/music/bed.mp3" data-start="57.08" data-duration="18.2" data-media-start="53" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c3-vo1" class="clip" src="assets/vo/c3-1.wav" data-start="3" data-duration="14.123" data-volume="1"></audio>
+    <audio id="c3-vo2" class="clip" src="assets/vo/c3-2.wav" data-start="17.47" data-duration="5.525" data-volume="1"></audio>
+    <audio id="c3-vo3" class="clip" src="assets/vo/c3-3.wav" data-start="23.35" data-duration="3.925" data-volume="1"></audio>
+    <audio id="c3-vo4" class="clip" src="assets/vo/c3-4.wav" data-start="27.62" data-duration="5.952" data-volume="1"></audio>
+    <audio id="c3-vo5" class="clip" src="assets/vo/c3-5.wav" data-start="33.92" data-duration="6.997" data-volume="1"></audio>
+    <audio id="c3-vo6" class="clip" src="assets/vo/c3-6.wav" data-start="41.27" data-duration="8.427" data-volume="1"></audio>
+    <audio id="c3-vo7" class="clip" src="assets/vo/c3-7.wav" data-start="50.05" data-duration="6.677" data-volume="1"></audio>
+    <audio id="c3-vo8" class="clip" src="assets/vo/c3-end.wav" data-start="57.08" data-duration="1.856" data-volume="1"></audio>
+    <audio id="c3-tick1" class="clip" src="assets/sfx/tick-a.wav" data-start="14.7" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick2" class="clip" src="assets/sfx/tick-b.wav" data-start="15.5" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick3" class="clip" src="assets/sfx/tick-a.wav" data-start="17.8" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick4" class="clip" src="assets/sfx/tick-b.wav" data-start="21.2" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick5" class="clip" src="assets/sfx/tick-a.wav" data-start="44.4" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick6" class="clip" src="assets/sfx/tick-b.wav" data-start="44.76" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick7" class="clip" src="assets/sfx/tick-a.wav" data-start="45.12" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick8" class="clip" src="assets/sfx/tick-b.wav" data-start="45.48" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick9" class="clip" src="assets/sfx/tick-a.wav" data-start="46.02" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick10" class="clip" src="assets/sfx/tick-b.wav" data-start="47.1" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c3-tick11" class="clip" src="assets/sfx/tick-a.wav" data-start="47.64" data-duration="0.3" data-volume="0.25"></audio>
   </div>
+
   <script>
     const tl = gsap.timeline({ paused: true });
-    tl.fromTo("#c3-card .chapter-title", { opacity: 0.99 }, { opacity: 1, duration: 0.1 }, 0);
+    const fade = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const print = (sel, at) =>
+      tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out" }, at);
+    const pulse = (sel, at) =>
+      tl.fromTo(sel, { scale: 1 }, { scale: 1.12, duration: 0.2, ease: "power2.inOut", yoyo: true, repeat: 1 }, at);
+
+    // chapter card: on screen from frame 0; the time lands a beat later
+
+    // c3-1: four names on "four operators", the shared (fn) on "one signature", compiles, then detail -> decision
+    ["#c3-s1", "#c3-s2", "#c3-s3", "#c3-s4"].forEach((s, i) => fade(s, 3.3 + i * 0.2, 0.4));
+    fade("#c3-fnbox", 4.6);
+    ["#c3-ok1", "#c3-ok2", "#c3-ok3", "#c3-ok4"].forEach((s, i) => fade(s, 5.6 + i * 0.12, 0.3));
+    fade("#c3-detail", 8.4);
+    tl.fromTo("#c3-detail-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power2.inOut" }, 10.7);
+    tl.fromTo("#c3-decision", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 11.0);
+    fade("#c3-demo", 14.3, 0.3);
+    print("#c3-dm1", 14.7);
+    print("#c3-dm2", 15.5);
+
+    // c3-2: a prints, the job runs, b arrives mid-job, then the question
+    print("#c3-oa", 17.8);
+    tl.fromTo("#c3-job", { scaleX: 0 }, { scaleX: 1, duration: 5.4, ease: "none" }, 17.9);
+    print("#c3-ob", 21.2);
+    pulse("#c3-ob", 21.5);
+    fade("#c3-what", 22.2, 0.4);
+
+    // c3-3: one row per answer, on cancel / run both / queue / ignore
+    ["#c3-r1", "#c3-r2", "#c3-r3", "#c3-r4"].forEach((r, i) => fade(r, [23.4, 24.7, 25.5, 26.5][i], 0.4));
+
+    // c3-4: the sentence inks in word by word, the blank draws, then the four answers to match against
+    for (let i = 1; i <= 9; i++) tl.fromTo(`#c3-w${i}`, { color: "#ddd4c5" }, { color: "#1d1b18", duration: 0.15 }, 27.8 + i * 0.09);
+    fade("#c3-tail", 29.8, 0.2);
+    tl.fromTo("#c3-blank", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 29.8);
+    ["#c3-p1", "#c3-p2", "#c3-p3", "#c3-p4"].forEach((p, i) => fade(p, 30.4 + i * 0.15, 0.4));
+
+    // c3-5: the queue fills on "no upper bound", parallel jobs multiply on "side by side"
+    fade("#c3-qhead", 34.1, 0.4);
+    fade("#c3-qsub", 34.25, 0.4);
+    fade("#c3-qcount", 34.25, 0.4);
+    gsap.utils.toArray("#c3-queue .c3-qb").forEach((b, i) => {
+      tl.fromTo(b, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.25, ease: "power3.out" }, 35.8 + i * 0.22);
+      tl.set("#c3-qcount", { textContent: `${i + 1} waiting` }, 35.8 + i * 0.22);
+    });
+    fade("#c3-phead", 38.2, 0.4);
+    fade("#c3-psub", 38.35, 0.4);
+    fade("#c3-pcount", 38.35, 0.4);
+    gsap.utils.toArray("#c3-par .c3-pb").forEach((b, i) => {
+      tl.fromTo(b, { scaleX: 0 }, { scaleX: 1, duration: 1.6, ease: "none" }, 38.5 + i * 0.18);
+      tl.set("#c3-pcount", { textContent: `${i + 1} running` }, 38.5 + i * 0.18);
+    });
+
+    // c3-6: the slider prints at 0.18 s per frame from "slider"; save keeps only the last of the burst
+    fade("#c3-deb-head", 41.5);
+    [["#c3-sa", 0], ["#c3-sb", 2], ["#c3-sc", 4], ["#c3-sd", 6], ["#c3-vd", 9], ["#c3-se", 15], ["#c3-ve", 18]].forEach(([m, f]) =>
+      print(m, 44.4 + f * 0.18),
+    );
+    pulse("#c3-vd", 47.9);
+    fade("#c3-deb-note", 48.4);
+
+    // c3-7: the debounced press answers late; the throttled press answers at once
+    tl.fromTo("#c3-btn-a", { scale: 1 }, { scale: 0.94, duration: 0.1, yoyo: true, repeat: 1, ease: "power2.inOut" }, 51.0);
+    tl.fromTo("#c3-wait-a", { scaleX: 0 }, { scaleX: 1, duration: 1.9, ease: "none" }, 51.2);
+    fade("#c3-fb-a", 53.1, 0.3);
+    tl.fromTo("#c3-btn-b", { scale: 1 }, { scale: 0.94, duration: 0.1, yoyo: true, repeat: 1, ease: "power2.inOut" }, 54.7);
+    fade("#c3-fb-b", 54.8, 0.2);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c3-q1", "#c3-q2", "#c3-q3"].forEach((q, i) => fade(q, 57.08 + 0.3 + i * 0.6));
+    fade("#c3-pause-2", 75.8);
+
     window.__timelines["c3"] = tl;
   </script>
 </template>

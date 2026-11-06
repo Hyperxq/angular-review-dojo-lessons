@@ -1,12 +1,276 @@
 <template>
   <link rel="stylesheet" href="assets/kit.css" />
-  <style>#root { position: absolute; inset: 0; overflow: hidden; }</style>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    #c7-nav { position: absolute; left: 48px; top: 40px; width: 300px; }
+    #c7-nav div { font: 400 40px/1 var(--font-text); color: var(--ink-muted); padding: 26px 0; border-bottom: 1px solid var(--rule); }
+    #c7-nav .on { color: var(--ink); font-weight: 700; }
+    #c7-dash { position: absolute; left: 420px; top: 40px; width: 1180px; }
+    #c7-dash-title { font: 600 64px/1.1 var(--font-display); letter-spacing: -0.01em; margin-bottom: 36px; }
+    #c7-dash-head { display: flex; padding: 0 0 18px; border-bottom: 3px solid var(--rule-strong); font: 700 34px/1 var(--font-text); color: var(--ink-muted); }
+    #c7-dash-head span:nth-child(1) { width: 440px; }
+    #c7-dash-head span:nth-child(2) { width: 500px; }
+    #c7-dash-body { height: 470px; border: 3px dashed var(--rule-strong); border-top: 0; border-radius: 0 0 8px 8px; display: grid; place-items: center; }
+    #c7-dash-empty { font: 400 40px/1 var(--font-text); color: var(--ink-muted); }
+
+    .c7-tall .mrow { height: 170px; }
+    .c7-tall .mnote { top: 122px; }
+    #c7-chips { position: absolute; left: 440px; top: 840px; display: flex; gap: 40px; align-items: center; }
+    .c7-chip { padding: 20px 32px; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; font: 700 44px/1 var(--font-code); }
+    #c7-chips .label { font-size: 36px; }
+
+    #c7-mark { position: absolute; left: 1120px; top: -40px; width: 0; height: 560px; border-left: 5px dashed var(--accent); }
+    #c7-mark-label { position: absolute; left: 1086px; top: -110px; font: 700 48px/1 var(--font-code); color: var(--accent); white-space: nowrap; }
+
+    #c7-ways { position: absolute; left: 200px; top: 130px; display: flex; gap: 48px; }
+    .c7-way { padding: 26px 40px; border: 4px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 44px/1 var(--font-text); }
+    .c7-way code { font-family: var(--font-code); }
+    #c7-way-a { background: var(--tip-soft); border-color: var(--tip); }
+    #c7-way-b-on { position: absolute; inset: -4px; border: 6px solid var(--accent); border-radius: 8px; }
+    #c7-contract-head { position: absolute; left: 200px; top: 320px; font-size: 36px; }
+    #c7-contract { position: absolute; left: 200px; top: 390px; width: 1520px; }
+    .c7-item { display: flex; gap: 36px; align-items: flex-start; margin-bottom: 34px; font: 400 44px/1.3 var(--font-text); }
+    .c7-box { flex: none; width: 48px; height: 48px; margin-top: 5px; border: 5px solid var(--ink); border-radius: 6px; }
+
+    #c7-test { left: 100px; top: 210px; padding: 40px 32px; font-size: 28px; }
+    #c7-test .band { margin: 0 -32px; padding: 0 32px; }
+  </style>
+
   <div id="root" data-composition-id="c7" data-width="1920" data-height="1080">
-    <div id="c7-card" class="clip world" data-start="0" data-duration="85.41"><div class="chapter-title">c7 placeholder</div></div>
+    <!-- chapter card -->
+    <div id="c7-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c7-card-time" class="chapter-time">16:00</div>
+      <div id="c7-card-title" class="chapter-title">Combination semantics and writing your own operator</div>
+    </div>
+
+    <!-- c7-1 the overdue dashboard is blank -->
+    <div id="c7-desk" class="clip world" data-start="3" data-duration="5.09">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">16:00</span></div>
+        <div class="app-body">
+          <div id="c7-nav"><div>Members</div><div>Loans</div><div>Returns</div><div class="on">Overdue</div></div>
+          <div id="c7-dash">
+            <div id="c7-dash-title">Overdue loans</div>
+            <div id="c7-dash-head"><span>Member</span><span>Book</span><span>Due</span></div>
+            <div id="c7-dash-body"><div id="c7-dash-empty" data-hold>nothing to show yet</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c7-2 combineLatest vs withLatestFrom (chapter 0 diagram) -->
+    <div id="c7-combo" class="clip world sunk" data-start="8.09" data-duration="7.26">
+      <div class="marbles" style="top: 250px; --fw: 97.14px">
+        <div class="mrow"><div class="mlabel">a$</div><div class="mtrack">
+          <div id="c7-a1" class="m" style="--f: 1">a</div><div id="c7-a2" class="m" style="--f: 7">b</div>
+        </div></div>
+        <div class="mrow"><div class="mlabel">b$</div><div class="mtrack">
+          <div id="c7-b1" class="m" style="--f: 3">1</div><div id="c7-b2" class="m" style="--f: 9">2</div>
+        </div></div>
+        <div class="mrow"><div class="mlabel">combineLatest</div><div class="mtrack">
+          <div id="c7-cl1" class="m" style="--f: 3">p</div><div id="c7-cl2" class="m" style="--f: 7">q</div><div id="c7-cl3" class="m" style="--f: 9">r</div>
+        </div></div>
+        <div class="mrow"><div class="mlabel">withLatestFrom</div><div class="mtrack">
+          <div id="c7-wl1" class="m hot" style="--f: 7">q</div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- c7-3 combineLatest waits for every input -->
+    <div id="c7-overdue" class="clip world sunk" data-start="15.35" data-duration="9.05">
+      <div class="marbles c7-tall" style="top: 220px; --fw: 68px">
+        <div class="mrow"><div class="mlabel">members$</div><div class="mtrack">
+          <div id="c7-om" class="m" style="--f: 0">m</div>
+        </div></div>
+        <div class="mrow"><div class="mlabel">overdue$</div><div class="mtrack">
+          <div id="c7-oo" class="m" style="--f: 9">o</div>
+        </div><div id="c7-on1" class="mnote">// first push comes when something changes</div></div>
+        <div class="mrow"><div class="mlabel">view</div><div class="mtrack">
+          <div id="c7-ov" class="m hot" style="--f: 9">v</div>
+        </div><div id="c7-on2" class="mnote">// blank until frame 9</div></div>
+      </div>
+      <div id="c7-chips">
+        <div id="c7-chip1" class="c7-chip">startWith</div>
+        <div id="c7-chip-or" class="label">or</div>
+        <div id="c7-chip2" class="c7-chip" data-hold>signal</div>
+      </div>
+    </div>
+
+    <!-- c7-4 a source and something derived from it; frame 9 stays a question -->
+    <div id="c7-search" class="clip world sunk" data-start="24.4" data-duration="10.02">
+      <div class="marbles c7-tall" style="top: 300px; --fw: 75.56px">
+        <div id="c7-mark"></div>
+        <div class="mrow"><div class="mlabel">term$</div><div class="mtrack">
+          <div id="c7-ta" class="m" style="--f: 0">a</div><div id="c7-tb" class="m" style="--f: 9">b</div>
+        </div></div>
+        <div class="mrow"><div class="mlabel">results$</div><div class="mtrack">
+          <div id="c7-rA" class="m" style="--f: 3">A</div><div id="c7-rB" class="m" style="--f: 12">B</div>
+        </div><div id="c7-sn1" class="mnote">// each search answers three frames later</div></div>
+        <div class="mrow"><div class="mlabel">view</div><div class="mtrack">
+          <div id="c7-v1" class="m" style="--f: 3">1</div><div id="c7-v2" class="m" style="--f: 9">2</div><div id="c7-v3" class="m" style="--f: 12">3</div>
+        </div><div id="c7-sn2" class="mnote">// what does the screen show at frame 9?</div></div>
+        <div id="c7-mark-label" data-hold>frame 9?</div>
+      </div>
+    </div>
+
+    <!-- c7-5 the operator contract -->
+    <div id="c7-op" class="clip world" data-start="34.42" data-duration="15.49">
+      <div id="c7-ways">
+        <div id="c7-way-a" class="c7-way">compose existing operators</div>
+        <div id="c7-way-b" class="c7-way" style="position: relative">by hand with <code>new Observable</code><div id="c7-way-b-on"></div></div>
+      </div>
+      <div id="c7-contract-head" class="label">the contract every consumer relies on</div>
+      <div id="c7-contract">
+        <div id="c7-i1" class="c7-item"><div class="c7-box"></div><div>each source value either goes out (perhaps transformed) or is dropped on purpose;</div></div>
+        <div id="c7-i2" class="c7-item"><div class="c7-box"></div><div>an error from the source reaches the consumer;</div></div>
+        <div id="c7-i3" class="c7-item"><div class="c7-box"></div><div>completion of the source reaches the consumer;</div></div>
+        <div id="c7-i4" class="c7-item"><div class="c7-box"></div><div>when the consumer unsubscribes, everything the operator created or subscribed to stops.</div></div>
+      </div>
+    </div>
+
+    <!-- c7-6 TestScheduler proves the teardown -->
+    <div id="c7-ts" class="clip world" data-start="49.91" data-duration="7.8">
+      <div id="c7-test" class="code">
+        <span class="ln"><span class="k">import</span> { TestScheduler } <span class="k">from</span> <span class="s">'rxjs/testing'</span>;</span>
+        <span class="ln"> </span>
+        <span class="ln">it(<span class="s">'lets go of its source when the consumer unsubscribes'</span>, () =&gt; {</span>
+        <span class="ln">  <span class="k">const</span> scheduler = <span class="k">new</span> TestScheduler((actual, expected) =&gt; expect(actual).toEqual(expected));</span>
+        <span class="ln"> </span>
+        <span class="ln">  scheduler.run(({ cold, expectObservable, expectSubscriptions }) =&gt; {</span>
+        <span id="c7-ts-l7" class="ln band">    <span class="k">const</span> source = cold(<span class="s">'a-b-c-d-|'</span>);</span>
+        <span id="c7-ts-l8" class="ln band">    <span class="k">const</span> consumer = <span class="s">'^--!'</span>; <span class="c">// the consumer leaves at frame 3</span></span>
+        <span class="ln"> </span>
+        <span class="ln">    expectObservable(source.pipe(myOperator()), consumer).toBe(<span class="s">'a-b'</span>);</span>
+        <span id="c7-ts-l11" class="ln band">    expectSubscriptions(source.subscriptions).toBe(<span class="s">'^--!'</span>);</span>
+        <span class="ln">  });</span>
+        <span class="ln">});</span>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c7-questions" class="clip world note" data-start="57.71" data-duration="24.2">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c7-q1" class="q">For each combined stream: what event in the real world does each emission correspond to? Is there an emission that corresponds to none?</div>
+        <div id="c7-q2" class="q">Can two inputs change because of the same underlying event, or can one lag behind the other? Could the combination ever pair values that never existed together?</div>
+        <div id="c7-q3" class="q">In a hand-written operator: list everything it creates or subscribes to. What stops each of those, and is there a test that proves it?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c7-pause" class="clip world" data-start="81.91" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c7-pause-2" class="pause-2" data-hold>Now do exercise 07.</div>
+    </div>
+
+    <audio id="c7-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="105" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c7-bed2" class="clip" src="assets/music/bed.mp3" data-start="57.71" data-duration="24.2" data-media-start="113" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c7-vo1" class="clip" src="assets/vo/c7-1.wav" data-start="3" data-duration="4.736" data-volume="1"></audio>
+    <audio id="c7-vo2" class="clip" src="assets/vo/c7-2.wav" data-start="8.09" data-duration="6.912" data-volume="1"></audio>
+    <audio id="c7-vo3" class="clip" src="assets/vo/c7-3.wav" data-start="15.35" data-duration="8.704" data-volume="1"></audio>
+    <audio id="c7-vo4" class="clip" src="assets/vo/c7-4.wav" data-start="24.4" data-duration="9.664" data-volume="1"></audio>
+    <audio id="c7-vo5" class="clip" src="assets/vo/c7-5.wav" data-start="34.42" data-duration="15.147" data-volume="1"></audio>
+    <audio id="c7-vo6" class="clip" src="assets/vo/c7-6.wav" data-start="49.91" data-duration="7.445" data-volume="1"></audio>
+    <audio id="c7-vo7" class="clip" src="assets/vo/c7-end.wav" data-start="57.71" data-duration="1.92" data-volume="1"></audio>
+    <audio id="c7-tick1" class="clip" src="assets/sfx/tick-a.wav" data-start="9.18" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick2" class="clip" src="assets/sfx/tick-b.wav" data-start="9.54" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick3" class="clip" src="assets/sfx/tick-a.wav" data-start="10.26" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick4" class="clip" src="assets/sfx/tick-b.wav" data-start="10.62" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick5" class="clip" src="assets/sfx/tick-a.wav" data-start="11.54" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick6" class="clip" src="assets/sfx/tick-b.wav" data-start="12.26" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick7" class="clip" src="assets/sfx/tick-a.wav" data-start="12.29" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick8" class="clip" src="assets/sfx/tick-b.wav" data-start="12.62" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick9" class="clip" src="assets/sfx/tick-a.wav" data-start="15.8" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick10" class="clip" src="assets/sfx/tick-b.wav" data-start="17.42" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick11" class="clip" src="assets/sfx/tick-a.wav" data-start="17.45" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick12" class="clip" src="assets/sfx/tick-b.wav" data-start="24.8" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick13" class="clip" src="assets/sfx/tick-a.wav" data-start="25.34" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick14" class="clip" src="assets/sfx/tick-b.wav" data-start="25.37" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick15" class="clip" src="assets/sfx/tick-a.wav" data-start="26.42" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick16" class="clip" src="assets/sfx/tick-b.wav" data-start="26.45" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick17" class="clip" src="assets/sfx/tick-a.wav" data-start="26.96" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c7-tick18" class="clip" src="assets/sfx/tick-b.wav" data-start="26.99" data-duration="0.3" data-volume="0.25"></audio>
   </div>
+
   <script>
     const tl = gsap.timeline({ paused: true });
-    tl.fromTo("#c7-card .chapter-title", { opacity: 0.99 }, { opacity: 1, duration: 0.1 }, 0);
+    const fade = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const print = (sel, at) =>
+      tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out" }, at);
+    const pulse = (sel, at) =>
+      tl.to(sel, { keyframes: [{ scale: 1.12, duration: 0.15, ease: "power2.out" }, { scale: 1, duration: 0.15, ease: "power2.in" }] }, at);
+    const band = (sel, at, on) =>
+      tl.fromTo(sel, { backgroundColor: on ? "rgba(245,226,217,0)" : "rgba(245,226,217,1)" },
+        { backgroundColor: on ? "rgba(245,226,217,1)" : "rgba(245,226,217,0)", duration: 0.3, immediateRender: on }, at);
+
+    // chapter card: on screen from frame 0; the time lands a beat later
+
+    // c7-1: the dashboard frame is there, its rows never come
+    fade("#c7-dash-title", 3.3);
+    fade("#c7-dash-head", 3.6);
+    tl.fromTo("#c7-dash-body", { opacity: 0, scaleY: 0.4, transformOrigin: "top center" }, { opacity: 1, scaleY: 1, duration: 0.6, ease: "power3.out" }, 4.0);
+    fade("#c7-dash-empty", 5.9);
+
+    // c7-2: inputs print first, then the two combinators; withLatestFrom fires only on a$
+    print("#c7-a1", 9.18);
+    print("#c7-b1", 9.54);
+    print("#c7-a2", 10.26);
+    print("#c7-b2", 10.62);
+    print("#c7-cl1", 11.54);
+    print("#c7-cl2", 12.26);
+    print("#c7-wl1", 12.26);
+    print("#c7-cl3", 12.62);
+    pulse("#c7-wl1", 13.6);
+
+    // c7-3: the view waits for the slow input
+    print("#c7-om", 15.8);
+    print("#c7-oo", 17.42);
+    print("#c7-ov", 17.42);
+    pulse("#c7-ov", 17.9);
+    fade("#c7-on1", 18.4);
+    fade("#c7-on2", 18.9);
+    tl.fromTo("#c7-chip1", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, 20.2);
+    fade("#c7-chip-or", 21.6, 0.3);
+    tl.fromTo("#c7-chip2", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, 22.0);
+
+    // c7-4: term, results and view print; the marker asks about frame 9
+    print("#c7-ta", 24.8);
+    print("#c7-rA", 25.34);
+    print("#c7-v1", 25.34);
+    print("#c7-tb", 26.42);
+    print("#c7-v2", 26.42);
+    print("#c7-rB", 26.96);
+    print("#c7-v3", 26.96);
+    fade("#c7-sn1", 27.6);
+    fade("#c7-sn2", 28.0);
+    tl.fromTo("#c7-mark", { scaleY: 0, transformOrigin: "top center" }, { scaleY: 1, duration: 0.8, ease: "power2.inOut" }, 29.0);
+    tl.fromTo("#c7-mark-label", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 31.6);
+
+    // c7-5: two ways to write one; the hand-written way owes four things
+    fade("#c7-way-a", 36.2);
+    fade("#c7-way-b", 37.6);
+    fade("#c7-way-b-on", 38.6, 0.3);
+    fade("#c7-contract-head", 39.2);
+    [["#c7-i1", 41.2], ["#c7-i2", 44.4], ["#c7-i3", 45.6], ["#c7-i4", 46.2]].forEach(([item, at]) => {
+      tl.fromTo(item + " .c7-box", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, at);
+      tl.fromTo(item + " > div:last-child", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, at + 0.15);
+    });
+
+    // c7-6: the band moves from the marbles to the subscription check
+    fade("#c7-test", 50.0, 0.4);
+    band("#c7-ts-l7", 52.6, true);
+    band("#c7-ts-l8", 52.6, true);
+    band("#c7-ts-l7", 55.8, false);
+    band("#c7-ts-l8", 55.8, false);
+    band("#c7-ts-l11", 55.8, true);
+
+    // questions, 0.6 s apart
+    ["#c7-q1", "#c7-q2", "#c7-q3"].forEach((q, i) => fade(q, 58.1 + i * 0.6));
+
+    // pause
+    fade("#c7-pause-2", 82.4);
+
     window.__timelines["c7"] = tl;
   </script>
 </template>

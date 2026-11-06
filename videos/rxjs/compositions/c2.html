@@ -1,12 +1,290 @@
 <template>
   <link rel="stylesheet" href="assets/kit.css" />
-  <style>#root { position: absolute; inset: 0; overflow: hidden; }</style>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c2-list { position: absolute; left: 40px; top: 40px; width: 820px; }
+    .c2-row { position: relative; height: 100px; padding: 0 28px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; font: 400 40px/1 var(--font-text); }
+    .c2-row b { width: 90px; font: 700 34px/1 var(--font-code); color: var(--ink-muted); }
+    .c2-hover { background: var(--paper-sunk); }
+    .c2-card { position: absolute; left: 940px; top: 40px; width: 680px; height: 480px; padding: 44px 48px; box-sizing: border-box; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow); }
+    .c2-card-name { font: 600 64px/1.1 var(--font-display); margin: 16px 0 8px; }
+    .c2-card-count { margin-top: 48px; font: 700 140px/1 var(--font-text); font-variant-numeric: tabular-nums; }
+    .c2-card-count span { font: 400 40px/1 var(--font-text); color: var(--ink-muted); margin-left: 16px; }
+    .c2-pointer { position: absolute; left: 640px; top: 80px; width: 50px; height: 72px; }
+    .c2-chip { position: absolute; top: 700px; padding: 18px 28px; border: 2px solid var(--rule-strong); border-radius: 8px; font: 700 32px/1 var(--font-text); }
+    #c2-net { margin-right: 32px; padding: 12px 22px; border-radius: 8px; background: var(--warning-soft); color: var(--warning); font: 700 30px/1 var(--font-text); }
+    #c2-card-ring { position: absolute; inset: -3px; border: 6px solid var(--accent); border-radius: 8px; }
+
+    .c2-dia .mrow { height: 150px; }
+    .c2-dia .mnote { top: 120px; }
+    .c2-short { right: auto; }
+
+    .c2-num { position: absolute; left: 200px; font: 600 64px/1.15 var(--font-display); color: var(--ink-muted); }
+    .c2-rule { left: 300px; width: 1420px; }
+
+    .c2-lane { position: absolute; left: 0; width: 1920px; height: 120px; }
+    .c2-lane .mlabel { top: 40px; }
+    .c2-bar { position: absolute; left: 440px; top: 44px; width: 1000px; height: 32px; border-radius: 4px; background: var(--ink); }
+    .c2-end { position: absolute; left: 1436px; top: 16px; width: 8px; height: 88px; background: var(--ink); }
+    .c2-end-label { position: absolute; left: 1480px; top: 44px; }
+    #c2-moved { position: absolute; left: 898px; top: 290px; width: 5px; height: 500px; background: var(--accent); }
+    #c2-moved-label { position: absolute; left: 920px; top: 820px; }
+  </style>
+
   <div id="root" data-composition-id="c2" data-width="1920" data-height="1080">
-    <div id="c2-card" class="clip world" data-start="0" data-duration="75.56"><div class="chapter-title">c2 placeholder</div></div>
+    <!-- chapter card -->
+    <div id="c2-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c2-card-time" class="chapter-time">10:30</div>
+      <div id="c2-card-title" class="chapter-title">Races</div>
+    </div>
+
+    <!-- c2-1 member list, pointer, preview card -->
+    <div id="c2-desk-a" class="clip world" data-start="3" data-duration="6.02">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">10:30</span></div>
+        <div class="app-body">
+          <div class="c2-list">
+            <div id="c2-a1" class="c2-row"><b>#1</b>Ada Okafor</div>
+            <div id="c2-a2" class="c2-row"><b>#2</b>Bram Visser</div>
+            <div id="c2-a3" class="c2-row"><b>#3</b>Chen Wei</div>
+            <div id="c2-a4" class="c2-row"><b>#4</b>Dana Ruiz</div>
+            <div id="c2-a5" class="c2-row"><b>#5</b>Emil Novak</div>
+            <div id="c2-a6" class="c2-row"><b>#6</b>Farah Haddad</div>
+          </div>
+          <div id="c2-a-card" class="c2-card">
+            <div class="label">Preview · member #1</div>
+            <div class="c2-card-name">Ada Okafor</div>
+            <div id="c2-a-count" class="c2-card-count">4<span>loans</span></div>
+          </div>
+          <svg id="c2-a-ptr" class="c2-pointer" viewBox="0 0 50 72"><path d="M2 2 L2 58 L16 45 L26 68 L36 63 L26 41 L46 41 Z" fill="#1d1b18" stroke="#fffdf9" stroke-width="3" stroke-linejoin="round" /></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-2 / c2-3 three requests, answers out of order (LESSON.md verbatim) -->
+    <div id="c2-race" class="clip world sunk c2-dia" data-start="9.02" data-duration="10.28">
+      <div class="marbles" style="top: 150px; --fw: 68px">
+        <div class="mrow">
+          <div class="mlabel">hover$</div>
+          <div class="mtrack">
+            <div id="c2-h1" class="m" style="--f: 0">1</div>
+            <div id="c2-h2" class="m" style="--f: 3">2</div>
+            <div id="c2-h3" class="m" style="--f: 6">3</div>
+          </div>
+        </div>
+        <div class="mrow">
+          <div class="mlabel">count 1</div>
+          <div id="c2-t1" class="mtrack c2-short" style="width: 1020px">
+            <div id="c2-ca" class="m" style="--f: 14">a</div>
+            <div id="c2-ca-done" class="m-done" style="--f: 15"></div>
+          </div>
+          <div id="c2-note1" class="mnote">// the slowest answer arrives last</div>
+        </div>
+        <div class="mrow">
+          <div class="mlabel">count 2</div>
+          <div id="c2-t2" class="mtrack c2-short" style="left: 644px; width: 612px">
+            <div id="c2-cb" class="m" style="--f: 8">b</div>
+            <div id="c2-cb-done" class="m-done" style="--f: 9"></div>
+          </div>
+        </div>
+        <div class="mrow">
+          <div class="mlabel">count 3</div>
+          <div id="c2-t3" class="mtrack c2-short" style="left: 848px; width: 272px">
+            <div id="c2-cc" class="m" style="--f: 3">c</div>
+            <div id="c2-cc-done" class="m-done" style="--f: 4"></div>
+          </div>
+        </div>
+        <div class="mrow">
+          <div class="mlabel">preview</div>
+          <div class="mtrack">
+            <div id="c2-pc" class="m" style="--f: 9">c</div>
+            <div id="c2-pb" class="m" style="--f: 11">b</div>
+            <div id="c2-pa" class="m hot" style="--f: 14">a</div>
+          </div>
+          <div id="c2-note2" class="mnote">// ends on member 1, under the pointer at member 3</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-3 / c2-4 the card settles on member 1 under member 3; slow connection -->
+    <div id="c2-desk-b" class="clip world" data-start="19.3" data-duration="13.84">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span><span id="c2-net">Slow 3G</span><span class="app-clock">10:30</span></span></div>
+        <div class="app-body">
+          <div class="c2-list">
+            <div class="c2-row"><b>#1</b>Ada Okafor</div>
+            <div class="c2-row"><b>#2</b>Bram Visser</div>
+            <div class="c2-row c2-hover"><b>#3</b>Chen Wei</div>
+            <div class="c2-row"><b>#4</b>Dana Ruiz</div>
+            <div class="c2-row"><b>#5</b>Emil Novak</div>
+            <div class="c2-row"><b>#6</b>Farah Haddad</div>
+          </div>
+          <div id="c2-b-card" class="c2-card">
+            <div class="label">Preview · member #1</div>
+            <div class="c2-card-name">Ada Okafor</div>
+            <div class="c2-card-count">4<span>loans</span></div>
+            <div id="c2-card-ring"></div>
+          </div>
+          <svg class="c2-pointer" style="top: 280px" viewBox="0 0 50 72"><path d="M2 2 L2 58 L16 45 L26 68 L36 63 L26 41 L46 41 Z" fill="#1d1b18" stroke="#fffdf9" stroke-width="3" stroke-linejoin="round" /></svg>
+          <div id="c2-console" class="c2-chip" style="left: 40px">Console · 0 errors</div>
+          <div id="c2-tests" class="c2-chip" style="left: 440px">Tests · 48 passed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-5 / c2-6 the two rules (LESSON.md verbatim) -->
+    <div id="c2-rules" class="clip world" data-start="33.14" data-duration="13.35">
+      <div id="c2-n1" class="c2-num" style="top: 180px">1</div>
+      <div id="c2-r1" class="line c2-rule" style="top: 180px">Work started for something the user no longer looks at must stop, or at least <span id="c2-r1-hot">must not reach the screen</span>.</div>
+      <div id="c2-n2" class="c2-num" style="top: 540px">2</div>
+      <div id="c2-r2" class="line c2-rule" style="top: 540px" data-hold>Sequence only what depends. A step that does not need another step's result <span id="c2-r2-hot">should not wait for it</span>, and a step that does need it should not start before it.</div>
+    </div>
+
+    <!-- c2-7 work that should finish anyway -->
+    <div id="c2-keep" class="clip world sunk" data-start="46.49" data-duration="7.37">
+      <div class="line" style="top: 120px">When not to cancel</div>
+      <div id="c2-moved"></div>
+      <div id="c2-moved-label" class="label">the user moves on</div>
+      <div class="c2-lane" style="top: 310px">
+        <div class="mlabel">write</div>
+        <div id="c2-bar1" class="c2-bar"></div>
+        <div id="c2-end1" class="c2-end"></div>
+        <div id="c2-lab1" class="c2-end-label label">on the server</div>
+      </div>
+      <div class="c2-lane" style="top: 470px">
+        <div class="mlabel">prefetch</div>
+        <div id="c2-bar2" class="c2-bar"></div>
+        <div id="c2-end2" class="c2-end"></div>
+        <div id="c2-lab2" class="c2-end-label label">in the cache</div>
+      </div>
+      <div class="c2-lane" style="top: 630px">
+        <div class="mlabel">analytics</div>
+        <div id="c2-bar3" class="c2-bar"></div>
+        <div id="c2-end3" class="c2-end"></div>
+        <div id="c2-lab3" class="c2-end-label label">reported</div>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c2-questions" class="clip world note" data-start="53.86" data-duration="18.2">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c2-q1" class="q">When the thing the user is looking at changes, what happens to work still running for the old one?</div>
+        <div id="c2-q2" class="q">If the responses came back in the reverse order of the requests, what would the user see?</div>
+        <div id="c2-q3" class="q">On any screen: which path of requests is the slowest, and which steps on it could start earlier?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c2-pause" class="clip world" data-start="72.06" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c2-pause-2" class="pause-2">Now do exercise 02.</div>
+    </div>
+
+    <audio id="c2-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="30" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-bed2" class="clip" src="assets/music/bed.mp3" data-start="53.86" data-duration="18.2" data-media-start="38" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-vo1" class="clip" src="assets/vo/c2-1.wav" data-start="3" data-duration="5.675" data-volume="1"></audio>
+    <audio id="c2-vo2" class="clip" src="assets/vo/c2-2.wav" data-start="9.02" data-duration="6.336" data-volume="1"></audio>
+    <audio id="c2-vo3" class="clip" src="assets/vo/c2-3.wav" data-start="15.71" data-duration="8.576" data-volume="1"></audio>
+    <audio id="c2-vo4" class="clip" src="assets/vo/c2-4.wav" data-start="24.64" data-duration="8.149" data-volume="1"></audio>
+    <audio id="c2-vo5" class="clip" src="assets/vo/c2-5.wav" data-start="33.14" data-duration="6.763" data-volume="1"></audio>
+    <audio id="c2-vo6" class="clip" src="assets/vo/c2-6.wav" data-start="40.25" data-duration="5.888" data-volume="1"></audio>
+    <audio id="c2-vo7" class="clip" src="assets/vo/c2-7.wav" data-start="46.49" data-duration="7.019" data-volume="1"></audio>
+    <audio id="c2-vo8" class="clip" src="assets/vo/c2-end.wav" data-start="53.86" data-duration="2.496" data-volume="1"></audio>
+    <audio id="c2-tick1" class="clip" src="assets/sfx/tick-a.wav" data-start="10.4" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick2" class="clip" src="assets/sfx/tick-b.wav" data-start="10.94" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick3" class="clip" src="assets/sfx/tick-a.wav" data-start="11.48" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick4" class="clip" src="assets/sfx/tick-b.wav" data-start="12.02" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick5" class="clip" src="assets/sfx/tick-a.wav" data-start="12.38" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick6" class="clip" src="assets/sfx/tick-b.wav" data-start="12.92" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick7" class="clip" src="assets/sfx/tick-a.wav" data-start="16.4" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick8" class="clip" src="assets/sfx/tick-b.wav" data-start="16.76" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c2-tick9" class="clip" src="assets/sfx/tick-a.wav" data-start="17.3" data-duration="0.3" data-volume="0.25"></audio>
   </div>
+
   <script>
     const tl = gsap.timeline({ paused: true });
-    tl.fromTo("#c2-card .chapter-title", { opacity: 0.99 }, { opacity: 1, duration: 0.1 }, 0);
+    const enter = { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" };
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const print = (sel, at) =>
+      tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out" }, at);
+    const pulse = (sel, at) => {
+      tl.fromTo(sel, { scale: 1 }, { scale: 1.12, duration: 0.15, ease: "power2.out" }, at);
+      tl.to(sel, { scale: 1, duration: 0.15, ease: "power2.in" }, at + 0.15);
+    };
+    const blurIn = (sel, at) =>
+      tl.fromTo(sel, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, at);
+
+    // chapter card: on screen from frame 0; the time lands a beat later
+
+    // c2-1: the list, the pointer on member 1, its preview card
+    ["#c2-a1", "#c2-a2", "#c2-a3", "#c2-a4", "#c2-a5", "#c2-a6"].forEach((r, i) => fadeIn(r, 3.6 + i * 0.06, 0.4));
+    tl.fromTo("#c2-a-ptr", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 4.6);
+    tl.fromTo("#c2-a-ptr", { y: 560 }, { y: 0, duration: 0.8, ease: "power2.inOut" }, 4.7);
+    tl.fromTo("#c2-a1", { backgroundColor: "rgba(239,233,222,0)" }, { backgroundColor: "rgba(239,233,222,1)", duration: 0.2 }, 5.4);
+    fadeIn("#c2-a-card", 5.5);
+    print("#c2-a-count", 7.0);
+
+    // c2-2: three hovers, three requests, answers back out of order (0.18 s per frame from 10.4)
+    print("#c2-h1", 10.4);
+    fadeIn("#c2-t1", 10.4, 0.3);
+    print("#c2-h2", 10.94);
+    fadeIn("#c2-t2", 10.94, 0.3);
+    print("#c2-h3", 11.48);
+    fadeIn("#c2-t3", 11.48, 0.3);
+    print("#c2-cc", 12.02);
+    print("#c2-cc-done", 12.2);
+    print("#c2-cb", 12.38);
+    print("#c2-cb-done", 12.56);
+    print("#c2-ca", 12.92);
+    print("#c2-ca-done", 13.1);
+    fadeIn("#c2-note1", 13.3);
+
+    // c2-3: the preview row applies every answer as it lands, and ends on a
+    fadeIn("#c2-note2", 15.9);
+    print("#c2-pc", 16.4);
+    print("#c2-pb", 16.76);
+    print("#c2-pa", 17.3);
+    pulse("#c2-pa", 17.6);
+
+    // c2-3: nothing throws, tests pass
+    fadeIn("#c2-console", 21.2);
+    fadeIn("#c2-tests", 22.5);
+
+    // c2-4: slow connection, the plausible wrong card
+    tl.to(["#c2-console", "#c2-tests"], { opacity: 0, duration: 0.4, ease: "power2.in" }, 24.9);
+    fadeIn("#c2-net", 27.2);
+    tl.fromTo("#c2-b-card", { scale: 1 }, { scale: 1.06, duration: 0.8, ease: "power2.inOut" }, 29.4);
+    fadeIn("#c2-card-ring", 31.5, 0.3);
+
+    // c2-5: rule 1 lands, then its second half carries the accent
+    fadeIn("#c2-n1", 33.4, 0.4);
+    blurIn("#c2-r1", 34.5);
+    tl.fromTo("#c2-r1-hot", { color: "#1d1b18" }, { color: "#b8321f", duration: 0.3 }, 37.6);
+
+    // c2-6: rule 1 steps back; rule 2 lands and takes the accent
+    tl.to(["#c2-r1", "#c2-n1"], { color: "#5f584d", duration: 0.4 }, 40.4);
+    tl.to("#c2-r1-hot", { color: "#5f584d", duration: 0.4 }, 40.4);
+    fadeIn("#c2-n2", 40.5, 0.4);
+    blurIn("#c2-r2", 40.7);
+    tl.fromTo("#c2-r2-hot", { color: "#1d1b18" }, { color: "#b8321f", duration: 0.3 }, 44.8);
+
+    // c2-7: the user moves on; each kind of work still runs to its end
+    fadeIn("#c2-moved", 46.6, 0.3);
+    fadeIn("#c2-moved-label", 46.75, 0.4);
+    ["#c2-bar1", "#c2-bar2", "#c2-bar3"].forEach((b, i) =>
+      tl.fromTo(b, { scaleX: 0, transformOrigin: "left center" }, { scaleX: 0.46, duration: 0.8, ease: "power2.inOut" }, 46.7 + i * 0.15),
+    );
+    [[1, 48.5], [2, 50.9], [3, 52.3]].forEach(([n, at]) => {
+      tl.to("#c2-bar" + n, { scaleX: 1, duration: 0.8, ease: "power2.inOut" }, at);
+      print("#c2-end" + n, at + 0.8);
+      fadeIn("#c2-lab" + n, at + 0.95, 0.4);
+    });
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c2-q1", "#c2-q2", "#c2-q3"].forEach((q, i) => fadeIn(q, 54.2 + i * 0.6));
+    fadeIn("#c2-pause-2", 72.6);
+
     window.__timelines["c2"] = tl;
   </script>
 </template>

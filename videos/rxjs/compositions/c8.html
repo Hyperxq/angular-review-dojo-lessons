@@ -1,12 +1,309 @@
 <template>
   <link rel="stylesheet" href="assets/kit.css" />
-  <style>#root { position: absolute; inset: 0; overflow: hidden; }</style>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    #c8-sync { position: absolute; left: 48px; top: 90px; display: grid; grid-template-columns: 700px 104px 700px; row-gap: 0; }
+    .c8-colhead { font: 700 36px/1 var(--font-text); color: var(--ink-muted); padding-bottom: 24px; border-bottom: 3px solid var(--rule-strong); }
+    .c8-cell { display: flex; justify-content: space-between; align-items: center; height: 150px; border-bottom: 1px solid var(--rule); font: 400 44px/1 var(--font-text); }
+    .c8-cell b { font: 700 56px/1 var(--font-text); font-variant-numeric: tabular-nums; }
+    .c8-ne { display: grid; place-items: center; height: 150px; font: 700 64px/1 var(--font-text); color: var(--accent); }
+
+    .c8-ed-title { position: absolute; left: 48px; top: 20px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c8-box { position: absolute; left: 48px; top: 120px; width: 1500px; height: 300px; padding: 36px 40px; border: 3px solid var(--rule-strong); border-radius: 8px; font: 400 44px/1.4 var(--font-text); box-sizing: border-box; }
+    #c8-caret { display: inline-block; width: 4px; height: 52px; margin-left: 4px; vertical-align: -10px; background: var(--ink); }
+    #c8-saving { position: absolute; right: 40px; top: 470px; font: 400 36px/1 var(--font-text); color: var(--ink-muted); }
+    #c8-saved { position: absolute; left: 48px; top: 560px; padding: 24px 36px; border: 3px solid var(--rule-strong); border-radius: 8px; font: 400 40px/1 var(--font-text); }
+    #c8-saved b { font-weight: 700; font-variant-numeric: tabular-nums; }
+    .c8-tag { position: absolute; padding: 14px 24px; border: 3px solid var(--ink); border-radius: 8px; font: 700 32px/1 var(--font-text); white-space: nowrap; }
+    #c8-tag-s { color: var(--accent); border-color: var(--accent); }
+
+    #c8-code { left: 140px; top: 330px; font-size: 30px; }
+
+    #c8-list { position: absolute; left: 48px; top: 120px; width: 1500px; height: 480px; }
+    .c8-book { position: absolute; left: 0; width: 1500px; height: 104px; display: flex; align-items: center; gap: 32px; padding: 0 36px; box-sizing: border-box; background: var(--paper-raised); border: 2px solid var(--rule); border-radius: 8px; }
+    .c8-book .grip { font: 700 40px/1 var(--font-text); color: var(--rule-strong); }
+    .c8-book .t { font: 700 44px/1 var(--font-text); }
+    .c8-book .label { margin-left: auto; }
+    #c8-bk3 { z-index: 2; border: 3px solid var(--accent); box-shadow: var(--shadow); }
+    #c8-pending { position: absolute; left: 48px; top: 650px; display: flex; gap: 32px; }
+    .c8-chip { padding: 20px 32px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 38px/1 var(--font-text); }
+    #c8-no { background: var(--caution-soft); border-color: var(--caution); color: var(--caution); }
+
+    #c8-tud { position: absolute; left: 440px; top: 160px; padding: 20px 32px; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; font: 700 48px/1 var(--font-code); }
+    .c8-life { position: absolute; left: 0; width: 1920px; height: 150px; }
+    .c8-life .mlabel { top: 8px; }
+    .c8-bar { position: absolute; left: 440px; top: 0; height: 56px; background: var(--ink); border-radius: 8px; }
+    .c8-life .mnote { top: 80px; }
+    #c8-never { position: absolute; right: 120px; top: 300px; font: 700 40px/1 var(--font-text); color: var(--accent); }
+
+    #c8-after-title { position: absolute; left: 200px; top: 150px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+    #c8-sol { position: absolute; left: 200px; top: 320px; padding: 20px 32px; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; font: 700 40px/1 var(--font-code); }
+    #c8-comment { position: absolute; left: 200px; top: 440px; width: 1520px; height: 360px; padding: 36px 48px; box-sizing: border-box; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; }
+    .c8-cline { display: flex; align-items: flex-end; gap: 28px; height: 100px; font: 700 40px/1 var(--font-text); color: var(--ink-muted); }
+    .c8-cline i { flex: 1; height: 3px; margin-bottom: 8px; background: var(--rule-strong); transform-origin: left center; }
+    #c8-reread { position: absolute; left: 200px; top: 850px; font-size: 36px; }
+
+    #c8-closed { position: absolute; left: 480px; top: 300px; font: 600 88px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c8-lights { position: absolute; inset: 0; background: var(--ink); }
+  </style>
+
   <div id="root" data-composition-id="c8" data-width="1920" data-height="1080">
-    <div id="c8-card" class="clip world" data-start="0" data-duration="99.66"><div class="chapter-title">c8 placeholder</div></div>
+    <!-- chapter card -->
+    <div id="c8-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c8-card-time" class="chapter-time">17:30</div>
+      <div id="c8-card-title" class="chapter-title">State streams and lifetimes</div>
+    </div>
+
+    <!-- c8-1 screen and server drift apart -->
+    <div id="c8-drift" class="clip world" data-start="3" data-duration="8.33">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">17:30</span></div>
+        <div class="app-body">
+          <div id="c8-sync">
+            <div id="c8-h-scr" class="c8-colhead">On screen</div><div></div><div id="c8-h-srv" class="c8-colhead">On the server</div>
+            <div class="c8-cell c8-scr"><span>Books on loan</span><b>3</b></div><div id="c8-ne1" class="c8-ne">≠</div><div class="c8-cell c8-srv"><span>Books on loan</span><b id="c8-srv1">3</b></div>
+            <div class="c8-cell c8-scr"><span>Holds waiting</span><b>1</b></div><div id="c8-ne2" class="c8-ne">≠</div><div class="c8-cell c8-srv"><span>Holds waiting</span><b id="c8-srv2">1</b></div>
+            <div class="c8-cell c8-scr"><span>Reading list</span><b>4 titles</b></div><div></div><div class="c8-cell c8-srv"><span>Reading list</span><b>4 titles</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c8-2 the draft autosaves while the member types -->
+    <div id="c8-typing" class="clip world" data-start="11.33" data-duration="4.4">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">17:30</span></div>
+        <div class="app-body">
+          <div class="c8-ed-title">Review: Kindred</div>
+          <div class="c8-box"><span id="c8-typed"></span><span id="c8-caret"></span></div>
+          <div id="c8-saving" data-hold>saving…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c8-3 the echo of b overwrites c -->
+    <div id="c8-echo" class="clip world sunk" data-start="15.73" data-duration="7.8">
+      <div class="marbles" style="top: 230px; --fw: 75.56px">
+        <div class="mrow" style="height: 170px"><div class="mlabel">draft</div><div class="mtrack">
+          <div id="c8-d1" class="m" style="--f: 0">a</div><div id="c8-d2" class="m" style="--f: 4">b</div><div id="c8-d3" class="m" style="--f: 8">c</div>
+        </div><div id="c8-dn1" class="mnote" style="top: 122px">// the member keeps typing</div></div>
+        <div class="mrow" style="height: 170px"><div class="mlabel">save b</div><div class="mtrack" style="left: 742px">
+          <div id="c8-sb" class="m" style="--f: 6">b</div><div id="c8-sbd" class="m-done" style="--f: 7"></div>
+        </div><div id="c8-dn2" class="mnote" style="top: 122px">// saves the text as it was at frame 4</div></div>
+        <div class="mrow" style="height: 170px"><div class="mlabel">textbox</div><div class="mtrack">
+          <div id="c8-t1" class="m" style="--f: 0">a</div><div id="c8-t2" class="m" style="--f: 4">b</div><div id="c8-t3" class="m" style="--f: 8">c</div><div id="c8-t4" class="m hot" style="--f: 10">b</div>
+        </div><div id="c8-dn3" class="mnote" style="top: 122px">// the echo of b overwrites c</div></div>
+      </div>
+    </div>
+
+    <!-- c8-4 who owns each field -->
+    <div id="c8-owners" class="clip world" data-start="23.53" data-duration="8.13">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">17:30</span></div>
+        <div class="app-body">
+          <div class="c8-ed-title">Review: Kindred</div>
+          <div id="c8-box2" class="c8-box">A slow start, then it would not let me go. The ending stayed with me for days.</div>
+          <div id="c8-tag-m" class="c8-tag" style="left: 48px; top: 446px">owned by the member</div>
+          <div id="c8-saved">Saved at <b>17:30</b></div>
+          <div id="c8-tag-s" class="c8-tag" style="left: 520px; top: 578px" data-hold>owned by the server</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c8-5 the reference rule -->
+    <div id="c8-refs" class="clip world" data-start="31.66" data-duration="7.86">
+      <div id="c8-code" class="code">
+        <span class="ln"><span class="k">this</span>.readingList.update((list) =&gt; {</span>
+        <span id="c8-l2" class="ln band">  list.push(book);</span>
+        <span id="c8-l3" class="ln band">  <span class="k">return</span> list;               <span class="c">// same array: nothing downstream notices</span></span>
+        <span class="ln">});</span>
+        <span class="ln"> </span>
+        <span id="c8-l6" class="ln band"><span class="k">this</span>.readingList.update((list) =&gt; [...list, book]); <span class="c">// new array: everyone notices</span></span>
+      </div>
+    </div>
+
+    <!-- c8-6 optimistic reorder, server reply pending -->
+    <div id="c8-optimistic" class="clip world" data-start="39.52" data-duration="8.14">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">17:30</span></div>
+        <div class="app-body">
+          <div class="c8-ed-title">Reading list</div>
+          <div id="c8-list">
+            <div id="c8-bk1" class="c8-book" style="top: 0"><span class="grip">⋮⋮</span><span class="t">Middlemarch</span><span class="label">George Eliot</span></div>
+            <div id="c8-bk2" class="c8-book" style="top: 120px"><span class="grip">⋮⋮</span><span class="t">Kindred</span><span class="label">Octavia E. Butler</span></div>
+            <div id="c8-bk3" class="c8-book" style="top: 240px"><span class="grip">⋮⋮</span><span class="t">Piranesi</span><span class="label">Susanna Clarke</span></div>
+            <div id="c8-bk4" class="c8-book" style="top: 360px"><span class="grip">⋮⋮</span><span class="t">The Dispossessed</span><span class="label">Ursula K. Le Guin</span></div>
+          </div>
+          <div id="c8-pending">
+            <div id="c8-wait" class="c8-chip">server reply pending</div>
+            <div id="c8-no" class="c8-chip" data-hold>if the server says no?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c8-7 lifetimes: root, route, component -->
+    <div id="c8-life" class="clip world sunk" data-start="47.66" data-duration="10.72">
+      <div id="c8-tud">takeUntilDestroyed()</div>
+      <div id="c8-never">"destroyed" means "never"</div>
+      <div id="c8-row1" class="c8-life" style="top: 360px"><div class="mlabel">root</div><div id="c8-bar1" class="c8-bar" style="width: 1360px"></div><div id="c8-ln1" class="mnote">the whole app</div></div>
+      <div id="c8-row2" class="c8-life" style="top: 540px"><div class="mlabel">route</div><div id="c8-bar2" class="c8-bar" style="width: 800px"></div><div id="c8-ln2" class="mnote">outlives navigation unless withAutoCleanupInjectors()</div></div>
+      <div id="c8-row3" class="c8-life" style="top: 720px"><div class="mlabel">component</div><div id="c8-bar3" class="c8-bar" style="width: 400px"></div><div id="c8-ln3" class="mnote" data-hold>dies with its component</div></div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c8-questions" class="clip world note" data-start="58.38" data-duration="23.6">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c8-q1" class="q">For every state change: is a new object created, or an old one changed in place? Who compares references downstream?</div>
+        <div id="c8-q2" class="q">For every response written into state: what moment does it describe, and what could the user have changed since?</div>
+        <div id="c8-q3" class="q">For every optimistic change: what does the user see if the server says no?</div>
+        <div id="c8-q4" class="q">For every infinite stream: what is the shortest lifetime that still works, and what ties the stream to it?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c8-pause" class="clip world" data-start="81.98" data-duration="3.85">
+      <div class="pause-1">Pause here.</div>
+      <div id="c8-pause-2" class="pause-2" data-hold>Now do exercise 08.</div>
+    </div>
+
+    <!-- c8-after -->
+    <div id="c8-after" class="clip world" data-start="85.83" data-duration="8.52">
+      <div id="c8-after-title">After the lesson</div>
+      <div id="c8-sol">SOLUTION.md · solutions branch</div>
+      <div id="c8-comment">
+        <div class="label">Your review comment for the author</div>
+        <div class="c8-cline">1<i id="c8-cl1"></i></div>
+        <div class="c8-cline">2<i id="c8-cl2"></i></div>
+      </div>
+      <div id="c8-reread" class="label" data-hold>can't write it? reread the chapter</div>
+    </div>
+
+    <!-- c8-close: 18:00, the desk closes -->
+    <div id="c8-close" class="clip world" data-start="94.35" data-duration="5.31">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span id="c8-clock" class="app-clock" style="color: var(--accent)">18:00</span></div>
+        <div class="app-body">
+          <div id="c8-closed">Opens again at 09:00</div>
+        </div>
+      </div>
+      <div id="c8-lights" data-hold></div>
+    </div>
+
+    <audio id="c8-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="120" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c8-bed2" class="clip" src="assets/music/bed.mp3" data-start="58.38" data-duration="23.6" data-media-start="128" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c8-bed3" class="clip" src="assets/music/bed.mp3" data-start="94.35" data-duration="5.31" data-media-start="136" data-volume="0.12" data-fade-in="0.6" data-fade-out="1.5"></audio>
+    <audio id="c8-vo1" class="clip" src="assets/vo/c8-1.wav" data-start="3" data-duration="7.979" data-volume="1"></audio>
+    <audio id="c8-vo2" class="clip" src="assets/vo/c8-2.wav" data-start="11.33" data-duration="4.053" data-volume="1"></audio>
+    <audio id="c8-vo3" class="clip" src="assets/vo/c8-3.wav" data-start="15.73" data-duration="7.445" data-volume="1"></audio>
+    <audio id="c8-vo4" class="clip" src="assets/vo/c8-4.wav" data-start="23.53" data-duration="7.787" data-volume="1"></audio>
+    <audio id="c8-vo5" class="clip" src="assets/vo/c8-5.wav" data-start="31.66" data-duration="7.509" data-volume="1"></audio>
+    <audio id="c8-vo6" class="clip" src="assets/vo/c8-6.wav" data-start="39.52" data-duration="7.787" data-volume="1"></audio>
+    <audio id="c8-vo7" class="clip" src="assets/vo/c8-7.wav" data-start="47.66" data-duration="10.368" data-volume="1"></audio>
+    <audio id="c8-vo8" class="clip" src="assets/vo/c8-end.wav" data-start="58.38" data-duration="2.389" data-volume="1"></audio>
+    <audio id="c8-vo9" class="clip" src="assets/vo/c8-after.wav" data-start="85.83" data-duration="8.171" data-volume="1"></audio>
+    <audio id="c8-vo10" class="clip" src="assets/vo/c8-close.wav" data-start="94.35" data-duration="4.309" data-volume="1"></audio>
+    <audio id="c8-tick1" class="clip" src="assets/sfx/tick-a.wav" data-start="16" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c8-tick2" class="clip" src="assets/sfx/tick-b.wav" data-start="16.72" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c8-tick3" class="clip" src="assets/sfx/tick-a.wav" data-start="17.44" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c8-tick4" class="clip" src="assets/sfx/tick-b.wav" data-start="17.8" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c8-tick5" class="clip" src="assets/sfx/tick-a.wav" data-start="18.6" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c8-tick6" class="clip" src="assets/sfx/tick-b.wav" data-start="19.32" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c8-tick7" class="clip" src="assets/sfx/tick-a.wav" data-start="20.04" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c8-tick8" class="clip" src="assets/sfx/tick-b.wav" data-start="20.4" data-duration="0.3" data-volume="0.25"></audio>
   </div>
+
   <script>
     const tl = gsap.timeline({ paused: true });
-    tl.fromTo("#c8-card .chapter-title", { opacity: 0.99 }, { opacity: 1, duration: 0.1 }, 0);
+    const fade = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const print = (sel, at) =>
+      tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out" }, at);
+    const band = (sel, at, on) =>
+      tl.fromTo(sel, { backgroundColor: on ? "rgba(245,226,217,0)" : "rgba(245,226,217,1)" },
+        { backgroundColor: on ? "rgba(245,226,217,1)" : "rgba(245,226,217,0)", duration: 0.3, immediateRender: on }, at);
+
+    // chapter card: on screen from frame 0; the time lands a beat later
+
+    // c8-1: the screen first, then its server copy; the server moves on, the screen does not
+    fade("#c8-h-scr", 3.3);
+    fade(".c8-scr", 3.45);
+    fade("#c8-h-srv", 5.9);
+    fade(".c8-srv", 6.05);
+    tl.set("#c8-srv1", { textContent: "2" }, 7.4);
+    tl.set("#c8-srv2", { textContent: "2" }, 8.2);
+    tl.fromTo("#c8-ne1", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 8.9);
+    tl.fromTo("#c8-ne2", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 9.05);
+
+    // c8-2: the member types; the autosave starts
+    const draft = "A slow start, then it would not let me go.";
+    for (let i = 1; i <= draft.length; i++) tl.set("#c8-typed", { textContent: draft.slice(0, i) }, 11.5 + i * 0.055);
+    fade("#c8-saving", 14.0, 0.3);
+
+    // c8-3: draft and the save print first, then the textbox with the echo
+    print("#c8-d1", 16.0);
+    print("#c8-d2", 16.72);
+    print("#c8-d3", 17.44);
+    print("#c8-sb", 17.8);
+    print("#c8-sbd", 17.98);
+    fade("#c8-dn1", 17.6);
+    fade("#c8-dn2", 18.2);
+    print("#c8-t1", 18.6);
+    print("#c8-t2", 19.32);
+    print("#c8-t3", 20.04);
+    print("#c8-t4", 20.4);
+    tl.to("#c8-t4", { keyframes: [{ scale: 1.12, duration: 0.15, ease: "power2.out" }, { scale: 1, duration: 0.15, ease: "power2.in" }] }, 20.9);
+    fade("#c8-dn3", 21.2);
+
+    // c8-4: each field gets its owner
+    tl.fromTo("#c8-box2", { borderColor: "#c4b9a6" }, { borderColor: "#1d1b18", duration: 0.3 }, 24.6);
+    fade("#c8-saved", 26.0);
+    tl.fromTo("#c8-tag-m", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.4, ease: "power3.out" }, 27.6);
+    tl.fromTo("#c8-tag-s", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.4, ease: "power3.out" }, 29.2);
+
+    // c8-5: the band moves from the new array to the push
+    band("#c8-l6", 35.0, true);
+    band("#c8-l6", 36.4, false);
+    band("#c8-l2", 36.4, true);
+    band("#c8-l3", 36.4, true);
+
+    // c8-6: Piranesi is dragged to the top, the rest make room; the reply is still out
+    tl.fromTo("#c8-bk3", { y: 0, scale: 1 }, { y: -240, scale: 1.02, duration: 0.8, ease: "power2.inOut" }, 40.1);
+    tl.fromTo(["#c8-bk1", "#c8-bk2"], { y: 0 }, { y: 120, duration: 0.8, ease: "power2.inOut" }, 40.25);
+    tl.to("#c8-bk3", { scale: 1, duration: 0.3, ease: "power3.out" }, 40.9);
+    fade("#c8-wait", 41.7);
+    tl.fromTo("#c8-no", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 45.4);
+
+    // c8-7: the root lifetime never ends; shorter ones follow
+    fade("#c8-tud", 48.0);
+    fade(".c8-life .mlabel", 48.6);
+    tl.fromTo("#c8-bar1", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 1.0, ease: "power2.inOut" }, 50.6);
+    fade("#c8-ln1", 51.4);
+    tl.fromTo("#c8-never", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 53.6);
+    tl.fromTo("#c8-bar2", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 55.2);
+    fade("#c8-ln2", 55.7);
+    tl.fromTo("#c8-bar3", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.5, ease: "power2.inOut" }, 56.1);
+    fade("#c8-ln3", 56.5);
+
+    // questions, 0.6 s apart
+    ["#c8-q1", "#c8-q2", "#c8-q3", "#c8-q4"].forEach((q, i) => fade(q, 58.8 + i * 0.6));
+
+    // pause
+    fade("#c8-pause-2", 82.5);
+
+    // after the lesson: compare, then write the comment
+    tl.fromTo("#c8-after-title", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 86.0);
+    fade("#c8-sol", 88.2);
+    fade("#c8-comment", 90.3);
+    tl.fromTo("#c8-cl1", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 90.8);
+    tl.fromTo("#c8-cl2", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 91.2);
+    fade("#c8-reread", 91.7);
+
+    // close: 18:00, the lights go down and stay down
+    fade("#c8-closed", 94.6);
+    tl.fromTo("#c8-lights", { opacity: 0 }, { opacity: 0.62, duration: 2.6, ease: "power2.inOut" }, 96.0);
+
     window.__timelines["c8"] = tl;
   </script>
 </template>

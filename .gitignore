@@ -53,3 +53,4 @@ videos/**/*.mp4
 videos/**/assets/vo/*.wav
 # bundled /brag track, licence unverified for redistribution: copied locally, never committed
 videos/**/assets/music/
+.thumbnails/

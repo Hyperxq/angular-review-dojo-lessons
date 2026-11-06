@@ -147,8 +147,7 @@
     const print = (sel, at) =>
       tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out" }, at);
 
-    // chapter card: on screen from frame 0 (the thumbnail); the time lands a beat later
-    tl.fromTo("#c0-card-time", { opacity: 0, y: 16 }, enter, 0.3);
+    // chapter card: fully on screen from frame 0 (the thumbnail)
 
     // c0-1: the version chip lands on "four things moved"
     ["#c0-nav1", "#c0-nav2", "#c0-nav3", "#c0-nav4"].forEach((n, i) =>

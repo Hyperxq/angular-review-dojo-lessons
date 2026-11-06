@@ -1,12 +1,346 @@
 <template>
   <link rel="stylesheet" href="assets/kit.css" />
-  <style>#root { position: absolute; inset: 0; overflow: hidden; }</style>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c1-nav { position: absolute; left: 48px; top: 40px; width: 340px; }
+    .c1-nav div { font: 400 40px/1 var(--font-text); color: var(--ink-muted); padding: 26px 0; border-bottom: 1px solid var(--rule); }
+
+    #c1-tab { position: absolute; left: 480px; top: 40px; padding: 14px 24px; border: 2px solid var(--rule-strong); border-radius: 8px; font: 700 32px/1 var(--font-text); }
+    #c1-meter { position: absolute; left: 480px; top: 150px; width: 1080px; height: 600px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
+    #c1-meter-head { position: absolute; left: 40px; top: 36px; font: 700 40px/1 var(--font-text); }
+    #c1-meter-val { position: absolute; right: 40px; top: 28px; font: 700 64px/1 var(--font-text); font-variant-numeric: tabular-nums; color: var(--accent); }
+    #c1-later { position: absolute; left: 40px; top: 96px; font: 400 34px/1 var(--font-text); color: var(--ink-muted); }
+    #c1-meter svg { position: absolute; left: 40px; top: 170px; }
+
+    #c1-heap { position: absolute; left: 160px; top: 150px; width: 1600px; }
+    #c1-heap-title { font: 600 64px/1.1 var(--font-display); margin-bottom: 40px; }
+    .c1-hrow { display: flex; padding: 22px 28px; border-bottom: 1px solid var(--rule); font: 400 38px/1.2 var(--font-code); }
+    .c1-hrow span:first-of-type { flex: 1; }
+    .c1-hrow span + span { width: 280px; text-align: right; color: var(--ink-muted); }
+    #c1-hrow-head { font: 700 30px/1 var(--font-text); color: var(--ink-muted); }
+    #c1-hot { position: relative; }
+    #c1-hot-band { position: absolute; inset: 0; background: var(--accent-soft); }
+    #c1-hot span { position: relative; }
+    #c1-owner { margin-top: 32px; padding-left: 28px; font: 400 34px/1.3 var(--font-text); color: var(--ink-muted); }
+
+    .c1-lrow { position: absolute; left: 0; width: 1920px; height: 120px; }
+    .c1-lrow .mlabel { top: 40px; }
+    .c1-bar { position: absolute; left: 440px; top: 44px; height: 32px; border-radius: 4px; background: var(--ink-muted); }
+    #c1-comp-bar { width: 460px; background: var(--ink); }
+    #c1-ghost { position: absolute; left: 900px; top: 44px; width: 900px; height: 32px; border: 3px dashed var(--ink-muted); border-radius: 4px; box-sizing: border-box; }
+    .c1-call { position: absolute; top: 40px; width: 40px; height: 40px; margin-left: -20px; border-radius: 50%; background: var(--accent); }
+    #c1-closed { position: absolute; left: 898px; top: 210px; width: 4px; height: 640px; background: var(--rule-strong); }
+    #c1-closed-label { position: absolute; left: 920px; top: 200px; }
+    #c1-ghost-label { position: absolute; left: 920px; top: 360px; }
+
+    .c1-code { left: 110px; top: 150px; width: 1700px; box-sizing: border-box; }
+    .c1-code .ln { position: relative; }
+    .c1-code .wrap { white-space: pre-wrap; padding-left: 6ch; text-indent: -6ch; }
+    .c1-band { position: absolute; left: 0; right: 0; top: 40px; height: 51px; background: var(--accent-soft); }
+    #c1-removed { position: absolute; right: 56px; top: 147px; font: 400 32px/1 var(--font-text); color: var(--ink-muted); }
+
+    #c1-view { position: absolute; left: 480px; top: 40px; width: 1080px; height: 640px; border: 3px solid var(--rule); border-radius: 8px; box-sizing: border-box; }
+    #c1-view-dash { position: absolute; inset: -3px; border: 3px dashed var(--ink-muted); border-radius: 8px; }
+    #c1-view-body { position: absolute; left: 48px; top: 48px; }
+    #c1-view-name { font: 600 64px/1.1 var(--font-display); margin-bottom: 24px; }
+    #c1-view-gone { position: absolute; left: 0; right: 0; top: 120px; text-align: center; font: 700 44px/1 var(--font-text); color: var(--ink-muted); }
+    #c1-packet { position: absolute; left: 980px; top: 700px; padding: 22px 32px; background: var(--paper-raised); border: 4px solid var(--accent); border-radius: 8px; font: 700 36px/1 var(--font-code); white-space: nowrap; }
+    #c1-packet-strike { position: absolute; left: -12px; right: -12px; top: 50%; height: 5px; margin-top: -2px; background: var(--ink-muted); transform-origin: left center; }
+    #c1-cancelled { position: absolute; left: 600px; top: 390px; font: 700 34px/1 var(--font-text); color: var(--ink-muted); }
+
+    .c1-ev { position: absolute; left: 340px; width: 150px; height: 150px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; font: 700 64px/1 var(--font-code); }
+    #c1-ev-a-cut { position: absolute; inset: 0; border-radius: 50%; background: var(--paper-sunk); border: 6px solid var(--ink-muted); color: var(--ink-muted); display: grid; place-items: center; }
+    #c1-tick-rule { position: absolute; left: 270px; top: 300px; width: 4px; height: 400px; background: var(--rule-strong); }
+    #c1-tick-label { position: absolute; left: 340px; top: 740px; }
+    #c1-wires { position: absolute; left: 0; top: 0; }
+    #c1-sig { position: absolute; left: 1100px; top: 330px; width: 600px; height: 340px; background: var(--paper-raised); border: 3px solid var(--ink); border-radius: 8px; }
+    #c1-sig-name { position: absolute; left: 44px; top: 36px; font: 700 48px/1 var(--font-code); }
+    #c1-sig-val { position: absolute; left: 44px; top: 130px; font: 700 140px/1 var(--font-code); color: var(--accent); }
+    #c1-sig-note { position: absolute; left: 1100px; top: 710px; }
+  </style>
+
   <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
-    <div id="c1-card" class="clip world" data-start="0" data-duration="82.59"><div class="chapter-title">c1 placeholder</div></div>
+    <!-- chapter card -->
+    <div id="c1-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c1-card-time" class="chapter-time">09:00</div>
+      <div id="c1-card-title" class="chapter-title">A subscription has a lifetime</div>
+    </div>
+
+    <!-- c1-1 the tab stays open all day; frame time creeps up -->
+    <div id="c1-desk" class="clip world" data-start="3" data-duration="8.65">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-nav"><div id="c1-nav1">Members</div><div id="c1-nav2">Loans</div><div id="c1-nav3">Returns</div><div id="c1-nav4">Holds</div></div>
+          <div id="c1-tab">Open since 09:00 · closes 18:00</div>
+          <div id="c1-meter">
+            <div id="c1-meter-head">Frame time</div>
+            <div id="c1-meter-val">16 ms</div>
+            <div id="c1-later">later that day…</div>
+            <svg width="1000" height="390" viewBox="0 0 1000 390">
+              <line x1="0" y1="340" x2="1000" y2="340" stroke="#ddd4c5" stroke-width="2" />
+              <polyline id="c1-trace" fill="none" stroke="#1d1b18" stroke-width="6" stroke-linejoin="round" stroke-dasharray="1400" points="0,330 60,326 120,331 180,322 240,318 300,320 360,300 420,296 480,280 540,272 600,250 660,236 720,214 780,190 840,170 900,138 960,110 1000,96" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-2 heap snapshot: screens closed hours ago, still retained -->
+    <div id="c1-heapw" class="clip world" data-start="11.65" data-duration="8.46">
+      <div id="c1-heap">
+        <div id="c1-heap-title">Heap snapshot · 15:40</div>
+        <div id="c1-hrow-head" class="c1-hrow"><span>Constructor</span><span>Closed at</span><span>Retained</span></div>
+        <div id="c1-h1" class="c1-hrow"><span>Detached &lt;app-member-list&gt;</span><span>09:12</span><span>2.4 MB</span></div>
+        <div id="c1-h2" class="c1-hrow"><span>Detached &lt;app-loan-panel&gt;</span><span>10:05</span><span>1.9 MB</span></div>
+        <div id="c1-hot" class="c1-hrow"><div id="c1-hot-band"></div><span>Detached &lt;app-shelf-map&gt;</span><span>11:30</span><span>3.1 MB</span></div>
+        <div id="c1-h4" class="c1-hrow"><span>Detached &lt;app-returns-feed&gt;</span><span>13:02</span><span>2.2 MB</span></div>
+        <div id="c1-owner" data-hold>retained by: a subscription that is still running</div>
+      </div>
+    </div>
+
+    <!-- c1-3 http.get completes, interval never does (LESSON.md verbatim) -->
+    <div id="c1-lazy" class="clip world sunk" data-start="20.11" data-duration="7.11">
+      <div class="marbles" style="top: 330px; --fw: 52.31px">
+        <div class="mrow" style="height: 200px">
+          <div class="mlabel">http.get</div>
+          <div class="mtrack">
+            <div id="c1-r" class="m" style="--f: 5">r</div>
+            <div id="c1-rdone" class="m-done" style="--f: 6"></div>
+          </div>
+          <div id="c1-note1" class="mnote" style="top: 120px">// one value, then it completes on its own</div>
+        </div>
+        <div class="mrow" style="height: 200px">
+          <div class="mlabel">interval</div>
+          <div class="mtrack">
+            <div id="c1-i0" class="m" style="--f: 3">0</div>
+            <div id="c1-i1" class="m" style="--f: 7">1</div>
+            <div id="c1-i2" class="m" style="--f: 11">2</div>
+            <div id="c1-i3" class="m" style="--f: 15">3</div>
+            <div id="c1-i4" class="m" style="--f: 19">4</div>
+            <div id="c1-i5" class="m hot" style="--f: 23">5</div>
+          </div>
+          <div id="c1-note2" class="mnote" style="top: 120px">// never completes: someone has to unsubscribe</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-4 source lifetime vs subscriber lifetime -->
+    <div id="c1-lives" class="clip world sunk" data-start="27.22" data-duration="10.03">
+      <div id="c1-closed"></div>
+      <div id="c1-closed-label" class="label">screen closed</div>
+      <div class="c1-lrow" style="top: 250px">
+        <div class="mlabel">component</div>
+        <div id="c1-comp-bar" class="c1-bar"></div>
+        <div id="c1-ghost"></div>
+        <div id="c1-call1" class="c1-call" style="left: 1080px"></div>
+        <div id="c1-call2" class="c1-call" style="left: 1300px"></div>
+        <div id="c1-call3" class="c1-call" style="left: 1520px"></div>
+        <div id="c1-call4" class="c1-call" style="left: 1740px"></div>
+      </div>
+      <div id="c1-ghost-label" class="label">still in memory, still called</div>
+      <div class="c1-lrow" style="top: 470px"><div class="mlabel">window</div><div id="c1-src1" class="c1-bar" style="width: 1360px"></div></div>
+      <div class="c1-lrow" style="top: 600px"><div class="mlabel">root service</div><div id="c1-src2" class="c1-bar" style="width: 1360px"></div></div>
+      <div class="c1-lrow" style="top: 730px"><div class="mlabel">timer</div><div id="c1-src3" class="c1-bar" style="width: 1360px"></div></div>
+    </div>
+
+    <!-- c1-5 host listeners: no stream at all -->
+    <div id="c1-host" class="clip world" data-start="37.25" data-duration="7.33">
+      <div id="c1-code1" class="code c1-code">
+        <div id="c1-band1" class="c1-band"></div>
+        <span class="ln">@Component({</span>
+        <span class="ln">  selector: <span class="s">'app-connection-banner'</span>,</span>
+        <span class="ln">  host: {</span>
+        <span class="ln">    <span class="s">'(window:online)'</span>: <span class="s">'online.set(true)'</span>,</span>
+        <span class="ln">    <span class="s">'(window:offline)'</span>: <span class="s">'online.set(false)'</span>,</span>
+        <span class="ln">  },</span>
+        <span class="ln wrap">  template: <span class="s">`@if (!online()) { &lt;p role="status"&gt;You are offline. Changes will not be saved.&lt;/p&gt; }`</span>,</span>
+        <span class="ln">})</span>
+        <span class="ln"><span class="k">export class</span> ConnectionBanner {</span>
+        <span class="ln">  <span class="k">protected readonly</span> online = signal(navigator.onLine);</span>
+        <span class="ln">}</span>
+        <div id="c1-removed" data-hold>removed with the component</div>
+      </div>
+    </div>
+
+    <!-- c1-6 a stream with an owner -->
+    <div id="c1-owned" class="clip world" data-start="44.58" data-duration="5.85">
+      <div id="c1-code2" class="code c1-code" style="top: 260px">
+        <div id="c1-band2" class="c1-band"></div>
+        <span class="ln"><span class="k">constructor</span>() {</span>
+        <span class="ln">  fromEvent(window, <span class="s">'resize'</span>)</span>
+        <span class="ln">    .pipe(</span>
+        <span class="ln">      auditTime(<span class="n">100</span>),       <span class="c">// at most one layout pass per 100 ms</span></span>
+        <span class="ln">      takeUntilDestroyed(), <span class="c">// ends with this component, not with the window</span></span>
+        <span class="ln">    )</span>
+        <span class="ln">    .subscribe(() =&gt; <span class="k">this</span>.layoutShelves());</span>
+        <span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c1-7 a response lands on a destroyed view -->
+    <div id="c1-late" class="clip world" data-start="50.43" data-duration="6.48">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-nav"><div>Members</div><div>Loans</div><div>Returns</div><div>Holds</div></div>
+          <div id="c1-view">
+            <div id="c1-view-body">
+              <div id="c1-view-name">Ada Okafor</div>
+              <div class="label">Member #12 · 4 loans · 1 hold</div>
+            </div>
+            <div id="c1-view-dash"></div>
+            <div id="c1-view-gone">view destroyed</div>
+          </div>
+          <div id="c1-cancelled">cancelled with its owner</div>
+          <div id="c1-packet">200 GET /members/12/loans<div id="c1-packet-strike"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-8 two events in one tick, one signal value -->
+    <div id="c1-collapse" class="clip world sunk" data-start="56.91" data-duration="6.38">
+      <div id="c1-tick-rule"></div>
+      <div id="c1-ev-a" class="c1-ev" style="top: 300px">a<div id="c1-ev-a-cut">a</div></div>
+      <div id="c1-ev-b" class="c1-ev" style="top: 550px">b</div>
+      <div id="c1-tick-label" class="label">same tick</div>
+      <svg id="c1-wires" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <line id="c1-wire-a" x1="520" y1="375" x2="1080" y2="480" stroke="#c4b9a6" stroke-width="5" stroke-dasharray="580" />
+        <line id="c1-wire-b" x1="520" y1="625" x2="1080" y2="520" stroke="#1d1b18" stroke-width="5" stroke-dasharray="580" />
+      </svg>
+      <div id="c1-sig">
+        <div id="c1-sig-name">signal</div>
+        <div id="c1-sig-val">b</div>
+      </div>
+      <div id="c1-sig-note" class="label">keeps only the latest value</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c1-questions" class="clip world note" data-start="63.29" data-duration="15.8">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c1-q1" class="q">For each subscription, which lives longer: the source or the code that subscribed? What ends the longer one?</div>
+        <div id="c1-q2" class="q">If this component were created and destroyed a hundred times, what would be left behind?</div>
+        <div id="c1-q3" class="q">When a value arrives, which mechanism from chapter 0 tells Angular about it?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c1-pause" class="clip world" data-start="79.09" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c1-pause-2" class="pause-2">Now do exercise 01.</div>
+    </div>
+
+    <audio id="c1-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="15" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-bed2" class="clip" src="assets/music/bed.mp3" data-start="63.29" data-duration="15.8" data-media-start="23" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-vo1" class="clip" src="assets/vo/c1-1.wav" data-start="3" data-duration="8.299" data-volume="1"></audio>
+    <audio id="c1-vo2" class="clip" src="assets/vo/c1-2.wav" data-start="11.65" data-duration="8.107" data-volume="1"></audio>
+    <audio id="c1-vo3" class="clip" src="assets/vo/c1-3.wav" data-start="20.11" data-duration="6.763" data-volume="1"></audio>
+    <audio id="c1-vo4" class="clip" src="assets/vo/c1-4.wav" data-start="27.22" data-duration="9.685" data-volume="1"></audio>
+    <audio id="c1-vo5" class="clip" src="assets/vo/c1-5.wav" data-start="37.25" data-duration="6.976" data-volume="1"></audio>
+    <audio id="c1-vo6" class="clip" src="assets/vo/c1-6.wav" data-start="44.58" data-duration="5.504" data-volume="1"></audio>
+    <audio id="c1-vo7" class="clip" src="assets/vo/c1-7.wav" data-start="50.43" data-duration="6.123" data-volume="1"></audio>
+    <audio id="c1-vo8" class="clip" src="assets/vo/c1-8.wav" data-start="56.91" data-duration="6.037" data-volume="1"></audio>
+    <audio id="c1-vo9" class="clip" src="assets/vo/c1-end.wav" data-start="63.29" data-duration="2.197" data-volume="1"></audio>
+    <audio id="c1-tick1" class="clip" src="assets/sfx/tick-a.wav" data-start="23.04" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick2" class="clip" src="assets/sfx/tick-b.wav" data-start="23.4" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick3" class="clip" src="assets/sfx/tick-a.wav" data-start="23.76" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick4" class="clip" src="assets/sfx/tick-b.wav" data-start="24.48" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick5" class="clip" src="assets/sfx/tick-a.wav" data-start="25.2" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick6" class="clip" src="assets/sfx/tick-b.wav" data-start="25.92" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick7" class="clip" src="assets/sfx/tick-a.wav" data-start="26.64" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick8" class="clip" src="assets/sfx/tick-b.wav" data-start="59.6" data-duration="0.3" data-volume="0.25"></audio>
+    <audio id="c1-tick9" class="clip" src="assets/sfx/tick-a.wav" data-start="59.78" data-duration="0.3" data-volume="0.25"></audio>
   </div>
+
   <script>
     const tl = gsap.timeline({ paused: true });
-    tl.fromTo("#c1-card .chapter-title", { opacity: 0.99 }, { opacity: 1, duration: 0.1 }, 0);
+    const enter = { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" };
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const print = (sel, at) =>
+      tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.27, ease: "power3.out" }, at);
+    const pulse = (sel, at) => {
+      tl.fromTo(sel, { scale: 1 }, { scale: 1.12, duration: 0.15, ease: "power2.out" }, at);
+      tl.to(sel, { scale: 1, duration: 0.15, ease: "power2.in" }, at + 0.15);
+    };
+    const bandTo = (sel, line, at) => tl.to(sel, { y: line * 51, duration: 0.8, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0; the time lands a beat later
+
+    // c1-1: the tab opens, stays open; "by the afternoon" the frame time creeps up
+    ["#c1-nav1", "#c1-nav2", "#c1-nav3", "#c1-nav4"].forEach((n, i) => fadeIn(n, 3.2 + i * 0.2, 0.4));
+    fadeIn("#c1-meter", 3.9);
+    fadeIn("#c1-tab", 5.8);
+    fadeIn("#c1-later", 8.6);
+    tl.fromTo("#c1-trace", { strokeDashoffset: 1400 }, { strokeDashoffset: 0, duration: 2.8, ease: "none" }, 8.7);
+    ["21 ms", "28 ms", "37 ms", "48 ms"].forEach((v, i) => tl.set("#c1-meter-val", { textContent: v }, 9.3 + i * 0.6));
+
+    // c1-2: detached screens line up; the hot one has no owner
+    ["#c1-hrow-head", "#c1-h1", "#c1-h2", "#c1-hot", "#c1-h4"].forEach((r, i) => fadeIn(r, 12.9 + i * 0.3, 0.4));
+    tl.fromTo("#c1-hot-band", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 17.2);
+    fadeIn("#c1-owner", 17.4);
+
+    // c1-3: both sources start on subscribe; 0.18 s per frame from 22.5
+    print("#c1-i0", 23.04);
+    print("#c1-r", 23.4);
+    print("#c1-rdone", 23.58);
+    fadeIn("#c1-note1", 23.9, 0.4);
+    print("#c1-i1", 23.76);
+    print("#c1-i2", 24.48);
+    print("#c1-i3", 25.2);
+    fadeIn("#c1-note2", 24.8, 0.4);
+    print("#c1-i4", 25.92);
+    print("#c1-i5", 26.64);
+    pulse("#c1-i5", 26.92);
+
+    // c1-4: the component's bar is short, its sources run on, calls keep arriving
+    tl.fromTo("#c1-comp-bar", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.8, ease: "power2.inOut" }, 28.6);
+    ["#c1-src1", "#c1-src2", "#c1-src3"].forEach((b, i) =>
+      tl.fromTo(b, { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.8, ease: "power2.inOut" }, 29.4 + i * 0.15),
+    );
+    fadeIn("#c1-closed", 30.6, 0.3);
+    fadeIn("#c1-closed-label", 30.75, 0.4);
+    fadeIn("#c1-ghost", 32.1);
+    fadeIn("#c1-ghost-label", 32.25);
+    ["#c1-call1", "#c1-call2", "#c1-call3", "#c1-call4"].forEach((c, i) => print(c, 34.4 + i * 0.4));
+
+    // c1-5: whole block cut in; the band lands on the offline listener
+    tl.fromTo("#c1-band1", { opacity: 0, y: 4 * 51 }, { opacity: 1, duration: 0.3 }, 38.9);
+    bandTo("#c1-band1", 2, 41.6);
+    fadeIn("#c1-removed", 42.3);
+
+    // c1-6: band from the operator to the owner
+    tl.fromTo("#c1-band2", { opacity: 0, y: 2 * 51 }, { opacity: 1, duration: 0.3 }, 45.9);
+    bandTo("#c1-band2", 4, 47.4);
+
+    // c1-7: the view is destroyed, the response still lands, then owning cancels it
+    tl.fromTo("#c1-view-body", { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "power2.in" }, 50.9);
+    fadeIn("#c1-view-dash", 51.1, 0.4);
+    fadeIn("#c1-view-gone", 51.3);
+    tl.fromTo("#c1-packet", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 52.2);
+    tl.fromTo("#c1-packet", { x: 0, y: 0 }, { x: -380, y: -420, duration: 0.8, ease: "power2.inOut" }, 52.6);
+    tl.to("#c1-packet", { borderColor: "#5f584d", color: "#5f584d", duration: 0.3 }, 55.2);
+    tl.fromTo("#c1-packet-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power2.inOut" }, 55.2);
+    fadeIn("#c1-cancelled", 55.35, 0.4);
+
+    // c1-8: two events in one tick become one value
+    fadeIn("#c1-sig", 57.1);
+    tl.set("#c1-sig-val", { textContent: "" }, 57.1);
+    fadeIn("#c1-sig-note", 58.4);
+    print("#c1-ev-a", 59.6);
+    print("#c1-ev-b", 59.78);
+    fadeIn("#c1-tick-rule", 59.9, 0.3);
+    fadeIn("#c1-tick-label", 60.05, 0.4);
+    tl.fromTo("#c1-wire-a", { strokeDashoffset: 580 }, { strokeDashoffset: 0, duration: 0.6, ease: "power2.inOut" }, 60.4);
+    tl.fromTo("#c1-wire-b", { strokeDashoffset: 580 }, { strokeDashoffset: 0, duration: 0.6, ease: "power2.inOut" }, 60.55);
+    tl.set("#c1-sig-val", { textContent: "b" }, 61.1);
+    pulse("#c1-sig-val", 61.1);
+    tl.fromTo("#c1-ev-a-cut", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 61.6);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c1-q1", "#c1-q2", "#c1-q3"].forEach((q, i) => fadeIn(q, 63.6 + i * 0.6));
+    fadeIn("#c1-pause-2", 79.6);
+
     window.__timelines["c1"] = tl;
   </script>
 </template>
