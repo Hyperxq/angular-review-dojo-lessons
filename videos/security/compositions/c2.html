@@ -1,0 +1,288 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c2-svg { position: absolute; left: 0; top: 0; }
+    code { font-family: var(--font-code); font-size: 0.92em; }
+    .c2-h { position: absolute; left: 200px; top: 120px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c2-big { position: absolute; left: 200px; top: 300px; width: 1520px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+
+    #c2-who { margin-left: auto; margin-right: 40px; font: 400 32px/1 var(--font-text); color: var(--ink-muted); }
+    #c2-who b { color: var(--ink); }
+    .c2-nav { position: absolute; left: 40px; top: 40px; width: 300px; }
+    .c2-nav div { height: 72px; padding: 0 20px; display: flex; align-items: center; border-radius: 8px; font: 400 34px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-nav div.on { background: var(--paper-sunk); color: var(--ink); font-weight: 700; }
+    .c2-panel { position: absolute; left: 380px; right: 40px; top: 40px; }
+    .c2-panel .label { margin-bottom: 14px; }
+    .c2-row { height: 92px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 400 36px/1 var(--font-text); }
+    .c2-row span { margin-left: auto; font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+
+    .c2-flow .fbox { height: 120px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; padding: 0 24px; }
+    .c2-flow .flabel { height: 80px; display: flex; align-items: flex-end; justify-content: center; }
+    #c2-ss .flabel { justify-content: flex-start; text-align: left; }
+
+    .c2-chip { position: absolute; box-sizing: border-box; padding: 26px 40px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 44px/1 var(--font-code); white-space: nowrap; }
+    .c2-chip.text { font-family: var(--font-text); }
+    #c2-req { position: absolute; left: 200px; top: 300px; width: 1520px; font: 400 40px/1.45 var(--font-text); color: var(--ink-muted); }
+
+    #c2-x-intro { position: absolute; left: 200px; top: 130px; width: 1520px; font: 400 36px/1.4 var(--font-text); color: var(--ink-muted); }
+    #c2-x-intro code { font-size: 33px; }
+    #c2-xlist { position: absolute; left: 160px; top: 220px; width: 1600px; }
+    .c2-item { padding: 14px 24px; margin-bottom: 20px; border-radius: 8px; font: 400 38px/1.45 var(--font-text); display: grid; grid-template-columns: 56px 1fr; }
+    .c2-item > b { color: var(--ink-muted); }
+    .c2-item code { font-size: 35px; white-space: nowrap; }
+    #c2-server { position: absolute; left: 200px; top: 850px; width: 1520px; font: 400 38px/1.45 var(--font-text); }
+
+    #c2-side-p { position: absolute; left: 200px; top: 360px; width: 1520px; font: 400 42px/1.5 var(--font-text); }
+    #c2-allow { font-weight: 700; }
+
+    .c2-table { position: absolute; left: 200px; top: 380px; width: 1520px; display: grid; grid-template-columns: 300px 820px 400px; font: 400 36px/1.35 var(--font-text); }
+    .c2-table > div { display: contents; }
+    .c2-table span { padding: 20px 24px; border-bottom: 1px solid var(--rule); }
+    .c2-table .th span { font: 700 30px/1.3 var(--font-text); color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c2-qlabel { font-weight: 700; }
+
+    .q { font-size: 40px; margin-bottom: 34px; }
+  </style>
+
+  <div id="root" data-composition-id="c2" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c2-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">11:30</div>
+      <div class="chapter-title">Credentials and what leaves the app</div>
+    </div>
+
+    <!-- c2-1: 11:30, the desk at rest, a signed-in member's name in the header -->
+    <div id="c2-desk" class="clip world sunk" data-start="3" data-duration="10.06">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span id="c2-who">Signed in: <b>Ada Brooks</b></span><span class="app-clock">11:30</span></div>
+        <div class="app-body">
+          <div class="c2-nav">
+            <div>Members</div>
+            <div>Catalog</div>
+            <div class="on">Loans</div>
+            <div>Returns</div>
+          </div>
+          <div id="c2-loans" class="c2-panel" data-hold>
+            <div class="label">Loans due this week</div>
+            <div class="c2-row">Dune<span>due Tue</span></div>
+            <div class="c2-row">Kindred<span>due Wed</span></div>
+            <div class="c2-row">Solaris<span>due Thu</span></div>
+            <div class="c2-row">Ubik<span>due Fri</span></div>
+            <div class="c2-row">Hyperion<span>due Sat</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-2: the interceptor flow draws on, the last edge as the accent; c2-3: the Every destination box as the accent -->
+    <div id="c2-ic" class="clip world sunk c2-flow" data-start="13.06" data-duration="20.75">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke-width="4">
+        <path id="c2-ie1" pathLength="1" stroke="#1d1b18" d="M460 300 H900 V500 H982" />
+        <path id="c2-ie2" pathLength="1" stroke="#1d1b18" d="M460 780 H900 V560 H982" />
+        <path id="c2-ie3" pathLength="1" stroke="#1d1b18" d="M1380 530 H1482" />
+        <polygon id="c2-ia1" points="980,488 1000,500 980,512" fill="#1d1b18" stroke="none" />
+        <polygon id="c2-ia2" points="980,548 1000,560 980,572" fill="#1d1b18" stroke="none" />
+        <polygon id="c2-ia3" points="1480,518 1500,530 1480,542" fill="#1d1b18" stroke="none" />
+      </svg>
+      <div id="c2-il1" class="flabel" style="left: 470px; top: 210px; width: 560px">GET a list of books from our API</div>
+      <div id="c2-il2" class="flabel" style="left: 470px; top: 690px; width: 430px">GET tiles from a map vendor</div>
+      <div id="c2-il3" class="flabel" style="left: 1240px; top: 380px; width: 580px">whatever the interceptors add</div>
+      <div id="c2-ib1" class="fbox" style="left: 120px; top: 240px; width: 340px">Catalog page</div>
+      <div id="c2-ib2" class="fbox" style="left: 120px; top: 720px; width: 340px">Branch map widget</div>
+      <div id="c2-ib3" class="fbox" style="left: 1000px; top: 470px; width: 380px">Interceptor chain</div>
+      <div id="c2-ib4" class="fbox" style="left: 1500px; top: 470px; width: 320px" data-hold>Every destination</div>
+    </div>
+
+    <!-- c2-4: the two request options as labels -->
+    <div id="c2-opts" class="clip world" data-start="33.81" data-duration="11.34">
+      <div id="c2-req" data-hold>Request options can widen what the browser sends on its own, too.</div>
+      <div id="c2-o1" class="c2-chip" style="left: 200px; top: 480px">withCredentials: true</div>
+      <div id="c2-o2" class="c2-chip" style="left: 200px; top: 660px" data-hold>credentials: 'include'</div>
+    </div>
+
+    <!-- c2-5: heading, Authorization and Cookie as labels, Cookie as the accent -->
+    <div id="c2-csrf" class="clip world" data-start="45.15" data-duration="10.35">
+      <div id="c2-csrf-h" class="c2-big" data-hold>CSRF and the layers that stop it</div>
+      <div id="c2-auth" class="c2-chip" style="left: 200px; top: 620px">Authorization</div>
+      <div id="c2-cookie" class="c2-chip" style="left: 760px; top: 620px" data-hold>Cookie</div>
+    </div>
+
+    <!-- c2-6: the SameSite flow, first three edges; c2-7: the X-XSRF-TOKEN edge as the accent -->
+    <div id="c2-ss" class="clip world sunk c2-flow" data-start="55.5" data-duration="19.9">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke-width="4">
+        <path id="c2-se1" pathLength="1" stroke="#1d1b18" d="M460 270 H1462" />
+        <path id="c2-se2" pathLength="1" stroke="#1d1b18" d="M460 670 H1462" />
+        <path id="c2-se3" pathLength="1" stroke="#1d1b18" d="M460 820 H1462" />
+        <path id="c2-se4" pathLength="1" stroke="#b8321f" d="M460 420 H1462" />
+        <polygon id="c2-sa1" points="1460,258 1480,270 1460,282" fill="#1d1b18" stroke="none" />
+        <polygon id="c2-sa2" points="1460,658 1480,670 1460,682" fill="#1d1b18" stroke="none" />
+        <polygon id="c2-sa3" points="1460,808 1480,820 1460,832" fill="#1d1b18" stroke="none" />
+        <polygon id="c2-sa4" points="1460,408 1480,420 1460,432" fill="#b8321f" stroke="none" />
+      </svg>
+      <div id="c2-sl1" class="flabel" style="left: 500px; top: 180px; width: 940px">same-site request carries the session cookie</div>
+      <div id="c2-sl2" class="flabel" style="left: 500px; top: 580px; width: 940px">cross-site POST, cookie withheld if SameSite is Lax or Strict</div>
+      <div id="c2-sl3" class="flabel" style="left: 500px; top: 730px; width: 940px">cross-site POST, cookie sent if SameSite is None</div>
+      <div id="c2-sl4" class="flabel" style="left: 500px; top: 330px; width: 940px; color: #b8321f">state-changing request also carries X-XSRF-TOKEN</div>
+      <div id="c2-sb1" class="fbox" style="left: 120px; top: 200px; width: 340px; height: 280px">Library app</div>
+      <div id="c2-sb2" class="fbox" style="left: 120px; top: 600px; width: 340px; height: 280px">Another site</div>
+      <div id="c2-sb3" class="fbox" style="left: 1480px; top: 200px; width: 340px; height: 680px" data-hold>Library API</div>
+    </div>
+
+    <!-- c2-8: Angular's side, the four items one by one; c2-9: the last item banded, the server's part below -->
+    <div id="c2-xsrf" class="clip world" data-start="75.4" data-duration="18.79">
+      <div id="c2-x-intro" data-hold>Angular's side of it, verified in the installed <code>@angular/common</code> source:</div>
+      <div id="c2-xlist" data-hold>
+        <div id="c2-x1" class="c2-item"><b>–</b><span>It is on by default with <code>provideHttpClient()</code>.</span></div>
+        <div id="c2-x2" class="c2-item"><b>–</b><span>It skips <code>GET</code> and <code>HEAD</code>, and skips requests whose URL resolves to another origin than the page.</span></div>
+        <div id="c2-x3" class="c2-item"><b>–</b><span>For the rest it reads the cookie <code>XSRF-TOKEN</code> and copies it into the header <code>X-XSRF-TOKEN</code>, unless the request already has that header.</span></div>
+        <div id="c2-x4" class="c2-item"><b>–</b><span><code>withXsrfConfiguration({ cookieName, headerName })</code> only renames the two; <code>withNoXsrfProtection()</code> removes the defence.</span></div>
+      </div>
+      <div id="c2-server" data-hold>The server sets the cookie and compares it with the header; another site cannot read the cookie, so it cannot produce the header.</div>
+    </div>
+
+    <!-- c2-10: the three layers as labels -->
+    <div id="c2-layers" class="clip world" data-start="94.19" data-duration="5.99">
+      <div id="c2-ly1" class="c2-chip" style="left: 200px; top: 280px">SameSite</div>
+      <div id="c2-ly2" class="c2-chip text" style="left: 200px; top: 460px">XSRF token</div>
+      <div id="c2-ly3" class="c2-chip text" style="left: 200px; top: 640px" data-hold>the server check</div>
+    </div>
+
+    <!-- c2-11: heading "Data that leaves through side doors", allowlist as the accent -->
+    <div id="c2-side" class="clip world" data-start="100.18" data-duration="11.1">
+      <div id="c2-side-h" class="c2-h" data-hold>Data that leaves through side doors</div>
+      <div id="c2-side-p" data-hold>A useful habit is to log and send by <span id="c2-allow">allowlist</span>: name the fields that help someone debug or measure, and send only those, instead of dumping a request or an object and hoping it holds nothing sensitive.</div>
+    </div>
+
+    <!-- c2-12: the question label from chapter 0's table as the accent -->
+    <div id="c2-ask" class="clip world" data-start="111.28" data-duration="9.48">
+      <div id="c2-ask-t" class="c2-table" data-hold>
+        <div class="th"><span>Label</span><span>Meaning</span><span>Merge?</span></div>
+        <div><span id="c2-qlabel">question</span><span>You cannot tell if it is a problem, so you ask for the reason.</span><span>Depends on the answer.</span></div>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c2-questions" class="clip world note" data-start="120.76" data-duration="22.1">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c2-q1" class="q">For each interceptor: which destinations does it touch, and what happens for a destination nobody listed yet?</div>
+        <div id="c2-q2" class="q">If this credential leaked, who would hold it and for how long?</div>
+        <div id="c2-q3" class="q">Which of your defences would still hold if the browser sent cookies cross-site?</div>
+        <div id="c2-q4" class="q">For every log line, event and error report: which fields could hold a credential or personal data? Would you paste this line in a ticket?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c2-pause" class="clip world" data-start="142.86" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c2-pause-2" class="pause-2" data-hold>Now do exercise 02.</div>
+    </div>
+
+    <audio id="c2-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="70" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-bed2" class="clip" src="assets/music/bed.mp3" data-start="120.76" data-duration="22.1" data-media-start="118" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c2-1" class="clip" src="assets/vo/c2-1.wav" data-start="3.0" data-duration="9.707" data-volume="1"></audio>
+    <audio id="vo-c2-2" class="clip" src="assets/vo/c2-2.wav" data-start="13.06" data-duration="9.963" data-volume="1"></audio>
+    <audio id="vo-c2-3" class="clip" src="assets/vo/c2-3.wav" data-start="23.37" data-duration="10.091" data-volume="1"></audio>
+    <audio id="vo-c2-4" class="clip" src="assets/vo/c2-4.wav" data-start="33.81" data-duration="10.987" data-volume="1"></audio>
+    <audio id="vo-c2-5" class="clip" src="assets/vo/c2-5.wav" data-start="45.15" data-duration="10.005" data-volume="1"></audio>
+    <audio id="vo-c2-6" class="clip" src="assets/vo/c2-6.wav" data-start="55.5" data-duration="10.773" data-volume="1"></audio>
+    <audio id="vo-c2-7" class="clip" src="assets/vo/c2-7.wav" data-start="66.63" data-duration="8.427" data-volume="1"></audio>
+    <audio id="vo-c2-8" class="clip" src="assets/vo/c2-8.wav" data-start="75.4" data-duration="9.195" data-volume="1"></audio>
+    <audio id="vo-c2-9" class="clip" src="assets/vo/c2-9.wav" data-start="84.95" data-duration="8.896" data-volume="1"></audio>
+    <audio id="vo-c2-10" class="clip" src="assets/vo/c2-10.wav" data-start="94.19" data-duration="5.632" data-volume="1"></audio>
+    <audio id="vo-c2-11" class="clip" src="assets/vo/c2-11.wav" data-start="100.18" data-duration="10.752" data-volume="1"></audio>
+    <audio id="vo-c2-12" class="clip" src="assets/vo/c2-12.wav" data-start="111.28" data-duration="9.131" data-volume="1"></audio>
+    <audio id="vo-c2-end" class="clip" src="assets/vo/c2-end.wav" data-start="120.76" data-duration="2.027" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const INK = "#1d1b18";
+    const MUTED = "#5f584d";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const drawPath = (sel, at, d = 0.5) =>
+      tl.fromTo(sel, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+    const edge = (path, head, label, at) => {
+      drawPath(path, at, 0.6);
+      fadeIn(head, at + 0.5, 0.2);
+      fadeIn(label, at + 0.15, 0.5);
+    };
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c2-1: the loans panel; the desk stays at rest
+    fadeIn("#c2-loans", 3.1, 0.5);
+
+    // c2-2: requests from two parts of the app pass one chain on their way out
+    fadeIn("#c2-ib1", 13.2, 0.5);
+    fadeIn("#c2-ib3", 13.6, 0.5);
+    edge("#c2-ie1", "#c2-ia1", "#c2-il1", 14.0);
+    fadeIn("#c2-ib2", 18.4, 0.5);
+    edge("#c2-ie2", "#c2-ia2", "#c2-il2", 18.8);
+    fadeIn("#c2-ib4", 20.6, 0.5);
+    edge("#c2-ie3", "#c2-ia3", "#c2-il3", 20.8);
+    tl.fromTo("#c2-il3", { color: MUTED }, { color: ACCENT, duration: 0.3 }, 21.4);
+
+    // c2-3: scope; the accent moves to the destinations box
+    tl.to("#c2-il3", { color: MUTED, duration: 0.3 }, 28.2);
+    tl.fromTo("#c2-ib4", { borderColor: INK, color: INK }, { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 28.4);
+
+    // c2-4: the sentence, then the two options as they are named
+    fadeIn("#c2-req", 34.0, 0.5);
+    fadeIn("#c2-o1", 38.0, 0.5);
+    fadeIn("#c2-o2", 39.6, 0.5);
+
+    // c2-5: the heading, then what the browser attaches on its own
+    fadeIn("#c2-csrf-h", 45.3, 0.5);
+    fadeIn("#c2-cookie", 52.6, 0.5);
+    tl.fromTo("#c2-cookie", { borderColor: "#c4b9a6", color: INK }, { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 52.8);
+    fadeIn("#c2-auth", 53.9, 0.5);
+
+    // c2-6: the boxes, then the first three edges as SameSite is explained
+    fadeIn("#c2-sb1", 55.6, 0.5);
+    fadeIn("#c2-sb2", 55.75, 0.5);
+    fadeIn("#c2-sb3", 55.9, 0.5);
+    edge("#c2-se1", "#c2-sa1", "#c2-sl1", 57.4);
+    edge("#c2-se2", "#c2-sa2", "#c2-sl2", 59.6);
+    edge("#c2-se3", "#c2-sa3", "#c2-sl3", 62.4);
+
+    // c2-7: the XSRF token edge, the accent
+    edge("#c2-se4", "#c2-sa4", "#c2-sl4", 67.0);
+
+    // c2-8: Angular's side, item by item
+    fadeIn("#c2-x-intro", 75.5, 0.5);
+    fadeIn("#c2-x1", 75.8, 0.5);
+    fadeIn("#c2-x2", 77.6, 0.5);
+    fadeIn("#c2-x3", 80.6, 0.5);
+    fadeIn("#c2-x4", 83.6, 0.5);
+
+    // c2-9: the server's half, then the opt-out banded
+    fadeIn("#c2-server", 85.1, 0.5);
+    band("#c2-x4", 90.4);
+
+    // c2-10: the three layers as they are named
+    fadeIn("#c2-ly1", 94.3, 0.5);
+    fadeIn("#c2-ly2", 94.9, 0.5);
+    fadeIn("#c2-ly3", 95.6, 0.5);
+
+    // c2-11: the heading, the habit, then allowlist as the accent
+    fadeIn("#c2-side-h", 100.3, 0.5);
+    fadeIn("#c2-side-p", 102.6, 0.5);
+    tl.fromTo("#c2-allow", { color: INK }, { color: ACCENT, duration: 0.3 }, 107.4);
+
+    // c2-12: the question row, its label as the accent
+    fadeIn("#c2-ask-t", 111.4, 0.5);
+    tl.fromTo("#c2-qlabel", { color: INK }, { color: ACCENT, duration: 0.3 }, 112.0);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c2-q1", "#c2-q2", "#c2-q3", "#c2-q4"].forEach((q, i) => fadeIn(q, 121.0 + i * 0.6));
+    fadeIn("#c2-pause-2", 143.3);
+
+    window.__timelines["c2"] = tl;
+  </script>
+</template>

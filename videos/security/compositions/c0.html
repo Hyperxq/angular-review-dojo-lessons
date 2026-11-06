@@ -1,0 +1,369 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c0-h { position: absolute; left: 140px; top: 84px; width: 1640px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-prose code { font-family: var(--font-code); font-size: 0.9em; }
+    .c0-chip { display: inline-block; padding: 10px 20px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 34px/1 var(--font-code); white-space: nowrap; }
+    .c0-chip.hot { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+
+    /* desk */
+    .c0-page-title { font: 600 52px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-status { position: absolute; left: 40px; top: 130px; display: flex; align-items: center; gap: 18px; }
+    .c0-pill { position: relative; width: 150px; height: 52px; }
+    .c0-pill > span { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 26px; font: 700 30px/1 var(--font-text); }
+    .c0-closed { background: var(--paper-sunk); color: var(--ink-muted); border: 2px solid var(--rule-strong); }
+    .c0-open { background: var(--tip-soft); color: var(--tip); border: 2px solid var(--tip); }
+    .c0-members { position: absolute; left: 40px; top: 230px; width: 760px; }
+    .c0-mem { display: flex; justify-content: space-between; padding: 22px 0; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c0-mem b { font-weight: 700; }
+    .c0-mem span:last-child { color: var(--ink-muted); }
+    .c0-side { position: absolute; left: 880px; top: 230px; width: 680px; }
+    .c0-side .label { margin-bottom: 10px; }
+    .c0-every { padding: 24px 0; border-bottom: 1px solid var(--rule); font: 400 38px/1.3 var(--font-text); }
+    #c0-quote { font: 600 52px/1.2 var(--font-display); letter-spacing: -0.01em; }
+    .c0-clock { position: relative; display: inline-block; }
+    #c0-t9 { position: absolute; right: 0; top: 0; }
+
+    /* tables */
+    .c0-table { position: absolute; left: 120px; width: 1680px; }
+    .c0-tr { display: grid; column-gap: 32px; padding: 20px 24px; border-bottom: 1px solid var(--rule); border-radius: 6px; font: 400 32px/1.35 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c0-tr code { font: 400 28px/1.35 var(--font-code); }
+    .c0-th { font-weight: 700; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c0-lbl-table { top: 220px; }
+    #c0-lbl-table .c0-tr { grid-template-columns: 280px 900px 380px; font-size: 36px; padding-top: 26px; padding-bottom: 26px; }
+
+    /* factors */
+    #c0-f-head { position: absolute; left: 140px; top: 84px; width: 1640px; font: 600 52px/1.2 var(--font-display); letter-spacing: -0.01em; }
+    #c0-f-list { position: absolute; left: 120px; top: 310px; width: 1680px; }
+    .c0-row { display: flex; gap: 28px; padding: 26px 32px; border-bottom: 1px solid var(--rule); border-radius: 6px; font: 400 38px/1.4 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c0-row > span:first-child { flex: none; width: 40px; font-weight: 700; }
+    .c0-row b { font-weight: 700; }
+
+    /* profile page */
+    .c0-field { position: absolute; left: 40px; width: 1040px; }
+    .c0-field .label { margin-bottom: 12px; }
+    .c0-input { padding: 22px 28px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper); font: 400 36px/1.2 var(--font-text); }
+    #c0-name { top: 230px; }
+    #c0-qfield { top: 410px; }
+    #c0-grade6 { position: absolute; left: 1160px; top: 230px; width: 400px; display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+    #c0-moves { position: absolute; left: 40px; top: 620px; width: 1520px; font: 400 36px/1.4 var(--font-text); color: var(--ink-muted); }
+
+    /* worked examples */
+    #c0-ex-head { position: absolute; left: 140px; top: 84px; width: 1640px; font: 600 52px/1.2 var(--font-display); letter-spacing: -0.01em; }
+    #c0-ex-list { position: absolute; left: 120px; top: 300px; width: 1680px; }
+    .c0-ex { display: grid; grid-template-columns: 1300px 260px; column-gap: 40px; padding: 28px 32px; border-bottom: 1px solid var(--rule); font: 400 34px/1.42 var(--font-text); }
+    .c0-ex b { font-weight: 700; }
+    .c0-ex .c0-chip { align-self: start; justify-self: start; }
+
+    /* comments */
+    .c0-cmt { position: absolute; left: 200px; width: 1520px; padding: 36px 44px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); box-shadow: var(--shadow); }
+    .c0-cmt-text { font: 600 56px/1.2 var(--font-display); letter-spacing: -0.01em; }
+    .c0-cmt-text code { font: 400 46px/1.2 var(--font-code); }
+    .c0-cmt-note { margin-top: 18px; font: 400 36px/1.3 var(--font-text); color: var(--ink-muted); }
+    #c0-cmt1 { top: 170px; }
+    #c0-cmt2 { top: 560px; }
+
+    /* what moved: the table is taller than the frame, so it sits in a window and moves up once */
+    #c0-mv-head { top: 176px; }
+    #c0-mv-win { position: absolute; left: 120px; top: 243px; width: 1680px; height: 777px; overflow: hidden; }
+    #c0-mv-table { position: absolute; left: 0; top: 0; width: 1680px; }
+    #c0-mv-table code.c0-nw { white-space: nowrap; }
+    #c0-mv-head .c0-tr, #c0-mv-table .c0-tr { grid-template-columns: 220px 560px 820px; column-gap: 16px; padding: 14px 16px; font-size: 28px; }
+    #c0-mv-chips { position: absolute; left: 1020px; top: 84px; display: flex; gap: 20px; }
+
+    /* security contexts */
+    #c0-ctx-table { top: 190px; }
+    #c0-ctx-table .c0-tr { grid-template-columns: 380px 620px 580px; column-gap: 24px; padding: 18px 20px; font-size: 30px; }
+    #c0-ctx-table .c0-tr code { font-size: 28px; }
+
+    /* interpolation */
+    .c0-interp { position: absolute; left: 200px; }
+    .c0-interp .label { margin-bottom: 18px; }
+    .c0-big { display: inline-block; padding: 28px 40px; border: 1px solid rgb(221 212 197 / 0.7); border-radius: 8px; background: var(--paper-raised); box-shadow: var(--shadow); font: 400 52px/1 var(--font-code); white-space: nowrap; }
+    #c0-in1 { top: 200px; }
+    #c0-in2 { top: 560px; }
+    .c0-pair { display: flex; align-items: center; gap: 36px; }
+    #c0-same { font: 400 34px/1.3 var(--font-text); color: var(--ink-muted); width: 300px; }
+  </style>
+
+  <div id="root" data-composition-id="c0" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c0-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c0-card-time" class="chapter-time">08:55</div>
+      <div id="c0-card-title" class="chapter-title">What moved since Angular 17</div>
+    </div>
+
+    <!-- c0-1, c0-1b: the desk before opening; what every finding gets; the lesson's question -->
+    <div id="c0-desk" class="clip world" data-start="3" data-duration="16.14">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div class="c0-page-title">What moved since Angular 17</div>
+          <div class="c0-status"><span class="label">Desk</span><span id="c0-pill1" class="c0-pill"><span class="c0-closed">Closed</span></span></div>
+          <div id="c0-members" class="c0-members" data-hold>
+            <div class="c0-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div class="c0-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div class="c0-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div class="c0-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+          <div id="c0-every" class="c0-side" data-hold>
+            <div id="c0-every0" class="label">Part 2: for every finding, decide</div>
+            <div id="c0-every1" class="c0-every">how bad it is</div>
+            <div id="c0-every2" class="c0-every">the comment you would leave on the pull request</div>
+          </div>
+          <div id="c0-ask" class="c0-side" data-hold>
+            <div id="c0-ask0" class="label">The question behind all of them</div>
+            <div id="c0-quote">"who outside my team can influence this value, and what can it reach?"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-2: the four labels (LESSON.md table), every row alike -->
+    <div id="c0-labels" class="clip world" data-start="19.14" data-duration="9.04">
+      <div class="c0-h">The dojo uses four labels</div>
+      <div id="c0-lbl-table" class="c0-table" data-hold>
+        <div id="c0-l0" class="c0-tr c0-th"><div>Label</div><div>Meaning</div><div>Merge?</div></div>
+        <div id="c0-l1" class="c0-tr"><div><b>blocking</b></div><div>Wrong behaviour, a security hole, data loss, or something expensive to undo later.</div><div>No, until fixed.</div></div>
+        <div id="c0-l2" class="c0-tr"><div><b>should-fix</b></div><div>A real defect or maintainability cost with a clear fix, not an emergency.</div><div>In this PR or a linked ticket.</div></div>
+        <div id="c0-l3" class="c0-tr"><div><b>nit</b></div><div>Taste or small polish.</div><div>Yes; keep them few.</div></div>
+        <div id="c0-l4" class="c0-tr"><div><b>question</b></div><div>You cannot tell if it is a problem, so you ask for the reason.</div><div>Depends on the answer.</div></div>
+      </div>
+    </div>
+
+    <!-- c0-3, c0-4, c0-5: the three factors; the accent moves down one factor per clip -->
+    <div id="c0-factors" class="clip world" data-start="28.18" data-duration="34.09">
+      <div id="c0-f-head" data-hold>For a security finding, three factors decide the label, and you should be able to say all three in the comment:</div>
+      <div id="c0-f-list" data-hold>
+        <div id="c0-f1" class="c0-row"><span>1.</span><span><b>What the attacker gains.</b> Running code in someone else's session, reading a credential, changing data as someone else, or sending a user somewhere they did not mean to go are serious. Learning a version number is not.</span></div>
+        <div id="c0-f2" class="c0-row"><span>2.</span><span><b>Who can trigger it, against whom.</b> Any anonymous visitor against every user is the worst case. A signed-in member against other members is close behind. Something only the victim can do to themselves, or only an administrator can do, is much narrower.</span></div>
+        <div id="c0-f3" class="c0-row"><span>3.</span><span><b>Whether another layer still holds.</b> If the server rejects the request anyway, or a Content-Security-Policy would stop the script, the finding is real but its impact is smaller.</span></div>
+      </div>
+    </div>
+
+    <!-- c0-6: a member's private settings page with the favourite quote field -->
+    <div id="c0-profile" class="clip world" data-start="62.27" data-duration="9.38">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:57</span></div>
+        <div class="app-body">
+          <div class="c0-page-title">Profile settings</div>
+          <div class="c0-status"><span class="label">Private: only Ada sees this page</span></div>
+          <div id="c0-name" class="c0-field"><div class="label">Name</div><div class="c0-input">Ada Brooks</div></div>
+          <div id="c0-qfield" class="c0-field"><div class="label">Favourite quote</div><div id="c0-qinput" class="c0-input">"So many books, so little time."</div></div>
+          <div id="c0-grade6">
+            <span id="c0-selfxss" class="label">self-XSS</span>
+            <span id="c0-sf" class="c0-chip">should-fix</span>
+          </div>
+          <div id="c0-moves" data-hold>It moves up the moment that field is shown to anyone else, or if another bug lets an attacker write to it.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-7: the lesson's two worked examples; the second one is the shot, blocking is the accent -->
+    <div id="c0-examples" class="clip world" data-start="71.65" data-duration="10.18">
+      <div id="c0-ex-head">Two worked examples from a feature that is not in the exercises, the member's profile page:</div>
+      <div id="c0-ex-list" data-hold>
+        <div id="c0-ex1" class="c0-ex"><div>A member can put markup in their own "favourite quote" field, and it runs only on their own private settings page. The only person who can trigger it is the victim, against themselves (self-XSS). It is a real bug and worth fixing, usually a <b>should-fix</b>, rarely blocking. It moves up the moment that field is shown to anyone else, or if another bug lets an attacker write to it.</div><span class="c0-chip">should-fix</span></div>
+        <div id="c0-ex2" class="c0-ex"><div>An admin search page reflects the search term into the page without escaping, and only administrators can open it. The page is narrow, but the victims are the most powerful accounts, and an attacker only needs an administrator to click a crafted link. Most teams would call that <b>blocking</b>, and say why: "an attacker who gets one admin to open a link runs code with admin rights".</div><span id="c0-blk" class="c0-chip">blocking</span></div>
+      </div>
+    </div>
+
+    <!-- c0-8: the lesson's two example comments, one above the other -->
+    <div id="c0-comments" class="clip world" data-start="81.83" data-duration="8.44">
+      <div id="c0-cmt1" class="c0-cmt">
+        <div class="c0-cmt-text">"Any member can run script in every reader's session"</div>
+        <div id="c0-cmt1-note" class="c0-cmt-note">tells the author why the fix matters</div>
+      </div>
+      <div id="c0-cmt2" class="c0-cmt">
+        <div class="c0-cmt-text">"do not use <code>bypassSecurityTrustHtml</code>"</div>
+        <div id="c0-cmt2-note" class="c0-cmt-note">only tells them what to delete</div>
+      </div>
+    </div>
+
+    <!-- c0-9 to c0-12: what moved since Angular 17 (LESSON.md table), cut in whole, one row banded at a time -->
+    <div id="c0-moved" class="clip world" data-start="90.27" data-duration="38.88">
+      <div class="c0-h">What moved since Angular 17</div>
+      <div id="c0-mv-chips"><span id="c0-ch-a" class="c0-chip">angular</span><span id="c0-ch-b" class="c0-chip">angular#unsafe-bypass</span></div>
+      <div id="c0-mv-head" class="c0-table"><div class="c0-tr c0-th"><div>Area</div><div>Angular 17</div><div>Angular 22.2.2 (verified in the installed package)</div></div></div>
+      <div id="c0-mv-win" data-layout-allow-overflow>
+        <div id="c0-mv-table" class="c0-prose" data-hold>
+          <div id="c0-m1" class="c0-tr"><div>HTTP setup</div><div><code>provideHttpClient(...features)</code> already existed next to <code>HttpClientModule</code>.</div><div><code>provideHttpClient(...)</code> with functional interceptors (<code>withInterceptors([fn])</code>) is the norm. XSRF protection is on by default, as it was in 17; <code>withXsrfConfiguration({ cookieName, headerName })</code> renames it, <code>withNoXsrfProtection()</code> turns it off.</div></div>
+          <div id="c0-m2" class="c0-tr"><div>HTTP backend</div><div><code>XMLHttpRequest</code>.</div><div><code>fetch</code> by default, and request options accept fetch's <code>credentials</code>, <code>referrer</code> and <code>referrerPolicy</code> next to the older <code>withCredentials</code>.</div></div>
+          <div id="c0-m3" class="c0-tr"><div><code>DOCUMENT</code></div><div>Only from <code>@angular/common</code>.</div><div>Exported from <code>@angular/core</code>, re-exported from <code>@angular/common</code>.</div></div>
+          <div id="c0-m4" class="c0-tr"><div>URL sanitizer</div><div>Rewrites unsafe URLs to <code>unsafe:...</code>.</div><div>Rewrites a <code>javascript:</code> URL to <code>unsafe:javascript:...</code> and warns in dev mode.</div></div>
+          <div id="c0-m5" class="c0-tr"><div>Trusted Types</div><div>Supported.</div><div>When the browser supports them, Angular creates two policies: <code>angular</code> for its own sanitized values and <code class="c0-nw">angular#unsafe-bypass</code> for <code>bypassSecurityTrust*</code> HTML, script and resource URL values (style and URL bypasses get no policy). A CSP can allow the first and refuse the second.</div></div>
+          <div id="c0-m6" class="c0-tr"><div>CSP</div><div><code>CSP_NONCE</code> token or <code>ngCspNonce</code> attribute (v16+).</div><div>Same, plus an experimental <code>security.autoCsp</code> option in the application builder that generates a hash-based strict CSP for <code>index.html</code> (default <code>false</code>).</div></div>
+          <div id="c0-m7" class="c0-tr"><div>SSR</div><div><code>@angular/ssr</code> was new.</div><div>The builder's <code>security.allowedHosts</code> limits which hostnames the server application accepts.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-13, c0-14: security contexts (LESSON.md table), cut in whole, one row banded at a time -->
+    <div id="c0-ctx" class="clip world" data-start="129.15" data-duration="21.35">
+      <div class="c0-h">Security contexts</div>
+      <div id="c0-ctx-table" class="c0-table c0-prose" data-hold>
+        <div class="c0-tr c0-th"><div>Context</div><div>Bindings that use it</div><div>What Angular does</div></div>
+        <div id="c0-x1" class="c0-tr"><div><code>HTML</code></div><div><code>[innerHTML]</code>, <code>[outerHTML]</code>, <code>iframe[srcdoc]</code></div><div>Keeps a safe subset of elements and attributes; drops scripts and event handler attributes.</div></div>
+        <div id="c0-x2" class="c0-tr"><div><code>URL</code></div><div><code>a[href]</code>, <code>area[href]</code>, <code>form[action]</code>, <code>[formAction]</code></div><div>Leaves ordinary URLs alone, neutralizes <code>javascript:</code>.</div></div>
+        <div id="c0-x3" class="c0-tr"><div><code>RESOURCE_URL</code></div><div><code>iframe[src]</code>, <code>embed[src]</code>, <code>object[data]</code>, <code>link[href]</code>, <code>base[href]</code></div><div>Refuses anything not explicitly trusted, because the browser loads and runs what these point at.</div></div>
+        <div id="c0-x4" class="c0-tr"><div><code>ATTRIBUTE_NO_BINDING</code></div><div><code>iframe</code> <code>sandbox</code>, <code>allow</code>, <code>allowFullscreen</code>, <code>referrerPolicy</code>, <code>csp</code>, <code>credentialless</code>, <code>fetchPriority</code>; SVG <code>animate</code>/<code>set</code> <code>attributeName</code>, <code>values</code>, <code>to</code>, <code>from</code></div><div>Refuses a binding at all. These attributes change what the element is allowed to do, so they must be static in the template.</div></div>
+      </div>
+    </div>
+
+    <!-- c0-15: interpolation between tags, then inside an attribute -->
+    <div id="c0-interp" class="clip world" data-start="150.5" data-duration="9.75">
+      <div id="c0-in1" class="c0-interp" data-hold>
+        <div class="label">Between tags</div>
+        <div class="c0-big">&lt;p&gt;{{ value }}&lt;/p&gt;</div>
+      </div>
+      <div id="c0-in2" class="c0-interp">
+        <div class="label">Inside an attribute</div>
+        <div class="c0-pair"><span id="c0-in2a" class="c0-big">href="{{ url }}"</span><span id="c0-same">goes through the same sanitizer as</span><span id="c0-in2b" class="c0-big">[href]="url"</span></div>
+      </div>
+    </div>
+
+    <!-- c0-15 end: the desk again; the clock turns to 09:00 and the desk opens -->
+    <div id="c0-desk2" class="clip world" data-start="160.25" data-duration="2.81">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock c0-clock"><span id="c0-t8">08:59</span><span id="c0-t9">09:00</span></span></div>
+        <div class="app-body">
+          <div class="c0-page-title">Members</div>
+          <div class="c0-status"><span class="label">Desk</span><span class="c0-pill"><span id="c0-closed2" class="c0-closed">Closed</span><span id="c0-open2" class="c0-open">Open</span></span></div>
+          <div class="c0-members" data-hold>
+            <div class="c0-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div class="c0-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div class="c0-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div class="c0-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <audio id="c0-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="0" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c0-1" class="clip" src="assets/vo/c0-1.wav" data-start="3.0" data-duration="9.877" data-volume="1"></audio>
+    <audio id="vo-c0-1b" class="clip" src="assets/vo/c0-1b.wav" data-start="13.23" data-duration="5.568" data-volume="1"></audio>
+    <audio id="vo-c0-2" class="clip" src="assets/vo/c0-2.wav" data-start="19.14" data-duration="8.683" data-volume="1"></audio>
+    <audio id="vo-c0-3" class="clip" src="assets/vo/c0-3.wav" data-start="28.18" data-duration="9.984" data-volume="1"></audio>
+    <audio id="vo-c0-4" class="clip" src="assets/vo/c0-4.wav" data-start="38.51" data-duration="11.819" data-volume="1"></audio>
+    <audio id="vo-c0-5" class="clip" src="assets/vo/c0-5.wav" data-start="50.68" data-duration="11.243" data-volume="1"></audio>
+    <audio id="vo-c0-6" class="clip" src="assets/vo/c0-6.wav" data-start="62.27" data-duration="9.024" data-volume="1"></audio>
+    <audio id="vo-c0-7" class="clip" src="assets/vo/c0-7.wav" data-start="71.65" data-duration="9.835" data-volume="1"></audio>
+    <audio id="vo-c0-8" class="clip" src="assets/vo/c0-8.wav" data-start="81.83" data-duration="8.085" data-volume="1"></audio>
+    <audio id="vo-c0-9" class="clip" src="assets/vo/c0-9.wav" data-start="90.27" data-duration="10.155" data-volume="1"></audio>
+    <audio id="vo-c0-10" class="clip" src="assets/vo/c0-10.wav" data-start="100.77" data-duration="8.96" data-volume="1"></audio>
+    <audio id="vo-c0-11" class="clip" src="assets/vo/c0-11.wav" data-start="110.08" data-duration="9.067" data-volume="1"></audio>
+    <audio id="vo-c0-12" class="clip" src="assets/vo/c0-12.wav" data-start="119.5" data-duration="9.301" data-volume="1"></audio>
+    <audio id="vo-c0-13" class="clip" src="assets/vo/c0-13.wav" data-start="129.15" data-duration="10.581" data-volume="1"></audio>
+    <audio id="vo-c0-14" class="clip" src="assets/vo/c0-14.wav" data-start="140.08" data-duration="10.069" data-volume="1"></audio>
+    <audio id="vo-c0-15" class="clip" src="assets/vo/c0-15.wav" data-start="150.5" data-duration="11.563" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "rgba(245, 226, 217, 1)", SOFT0 = "rgba(245, 226, 217, 0)";
+    const ACCENT = "#b8321f", RULE = "#c4b9a6";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+    const DIM = 0.4;
+
+    // chapter card: on screen from frame 0
+
+    // c0-1: members in the queue, the closed desk on "opens at nine", then what every finding gets
+    tl.fromTo("#c0-members .c0-mem", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.15 }, 3.3);
+    fadeIn("#c0-pill1", 4.6);
+    fadeIn("#c0-every0", 6.6);
+    fadeIn("#c0-every1", 8.2);
+    fadeIn("#c0-every2", 10.5);
+
+    // c0-1b: the side column gives way to the lesson's question, on "who outside my team"
+    fadeOut("#c0-every", 13.25, 0.3);
+    fadeIn("#c0-ask0", 13.6);
+    fadeIn("#c0-quote", 15.7, 0.6);
+
+    // c0-2: header, then the rows one by one, all alike; question on "A question"
+    fadeIn("#c0-l0", 19.3, 0.4);
+    fadeIn("#c0-l1", 21.36);
+    fadeIn("#c0-l2", 22.3);
+    fadeIn("#c0-l3", 23.2);
+    fadeIn("#c0-l4", 24.09);
+
+    // c0-3: the sentence, the three factors dimmed, then factor one on "First"; a read factor stays at full strength
+    fadeIn("#c0-f-head", 28.3, 0.6);
+    tl.fromTo(["#c0-f1", "#c0-f2", "#c0-f3"], { opacity: 0 }, { opacity: DIM, duration: 0.5, ease: "power3.out", stagger: 0.15 }, 29.0);
+    tl.to("#c0-f1", { opacity: 1, duration: 0.4, ease: "power2.inOut" }, 30.93);
+    band("#c0-f1", 30.93);
+
+    // c0-4: factor two on "Second"
+    unband("#c0-f1", 38.6);
+    tl.to("#c0-f2", { opacity: 1, duration: 0.4, ease: "power2.inOut" }, 38.6);
+    band("#c0-f2", 38.6);
+
+    // c0-5: factor three on "Third"
+    unband("#c0-f2", 50.75);
+    tl.to("#c0-f3", { opacity: 1, duration: 0.4, ease: "power2.inOut" }, 50.75);
+    band("#c0-f3", 50.75);
+
+    // c0-6: the quote field on "markup in their own quote", self-XSS, should-fix, then what moves it up
+    tl.fromTo("#c0-qinput", { borderColor: RULE }, { borderColor: ACCENT, duration: 0.4, ease: "power2.inOut" }, 64.33);
+    fadeIn("#c0-selfxss", 65.6);
+    fadeIn("#c0-sf", 67.48);
+    fadeIn("#c0-moves", 68.85);
+
+    // c0-7: the first example stays back; the second is read; blocking lands on "blocking"
+    tl.fromTo("#c0-ex1", { opacity: 0 }, { opacity: DIM, duration: 0.5, ease: "power3.out" }, 71.8);
+    fadeIn("#c0-ex2", 72.0);
+    tl.fromTo("#c0-blk", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out" }, 72.0);
+    tl.to("#c0-blk", { borderColor: ACCENT, backgroundColor: SOFT, color: ACCENT, duration: 0.4, ease: "power2.inOut" }, 79.9);
+
+    // c0-8: both comments cut in; the first becomes the accent on "Saying any member"
+    tl.fromTo("#c0-cmt1", { borderColor: RULE }, { borderColor: ACCENT, duration: 0.4, ease: "power2.inOut" }, 84.41);
+    fadeIn("#c0-cmt1-note", 87.83);
+    fadeIn("#c0-cmt2-note", 88.0);
+
+    // c0-10: HTTP setup on "Functional interceptors", then HTTP backend on "the default HTTP backend"
+    band("#c0-m1", 100.9);
+    unband("#c0-m1", 106.8);
+    band("#c0-m2", 106.8);
+
+    // c0-11: the rows move up once, by exactly the first two rows, under the fixed header; Trusted Types banded; the two policy names
+    unband("#c0-m2", 110.15);
+    tl.to("#c0-mv-table", { y: -361, duration: 0.8, ease: "power2.inOut" }, 110.15);
+    band("#c0-m5", 110.9);
+    fadeIn("#c0-ch-b", 111.5);
+    fadeIn("#c0-ch-a", 116.6);
+
+    // c0-12: CSP on "auto CSP", then SSR on "allowed Hosts"
+    unband("#c0-m5", 119.6);
+    band("#c0-m6", 119.6);
+    unband("#c0-m6", 124.63);
+    band("#c0-m7", 124.63);
+
+    // c0-13: HTML on "HTML bindings", then URL on "URL bindings"
+    band("#c0-x1", 131.89);
+    unband("#c0-x1", 136.34);
+    band("#c0-x2", 136.34);
+
+    // c0-14: RESOURCE_URL on "Resource URL", then ATTRIBUTE_NO_BINDING on "Attributes like"
+    unband("#c0-x2", 140.2);
+    band("#c0-x3", 140.2);
+    unband("#c0-x3", 146.79);
+    band("#c0-x4", 146.79);
+
+    // c0-15: between tags first; inside an attribute on "Inside an attribute"; [href] on "bracket binding"
+    fadeIn("#c0-in1", 150.6);
+    fadeIn("#c0-in2", 155.98);
+    tl.fromTo(["#c0-same", "#c0-in2b"], { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.15 }, 158.2);
+
+    // c0-15 end: the clock turns to 09:00 and the desk opens on "Then the desk opens"
+    fadeOut("#c0-t8", 161.55, 0.2);
+    fadeIn("#c0-t9", 161.65, 0.3);
+    fadeOut("#c0-closed2", 161.85, 0.3);
+    fadeIn("#c0-open2", 161.95);
+
+    window.__timelines["c0"] = tl;
+  </script>
+</template>

@@ -1,0 +1,299 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    code { font-family: var(--font-code); font-size: 0.92em; }
+    .c3-h { position: absolute; left: 200px; top: 110px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+
+    .c3-nav { position: absolute; left: 40px; top: 40px; width: 300px; }
+    .c3-nav div { height: 72px; padding: 0 20px; display: flex; align-items: center; border-radius: 8px; font: 400 34px/1 var(--font-text); color: var(--ink-muted); }
+    .c3-nav div.on { background: var(--paper-sunk); color: var(--ink); font-weight: 700; }
+    .c3-panel { position: absolute; left: 380px; right: 40px; top: 40px; }
+    .c3-panel .label { margin-bottom: 14px; }
+    .c3-row { height: 92px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 400 36px/1 var(--font-text); }
+    .c3-row span { margin-left: auto; font: 400 30px/1 var(--font-text); color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+
+    #c3-sinks { position: absolute; left: 160px; top: 240px; width: 1600px; }
+    .c3-item { padding: 10px 24px; margin-bottom: 18px; border-radius: 8px; font: 400 38px/1.45 var(--font-text); display: grid; grid-template-columns: 56px 1fr; }
+    .c3-item > b { color: var(--ink-muted); }
+    .c3-item code { font-size: 35px; }
+    #c3-proof { position: absolute; left: 200px; top: 880px; width: 1520px; font: 400 38px/1.45 var(--font-text); color: var(--ink-muted); }
+
+    .c3-code { left: 104px; width: 1712px; box-sizing: border-box; padding: 32px 44px; font-size: 30px; line-height: 45px; }
+    .c3-code .ln { position: relative; min-height: 45px; }
+    .c3-code.small { font-size: 28px; line-height: 42px; }
+    .c3-code.small .ln { min-height: 42px; }
+    .c3-code.big { padding: 40px 48px; font-size: 34px; line-height: 51px; }
+    .c3-code.big .ln { min-height: 51px; }
+    .c3-wrap { white-space: pre-wrap !important; padding-left: 4ch; text-indent: -4ch; }
+    .c3-mark { border-radius: 4px; }
+    #c3-tband { position: absolute; left: 0; right: 0; top: 32px; height: 45px; background: var(--accent-soft); }
+    #c3-caveat { position: absolute; left: 104px; top: 890px; width: 1712px; font: 400 30px/1.4 var(--font-text); color: var(--ink-muted); }
+    #c3-caveat code { font-size: 28px; }
+
+    #c3-ctx-p { position: absolute; left: 200px; top: 260px; width: 1520px; font: 400 44px/1.55 var(--font-text); }
+    #c3-ctx-p span { border-radius: 4px; }
+    #c3-ctx-p code { font-size: 40px; }
+
+    .c3-table { position: absolute; left: 200px; top: 220px; width: 1520px; display: grid; grid-template-columns: 640px 880px; font: 400 38px/1.4 var(--font-text); }
+    .c3-table > div { display: contents; }
+    .c3-table span { padding: 22px 24px; border-bottom: 1px solid var(--rule); }
+    .c3-table code { font: 400 34px/1.4 var(--font-code); }
+    .c3-table .th span { font: 700 30px/1.3 var(--font-text); color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c3-srv { position: absolute; left: 200px; top: 800px; width: 1520px; font: 400 40px/1.45 var(--font-text); }
+
+    .c3-out { position: absolute; left: 200px; top: 290px; width: 1520px; font: 400 40px/1.5 var(--font-text); }
+    .c3-out p + p { margin-top: 36px; }
+    .c3-out code { font-size: 36px; }
+    .c3-chip { position: absolute; box-sizing: border-box; padding: 22px 36px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 40px/1 var(--font-code); white-space: nowrap; }
+
+    .q { font-size: 40px; margin-bottom: 30px; }
+
+    #c3-after-title { position: absolute; left: 200px; top: 130px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+    #c3-after-p { position: absolute; left: 200px; top: 300px; width: 1520px; font: 400 42px/1.5 var(--font-text); }
+    #c3-after-p span { border-radius: 4px; }
+    #c3-after-p code { font-size: 38px; }
+    #c3-closed { position: absolute; left: 80px; top: 280px; font: 600 88px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c3-lights { position: absolute; inset: 0; background: var(--ink); }
+  </style>
+
+  <div id="root" data-composition-id="c3" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c3-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">15:00</div>
+      <div class="chapter-title">Building markup from text</div>
+    </div>
+
+    <!-- c3-1: 15:00, the desk at rest -->
+    <div id="c3-desk" class="clip world sunk" data-start="3" data-duration="10.48">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">15:00</span></div>
+        <div class="app-body">
+          <div class="c3-nav">
+            <div>Members</div>
+            <div>Catalogue</div>
+            <div class="on">Shelves</div>
+            <div>Returns</div>
+          </div>
+          <div id="c3-shelves" class="c3-panel" data-hold>
+            <div class="label">Shelves · east wing</div>
+            <div class="c3-row">Science fiction<span>412 books</span></div>
+            <div class="c3-row">History<span>298 books</span></div>
+            <div class="c3-row">Poetry<span>131 books</span></div>
+            <div class="c3-row">Cookery<span>87 books</span></div>
+            <div class="c3-row">Travel<span>164 books</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3-2: heading and the first two sinks; c3-3: the last two, then what each hit needs -->
+    <div id="c3-unguarded" class="clip world" data-start="13.48" data-duration="20.37">
+      <div id="c3-sinks-h" class="c3-h" data-hold>The sinks Angular does not guard</div>
+      <div id="c3-sinks" data-hold>
+        <div id="c3-s1" class="c3-item"><b>–</b><span>DOM APIs called directly: <code>insertAdjacentHTML</code>, <code>outerHTML</code>, <code>document.write</code>, and the <code>innerHTML</code> property of an element reached through <code>ElementRef</code> or <code>document</code>;</span></div>
+        <div id="c3-s2" class="c3-item"><b>–</b><span><code>Renderer2.setProperty(el, 'innerHTML', ...)</code>, which forwards to the DOM;</span></div>
+        <div id="c3-s3" class="c3-item"><b>–</b><span>a third-party widget whose API takes an HTML string (a chart tooltip formatter, a rich-text editor's <code>setContent</code>);</span></div>
+        <div id="c3-s4" class="c3-item"><b>–</b><span>template strings compiled at runtime (see "What Angular does not protect you from" below).</span></div>
+      </div>
+      <div id="c3-proof" data-hold>Each hit in a review needs to show that the string is constant or already safe for the place it is written to.</div>
+    </div>
+
+    <!-- c3-4: splitByTerm, then its template with the @if line banded; the lesson's caveat as a caption -->
+    <div id="c3-split" class="clip world" data-start="33.85" data-duration="10.66">
+      <div id="c3-fn" class="code c3-code small" style="top: 64px" data-hold>
+        <span class="ln"><span class="k">interface</span> Part { text: <span class="k">string</span>; match: <span class="k">boolean</span> }</span>
+        <span class="ln"></span>
+        <span class="ln"><span class="k">function</span> splitByTerm(title: <span class="k">string</span>, term: <span class="k">string</span>): Part[] {</span>
+        <span class="ln">  <span class="k">if</span> (!term) <span class="k">return</span> [{ text: title, match: <span class="k">false</span> }];</span>
+        <span class="ln">  <span class="k">const</span> literal = term.replace(<span class="s">/[.*+?^${}()|[\]\\]/g</span>, <span class="s">'\\$&amp;'</span>);</span>
+        <span class="ln">  <span class="k">return</span> title</span>
+        <span class="ln">    .split(<span class="k">new</span> RegExp(<span class="s">`(${literal})`</span>, <span class="s">'gi'</span>)) <span class="c">// odd indexes are the matches</span></span>
+        <span class="ln">    .filter(text =&gt; text !== <span class="s">''</span>)</span>
+        <span class="ln">    .map((text, i) =&gt; ({ text, match: i % <span class="n">2</span> === <span class="n">1</span> }));</span>
+        <span class="ln">}</span>
+      </div>
+      <div id="c3-tpl" class="code c3-code" style="top: 584px" data-hold>
+        <div id="c3-tband"></div>
+        <span class="ln">&lt;h3&gt;</span>
+        <span class="ln">  <span class="k">@for</span> (part of parts(); track $index) {</span>
+        <span class="ln">    <span class="k">@if</span> (part.match) { &lt;mark&gt;{{ part.text }}&lt;/mark&gt; } <span class="k">@else</span> { {{ part.text }} }</span>
+        <span class="ln">  }</span>
+        <span class="ln">&lt;/h3&gt;</span>
+      </div>
+      <div id="c3-caveat" data-hold>(The <code>filter</code> above shifts indexes when the title starts with a match; in real code, compute <code>match</code> before filtering. The point here is the shape: text in, data out, markup in the template.)</div>
+    </div>
+
+    <!-- c3-5: escapeHtml and tooltip, band on escapeHtml(shelf.name); c3-6: the band moves to <b> -->
+    <div id="c3-escape" class="clip world" data-start="44.51" data-duration="19.19">
+      <div class="code c3-code big" style="top: 230px" data-hold>
+        <span class="ln"><span class="k">const</span> escapeHtml = (text: <span class="k">string</span>) =&gt;</span>
+        <span class="ln">  text</span>
+        <span class="ln">    .replace(<span class="s">/&amp;/g</span>, <span class="s">'&amp;amp;'</span>)</span>
+        <span class="ln">    .replace(<span class="s">/&lt;/g</span>, <span class="s">'&amp;lt;'</span>)</span>
+        <span class="ln">    .replace(<span class="s">/&gt;/g</span>, <span class="s">'&amp;gt;'</span>)</span>
+        <span class="ln">    .replace(<span class="s">/"/g</span>, <span class="s">'&amp;quot;'</span>)</span>
+        <span class="ln">    .replace(<span class="s">/'/g</span>, <span class="s">'&amp;#39;'</span>);</span>
+        <span class="ln"></span>
+        <span class="ln c3-wrap"><span class="k">const</span> tooltip = (shelf: Shelf) =&gt; <span class="s">`<span id="c3-btag" class="c3-mark">&lt;b&gt;</span>${<span id="c3-esc" class="c3-mark">escapeHtml(shelf.name)</span>}&lt;/b&gt;&lt;br&gt;${shelf.bookCount} books`</span>;</span>
+      </div>
+    </div>
+
+    <!-- c3-7: "Escape for the context you write into", the URL part banded -->
+    <div id="c3-ctx" class="clip world" data-start="63.7" data-duration="7.44">
+      <div id="c3-ctx-p" data-hold>"Escape for the context you write into" is the general rule. Element content needs <code>&lt;</code> and <code>&amp;</code> escaped; an attribute value also needs the quote character that delimits it (<code>"</code> or <code>'</code>); <span id="c3-url">a URL needs more than escaping, namely an allowlist of the schemes your feature needs, because an escaped <code>javascript:</code> is still <code>javascript:</code>.</span></div>
+    </div>
+
+    <!-- c3-8: "Where the value goes / Tool", cut in whole; the server's part below -->
+    <div id="c3-urls" class="clip world" data-start="71.14" data-duration="7.9">
+      <div id="c3-urls-t" class="c3-table" data-hold>
+        <div class="th"><span>Where the value goes</span><span>Tool</span></div>
+        <div><span>A query parameter</span><span><code>HttpClient</code>'s <code>params</code> option, <code>HttpParams</code>, or <code>URLSearchParams</code></span></div>
+        <div><span>A path segment</span><span><code>encodeURIComponent</code></span></div>
+        <div><span>A whole URL that came from someone else</span><span>parse it with <code>URL</code> and check it (chapter 1)</span></div>
+      </div>
+      <div id="c3-srv" data-hold>The server has to check the same values: the client is never the only defence.</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c3-questions" class="clip world note" data-start="79.04" data-duration="22.4">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c3-q1" class="q">For each place text becomes markup: is the text escaped for the context it is written into, and before any tags are added?</div>
+        <div id="c3-q2" class="q">Which writes to the DOM happen outside a template binding?</div>
+        <div id="c3-q3" class="q">Could this feature return data and let the template render it?</div>
+        <div id="c3-q4" class="q">Who outside your team can produce the text that reaches this sink?</div>
+        <div id="c3-q5" class="q">If one of these defences failed, what would the next layer catch?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c3-pause" class="clip world" data-start="101.44" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c3-pause-2" class="pause-2" data-hold>Now do exercise 03.</div>
+    </div>
+
+    <!-- c3-out .. c3-outd: "What Angular does not protect you from", one item at a time (third and fourth together) -->
+    <div id="c3-outside" class="clip world" data-start="104.94" data-duration="41.13">
+      <div id="c3-out-h" class="c3-h" data-hold>What Angular does not protect you from</div>
+      <div id="c3-o1" class="c3-out"><p><b>Route guards and hidden buttons are user experience, not authorization.</b> Anyone can call the API without the UI. The server decides who may read or change what; a <code>canActivate</code> only decides what the app shows.</p></div>
+      <div id="c3-o2" class="c3-out"><p><b>Never build templates from user input.</b> Compiling a template string at runtime that includes user data lets that data run as Angular template code, and the sanitizer cannot help, because the attacker wrote the template. This is the first rule in the Angular security guide.</p></div>
+      <div id="c3-o34" class="c3-out">
+        <p id="c3-o3"><b>Everything in the bundle is public.</b> Keys in <code>environment.ts</code>, feature flags that hide admin screens, and internal URLs are all readable by anyone who opens the developer tools. Secrets belong on a server.</p>
+        <p id="c3-o4"><b>Third-party scripts and dependencies run with the page's full privileges.</b> An analytics snippet or a compromised package can read the DOM, tokens in storage and every request. The sanitizer does nothing for code you included on purpose; review new dependencies and scripts like code your team wrote, and use a CSP to limit where scripts come from.</p>
+      </div>
+      <div id="c3-o5" class="c3-out" data-hold><p><b>Server rendering can put private data into the HTML.</b> The HTTP transfer cache serializes server responses into the page. By default it skips requests with auth headers or credentials; options such as <code>includeRequestsWithAuthHeaders</code> turn that off and write those responses into the page source. <code>security.allowedHosts</code> protects the server from forged hostnames; it does not decide what the page contains.</p></div>
+      <div id="c3-o5-chip" class="c3-chip" style="left: 200px; top: 720px" data-hold>includeRequestsWithAuthHeaders</div>
+    </div>
+
+    <!-- c3-after, c3-afterb: the "After the lesson" card, its last sentence banded -->
+    <div id="c3-after" class="clip world" data-start="146.07" data-duration="15.63">
+      <div id="c3-after-title">After the lesson</div>
+      <div id="c3-after-p" data-hold><span id="c3-a1">For each exercise, write your list of findings before you open anything on the <code>solutions</code> branch, with a severity on each and one line saying what the attacker gains, who can trigger it and which other layer still holds.</span> <span id="c3-a2">Then compare with <code>SOLUTION.md</code>. Where your label differs, work out which of the three factors you weighed differently.</span> <span id="c3-a3">Rewrite your own comment until it states the impact, the fix and anything you would not block on, in a few sentences.</span></div>
+    </div>
+
+    <!-- c3-close: 18:00, the desk closes, lights down to the end -->
+    <div id="c3-close" class="clip world" data-start="161.7" data-duration="5.97">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock" style="color: var(--accent)">18:00</span></div>
+        <div class="app-body">
+          <div id="c3-closed">Opens again at 09:00</div>
+        </div>
+      </div>
+      <div id="c3-lights" data-hold></div>
+    </div>
+
+    <audio id="c3-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="88" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c3-bed2" class="clip" src="assets/music/bed.mp3" data-start="79.04" data-duration="22.4" data-media-start="134" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c3-1" class="clip" src="assets/vo/c3-1.wav" data-start="3.0" data-duration="10.133" data-volume="1"></audio>
+    <audio id="vo-c3-2" class="clip" src="assets/vo/c3-2.wav" data-start="13.48" data-duration="10.155" data-volume="1"></audio>
+    <audio id="vo-c3-3" class="clip" src="assets/vo/c3-3.wav" data-start="23.99" data-duration="9.515" data-volume="1"></audio>
+    <audio id="vo-c3-4" class="clip" src="assets/vo/c3-4.wav" data-start="33.85" data-duration="10.304" data-volume="1"></audio>
+    <audio id="vo-c3-5" class="clip" src="assets/vo/c3-5.wav" data-start="44.51" data-duration="8.896" data-volume="1"></audio>
+    <audio id="vo-c3-6" class="clip" src="assets/vo/c3-6.wav" data-start="53.75" data-duration="9.6" data-volume="1"></audio>
+    <audio id="vo-c3-7" class="clip" src="assets/vo/c3-7.wav" data-start="63.7" data-duration="7.083" data-volume="1"></audio>
+    <audio id="vo-c3-8" class="clip" src="assets/vo/c3-8.wav" data-start="71.14" data-duration="7.552" data-volume="1"></audio>
+    <audio id="vo-c3-end" class="clip" src="assets/vo/c3-end.wav" data-start="79.04" data-duration="2.197" data-volume="1"></audio>
+    <audio id="vo-c3-out" class="clip" src="assets/vo/c3-out.wav" data-start="105.29" data-duration="9.835" data-volume="1"></audio>
+    <audio id="vo-c3-outb" class="clip" src="assets/vo/c3-outb.wav" data-start="115.47" data-duration="6.976" data-volume="1"></audio>
+    <audio id="vo-c3-outc" class="clip" src="assets/vo/c3-outc.wav" data-start="122.8" data-duration="10.709" data-volume="1"></audio>
+    <audio id="vo-c3-outd" class="clip" src="assets/vo/c3-outd.wav" data-start="133.86" data-duration="11.861" data-volume="1"></audio>
+    <audio id="vo-c3-after" class="clip" src="assets/vo/c3-after.wav" data-start="146.07" data-duration="9.451" data-volume="1"></audio>
+    <audio id="vo-c3-afterb" class="clip" src="assets/vo/c3-afterb.wav" data-start="155.87" data-duration="5.483" data-volume="1"></audio>
+    <audio id="vo-c3-close" class="clip" src="assets/vo/c3-close.wav" data-start="161.7" data-duration="4.971" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: CLEAR, duration: 0.4 }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c3-1: the shelves panel; the desk stays at rest
+    fadeIn("#c3-shelves", 3.1, 0.5);
+
+    // c3-2: the heading, then the sinks as they are named
+    fadeIn("#c3-sinks-h", 13.6, 0.5);
+    fadeIn("#c3-s1", 14.4, 0.5);
+    fadeIn("#c3-s2", 21.6, 0.5);
+
+    // c3-3: widgets, runtime templates, then what each hit needs
+    fadeIn("#c3-s3", 24.1, 0.5);
+    fadeIn("#c3-s4", 27.8, 0.5);
+    fadeIn("#c3-proof", 28.6, 0.5);
+
+    // c3-4: the function cut in whole, then the template and its banded @if line, then the caveat
+    fadeIn("#c3-fn", 33.95, 0.4);
+    fadeIn("#c3-tpl", 38.6, 0.5);
+    tl.fromTo("#c3-tband", { opacity: 0, y: 2 * 45 }, { opacity: 1, duration: 0.3 }, 39.4);
+    fadeIn("#c3-caveat", 40.0, 0.5);
+
+    // c3-5: the code cut in whole, the band on escapeHtml(shelf.name)
+    band("#c3-esc", 47.6);
+
+    // c3-6: escaping afterwards would escape this tag; the band moves to it
+    unband("#c3-esc", 55.6);
+    band("#c3-btag", 55.6);
+
+    // c3-7: the rule, its URL part banded
+    band("#c3-url", 64.2);
+
+    // c3-8: the table cut in whole, then the server's part
+    fadeIn("#c3-srv", 74.8, 0.5);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c3-q1", "#c3-q2", "#c3-q3", "#c3-q4", "#c3-q5"].forEach((q, i) => fadeIn(q, 79.3 + i * 0.6));
+    fadeIn("#c3-pause-2", 101.9);
+
+    // outside the sanitizer: the heading, then one item at a time
+    fadeIn("#c3-out-h", 105.0, 0.5);
+    fadeIn("#c3-o1", 105.6, 0.5);
+    fadeOut("#c3-o1", 115.3, 0.3);
+    fadeIn("#c3-o2", 115.6, 0.5);
+    fadeOut("#c3-o2", 122.6, 0.3);
+    tl.fromTo("#c3-o34", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 122.9);
+    fadeIn("#c3-o3", 122.9, 0.5);
+    fadeIn("#c3-o4", 127.7, 0.5);
+    fadeOut("#c3-o34", 133.7, 0.3);
+    fadeIn("#c3-o5", 134.0, 0.5);
+    fadeIn("#c3-o5-chip", 142.2, 0.5);
+
+    // after the lesson: write, compare, then the last sentence banded
+    fadeIn("#c3-after-title", 146.15, 0.4);
+    fadeIn("#c3-a1", 146.4, 0.4);
+    fadeIn("#c3-a2", 151.6, 0.4);
+    fadeIn("#c3-a3", 155.95, 0.4);
+    band("#c3-a3", 156.1);
+
+    // close: 18:00, the lights go down and stay down to the last frame
+    fadeIn("#c3-closed", 161.9);
+    tl.fromTo("#c3-lights", { opacity: 0 }, { opacity: 0.62, duration: 2.6, ease: "power2.inOut" }, 164.4);
+
+    window.__timelines["c3"] = tl;
+  </script>
+</template>

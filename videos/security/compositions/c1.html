@@ -1,0 +1,294 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c1-h { position: absolute; left: 140px; top: 84px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c1-h code { font: 600 50px/1 var(--font-code); }
+    .c1-chip { position: absolute; padding: 14px 24px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 400 34px/1 var(--font-code); white-space: nowrap; }
+    .c1-chip.txt { font: 400 34px/1 var(--font-text); }
+    .c1-chip.hot { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); font-weight: 700; }
+    .c1-word { position: absolute; padding: 14px 24px; border: 2px solid var(--ink); border-radius: 8px; background: var(--paper-raised); font: 700 44px/1 var(--font-text); white-space: nowrap; }
+    .c1-code { padding: 40px; font-size: 28px; }
+    .c1-code .ln { margin: 0 -40px; padding: 0 40px; background-color: rgba(245, 226, 217, 0); }
+    .c1-li { padding: 6px 0 6px 32px; border-left: 6px solid var(--rule-strong); margin-bottom: 30px; font: 400 40px/1.35 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c1-li code { font: 400 36px/1 var(--font-code); }
+
+    /* desk app at rest */
+    .c1-panel-h { font: 600 48px/1.1 var(--font-display); letter-spacing: -0.01em; margin-bottom: 24px; }
+    .c1-ret { display: grid; grid-template-columns: 560px 1fr 260px; align-items: center; height: 92px; padding: 0 24px; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c1-ret b { font-weight: 700; }
+    .c1-ret span:nth-child(2) { color: var(--ink-muted); }
+    .c1-ret span:last-child { color: var(--ink-muted); font-variant-numeric: tabular-nums; text-align: right; }
+
+    /* flow diagram from LESSON.md */
+    .c1-flow .fbox { height: 140px; padding: 20px 30px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .c1-flow .flabel { width: 240px; }
+    .c1-flow .flabel.hot { color: var(--accent); font-weight: 700; }
+
+    .c1-big { position: absolute; left: 140px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; color: var(--accent); }
+    .c1-quote { position: absolute; left: 140px; font: 400 40px/1.35 var(--font-text); color: var(--ink-muted); }
+
+    #c1-questions .q { font-size: 40px; }
+  </style>
+
+  <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c1-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c1-card-time" class="chapter-time">09:00</div>
+      <div id="c1-card-title" class="chapter-title">Trust boundaries and the sanitizer</div>
+    </div>
+
+    <!-- c1-1 desk at rest, source and sink; c1-2 the desk leaves, the two labels joined -->
+    <div id="c1-src" class="clip world" data-start="3" data-duration="18.17">
+      <div id="c1-app" class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-panel-h">Returns due today</div>
+          <div data-hold>
+          <div class="c1-ret"><span><b>Persuasion</b></span><span>Ada Brooks</span><span>shelf B4</span></div>
+          <div class="c1-ret"><span><b>Walden</b></span><span>Tom Okafor</span><span>shelf D1</span></div>
+          <div class="c1-ret"><span><b>Cranford</b></span><span>Mei Lin</span><span>shelf B2</span></div>
+          <div class="c1-ret"><span><b>Ivanhoe</b></span><span>Sara Diaz</span><span>shelf F3</span></div>
+          </div>
+        </div>
+      </div>
+      <div id="c1-pair" style="position: absolute; left: 0; top: 0; width: 1920px; height: 1080px">
+        <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+          <path id="c1-join" d="M470,798 H1370" stroke="#1d1b18" stroke-width="4" fill="none" pathLength="1" stroke-dasharray="1" />
+          <path id="c1-tick" d="M925,744 V852" stroke="#b8321f" stroke-width="6" fill="none" pathLength="1" stroke-dasharray="1" />
+        </svg>
+        <div id="c1-source" class="c1-word" style="left: 240px; top: 760px">source</div>
+        <div id="c1-sink" class="c1-word" style="left: 1400px; top: 760px">sink</div>
+        <div id="c1-tb" style="position: absolute; left: 625px; top: 676px; width: 600px; text-align: center; font: 700 44px/1 var(--font-text); color: var(--accent)" data-hold>trust boundary</div>
+      </div>
+    </div>
+
+    <!-- c1-3 the lesson's flow, boxes drawing on -->
+    <div id="c1-flow" class="clip world sunk c1-flow" data-start="21.17" data-duration="11.02">
+      <svg style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <g stroke="#1d1b18" stroke-width="4" fill="none">
+          <path id="c1-f1" d="M560,290 H782" pathLength="1" stroke-dasharray="1" />
+          <path id="c1-f2" d="M1000,290 H1222" pathLength="1" stroke-dasharray="1" />
+          <path id="c1-f3" d="M1440,360 V500 H340 V622" pathLength="1" stroke-dasharray="1" />
+          <path id="c1-f4" d="M560,710 H1222" stroke="#b8321f" pathLength="1" stroke-dasharray="1" />
+        </g>
+        <polygon id="c1-fa1" points="780,278 800,290 780,302" fill="#1d1b18" />
+        <polygon id="c1-fa2" points="1220,278 1240,290 1220,302" fill="#1d1b18" />
+        <polygon id="c1-fa3" points="328,620 340,640 352,620" fill="#1d1b18" />
+        <polygon id="c1-fa4" points="1220,698 1240,710 1220,722" fill="#b8321f" />
+      </svg>
+      <div id="c1-fl1" class="flabel" style="left: 560px; bottom: 806px">stored as a string</div>
+      <div id="c1-fl2" class="flabel" style="left: 1000px; bottom: 806px">shown to every visitor</div>
+      <div id="c1-fl3" class="flabel" style="left: 590px; bottom: 596px; width: 600px">iframe src uses RESOURCE_URL</div>
+      <div id="c1-fl4" class="flabel hot" style="left: 570px; bottom: 386px; width: 640px">refused unless something vouched for it</div>
+      <div id="c1-fb1" class="fbox" style="left: 120px; top: 220px; width: 440px">Member pastes a video link</div>
+      <div id="c1-fb2" class="fbox" style="left: 800px; top: 220px; width: 200px">API</div>
+      <div id="c1-fb3" class="fbox" style="left: 1240px; top: 220px; width: 400px">Public profile</div>
+      <div id="c1-fb4" class="fbox" style="left: 120px; top: 640px; width: 440px">Template binding</div>
+      <div id="c1-fb5" class="fbox" style="left: 1240px; top: 640px; width: 320px" data-hold>Browser</div>
+    </div>
+
+    <!-- c1-4 the weakest binding, the band moving down -->
+    <div id="c1-bio" class="clip world" data-start="32.19" data-duration="11.29">
+      <div class="c1-h">Choose the least powerful binding</div>
+      <div class="code c1-code" style="left: 106px; top: 420px; width: 1708px; box-sizing: border-box" data-hold>
+<span id="c1-bio-1" class="ln">&lt;p&gt;{{ member.bio }}&lt;/p&gt;                 <span class="c">&lt;!-- text: shown literally, never parsed --&gt;</span></span>
+<span id="c1-bio-2" class="ln">&lt;div [innerHTML]=<span class="s">"member.bio"</span>&gt;&lt;/div&gt;    <span class="c">&lt;!-- HTML: parsed, then reduced to a safe subset --&gt;</span></span>
+      </div>
+    </div>
+
+    <!-- c1-5 the five bypass methods; c1-6 dimmed, "a constant" as the accent -->
+    <div id="c1-bypass" class="clip world" data-start="43.48" data-duration="14.8">
+      <div class="c1-h"><code>bypassSecurityTrust*</code></div>
+      <div id="c1-bp1" class="c1-chip" style="left: 140px; top: 280px">...Html</div>
+      <div id="c1-bp2" class="c1-chip" style="left: 410px; top: 280px">...Style</div>
+      <div id="c1-bp3" class="c1-chip" style="left: 700px; top: 280px">...Script</div>
+      <div id="c1-bp4" class="c1-chip" style="left: 1012px; top: 280px">...Url</div>
+      <div id="c1-bp5" class="c1-chip" style="left: 1260px; top: 280px">...ResourceUrl</div>
+      <div id="c1-vouch" class="c1-quote" style="top: 440px">"the author vouches for this"</div>
+      <div id="c1-const" class="c1-big" style="top: 640px" data-hold>a constant</div>
+    </div>
+
+    <!-- c1-7 embedUrl, band on the test, then on the built URL -->
+    <div id="c1-embed" class="clip world" data-start="58.28" data-duration="8.82">
+      <div class="code c1-code" style="left: 106px; top: 374px; width: 1708px; box-sizing: border-box" data-hold>
+<span class="ln"><span class="k">const</span> VIDEO_ID = <span class="s">/^[A-Za-z0-9_-]{11}$/</span>;</span>
+<span class="ln"> </span>
+<span class="ln">embedUrl(id: string): SafeResourceUrl | <span class="k">null</span> {</span>
+<span id="c1-em-test" class="ln">  <span class="k">if</span> (!VIDEO_ID.test(id)) <span class="k">return null</span>;</span>
+<span id="c1-em-url" class="ln">  <span class="k">return this</span>.sanitizer.bypassSecurityTrustResourceUrl(<span class="s">`https://video.example/embed/${id}`</span>);</span>
+<span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c1-8 when not to use a bypass -->
+    <div id="c1-never" class="clip world" data-start="67.1" data-duration="9.63">
+      <div class="c1-h">When not to use a bypass</div>
+      <div style="position: absolute; left: 140px; top: 260px; width: 1600px" data-hold>
+        <div id="c1-nv1" class="c1-li">for anything a user, a partner or the address bar can influence, however many function calls away.</div>
+        <div id="c1-nv2" class="c1-li">who vouches, and why the value cannot change.</div>
+      </div>
+    </div>
+
+    <!-- c1-9 the parser beside string checks; c1-10 new URL(value) and "throws" -->
+    <div id="c1-parser" class="clip world" data-start="76.73" data-duration="19.73">
+      <div class="c1-h">Decide about URLs with the parser</div>
+      <div id="c1-url" class="c1-chip" style="left: 140px; top: 260px">URL</div>
+      <div id="c1-sw" class="c1-chip" style="left: 290px; top: 260px">startsWith</div>
+      <div id="c1-re" class="c1-chip txt" style="left: 590px; top: 260px">a regular expression</div>
+      <div id="c1-diffs" style="position: absolute; left: 140px; top: 420px; width: 1600px" data-hold>
+        <div id="c1-d1" class="c1-li">resolves protocol-relative addresses</div>
+        <div id="c1-d2" class="c1-li">treats a backslash like a slash in web URLs</div>
+        <div id="c1-d3" class="c1-li">lower-cases schemes and hosts</div>
+        <div id="c1-d4" class="c1-li">strips tabs and newlines</div>
+      </div>
+      <div id="c1-new" class="c1-chip" style="left: 140px; top: 460px" data-hold>new URL(value)</div>
+      <div id="c1-throws" class="c1-chip txt hot" style="left: 560px; top: 460px" data-hold>throws</div>
+    </div>
+
+    <!-- c1-11 unsafe:... -->
+    <div id="c1-links" class="clip world" data-start="96.46" data-duration="9.06">
+      <div class="c1-h">Links to the outside</div>
+      <div id="c1-unsafe" class="c1-chip" style="left: 140px; top: 260px">unsafe:...</div>
+      <div style="position: absolute; left: 140px; top: 440px; width: 1600px" data-hold>
+        <div id="c1-ask" class="c1-li">ask which schemes it should support at all, and what it should show for a value outside them.</div>
+      </div>
+    </div>
+
+    <!-- c1-12 target="_blank", the default referrer policy, then rel -->
+    <div id="c1-blank" class="clip world" data-start="105.52" data-duration="12.19">
+      <div class="c1-h">Links to the outside</div>
+      <div id="c1-tgt" class="c1-chip" style="left: 140px; top: 260px">target="_blank"</div>
+      <div id="c1-ref" class="c1-chip" style="left: 140px; top: 400px">strict-origin-when-cross-origin</div>
+      <div id="c1-rel" class="c1-chip hot" style="left: 140px; top: 540px" data-hold>rel="noopener noreferrer"</div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c1-questions" class="clip world note" data-start="117.71" data-duration="19.4">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c1-q1" class="q">For each value bound into the template: who wrote it, and which security context does the binding use?</div>
+        <div id="c1-q2" class="q">Who outside your team can produce this value, directly or through something they control?</div>
+        <div id="c1-q3" class="q">Is this the least powerful binding that renders what the feature needs?</div>
+        <div id="c1-q4" class="q">Is any decision about a URL made with string methods instead of the parser?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c1-pause" class="clip world" data-start="137.11" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c1-pause-2" class="pause-2" data-hold>Now do exercise 01.</div>
+    </div>
+
+    <audio id="c1-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="25" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-bed2" class="clip" src="assets/music/bed.mp3" data-start="117.71" data-duration="19.4" data-media-start="70" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c1-1" class="clip" src="assets/vo/c1-1.wav" data-start="3" data-duration="8.213" data-volume="1"></audio>
+    <audio id="vo-c1-2" class="clip" src="assets/vo/c1-2.wav" data-start="11.56" data-duration="9.259" data-volume="1"></audio>
+    <audio id="vo-c1-3" class="clip" src="assets/vo/c1-3.wav" data-start="21.17" data-duration="10.667" data-volume="1"></audio>
+    <audio id="vo-c1-4" class="clip" src="assets/vo/c1-4.wav" data-start="32.19" data-duration="10.944" data-volume="1"></audio>
+    <audio id="vo-c1-5" class="clip" src="assets/vo/c1-5.wav" data-start="43.48" data-duration="7.104" data-volume="1"></audio>
+    <audio id="vo-c1-6" class="clip" src="assets/vo/c1-6.wav" data-start="50.94" data-duration="6.997" data-volume="1"></audio>
+    <audio id="vo-c1-7" class="clip" src="assets/vo/c1-7.wav" data-start="58.28" data-duration="8.469" data-volume="1"></audio>
+    <audio id="vo-c1-8" class="clip" src="assets/vo/c1-8.wav" data-start="67.1" data-duration="9.28" data-volume="1"></audio>
+    <audio id="vo-c1-9" class="clip" src="assets/vo/c1-9.wav" data-start="76.73" data-duration="10.347" data-volume="1"></audio>
+    <audio id="vo-c1-10" class="clip" src="assets/vo/c1-10.wav" data-start="87.43" data-duration="8.683" data-volume="1"></audio>
+    <audio id="vo-c1-11" class="clip" src="assets/vo/c1-11.wav" data-start="96.46" data-duration="8.704" data-volume="1"></audio>
+    <audio id="vo-c1-12" class="clip" src="assets/vo/c1-12.wav" data-start="105.52" data-duration="11.84" data-volume="1"></audio>
+    <audio id="vo-c1-end" class="clip" src="assets/vo/c1-end.wav" data-start="117.71" data-duration="2.347" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "#f5e2d9", SOFT0 = "rgba(245, 226, 217, 0)";
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at) => tl.to(sel, { opacity: 0, duration: 0.4, ease: "power2.in" }, at);
+    const dim = (sel, at) => tl.to(sel, { opacity: 0.35, duration: 0.4, ease: "power2.inOut" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+    const box = (sel, at) => tl.fromTo(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, at);
+    const draw = (sel, at, d = 0.4) => tl.fromTo(sel, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0, the time with no fade
+
+    // c1-1: the labels land on "source" and "sink"
+    fadeIn("#c1-source", 7.3, 0.5);
+    fadeIn("#c1-sink", 9.5, 0.5);
+
+    // c1-2: the desk leaves, the pair rises, the line and the boundary on "The trust boundary"
+    fadeOut("#c1-app", 11.6);
+    tl.to("#c1-pair", { y: -280, duration: 0.8, ease: "power2.inOut" }, 11.75);
+    draw("#c1-join", 13.2, 0.8);
+    draw("#c1-tick", 16.0, 0.4);
+    fadeIn("#c1-tb", 16.15, 0.5);
+
+    // c1-3: boxes and edges in reading order; the refused edge as the accent on "unless something vouched"
+    box("#c1-fb1", 21.9);
+    draw("#c1-f1", 22.7);
+    fadeIn("#c1-fa1", 23.05, 0.1);
+    fadeIn("#c1-fl1", 22.85, 0.4);
+    box("#c1-fb2", 23.1);
+    draw("#c1-f2", 23.8);
+    fadeIn("#c1-fa2", 24.15, 0.1);
+    fadeIn("#c1-fl2", 23.95, 0.4);
+    box("#c1-fb3", 24.4);
+    draw("#c1-f3", 25.2, 0.6);
+    fadeIn("#c1-fa3", 25.75, 0.1);
+    fadeIn("#c1-fl3", 25.35, 0.4);
+    box("#c1-fb4", 25.8);
+    draw("#c1-f4", 27.4, 0.5);
+    fadeIn("#c1-fa4", 27.85, 0.1);
+    fadeIn("#c1-fl4", 27.55, 0.4);
+    box("#c1-fb5", 27.9);
+
+    // c1-4: band on the interpolation line, then on the [innerHTML] line
+    band("#c1-bio-1", 38.0);
+    unband("#c1-bio-1", 40.2);
+    band("#c1-bio-2", 40.2);
+
+    // c1-5: the five suffixes on "five bypass methods", the lesson's quote on "vouched for"
+    for (let i = 1; i <= 5; i++) fadeIn("#c1-bp" + i, 44.0 + (i - 1) * 0.15, 0.5);
+    fadeIn("#c1-vouch", 47.5);
+
+    // c1-6: dim on "That promise", "a constant" as the accent
+    for (let i = 1; i <= 5; i++) dim("#c1-bp" + i, 51.2);
+    dim("#c1-vouch", 51.2);
+    fadeIn("#c1-const", 52.8);
+
+    // c1-7: band on the test, then on the built URL at "a constant host and path"
+    band("#c1-em-test", 59.2);
+    unband("#c1-em-test", 62.0);
+    band("#c1-em-url", 62.0);
+
+    // c1-8: the influence clause, then the author's sentence on "who vouches"
+    fadeIn("#c1-nv1", 67.6);
+    fadeIn("#c1-nv2", 73.2);
+    band("#c1-nv2", 73.8);
+
+    // c1-9: URL on "the U R L class", the parser's differences on "treats backslashes", string checks on "string check"
+    fadeIn("#c1-url", 78.9, 0.5);
+    for (let i = 1; i <= 4; i++) fadeIn("#c1-d" + i, 81.3 + (i - 1) * 0.15, 0.5);
+    fadeIn("#c1-sw", 85.8, 0.5);
+    fadeIn("#c1-re", 85.95, 0.5);
+
+    // c1-10: the list leaves on "So parse", new URL(value) lands, "throws" as the accent
+    fadeOut("#c1-diffs", 90.6);
+    fadeIn("#c1-new", 91.0);
+    tl.fromTo("#c1-throws", { opacity: 0, scale: 0.9, transformOrigin: "left center" }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 95.2);
+
+    // c1-11: unsafe:... on "unsafe colon", then the scheme question on "Ask which schemes"
+    fadeIn("#c1-unsafe", 99.3);
+    fadeIn("#c1-ask", 100.3);
+
+    // c1-12: target blank, the default policy on "only the origin", rel on "The rel attribute"
+    fadeIn("#c1-tgt", 107.9, 0.5);
+    fadeIn("#c1-ref", 110.9, 0.5);
+    fadeIn("#c1-rel", 112.5);
+
+    // questions 0.6 s apart, then hold; pause card
+    for (let i = 1; i <= 4; i++) fadeIn("#c1-q" + i, 118.1 + (i - 1) * 0.6);
+    fadeIn("#c1-pause-2", 137.6);
+
+    window.__timelines["c1"] = tl;
+  </script>
+</template>
