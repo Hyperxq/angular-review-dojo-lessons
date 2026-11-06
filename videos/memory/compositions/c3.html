@@ -1,0 +1,425 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    .c3-svg { position: absolute; left: 0; top: 0; }
+    .c3-fb { height: 140px; box-sizing: border-box; padding: 0 24px; display: grid; place-items: center; }
+    code { font-family: var(--font-code); font-size: 0.92em; }
+    .c3-h { position: absolute; left: 200px; top: 120px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+
+    .c3-map { position: absolute; box-sizing: border-box; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
+    .c3-map .label { position: absolute; left: 32px; top: 24px; }
+    .c3-aisles { position: absolute; left: 32px; right: 32px; top: 90px; bottom: 32px; display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(5, 1fr); gap: 22px 18px; }
+    .c3-aisles i { border-radius: 4px; background: var(--rule); }
+    .c3-aisles i:nth-child(3n) { background: var(--rule-strong); }
+    .c3-aisles i:nth-child(7n) { background: #d7ccb9; }
+    #c3-search { position: absolute; left: 1080px; top: 40px; width: 520px; height: 96px; box-sizing: border-box; padding: 0 28px; display: flex; align-items: center; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 400 34px/1 var(--font-text); color: var(--ink-muted); }
+    .c3-stat { position: absolute; left: 1080px; width: 520px; height: 168px; box-sizing: border-box; padding: 28px 32px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
+    .c3-stat span { display: block; font: 400 30px/1 var(--font-text); color: var(--ink-muted); }
+    .c3-stat b { display: block; margin-top: 18px; font: 700 64px/1 var(--font-text); font-variant-numeric: tabular-nums; }
+
+    #c3-framed { left: 160px; top: 170px; width: 1080px; height: 740px; border: 4px solid var(--ink); background: var(--paper-raised); }
+    .c3-step3 { position: absolute; left: 1340px; width: 440px; }
+    .c3-step3 b { display: block; font: 700 44px/1 var(--font-code); }
+    .c3-step3 span { display: block; margin-top: 14px; }
+
+    #c3-table { position: absolute; left: 200px; top: 220px; width: 1520px; display: grid; grid-template-columns: 560px 960px; font: 400 38px/1.35 var(--font-text); }
+    #c3-table > div { display: contents; }
+    #c3-table span { padding: 24px 24px; border-bottom: 1px solid var(--rule); }
+    #c3-table span:first-child { font: 700 38px/1.35 var(--font-code); }
+    #c3-thead span { font: 700 30px/1.3 var(--font-text) !important; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+
+    .c3-code { left: 104px; width: 1712px; box-sizing: border-box; padding: 40px 44px; font-size: 30px; line-height: 45px; }
+    .c3-code .ln { position: relative; }
+    .c3-band { position: absolute; left: 0; right: 0; top: 40px; height: 45px; background: var(--accent-soft); }
+    .c3-code.big { font-size: 32px; line-height: 48px; }
+    .c3-code.big .c3-band { height: 48px; }
+    .c3-code.small { font-size: 28px; line-height: 42px; }
+    .c3-code.small .c3-band { height: 42px; }
+    .c3-wrap { white-space: pre-wrap !important; padding-left: 6ch; text-indent: -6ch; }
+
+    #c3-phases { position: absolute; left: 104px; top: 760px; display: flex; gap: 28px; align-items: center; }
+    .c3-phase { padding: 16px 26px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 36px/1 var(--font-code); }
+
+    #c3-panel { position: absolute; left: 160px; top: 230px; width: 1600px; height: 560px; box-sizing: border-box; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper-raised); box-shadow: var(--shadow); }
+    #c3-main-l { position: absolute; left: 40px; top: 204px; font: 700 40px/1 var(--font-text); }
+    .c3-tick { position: absolute; top: 48px; width: 160px; margin-left: -80px; text-align: center; }
+    #c3-axis { position: absolute; left: 300px; width: 1100px; top: 110px; height: 2px; background: var(--rule-strong); }
+    .c3-task { position: absolute; top: 180px; height: 80px; border-radius: 4px; background: var(--ink-muted); }
+    #c3-task-long { background: var(--ink); }
+    .c3-tlabel { position: absolute; top: 290px; }
+    #c3-over { position: absolute; left: 850px; top: 180px; width: 286px; height: 80px; border-radius: 0 4px 4px 0; background: rgb(163 34 44 / 0.62); }
+    #c3-tri { position: absolute; left: 1100px; top: 180px; }
+    #c3-mark { position: absolute; left: 850px; top: 96px; width: 0; height: 330px; border-left: 4px dashed var(--accent); }
+    #c3-mark-l { position: absolute; left: 870px; top: 380px; font: 700 36px/1 var(--font-text); color: var(--accent); }
+    #c3-next { position: absolute; left: 160px; top: 840px; width: 1600px; }
+
+    .c3-callout { position: absolute; left: 200px; width: 1520px; box-sizing: border-box; padding: 44px 56px 48px; border-radius: 8px; }
+    .c3-callout .kind { font: 700 32px/1 var(--font-text); letter-spacing: 0.06em; margin-bottom: 26px; }
+    .c3-callout span { border-radius: 4px; }
+    #c3-note { top: 290px; background: var(--note-soft); border-left: 10px solid var(--note); font: 400 46px/1.45 var(--font-text); }
+    #c3-note .kind { color: var(--note); }
+    #c3-warn { left: 160px; top: 190px; width: 1600px; background: var(--warning-soft); border-left: 10px solid var(--warning); font: 400 40px/1.45 var(--font-text); }
+    #c3-warn .kind { color: var(--warning); }
+
+    #c3-steps { position: absolute; left: 176px; top: 290px; width: 1560px; }
+    .c3-st { display: grid; grid-template-columns: 64px 1fr; margin-bottom: 40px; font: 400 40px/1.45 var(--font-text); }
+    .c3-st > b { color: var(--ink-muted); }
+
+    #c3-after-title { position: absolute; left: 200px; top: 150px; font: 600 96px/1.1 var(--font-display); letter-spacing: -0.015em; }
+    #c3-after-p { position: absolute; left: 200px; top: 340px; width: 1500px; font: 400 44px/1.5 var(--font-text); }
+    #c3-after-p span { border-radius: 4px; }
+    #c3-closed { position: absolute; left: 80px; top: 280px; font: 600 88px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c3-lights { position: absolute; inset: 0; background: var(--ink); }
+
+    .q { font-size: 40px; margin-bottom: 30px; }
+  </style>
+
+  <div id="root" data-composition-id="c3" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c3-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">15:00</div>
+      <div class="chapter-title">Effects, template calls and layout</div>
+    </div>
+
+    <!-- c3-1: the branch dashboard, shelf map, statistics, search box -->
+    <div id="c3-desk" class="clip world" data-start="3" data-duration="9.48">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk · Branch dashboard</span><span class="app-clock">15:00</span></div>
+        <div class="app-body">
+          <div id="c3-map" class="c3-map" style="left: 40px; top: 40px; width: 1000px; height: 712px">
+            <div class="label">Shelf map</div>
+            <div class="c3-aisles"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div id="c3-st1" class="c3-stat" style="top: 176px"><span>Loans today</span><b>214</b></div>
+          <div id="c3-st2" class="c3-stat" style="top: 380px"><span>Returned today</span><b>186</b></div>
+          <div id="c3-st3" class="c3-stat" style="top: 584px"><span>Holds waiting</span><b>12</b></div>
+          <div id="c3-search" data-hold>Search loans</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3-2: the shelf map alone, framed; its three steps -->
+    <div id="c3-widget" class="clip world sunk" data-start="12.48" data-duration="9.67">
+      <div id="c3-framed" class="c3-map">
+        <div class="label">Shelf map</div>
+        <div class="c3-aisles"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div id="c3-sp1" class="c3-step3" style="top: 300px"><b>setup</b><span class="label">runs once</span></div>
+      <div id="c3-sp2" class="c3-step3" style="top: 480px"><b>update</b><span class="label">runs many times</span></div>
+      <div id="c3-sp3" class="c3-step3" style="top: 660px" data-hold><b>teardown</b><span class="label">runs once</span></div>
+    </div>
+
+    <!-- c3-3: the run-count table, rows one by one -->
+    <div id="c3-runs" class="clip world" data-start="22.15" data-duration="7.39">
+      <div id="c3-table" data-hold>
+        <div id="c3-thead"><span>Angular tool</span><span>How many times it runs</span></div>
+        <div id="c3-tr1"><span>afterNextRender</span><span>Once, after the first render, in the browser</span></div>
+        <div id="c3-tr2"><span>afterEveryRender</span><span>After every render</span></div>
+        <div id="c3-tr3"><span>effect</span><span>Once, then again every time a signal it read changes</span></div>
+        <div id="c3-tr4"><span>DestroyRef.onDestroy</span><span>Once, when the owner is destroyed</span></div>
+        <div id="c3-tr5"><span>computed</span><span>When read, and only if a signal it read changed</span></div>
+      </div>
+    </div>
+
+    <!-- c3-4, c3-4b: the BroadcastChannel effect -->
+    <div id="c3-effect" class="clip world" data-start="29.54" data-duration="13.44">
+      <div class="code c3-code" style="top: 340px" data-hold>
+        <div id="c3-band1" class="c3-band"></div>
+        <span class="ln">effect((onCleanup) =&gt; {</span>
+        <span class="ln">  <span class="k">const</span> channel = <span class="k">new</span> BroadcastChannel(<span class="s">`branch-${<span class="k">this</span>.branchId()}`</span>);</span>
+        <span class="ln">  channel.onmessage = (event) =&gt; <span class="k">this</span>.events.update((list) =&gt; [...list, event.data]);</span>
+        <span class="ln">  onCleanup(() =&gt; channel.close());</span>
+        <span class="ln">});</span>
+      </div>
+    </div>
+
+    <!-- c3-5, c3-6: the keystroke flow from LESSON.md -->
+    <div id="c3-flow" class="clip world sunk" data-start="42.98" data-duration="16.92">
+      <div class="c3-h" style="top: 90px; font-size: 56px">A template method runs on every render of its view</div>
+      <svg class="c3-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#1d1b18" stroke-width="4">
+        <g id="c3-e1"><path pathLength="1" d="M480 360 H742" /><polygon points="760,360 742,350 742,370" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-e2"><path pathLength="1" d="M1100 360 H1362" /><polygon points="1380,360 1362,350 1362,370" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-e3"><path pathLength="1" d="M1570 430 V560 H330 V652" /><polygon points="330,670 320,652 340,652" fill="#1d1b18" stroke="none" /></g>
+        <g id="c3-e4"><path pathLength="1" d="M500 740 H842" /><polygon points="860,740 842,730 842,750" fill="#1d1b18" stroke="none" /></g>
+      </svg>
+      <div id="c3-b1" class="fbox c3-fb" style="left: 160px; top: 290px; width: 320px">keystroke</div>
+      <div id="c3-b2" class="fbox c3-fb" style="left: 760px; top: 290px; width: 340px">signal set</div>
+      <div id="c3-b3" class="fbox c3-fb" style="left: 1380px; top: 290px; width: 380px">view render</div>
+      <div id="c3-b4" class="fbox c3-fb" style="left: 160px; top: 670px; width: 340px">template method</div>
+      <div id="c3-b5" class="fbox c3-fb" style="left: 860px; top: 670px; width: 360px" data-hold>long task</div>
+      <div id="c3-l1" class="flabel" style="left: 480px; top: 308px; width: 280px">term</div>
+      <div id="c3-l2" class="flabel" style="left: 1110px; top: 269px; width: 260px">the template reads term</div>
+      <div id="c3-l3" class="flabel" style="left: 800px; top: 512px; width: 300px">called again</div>
+      <div id="c3-l4" class="flabel" style="left: 510px; top: 649px; width: 340px">same inputs, same result, full cost</div>
+    </div>
+
+    <!-- c3-6: overdueSummary as a template method, then as a computed; gone before the c3-end card -->
+    <div id="c3-summary" class="clip world" data-start="59.9" data-duration="7">
+      <div id="c3-tpl" class="code c3-code big" style="top: 130px">
+        <span class="ln">template: <span class="s">`</span></span>
+        <span class="ln"><span class="s">  &lt;input (input)="term.set($any($event.target).value)" /&gt;</span></span>
+        <span class="ln"><span class="s">  &lt;p&gt;{{ overdueSummary() }}&lt;/p&gt;</span></span>
+        <span class="ln"><span class="s">`</span></span>
+        <span class="ln"><span class="k">protected</span> overdueSummary() {</span>
+        <span class="ln">  <span class="k">return</span> summarize(<span class="k">this</span>.loans());   <span class="c">// runs on every render of this view</span></span>
+        <span class="ln">}</span>
+      </div>
+      <div id="c3-cmp" class="code c3-code big" style="top: 640px" data-hold>
+        <div id="c3-band2" class="c3-band"></div>
+        <span class="ln"><span class="k">protected readonly</span> overdueSummary = computed(() =&gt; summarize(<span class="k">this</span>.loans()));</span>
+      </div>
+    </div>
+
+    <!-- c3-7: the "Main" track, a fifty-millisecond mark on it -->
+    <div id="c3-perf" class="clip world sunk" data-start="66.9" data-duration="7.06">
+      <div id="c3-panel">
+        <div id="c3-axis"></div>
+        <div class="c3-tick label" style="left: 300px">0 ms</div>
+        <div class="c3-tick label" style="left: 1400px">100 ms</div>
+        <div id="c3-main-l">Main</div>
+        <div id="c3-task-short" class="c3-task" style="left: 300px; width: 99px"></div>
+        <div id="c3-task-long" class="c3-task" style="left: 300px; width: 836px"></div>
+        <div id="c3-tl-short" class="c3-tlabel label" style="left: 300px">keystroke</div>
+        <div id="c3-over"></div>
+        <svg id="c3-tri" width="36" height="36" viewBox="0 0 36 36"><polygon points="1.5,1.5 34.5,1.5 34.5,34.5" fill="#a3222c" stroke="#fffdf9" stroke-width="3" stroke-linejoin="round" /></svg>
+        <div id="c3-tl-long" class="c3-tlabel label" style="left: 300px">data changes</div>
+        <div id="c3-mark"></div>
+        <div id="c3-mark-l">50 ms</div>
+      </div>
+      <div id="c3-next" class="label" data-hold>move it off the main thread (a Web Worker) or split it into chunks that yield between them</div>
+    </div>
+
+    <!-- c3-8: the tooltip loop, band on getBoundingClientRect() -->
+    <div id="c3-thrash" class="clip world" data-start="73.96" data-duration="10.53">
+      <div class="c3-h">Reading layout after writing styles</div>
+      <div class="code c3-code small" style="top: 340px" data-hold>
+        <div id="c3-band3" class="c3-band"></div>
+        <span class="ln"><span class="k">let</span> top = <span class="n">0</span>;</span>
+        <span class="ln"><span class="k">for</span> (<span class="k">const</span> tip <span class="k">of</span> tooltips) {</span>
+        <span class="ln">  tip.style.top = <span class="s">`${top}px`</span>;                      <span class="c">// write</span></span>
+        <span class="ln">  top = tip.getBoundingClientRect().bottom + <span class="n">4</span>;    <span class="c">// read: forces layout, every iteration</span></span>
+        <span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c3-9: afterNextRender phases, band on write: then read: -->
+    <div id="c3-phase" class="clip world" data-start="84.49" data-duration="10.07">
+      <div class="code c3-code" style="top: 150px">
+        <div id="c3-band4" class="c3-band"></div>
+        <span class="ln">afterNextRender({</span>
+        <span class="ln">  write: () =&gt; {</span>
+        <span class="ln">    <span class="k">this</span>.shelfList().nativeElement.scrollTop = <span class="k">this</span>.savedScroll; <span class="c">// DOM write</span></span>
+        <span class="ln">  },</span>
+        <span class="ln">  read: () =&gt; {</span>
+        <span class="ln c3-wrap">    <span class="k">this</span>.analytics.record(<span class="s">'shelf-list-height'</span>, <span class="k">this</span>.shelfList().nativeElement.scrollHeight); <span class="c">// DOM read</span></span>
+        <span class="ln">  },</span>
+        <span class="ln">});</span>
+      </div>
+      <div id="c3-phases" data-hold>
+        <span id="c3-ph1" class="c3-phase">earlyRead</span>
+        <span id="c3-ph2" class="c3-phase">write</span>
+        <span id="c3-ph3" class="c3-phase">mixedReadWrite</span>
+        <span id="c3-ph4" class="c3-phase">read</span>
+      </div>
+    </div>
+
+    <!-- c3-10: the NOTE callout -->
+    <div id="c3-notew" class="clip world" data-start="94.56" data-duration="10.68">
+      <div id="c3-note" class="c3-callout" data-hold>
+        <div class="kind">NOTE</div>
+        Setting a signal that a template reads, from inside a render hook, schedules another render. <span id="c3-n2">Once, in <code>afterNextRender</code>, that is fine.</span> <span id="c3-n3">In <code>afterEveryRender</code> it can become a loop that never settles.</span>
+      </div>
+    </div>
+
+    <!-- c3-11: Performance panel steps 2 and 4 -->
+    <div id="c3-panelsteps" class="clip world" data-start="105.24" data-duration="10.8">
+      <div class="c3-h">Seeing it: the Performance panel</div>
+      <div id="c3-steps">
+        <div id="c3-s2" class="c3-st"><b>2.</b><span>In the "Main" track, a task over 50 ms is a long task: it has a red triangle and the part over 50 ms is shaded red.</span></div>
+        <div id="c3-s4" class="c3-st"><b>4.</b><span>Many purple "Layout" or "Recalculate style" entries inside one task, each started by your own code, are layout thrashing. Recent Chrome versions also flag them with a <b id="c3-reflow" data-hold>"Forced reflow"</b> insight or a warning on the Layout event.</span></div>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c3-questions" class="clip world note" data-start="116.04" data-duration="25.4">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c3-q1" class="q">For each imperative object: how many times is it set up, updated and torn down, compared with how many times it should be?</div>
+        <div id="c3-q2" class="q">If an effect's first run happens before the object it uses exists, which signals did that run read?</div>
+        <div id="c3-q3" class="q">If this view renders 30 times a second, what runs 30 times?</div>
+        <div id="c3-q4" class="q">How many times does the browser compute layout during this method?</div>
+        <div id="c3-q5" class="q">Which of these problems can a unit test prove, and which need a recording?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c3-pause" class="clip world" data-start="141.44" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c3-pause-2" class="pause-2" data-hold>Now do exercise 03.</div>
+    </div>
+
+    <!-- c3-after, c3-afterb: the "After the lesson" card -->
+    <div id="c3-after" class="clip world" data-start="144.94" data-duration="13.02">
+      <div id="c3-after-title">After the lesson</div>
+      <div id="c3-after-p" data-hold><span id="c3-a1">When you finish an exercise, read its <code>SOLUTION.md</code> on the <code>solutions</code> branch and compare it with your fix.</span> <span id="c3-a2">Then repeat the measurement from the chapter with the fix applied: the counters must stay flat and the class must stop growing in the comparison view.</span> <span id="c3-a3" data-hold>Finally write, in two sentences, the comment you would leave on the pull request.</span></div>
+    </div>
+
+    <!-- c3-afterc: the WARNING callout from "After the lesson" -->
+    <div id="c3-warnw" class="clip world" data-start="157.96" data-duration="9.91">
+      <div id="c3-warn" class="c3-callout" data-hold>
+        <div class="kind">WARNING</div>
+        One trap to check in your own fix: an effect only tracks signals it actually read during its last run. <code>effect(() =&gt; this.map<span id="c3-opt">?.</span>setPins(this.pins()))</code> looks like it depends on <code>pins</code>, but while <code>this.map</code> is <code>undefined</code>, optional chaining skips the call and never evaluates its argument. <code>pins()</code> is never read, no dependency is recorded, and the effect never runs again. <span id="c3-last">Read the signals first, then use them.</span>
+      </div>
+    </div>
+
+    <!-- c3-close: 18:00, the desk closes, lights down to the end -->
+    <div id="c3-close" class="clip world" data-start="167.87" data-duration="6.87">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock" style="color: var(--accent)">18:00</span></div>
+        <div class="app-body">
+          <div id="c3-closed">Opens again at 09:00</div>
+        </div>
+      </div>
+      <div id="c3-lights" data-hold></div>
+    </div>
+
+    <audio id="c3-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="45" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c3-bed2" class="clip" src="assets/music/bed.mp3" data-start="116.04" data-duration="25.4" data-media-start="53" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c3-1" class="clip" src="assets/vo/c3-1.wav" data-start="3.0" data-duration="9.131" data-volume="1"></audio>
+    <audio id="vo-c3-2" class="clip" src="assets/vo/c3-2.wav" data-start="12.48" data-duration="9.323" data-volume="1"></audio>
+    <audio id="vo-c3-3" class="clip" src="assets/vo/c3-3.wav" data-start="22.15" data-duration="7.04" data-volume="1"></audio>
+    <audio id="vo-c3-4" class="clip" src="assets/vo/c3-4.wav" data-start="29.54" data-duration="7.531" data-volume="1"></audio>
+    <audio id="vo-c3-4b" class="clip" src="assets/vo/c3-4b.wav" data-start="37.42" data-duration="5.205" data-volume="1"></audio>
+    <audio id="vo-c3-5" class="clip" src="assets/vo/c3-5.wav" data-start="42.98" data-duration="9.707" data-volume="1"></audio>
+    <audio id="vo-c3-6" class="clip" src="assets/vo/c3-6.wav" data-start="53.04" data-duration="10.347" data-volume="1"></audio>
+    <audio id="vo-c3-7" class="clip" src="assets/vo/c3-7.wav" data-start="63.73" data-duration="9.877" data-volume="1"></audio>
+    <audio id="vo-c3-8" class="clip" src="assets/vo/c3-8.wav" data-start="73.96" data-duration="10.176" data-volume="1"></audio>
+    <audio id="vo-c3-9" class="clip" src="assets/vo/c3-9.wav" data-start="84.49" data-duration="9.728" data-volume="1"></audio>
+    <audio id="vo-c3-10" class="clip" src="assets/vo/c3-10.wav" data-start="94.56" data-duration="10.325" data-volume="1"></audio>
+    <audio id="vo-c3-11" class="clip" src="assets/vo/c3-11.wav" data-start="105.24" data-duration="10.453" data-volume="1"></audio>
+    <audio id="vo-c3-end" class="clip" src="assets/vo/c3-end.wav" data-start="116.04" data-duration="2.197" data-volume="1"></audio>
+    <audio id="vo-c3-after" class="clip" src="assets/vo/c3-after.wav" data-start="145.29" data-duration="9.131" data-volume="1"></audio>
+    <audio id="vo-c3-afterb" class="clip" src="assets/vo/c3-afterb.wav" data-start="154.77" data-duration="2.837" data-volume="1"></audio>
+    <audio id="vo-c3-afterc" class="clip" src="assets/vo/c3-afterc.wav" data-start="157.96" data-duration="9.557" data-volume="1"></audio>
+    <audio id="vo-c3-close" class="clip" src="assets/vo/c3-close.wav" data-start="167.87" data-duration="5.867" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const draw = (sel, at, d = 0.4) => {
+      tl.fromTo(sel + " path", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+      tl.fromTo(sel + " polygon", { opacity: 0 }, { opacity: 1, duration: 0.12 }, at + d - 0.08);
+    };
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: CLEAR, duration: 0.4 }, at);
+    const bandTo = (sel, row, h, at, rows = 1) =>
+      tl.to(sel, { y: row * h, scaleY: rows, transformOrigin: "50% 0%", duration: 0.8, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c3-1: shelf map, statistics, search box as they are named
+    fadeIn("#c3-map", 4.6, 0.5);
+    ["#c3-st1", "#c3-st2", "#c3-st3"].forEach((s, i) => fadeIn(s, 6.9 + i * 0.15, 0.4));
+    fadeIn("#c3-search", 8.0, 0.4);
+
+    // c3-2: the map alone; its three steps
+    fadeIn("#c3-framed", 12.6, 0.4);
+    fadeIn("#c3-sp1", 15.6, 0.4);
+    fadeIn("#c3-sp2", 18.6, 0.4);
+    fadeIn("#c3-sp3", 20.4, 0.4);
+
+    // c3-3: rows one by one, every row alike
+    fadeIn("#c3-thead span", 22.3, 0.4);
+    ["#c3-tr1 span", "#c3-tr2 span", "#c3-tr3 span", "#c3-tr4 span", "#c3-tr5 span"].forEach((r, i) => fadeIn(r, 22.9 + i * 0.6, 0.4));
+
+    // c3-4: band on onCleanup; c3-4b: band to the new BroadcastChannel line
+    tl.fromTo("#c3-band1", { opacity: 0, y: 3 * 45 }, { opacity: 1, duration: 0.3 }, 32.4);
+    bandTo("#c3-band1", 1, 45, 37.6);
+
+    // c3-5: the flow draws on step by step; c3-6: the long task is the accent
+    fadeIn("#c3-flow .c3-h", 43.1, 0.4);
+    fadeIn("#c3-b4", 44.2, 0.4);
+    fadeIn("#c3-b1", 47.4, 0.4);
+    draw("#c3-e1", 48.3, 0.3);
+    fadeIn("#c3-l1", 48.4, 0.4);
+    fadeIn("#c3-b2", 48.6, 0.4);
+    draw("#c3-e2", 49.4, 0.3);
+    fadeIn("#c3-l2", 49.5, 0.4);
+    fadeIn("#c3-b3", 49.7, 0.4);
+    draw("#c3-e3", 50.4, 0.5);
+    fadeIn("#c3-l3", 50.6, 0.4);
+    draw("#c3-e4", 51.5, 0.3);
+    fadeIn("#c3-l4", 51.6, 0.4);
+    fadeIn("#c3-b5", 51.8, 0.4);
+    tl.to("#c3-b5", { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 57.6);
+
+    // c3-6: the template method, then its computed version
+    tl.set("#c3-cmp", { opacity: 0 }, 59.9);
+    fadeIn("#c3-cmp", 60.6, 0.4);
+    tl.fromTo("#c3-band2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 61.0);
+
+    // c3-7: a cheap keystroke task; then the 50 ms mark and a task that tops it
+    fadeIn("#c3-panel", 67.0, 0.4);
+    tl.set(["#c3-task-long", "#c3-tl-long", "#c3-mark", "#c3-mark-l", "#c3-next", "#c3-over", "#c3-tri"], { opacity: 0 }, 66.9);
+    tl.fromTo("#c3-task-short", { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.4, ease: "power3.out" }, 67.3);
+    fadeIn("#c3-tl-short", 67.5, 0.4);
+    fadeIn("#c3-mark", 68.9, 0.3);
+    fadeIn("#c3-mark-l", 69.0, 0.4);
+    tl.to(["#c3-task-short", "#c3-tl-short"], { opacity: 0, duration: 0.3, ease: "power2.in" }, 69.8);
+    tl.set("#c3-task-long", { opacity: 1 }, 70.1);
+    tl.fromTo("#c3-task-long", { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.8, ease: "power2.inOut" }, 70.1);
+    fadeIn("#c3-tl-long", 70.4, 0.4);
+    fadeIn("#c3-over", 71.0, 0.3);
+    fadeIn("#c3-tri", 71.1, 0.3);
+    fadeIn("#c3-next", 71.4, 0.5);
+
+    // c3-8: band on the read; it widens over the write and read pair; back on the read
+    tl.fromTo("#c3-band3", { opacity: 0, y: 3 * 42 }, { opacity: 1, duration: 0.3 }, 74.4);
+    bandTo("#c3-band3", 2, 42, 79.6, 2);
+    bandTo("#c3-band3", 3, 42, 82.6, 1);
+
+    // c3-9: the phases in order; band on write:, then on read:
+    ["#c3-ph1", "#c3-ph2", "#c3-ph3", "#c3-ph4"].forEach((p, i) => fadeIn(p, 87.4 + i * 0.3, 0.4));
+    tl.fromTo("#c3-band4", { opacity: 0, y: 1 * 45 }, { opacity: 1, duration: 0.3 }, 90.4);
+    bandTo("#c3-band4", 4, 45, 92.4);
+
+    // c3-10: once is fine, every render can loop
+    band("#c3-n2", 99.6);
+    unband("#c3-n2", 101.8);
+    band("#c3-n3", 101.85);
+
+    // c3-11: step 2, then step 4; the forced reflow insight named
+    fadeIn("#c3-panelsteps .c3-h", 105.35, 0.4);
+    fadeIn("#c3-s2", 105.6, 0.4);
+    fadeIn("#c3-s4", 108.6, 0.4);
+    tl.to("#c3-reflow", { color: ACCENT, duration: 0.3 }, 113.5);
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c3-q1", "#c3-q2", "#c3-q3", "#c3-q4", "#c3-q5"].forEach((q, i) => fadeIn(q, 116.3 + i * 0.6));
+    fadeIn("#c3-pause-2", 141.9);
+
+    // after the lesson: compare and measure; then the last sentence banded
+    fadeIn("#c3-after-title", 145.0, 0.4);
+    fadeIn("#c3-a1", 145.4, 0.4);
+    fadeIn("#c3-a2", 148.9, 0.4);
+    tl.set("#c3-a3", { opacity: 0 }, 144.94);
+    fadeIn("#c3-a3", 154.85, 0.4);
+    band("#c3-a3", 154.9);
+
+    // c3-afterc: the optional chaining, then the rule
+    tl.fromTo("#c3-opt", { backgroundColor: CLEAR }, { backgroundColor: SOFT, color: ACCENT, duration: 0.3 }, 162.6);
+    tl.to("#c3-opt", { backgroundColor: CLEAR, color: "#1d1b18", duration: 0.3 }, 165.4);
+    band("#c3-last", 165.45);
+
+    // close: 18:00, the lights go down and stay down to the last frame
+    fadeIn("#c3-closed", 168.1);
+    tl.fromTo("#c3-lights", { opacity: 0 }, { opacity: 0.62, duration: 2.6, ease: "power2.inOut" }, 169.6);
+
+    window.__timelines["c3"] = tl;
+  </script>
+</template>

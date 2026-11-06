@@ -33,7 +33,7 @@ bed plays. Each exercise chapter ends on "Pause here. Now do exercise NN." as a 
 - c1-6b | A reviewer reads the constructor top to bottom and finds the start next to the stop. | same code, the band moves to `inject(DestroyRef).onDestroy(...)`
 - c1-7 | To see a leak, open the Performance monitor from the DevTools command menu and watch the event listeners, the DOM nodes and the heap size. | the lesson's steps 1 and 2; the three counter names "JS event listeners", "DOM Nodes", "JS heap size"
 - c1-8 | Visit the page once as a warm-up, then visit and leave it ten times. A healthy page comes back to the same numbers. | step 3 from the lesson
-- c1-8b | A counter that grows by a fixed amount on every visit is a leak. | step 3's result: one counter climbing by the same step per visit; use DOM Nodes (never JS event listeners), step of 12, never 2
+- c1-8b | A counter that grows by a fixed amount on every visit is a leak. | step 3's result: one counter climbing by the same step per visit; use DOM Nodes (never JS event listeners), step of 14, never 2 or 12
 - c1-8c | The heap rises and falls as the collector runs. Force a collection, then compare the lowest points and ignore the peaks. | the Memory panel's trash-can button, named as in the lesson
 - c1-9 | One warning. DevTools can retain what you logged, expanded or selected, and extensions add their own objects. Use an incognito window or a clean profile, and clear the console first. | WARNING callout from the lesson
 - c1-end | Four questions before exercise one. | review questions card, then "Pause here. Now do exercise 01."
