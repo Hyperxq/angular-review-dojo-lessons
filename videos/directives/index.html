@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/vendor/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/kit.css" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #f7f4ee; }
+      #root { width: 100%; height: 100%; position: relative; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="596.8" data-width="1920" data-height="1080">
+      <div id="c0" class="clip" data-composition-id="c0" data-composition-src="compositions/c0.html" data-start="0.0" data-duration="126.29" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="c1" class="clip" data-composition-id="c1" data-composition-src="compositions/c1.html" data-start="126.29" data-duration="163.99" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="c2" class="clip" data-composition-id="c2" data-composition-src="compositions/c2.html" data-start="290.28" data-duration="141.12" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="c3" class="clip" data-composition-id="c3" data-composition-src="compositions/c3.html" data-start="431.4" data-duration="165.4" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>
