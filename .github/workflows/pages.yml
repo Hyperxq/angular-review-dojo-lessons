@@ -1,0 +1,59 @@
+name: Deploy reader to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The lessons live in the dojo; scripts/sync-lessons.ts copies them into public/lessons.
+      - uses: actions/checkout@v4
+        with:
+          repository: Hyperxq/angular-review-dojo
+          ref: main
+          path: dojo
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - uses: oven-sh/setup-bun@v2
+
+      - run: bun install --frozen-lockfile
+
+      - run: node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/sync-lessons.ts
+        env:
+          DOJO_ROOT: dojo
+
+      - run: bunx ng build --base-href /angular-review-dojo-lessons/
+
+      # GitHub Pages has no SPA fallback; serving index.html as 404.html keeps deep links working.
+      - run: cp dist/angular-review-dojo-lessons/browser/index.html dist/angular-review-dojo-lessons/browser/404.html
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/angular-review-dojo-lessons/browser
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
