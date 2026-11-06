@@ -1,0 +1,436 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c0-h { position: absolute; left: 140px; top: 84px; width: 1640px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-prose code, .c0-tr code, .c0-row code { font-family: var(--font-code); font-size: 0.88em; white-space: nowrap; }
+    .c0-chip { display: inline-block; padding: 10px 20px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 34px/1 var(--font-code); white-space: nowrap; }
+    .c0-chip.txt { font-family: var(--font-text); }
+    .c0-chip code { font: inherit; font-family: var(--font-code); }
+
+    /* desk */
+    .c0-page-title { font: 600 52px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-status { position: absolute; left: 40px; top: 130px; display: flex; align-items: center; gap: 18px; }
+    .c0-pill { position: relative; width: 150px; height: 52px; }
+    .c0-pill > span { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 26px; font: 700 30px/1 var(--font-text); }
+    .c0-closed { background: var(--paper-sunk); color: var(--ink-muted); border: 2px solid var(--rule-strong); }
+    .c0-open { background: var(--tip-soft); color: var(--tip); border: 2px solid var(--tip); }
+    .c0-members { position: absolute; left: 40px; top: 230px; width: 760px; }
+    .c0-mem { display: flex; justify-content: space-between; padding: 22px 0; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c0-mem b { font-weight: 700; }
+    .c0-mem span:last-child { color: var(--ink-muted); }
+    .c0-side { position: absolute; left: 880px; top: 230px; width: 680px; }
+    .c0-side .label { margin-bottom: 10px; }
+    .c0-ask { padding: 26px 0; border-bottom: 1px solid var(--rule); font: 600 50px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c0-clock { position: relative; display: inline-block; }
+    #c0-t9 { position: absolute; right: 0; top: 0; }
+
+    /* books: server state on the desk */
+    #c0-books { position: absolute; left: 40px; top: 40px; width: 1000px; }
+    .c0-br { display: grid; grid-template-columns: 340px 380px 1fr; column-gap: 24px; padding: 22px 20px; border-bottom: 1px solid var(--rule); border-radius: 6px; font: 400 34px/1 var(--font-text); background-color: rgba(227, 236, 244, 0); }
+    .c0-br b { font-weight: 700; }
+    .c0-br.c0-bh { font: 700 30px/1 var(--font-text); color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    .c0-avail { color: var(--tip); font-weight: 700; }
+    .c0-loan { color: var(--ink-muted); }
+    #c0-apis { position: absolute; left: 1120px; top: 150px; width: 480px; display: flex; flex-direction: column; align-items: flex-start; gap: 22px; }
+    #c0-panel { position: absolute; left: 1100px; top: 89px; right: 0; bottom: 0; padding: 40px; background: var(--paper); border-left: 1px solid var(--rule); box-shadow: var(--shadow); }
+    #c0-panel .c0-pt { font: 600 48px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    #c0-panel .c0-pa { margin-top: 12px; font: 400 32px/1.2 var(--font-text); color: var(--ink-muted); }
+    #c0-panel .label { margin-top: 56px; margin-bottom: 12px; }
+    .c0-input { height: 180px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); }
+
+    /* tables: grid rows */
+    .c0-table { position: absolute; left: 120px; width: 1680px; }
+    .c0-tr { display: grid; column-gap: 28px; padding: 18px 24px; border-bottom: 1px solid var(--rule); border-radius: 6px; font: 400 32px/1.3 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c0-th { font-weight: 700; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+    #c0-lad-table { top: 164px; }
+    #c0-lad-table .c0-tr { grid-template-columns: 460px 540px 1fr; padding: 14px 24px; }
+    #c0-ceremony { position: absolute; left: 144px; top: 950px; width: 1640px; font: 400 36px/1.3 var(--font-text); }
+    #c0-v-table { top: 190px; }
+    #c0-v-table .c0-tr { grid-template-columns: 780px 1fr; font-size: 34px; padding: 20px 24px; }
+    #c0-tb-table { top: 164px; }
+    #c0-tb-table .c0-tr { grid-template-columns: 520px 330px 1fr; font-size: 30px; padding: 11px 24px; }
+    #c0-tb-table .c0-tr code { font-size: 28px; }
+
+    /* grading */
+    #c0-glabels { position: absolute; left: 140px; top: 190px; display: flex; gap: 20px; }
+    #c0-gq { position: absolute; left: 140px; top: 300px; }
+    .c0-list { position: absolute; left: 120px; width: 1680px; }
+    .c0-row { display: flex; gap: 28px; padding: 24px 32px; border-bottom: 1px solid var(--rule); border-radius: 6px; font: 400 38px/1.4 var(--font-text); background-color: rgba(245, 226, 217, 0); }
+    .c0-row > span:first-child { flex: none; width: 40px; font-weight: 700; }
+    #c0-g-list { top: 370px; }
+
+    /* worked examples */
+    #c0-ex-list { position: absolute; left: 120px; top: 190px; width: 1680px; }
+    .c0-ex { display: grid; grid-template-columns: 1290px 270px; column-gap: 40px; padding: 26px 32px; border-bottom: 1px solid var(--rule); font: 400 33px/1.42 var(--font-text); }
+    .c0-ex b { font-weight: 700; }
+    .c0-ex .c0-chips { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+    #c0-ex3-blk.hot { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+
+    /* what moved */
+    #c0-mv-sub { position: absolute; left: 140px; top: 182px; font: 400 40px/1.3 var(--font-text); color: var(--ink-muted); }
+    .c0-pair { position: absolute; left: 140px; display: flex; align-items: center; gap: 28px; font: 400 36px/1.3 var(--font-text); }
+    #c0-zone { top: 280px; }
+    #c0-onpush { top: 380px; }
+    #c0-trig { position: absolute; left: 120px; top: 500px; width: 1680px; }
+    #c0-trig .label { padding-left: 32px; margin-bottom: 8px; }
+    .c0-trow { padding: 20px 32px; border-bottom: 1px solid var(--rule); font: 400 40px/1.3 var(--font-text); }
+    #c0-plain { position: absolute; left: 152px; top: 900px; padding: 20px 32px; border: 3px solid var(--accent); border-radius: 8px; background: var(--accent-soft); color: var(--accent); font: 700 40px/1.3 var(--font-text); display: inline-block; }
+
+    /* where a service lives */
+    #c0-svc-text { position: absolute; left: 140px; top: 200px; width: 1640px; font: 400 40px/1.5 var(--font-text); }
+    #c0-svc-chips { position: absolute; left: 140px; top: 640px; display: flex; gap: 28px; }
+
+    /* SignalStore */
+    #c0-ev { position: absolute; right: 120px; top: 90px; }
+    #c0-code { left: 120px; top: 190px; width: 1680px; font-size: 32px; padding: 40px 48px; }
+    #c0-code .ln { margin: 0 -48px; padding: 0 48px; background-color: rgba(245, 226, 217, 0); }
+    #c0-protect { position: absolute; left: 144px; top: 850px; width: 1640px; font: 400 36px/1.4 var(--font-text); }
+  </style>
+
+  <div id="root" data-composition-id="c0" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c0-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c0-card-time" class="chapter-time">08:55</div>
+      <div id="c0-card-title" class="chapter-title">What moved since Angular 17</div>
+    </div>
+
+    <!-- c0-1, c0-1b: the desk before opening; the three questions from the lesson's opening paragraph -->
+    <div id="c0-desk" class="clip world" data-start="3" data-duration="12.92">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:55</span></div>
+        <div class="app-body">
+          <div class="c0-page-title">State at scale</div>
+          <div class="c0-status"><span class="label">Desk</span><span id="c0-pill1" class="c0-pill"><span class="c0-closed">Closed</span></span></div>
+          <div id="c0-members" class="c0-members" data-hold>
+            <div class="c0-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div class="c0-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div class="c0-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div class="c0-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+          <div id="c0-asks" class="c0-side" data-hold>
+            <div id="c0-ask0" class="label">For every piece of state, ask</div>
+            <div id="c0-ask1" class="c0-ask">where it lives</div>
+            <div id="c0-ask2" class="c0-ask">who may change it</div>
+            <div id="c0-ask3" class="c0-ask">how long it lives</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-2 to c0-2d: the ladder (LESSON.md table), one rung banded at a time, then held whole -->
+    <div id="c0-ladder" class="clip world" data-start="15.92" data-duration="35.93">
+      <div class="c0-h">Where should this state live?</div>
+      <div id="c0-lad-table" class="c0-table" data-hold>
+        <div id="c0-l0" class="c0-tr c0-th"><div>Rung</div><div>Use it when</div><div>Example in the library app</div></div>
+        <div id="c0-l1" class="c0-tr"><div>Derive it, do not store it</div><div>The value can be computed from other state</div><div>Number of books on loan</div></div>
+        <div id="c0-l2" class="c0-tr"><div>A component, or the URL</div><div>One component owns it, or it should survive a shared link and the back button</div><div>The catalogue filter and page number belong in query parameters: should a link a librarian sends show the same results?</div></div>
+        <div id="c0-l3" class="c0-tr"><div>A service with signals</div><div>A few components share it</div><div>The signed-in member's preferences</div></div>
+        <div id="c0-l4" class="c0-tr"><div>A <code>signalStore</code></div><div>The state has structure, rules and several writers</div><div>Shelves and their books</div></div>
+        <div id="c0-l5" class="c0-tr"><div>An event-driven store (classic NgRx, or <code>@ngrx/signals/events</code>)</div><div>You need an audit trail of what happened, devtools time travel, or features reacting to each other's events</div><div>Circulation history that compliance must replay</div></div>
+      </div>
+      <div id="c0-ceremony" data-hold>Every rung up adds ceremony, so climbing higher than the state needs is a cost too.</div>
+    </div>
+
+    <!-- c0-3, c0-3b: server state is a cache; then client state: an open panel and a selected row -->
+    <div id="c0-server" class="clip world" data-start="51.85" data-duration="13.17">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">08:56</span></div>
+        <div class="app-body">
+          <div id="c0-books" data-hold>
+            <div class="c0-page-title" style="margin-bottom: 28px;">Server state is a cache</div>
+            <div class="c0-br c0-bh"><div>Title</div><div>Author</div><div>Availability</div></div>
+            <div class="c0-br"><div><b>Persuasion</b></div><div>Jane Austen</div><div class="c0-avail">Available</div></div>
+            <div class="c0-br"><div><b>Walden</b></div><div>Henry D. Thoreau</div><div class="c0-loan">On loan</div></div>
+            <div id="c0-sel" class="c0-br"><div><b>Cranford</b></div><div>Elizabeth Gaskell</div><div class="c0-avail">Available</div></div>
+            <div class="c0-br"><div><b>Ivanhoe</b></div><div>Walter Scott</div><div class="c0-loan">On loan</div></div>
+            <div class="c0-br"><div><b>Middlemarch</b></div><div>George Eliot</div><div class="c0-avail">Available</div></div>
+          </div>
+          <div id="c0-apis" data-hold>
+            <div id="c0-api0" class="label">Built for server state</div>
+            <span id="c0-api1" class="c0-chip">resource</span>
+            <span id="c0-api2" class="c0-chip">rxResource</span>
+            <span id="c0-api3" class="c0-chip">httpResource</span>
+          </div>
+        </div>
+        <div id="c0-panel" data-hold>
+          <div class="c0-pt">Cranford</div>
+          <div class="c0-pa">Elizabeth Gaskell</div>
+          <div class="label">Note</div>
+          <div class="c0-input"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c0-4, c0-4b: grading state findings (LESSON.md numbered list), item one as the accent -->
+    <div id="c0-grade" class="clip world" data-start="65.02" data-duration="18.88">
+      <div class="c0-h">Grading state findings</div>
+      <div id="c0-glabels"><span class="c0-chip txt">blocking</span><span class="c0-chip txt">should-fix</span><span class="c0-chip txt">nit</span><span class="c0-chip txt">question</span></div>
+      <div id="c0-gq" class="label">Four questions settle most grades:</div>
+      <div id="c0-g-list" class="c0-list" data-hold>
+        <div id="c0-g1" class="c0-row"><span>1.</span><span>Can the screen show something false? A false value that users act on is wrong behaviour.</span></div>
+        <div id="c0-g2" class="c0-row"><span>2.</span><span>Can data reach the wrong owner (another person, another record, another tab)? That can be a privacy problem.</span></div>
+        <div id="c0-g3" class="c0-row"><span>3.</span><span>How likely is the timing? A bug that needs two requests within 50 milliseconds happens daily on a busy day.</span></div>
+        <div id="c0-g4" class="c0-row"><span>4.</span><span>Can a test catch it? A bug that only appears under timing nobody tests will come back.</span></div>
+      </div>
+    </div>
+
+    <!-- c0-5 to c0-5c: the lesson's three worked examples, one read at a time -->
+    <div id="c0-examples" class="clip world" data-start="83.9" data-duration="22.87">
+      <div class="c0-h">Three examples, none from the exercises:</div>
+      <div id="c0-ex-list" data-hold>
+        <div id="c0-ex1" class="c0-ex"><div><b>A member's avatar cached for an hour after they change it.</b> False, but harmless and self-healing. A <b>nit</b>, or a <b>question</b> about the cache policy.</div><div class="c0-chips"><span id="c0-ex1-nit" class="c0-chip txt">nit</span></div></div>
+        <div id="c0-ex2" class="c0-ex"><div><b>A review draft lost when the member navigates away and back.</b> Whether that is acceptable is a product decision: for a one-line comment it is <b>should-fix</b>, for a long review the member spent twenty minutes on it is <b>blocking</b>.</div><div class="c0-chips"><span id="c0-ex2-sf" class="c0-chip txt">should-fix</span><span id="c0-ex2-blk" class="c0-chip txt">blocking</span></div></div>
+        <div id="c0-ex3" class="c0-ex"><div><b>A cached search result still shown after a librarian corrected the catalogue.</b> A member searches for an author and gets a book that was withdrawn this morning, then walks to an empty shelf. False, and users act on it. <b>Should-fix</b> for a cache that refreshes within minutes, <b>blocking</b> if nothing ever invalidates it.</div><div class="c0-chips"><span id="c0-ex3-sf" class="c0-chip txt">should-fix</span><span id="c0-ex3-blk" class="c0-chip txt hot">blocking</span></div></div>
+      </div>
+    </div>
+
+    <!-- c0-6, c0-6b: what moved since Angular 17; zone.js and OnPush; the three triggers, then a plain field -->
+    <div id="c0-moved" class="clip world" data-start="106.77" data-duration="19.41">
+      <div class="c0-h">What moved since Angular 17</div>
+      <div id="c0-mv-sub">Signals became the way Angular learns about change</div>
+      <div id="c0-zone" class="c0-pair c0-prose" data-hold><span class="c0-chip">zone.js</span><span>The app is zoneless (no <code>zone.js</code> installed, the default since v21)</span></div>
+      <div id="c0-onpush" class="c0-pair c0-prose" data-hold><span class="c0-chip">OnPush</span><span>components default to OnPush</span></div>
+      <div id="c0-trig" class="c0-prose" data-hold>
+        <div id="c0-trig0" class="label">Angular re-renders a component</div>
+        <div id="c0-trig1" class="c0-trow">when a signal its template reads changes</div>
+        <div id="c0-trig2" class="c0-trow">when a template event handler runs</div>
+        <div id="c0-trig3" class="c0-trow">when an <code>async</code> pipe receives a value</div>
+      </div>
+      <div id="c0-plain">A plain field written from a callback is invisible.</div>
+    </div>
+
+    <!-- c0-7: from v17 shapes to v22 shapes (LESSON.md table), rows appearing one by one; held into c0-8's opening words -->
+    <div id="c0-v" class="clip world" data-start="126.18" data-duration="12.22">
+      <div class="c0-h">From v17 shapes to v22 shapes</div>
+      <div id="c0-v-table" class="c0-table" data-hold>
+        <div id="c0-v0" class="c0-tr c0-th"><div>v17</div><div>v22</div></div>
+        <div id="c0-v1" class="c0-tr"><div><code>BehaviorSubject</code> + <code>asObservable()</code></div><div><code>signal()</code> + <code>asReadonly()</code></div></div>
+        <div id="c0-v2" class="c0-tr"><div>NgRx selector</div><div><code>computed()</code> (or <code>withComputed</code> in a store)</div></div>
+        <div id="c0-v3" class="c0-tr"><div>Reducer</div><div>A store method calling <code>patchState</code></div></div>
+        <div id="c0-v4" class="c0-tr"><div>NgRx effect</div><div><code>rxMethod</code>, <code>signalMethod</code>, or an effect in <code>withHooks</code></div></div>
+        <div id="c0-v5" class="c0-tr"><div><code>combineLatest([a$, b$]).pipe(map(...))</code></div><div><code>computed(() =&gt; f(a(), b()))</code></div></div>
+        <div id="c0-v6" class="c0-tr"><div>Component-local <code>BehaviorSubject</code> state</div><div><code>signal()</code>, or <code>signalState()</code> from <code>@ngrx/signals</code> for an object</div></div>
+        <div id="c0-v7" class="c0-tr"><div>(bridging)</div><div><code>toSignal(obs$)</code> and <code>toObservable(sig)</code> from <code>@angular/core/rxjs-interop</code></div></div>
+      </div>
+    </div>
+
+    <!-- c0-8, c0-8b: the signal toolbox (LESSON.md table) cut in whole; effect banded, then signal(v) -->
+    <div id="c0-tb" class="clip world" data-start="138.4" data-duration="15.01">
+      <div class="c0-h">The signal toolbox</div>
+      <div id="c0-tb-table" class="c0-table" data-hold>
+        <div class="c0-tr c0-th"><div>API</div><div>Status in v22</div><div>Use it for</div></div>
+        <div id="c0-t1" class="c0-tr"><div><code>signal(v)</code> / <code>.set</code> / <code>.update</code></div><div>stable</div><div>A source of truth you write.</div></div>
+        <div class="c0-tr"><div><code>.asReadonly()</code></div><div>stable</div><div>Handing out read access without write access.</div></div>
+        <div class="c0-tr"><div><code>computed(() =&gt; …)</code></div><div>stable</div><div>A value derived from other signals. Lazy, memoized, current when read.</div></div>
+        <div id="c0-t4" class="c0-tr"><div><code>effect(() =&gt; …)</code></div><div>stable since v20</div><div>Pushing signal values out to something that is not a signal: storage, logging, a chart library.</div></div>
+        <div class="c0-tr"><div><code>linkedSignal(…)</code></div><div>stable since v20</div><div>A writable value that resets when its source changes.</div></div>
+        <div class="c0-tr"><div><code>resource</code> / <code>rxResource</code> / <code>httpResource</code></div><div>experimental in v19, stable in v22</div><div>Async state driven by signals, with <code>value()</code>, <code>isLoading()</code>, <code>error()</code>, <code>hasValue()</code>.</div></div>
+        <div class="c0-tr"><div><code>untracked(() =&gt; …)</code></div><div>stable</div><div>Reading a signal inside a reactive function without depending on it.</div></div>
+        <div class="c0-tr"><div><code>input()</code>, <code>model()</code>, <code>output()</code></div><div>stable</div><div>Component inputs and two-way bindings as signals.</div></div>
+      </div>
+    </div>
+
+    <!-- c0-9: where a service lives (LESSON.md paragraph); root, route providers, component providers -->
+    <div id="c0-svc" class="clip world" data-start="153.41" data-duration="9.59">
+      <div class="c0-h">Where a service lives (DI facts)</div>
+      <div id="c0-svc-text" class="c0-prose" data-hold>The DI lesson covers this in depth. In short: a service provided in root (<code>providedIn: 'root'</code> or <code>@Service()</code>) has one instance for the app; one listed in a route's <code>providers</code> has one instance for that route subtree; one listed in a component's <code>providers</code> has one instance per component instance, destroyed with it.</div>
+      <div id="c0-svc-chips">
+        <span id="c0-sc1" class="c0-chip txt">root</span>
+        <span id="c0-sc2" class="c0-chip txt">route <code>providers</code></span>
+        <span id="c0-sc3" class="c0-chip txt">component <code>providers</code></span>
+      </div>
+    </div>
+
+    <!-- c0-10, c0-10b: the lesson's ShelfStore code cut in whole; band on withState, then on patchState -->
+    <div id="c0-store" class="clip world" data-start="163.0" data-duration="14.6">
+      <div class="c0-h">SignalStore</div>
+      <span id="c0-ev" class="c0-chip">@ngrx/signals/events</span>
+      <div id="c0-code" class="code" data-hold>
+        <span class="ln"><span class="k">export const</span> ShelfStore = signalStore(</span>
+        <span class="ln">  { providedIn: <span class="s">'root'</span> },</span>
+        <span id="c0-ln-state" class="ln">  withState({ shelfName: <span class="s">'New arrivals'</span>, books: [] <span class="k">as</span> Book[] }),</span>
+        <span class="ln">  withComputed(({ books }) =&gt; ({ count: computed(() =&gt; books().length) })),</span>
+        <span class="ln">  withMethods((store) =&gt; ({</span>
+        <span class="ln">    rename(shelfName: <span class="k">string</span>) {</span>
+        <span id="c0-ln-patch" class="ln">      patchState(store, { shelfName });</span>
+        <span class="ln">    },</span>
+        <span class="ln">  })),</span>
+        <span class="ln">);</span>
+      </div>
+      <div id="c0-protect" class="c0-prose" data-hold>State is protected by default: outside the store, <code>patchState(store, …)</code> is a type error, so writes go through methods.</div>
+    </div>
+
+    <!-- c0-10b end: the desk again; the clock turns to 09:00 and the desk opens -->
+    <div id="c0-desk2" class="clip world" data-start="177.6" data-duration="3.13">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock c0-clock"><span id="c0-t8">08:59</span><span id="c0-t9">09:00</span></span></div>
+        <div class="app-body">
+          <div class="c0-page-title">Members</div>
+          <div class="c0-status"><span class="label">Desk</span><span class="c0-pill"><span id="c0-closed2" class="c0-closed">Closed</span><span id="c0-open2" class="c0-open">Open</span></span></div>
+          <div class="c0-members" data-hold>
+            <div class="c0-mem"><span><b>Ada Brooks</b></span><span>Persuasion</span></div>
+            <div class="c0-mem"><span><b>Tom Okafor</b></span><span>Walden</span></div>
+            <div class="c0-mem"><span><b>Mei Lin</b></span><span>Cranford</span></div>
+            <div class="c0-mem"><span><b>Sara Diaz</b></span><span>Ivanhoe</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <audio id="c0-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="0" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c0-1" class="clip" src="assets/vo/c0-1.wav" data-start="3.0" data-duration="6.549" data-volume="1"></audio>
+    <audio id="vo-c0-1b" class="clip" src="assets/vo/c0-1b.wav" data-start="9.9" data-duration="5.675" data-volume="1"></audio>
+    <audio id="vo-c0-2" class="clip" src="assets/vo/c0-2.wav" data-start="15.92" data-duration="8.341" data-volume="1"></audio>
+    <audio id="vo-c0-2b" class="clip" src="assets/vo/c0-2b.wav" data-start="24.61" data-duration="7.659" data-volume="1"></audio>
+    <audio id="vo-c0-2c" class="clip" src="assets/vo/c0-2c.wav" data-start="32.62" data-duration="7.872" data-volume="1"></audio>
+    <audio id="vo-c0-2d" class="clip" src="assets/vo/c0-2d.wav" data-start="40.85" data-duration="8.277" data-volume="1"></audio>
+    <audio id="vo-c0-3" class="clip" src="assets/vo/c0-3.wav" data-start="49.47" data-duration="7.701" data-volume="1"></audio>
+    <audio id="vo-c0-3b" class="clip" src="assets/vo/c0-3b.wav" data-start="57.52" data-duration="7.147" data-volume="1"></audio>
+    <audio id="vo-c0-4" class="clip" src="assets/vo/c0-4.wav" data-start="65.02" data-duration="7.403" data-volume="1"></audio>
+    <audio id="vo-c0-4b" class="clip" src="assets/vo/c0-4b.wav" data-start="72.77" data-duration="9.664" data-volume="1"></audio>
+    <audio id="vo-c0-5" class="clip" src="assets/vo/c0-5.wav" data-start="82.79" data-duration="5.589" data-volume="1"></audio>
+    <audio id="vo-c0-5b" class="clip" src="assets/vo/c0-5b.wav" data-start="88.73" data-duration="7.765" data-volume="1"></audio>
+    <audio id="vo-c0-5c" class="clip" src="assets/vo/c0-5c.wav" data-start="96.84" data-duration="9.579" data-volume="1"></audio>
+    <audio id="vo-c0-6" class="clip" src="assets/vo/c0-6.wav" data-start="106.77" data-duration="8.363" data-volume="1"></audio>
+    <audio id="vo-c0-6b" class="clip" src="assets/vo/c0-6b.wav" data-start="115.48" data-duration="10.347" data-volume="1"></audio>
+    <audio id="vo-c0-7" class="clip" src="assets/vo/c0-7.wav" data-start="126.18" data-duration="9.707" data-volume="1"></audio>
+    <audio id="vo-c0-8" class="clip" src="assets/vo/c0-8.wav" data-start="136.24" data-duration="7.979" data-volume="1"></audio>
+    <audio id="vo-c0-8b" class="clip" src="assets/vo/c0-8b.wav" data-start="144.57" data-duration="8.491" data-volume="1"></audio>
+    <audio id="vo-c0-9" class="clip" src="assets/vo/c0-9.wav" data-start="153.41" data-duration="8.085" data-volume="1"></audio>
+    <audio id="vo-c0-10" class="clip" src="assets/vo/c0-10.wav" data-start="161.84" data-duration="8.875" data-volume="1"></audio>
+    <audio id="vo-c0-10b" class="clip" src="assets/vo/c0-10b.wav" data-start="171.07" data-duration="8.661" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "rgba(245, 226, 217, 1)", SOFT0 = "rgba(245, 226, 217, 0)";
+    const SEL = "rgba(227, 236, 244, 1)", SEL0 = "rgba(227, 236, 244, 0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+
+    // chapter card: on screen from frame 0
+
+    // c0-1: members in the queue; the closed desk on "opens at nine"
+    tl.fromTo("#c0-members .c0-mem", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.15 }, 3.2);
+    fadeIn("#c0-pill1", 4.8);
+
+    // c0-1b: the three questions, each on its words
+    fadeIn("#c0-ask0", 10.3);
+    fadeIn("#c0-ask1", 12.2);
+    fadeIn("#c0-ask2", 13.15);
+    fadeIn("#c0-ask3", 14.4);
+
+    // c0-2: header, then the first rung banded on "The lowest rung"
+    fadeIn("#c0-l0", 16.05, 0.4);
+    fadeIn("#c0-l1", 22.05);
+    band("#c0-l1", 22.2);
+
+    // c0-2b: the component / URL rung on "a component"
+    unband("#c0-l1", 25.2);
+    fadeIn("#c0-l2", 25.2);
+    band("#c0-l2", 25.35);
+
+    // c0-2c: the service rung, then the signalStore rung on "A signal Store"
+    unband("#c0-l2", 32.7);
+    fadeIn("#c0-l3", 32.7);
+    band("#c0-l3", 32.85);
+    unband("#c0-l3", 36.2);
+    fadeIn("#c0-l4", 36.2);
+    band("#c0-l4", 36.35);
+
+    // c0-2d: the last rung on "An event-driven store"; on "Every rung up" the band clears and the ladder holds whole
+    unband("#c0-l4", 40.95);
+    fadeIn("#c0-l5", 40.95);
+    band("#c0-l5", 41.1);
+    unband("#c0-l5", 47.2);
+    fadeIn("#c0-ceremony", 47.35);
+
+    // c0-3: the ladder holds through "belongs to the server"; the book list lands on "On the client"; the three resource APIs on "a cache"
+    tl.fromTo("#c0-books .c0-br", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.1 }, 51.95);
+    fadeIn("#c0-api0", 53.85);
+    tl.fromTo(["#c0-api1", "#c0-api2", "#c0-api3"], { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.2 }, 54.0);
+
+    // c0-3b: on "Client state" the APIs leave, the side panel opens and the row it shows is selected
+    fadeOut("#c0-apis", 57.5, 0.3);
+    tl.fromTo("#c0-panel", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 57.75);
+    tl.fromTo("#c0-sel", { backgroundColor: SEL0 }, { backgroundColor: SEL, duration: 0.4, ease: "power2.inOut", immediateRender: false }, 57.9);
+
+    // c0-4: labels and the lead, then item one as the accent on "First question"
+    tl.fromTo("#c0-glabels .c0-chip", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.15 }, 66.7);
+    fadeIn("#c0-gq", 67.6);
+    fadeIn("#c0-g1", 68.3);
+    band("#c0-g1", 68.45);
+
+    // c0-4b: items two to four on their words
+    unband("#c0-g1", 72.8);
+    fadeIn("#c0-g2", 72.85);
+    fadeIn("#c0-g3", 75.0);
+    fadeIn("#c0-g4", 79.4);
+
+    // c0-5: the three examples cut in whole on "an hour"; nit on "a nit"
+    fadeIn("#c0-ex1-nit", 87.7);
+
+    // c0-5b: should-fix, then blocking on their words
+    fadeIn("#c0-ex2-sf", 92.6);
+    fadeIn("#c0-ex2-blk", 95.55);
+
+    // c0-5c: should-fix, then blocking as the accent
+    fadeIn("#c0-ex3-sf", 101.3);
+    fadeIn("#c0-ex3-blk", 103.8);
+
+    // c0-6: the subheading on "signals became", zone.js on "zoneless", OnPush on "On Push"
+    fadeIn("#c0-mv-sub", 108.4);
+    fadeIn("#c0-zone", 111.95);
+    fadeIn("#c0-onpush", 114.15);
+
+    // c0-6b: the three triggers on their words, then a plain field as the accent
+    fadeIn("#c0-trig0", 115.6);
+    fadeIn("#c0-trig1", 117.3);
+    fadeIn("#c0-trig2", 119.6);
+    fadeIn("#c0-trig3", 121.35);
+    fadeIn("#c0-plain", 122.75);
+
+    // c0-7: rows one by one: the three named on their words, the rest after "store method"
+    fadeIn("#c0-v0", 126.3, 0.4);
+    fadeIn("#c0-v1", 126.4);
+    fadeIn("#c0-v2", 131.4);
+    fadeIn("#c0-v3", 133.55);
+    fadeIn("#c0-v4", 134.4);
+    fadeIn("#c0-v5", 134.75);
+    fadeIn("#c0-v6", 135.1);
+    fadeIn("#c0-v7", 135.45);
+
+    // c0-8: the v17 table holds through "matter in review"; the toolbox cuts in on "Effects", effect row banded
+    band("#c0-t4", 138.55);
+
+    // c0-8b: the signal(v) row on "signals compare"
+    unband("#c0-t4", 145.55);
+    band("#c0-t1", 145.55);
+
+    // c0-9: root, route providers, component providers on their words
+    fadeIn("#c0-sc1", 157.2);
+    fadeIn("#c0-sc2", 158.35);
+    fadeIn("#c0-sc3", 159.95);
+
+    // c0-10: the code cuts in on "injectable class"; band on withState, then on the patchState call
+    band("#c0-ln-state", 165.2);
+    unband("#c0-ln-state", 168.8);
+    band("#c0-ln-patch", 168.8);
+
+    // c0-10b: the protected-state sentence on "patching", the events entry point on "events plugin"
+    fadeIn("#c0-protect", 172.0);
+    fadeIn("#c0-ev", 175.35);
+
+    // c0-10b end: the desk cuts in on "Then"; the clock turns to 09:00 and the desk opens on "opens"
+    fadeOut("#c0-t8", 178.9, 0.2);
+    fadeIn("#c0-t9", 179.0, 0.3);
+    fadeOut("#c0-closed2", 179.15, 0.3);
+    fadeIn("#c0-open2", 179.25);
+
+    window.__timelines["c0"] = tl;
+  </script>
+</template>

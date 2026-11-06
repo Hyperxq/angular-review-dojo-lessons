@@ -1,0 +1,385 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    code { font-family: var(--font-code); font-size: 0.92em; white-space: nowrap; }
+    .c2-svg { position: absolute; left: 0; top: 0; }
+    .c2-h { position: absolute; left: 200px; top: 120px; width: 1520px; font: 600 64px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .c2-h code { font-size: 0.86em; font-weight: 700; }
+    .c2-chip { position: absolute; box-sizing: border-box; padding: 22px 36px; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 700 40px/1 var(--font-code); white-space: nowrap; }
+    .c2-chip.prose { font: 700 38px/1 var(--font-text); }
+    .c2-chip code { font-size: 1em; }
+    .c2-ghead { position: absolute; left: 200px; font: 700 34px/1 var(--font-text); color: var(--ink-muted); }
+
+    .c2-nav { position: absolute; left: 40px; top: 40px; width: 300px; }
+    .c2-nav div { height: 72px; padding: 0 20px; display: flex; align-items: center; border-radius: 8px; font: 400 34px/1 var(--font-text); color: var(--ink-muted); }
+    .c2-nav div.on { background: var(--paper-sunk); color: var(--ink); font-weight: 700; }
+    #c2-map { position: absolute; left: 380px; right: 40px; top: 40px; }
+    #c2-map .label { margin-bottom: 20px; }
+    #c2-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .c2-shelf { height: 320px; box-sizing: border-box; padding: 22px 24px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper); display: flex; flex-direction: column; }
+    .c2-shelf b { font: 700 32px/1 var(--font-text); }
+    .c2-spines { margin-top: auto; height: 150px; display: flex; align-items: flex-end; gap: 7px; border-bottom: 4px solid var(--rule-strong); }
+    .c2-spines i { display: block; width: 18px; border-radius: 2px 2px 0 0; background: var(--ink-muted); }
+    .c2-spines i:nth-child(3n) { background: var(--rule-strong); }
+    .c2-spines i:nth-child(4n+1) { background: var(--ink); }
+
+    .c3n { box-sizing: border-box; padding: 18px 28px; text-align: center; font-size: 32px; line-height: 1.1; }
+    .c3n .badge { display: block; margin: 10px 0 0; font-size: 28px; }
+
+    .c2-card { position: absolute; top: 400px; width: 680px; box-sizing: border-box; padding: 36px 44px; background: var(--paper-raised); border: 3px solid var(--rule-strong); border-radius: 8px; box-shadow: var(--shadow); }
+    .c2-card .label { margin-bottom: 18px; }
+    .c2-title { position: relative; height: 64px; font: 700 52px/64px var(--font-text); }
+    .c2-title span { position: absolute; left: 0; top: 0; white-space: nowrap; }
+    .c2-stale { position: absolute; right: 36px; top: 30px; padding: 10px 18px; border-radius: 8px; background: var(--accent); color: var(--paper); font: 700 30px/1 var(--font-text); }
+
+    .c2-code { left: 152px; width: 1616px; box-sizing: border-box; padding: 40px 48px; font-size: 34px; line-height: 51px; }
+    .c2-code .ln { position: relative; min-height: 51px; }
+    .c2-wrap { white-space: pre-wrap !important; padding-left: 4ch; text-indent: -4ch; }
+    .c2-mark { border-radius: 4px; }
+    .c2-type .ln { width: max-content; }
+
+    #c2-receipt { position: absolute; left: 420px; top: 40px; width: 760px; box-sizing: border-box; padding: 40px 48px; border: 2px dashed var(--rule-strong); border-radius: 8px; background: var(--paper); }
+    #c2-receipt h3 { font: 600 52px/1.1 var(--font-display); margin-bottom: 8px; }
+    .c2-rrow { height: 96px; display: flex; align-items: center; border-bottom: 1px solid var(--rule); font: 400 36px/1 var(--font-text); border-radius: 4px; }
+    .c2-rrow span { width: 220px; color: var(--ink-muted); font-size: 30px; }
+
+    .c2-flab { white-space: nowrap; }
+
+    .c2-table { position: absolute; left: 110px; top: 260px; width: 1700px; display: grid; grid-template-columns: 540px 600px 560px; font: 400 36px/1.4 var(--font-text); }
+    .c2-table > div { display: contents; }
+    .c2-table span { padding: 24px 24px; border-bottom: 1px solid var(--rule); }
+    .c2-table code { font: 400 32px/1.4 var(--font-code); }
+    .c2-table .th span { font: 700 30px/1.3 var(--font-text); color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+
+    .q { font-size: 40px; margin-bottom: 34px; }
+    .q code { font: 400 36px/1 var(--font-code); }
+  </style>
+
+  <div id="root" data-composition-id="c2" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c2-card" class="clip world" data-start="0" data-duration="3">
+      <div class="chapter-time">11:30</div>
+      <div class="chapter-title">Stores, references and normalized data</div>
+    </div>
+
+    <!-- c2-1: 11:30, the shelf map; the shelves fill up -->
+    <div id="c2-desk" class="clip world sunk" data-start="3" data-duration="7.9">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">11:30</span></div>
+        <div class="app-body">
+          <div class="c2-nav">
+            <div>Members</div>
+            <div>Catalogue</div>
+            <div class="on">Shelves</div>
+            <div>Returns</div>
+          </div>
+          <div id="c2-map" data-hold>
+            <div class="label">Shelf map · east wing</div>
+            <div id="c2-grid">
+              <div class="c2-shelf"><b>A · Fiction</b><div id="c2-sp1" class="c2-spines"><i style="height: 120px"></i><i style="height: 140px"></i><i style="height: 110px"></i><i style="height: 132px"></i><i style="height: 124px"></i><i style="height: 146px"></i><i style="height: 116px"></i><i style="height: 128px"></i><i style="height: 138px"></i><i style="height: 112px"></i><i style="height: 130px"></i><i style="height: 122px"></i></div></div>
+              <div class="c2-shelf"><b>B · History</b><div id="c2-sp2" class="c2-spines"><i style="height: 134px"></i><i style="height: 118px"></i><i style="height: 142px"></i><i style="height: 126px"></i><i style="height: 112px"></i><i style="height: 138px"></i><i style="height: 130px"></i><i style="height: 120px"></i><i style="height: 144px"></i><i style="height: 116px"></i></div></div>
+              <div class="c2-shelf"><b>C · Poetry</b><div id="c2-sp3" class="c2-spines"><i style="height: 112px"></i><i style="height: 128px"></i><i style="height: 120px"></i><i style="height: 136px"></i><i style="height: 114px"></i><i style="height: 126px"></i><i style="height: 140px"></i></div></div>
+              <div class="c2-shelf"><b>D · Science</b><div id="c2-sp4" class="c2-spines"><i style="height: 140px"></i><i style="height: 126px"></i><i style="height: 118px"></i><i style="height: 146px"></i><i style="height: 132px"></i><i style="height: 120px"></i><i style="height: 136px"></i><i style="height: 114px"></i><i style="height: 128px"></i><i style="height: 142px"></i><i style="height: 124px"></i></div></div>
+              <div class="c2-shelf"><b>E · Travel</b><div id="c2-sp5" class="c2-spines"><i style="height: 124px"></i><i style="height: 138px"></i><i style="height: 116px"></i><i style="height: 130px"></i><i style="height: 144px"></i><i style="height: 120px"></i><i style="height: 112px"></i><i style="height: 134px"></i></div></div>
+              <div class="c2-shelf"><b>F · Children</b><div id="c2-sp6" class="c2-spines"><i style="height: 110px"></i><i style="height: 122px"></i><i style="height: 114px"></i><i style="height: 128px"></i><i style="height: 118px"></i><i style="height: 126px"></i><i style="height: 112px"></i><i style="height: 120px"></i><i style="height: 116px"></i></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-2: heading; patchState(store, updater), then !== as a label -->
+    <div id="c2-ref" class="clip world" data-start="10.9" data-duration="9.44">
+      <div id="c2-ref-h" class="c2-h" data-hold><code>patchState</code> compares references, one level deep</div>
+      <div id="c2-ref-c" class="c2-chip" style="left: 200px; top: 420px" data-hold>patchState(store, updater)</div>
+      <div id="c2-ref-ne" class="c2-chip" style="left: 200px; top: 620px; font-size: 72px; padding: 24px 44px" data-hold>!==</div>
+    </div>
+
+    <!-- c2-3: LibraryState as kit nodes; the path from a changed record up to its top-level key -->
+    <div id="c2-path" class="clip world sunk" data-start="20.34" data-duration="7.26">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke-width="4">
+        <g id="c2-p-edges" stroke="#c4b9a6">
+          <path d="M960 316 V370 H330 V420 M960 370 H880 V420 M960 370 H1500 V420" />
+          <path d="M330 536 V640" />
+        </g>
+        <path id="c2-p-climb" pathLength="1" stroke="#b8321f" d="M330 640 V536" />
+      </svg>
+      <div id="c2-p0" class="node c3n" style="left: 760px; top: 240px; width: 400px">LibraryState</div>
+      <div id="c2-p1" class="node c3n" style="left: 130px; top: 420px; width: 400px">books<span class="badge">[record by id]</span></div>
+      <div id="c2-p2" class="node c3n" style="left: 570px; top: 420px; width: 620px">loans<span class="badge">[record by id, each with a bookId]</span></div>
+      <div id="c2-p3" class="node c3n" style="left: 1230px; top: 420px; width: 560px">loanRows<span class="badge">[view joining loans with books]</span></div>
+      <div id="c2-p4" class="node dim c3n" style="left: 150px; top: 640px; width: 360px; font-family: var(--font-text)" data-hold>a changed record</div>
+    </div>
+
+    <!-- c2-4: what returns new values; what changes a value in place (the accent group) -->
+    <div id="c2-ops" class="clip world" data-start="27.6" data-duration="9.31">
+      <div id="c2-g1h" class="c2-ghead" style="top: 220px">Return new values</div>
+      <div id="c2-o1" class="c2-chip" style="left: 200px; top: 290px">...</div>
+      <div id="c2-o2" class="c2-chip" style="left: 370px; top: 290px">map</div>
+      <div id="c2-o3" class="c2-chip" style="left: 560px; top: 290px">filter</div>
+      <div id="c2-o4" class="c2-chip" style="left: 800px; top: 290px" data-hold>toSpliced</div>
+      <div id="c2-g2h" class="c2-ghead" style="top: 560px">Change a value in place</div>
+      <div id="c2-o5" class="c2-chip c2-g2" style="left: 200px; top: 630px">push</div>
+      <div id="c2-o6" class="c2-chip c2-g2" style="left: 390px; top: 630px">splice</div>
+      <div id="c2-o7" class="c2-chip c2-g2" style="left: 630px; top: 630px">sort</div>
+      <div id="c2-o8" class="c2-chip c2-g2 prose" style="left: 820px; top: 630px">property assignment</div>
+      <div id="c2-o9" class="c2-chip c2-g2" style="left: 200px; top: 780px" data-hold>Set or Map writes</div>
+    </div>
+
+    <!-- c2-5: heading; c2-6: one book copied in two places, only one copy updates -->
+    <div id="c2-norm" class="clip world" data-start="36.91" data-duration="10.58">
+      <div id="c2-norm-h" class="c2-h" data-hold>Normalize what is shared, embed what is historical</div>
+      <div id="c2-copy1" class="c2-card" style="left: 200px">
+        <div class="label">Book · copy 1</div>
+        <div class="c2-title"><span id="c2-t1old">Hyperon</span><span id="c2-t1new">Hyperion</span></div>
+      </div>
+      <div id="c2-copy2" class="c2-card" style="left: 1000px" data-hold>
+        <div class="label">Book · copy 2</div>
+        <div class="c2-title"><span>Hyperon</span></div>
+        <div id="c2-stale" class="c2-stale">stale</div>
+      </div>
+    </div>
+
+    <!-- c2-7: the LibraryState tree, then its loanRows code, band on books[loan.bookId]?.title -->
+    <div id="c2-join" class="clip world" data-start="47.49" data-duration="8.16">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke-width="4">
+        <path id="c2-j-edges" stroke="#c4b9a6" d="M960 172 V210 H330 V240 M960 210 H880 V240 M960 210 H1500 V240" />
+      </svg>
+      <div id="c2-j0" class="node c3n" style="left: 760px; top: 96px; width: 400px">LibraryState</div>
+      <div id="c2-j1" class="node c3n" style="left: 130px; top: 240px; width: 400px">books<span class="badge">[record by id]</span></div>
+      <div id="c2-j2" class="node c3n" style="left: 570px; top: 240px; width: 620px">loans<span class="badge">[record by id, each with a bookId]</span></div>
+      <div id="c2-j3" class="node c3n" style="left: 1230px; top: 240px; width: 560px">loanRows<span class="badge">[view joining loans with books]</span></div>
+      <div id="c2-jcode" class="code c2-code" style="top: 470px" data-hold>
+        <span class="ln"><span class="k">protected readonly</span> loanRows = computed(() =&gt; {</span>
+        <span class="ln">  <span class="k">const</span> books = <span class="k">this</span>.books(); <span class="c">// Record&lt;number, Book&gt;</span></span>
+        <span class="ln c2-wrap">  <span class="k">return this</span>.loans().map((loan) =&gt; ({ loan, title: <span id="c2-jband" class="c2-mark">books[loan.bookId]?.title</span> ?? <span class="s">'Unknown book'</span> }));</span>
+        <span class="ln">});</span>
+      </div>
+    </div>
+
+    <!-- c2-8: withEntities and its updaters as labels -->
+    <div id="c2-ent" class="clip world" data-start="55.65" data-duration="9.14">
+      <div id="c2-e0" class="c2-chip" style="left: 200px; top: 160px; font-size: 56px; padding: 26px 44px">withEntities</div>
+      <div id="c2-em" class="c2-chip prose" style="left: 200px; top: 330px">a map by id</div>
+      <div id="c2-el" class="c2-chip prose" style="left: 560px; top: 330px">an ordered list of ids</div>
+      <div id="c2-e1" class="c2-chip" style="left: 200px; top: 560px">addEntity</div>
+      <div id="c2-e2" class="c2-chip" style="left: 540px; top: 560px">updateEntity</div>
+      <div id="c2-e3" class="c2-chip" style="left: 950px; top: 560px">removeEntity</div>
+      <div id="c2-e4" class="c2-chip" style="left: 200px; top: 710px">setAllEntities</div>
+      <div id="c2-e5" class="c2-chip" style="left: 660px; top: 710px" data-hold>upsertEntity</div>
+    </div>
+
+    <!-- c2-9: a fine receipt keeps the title as it was on the day of payment -->
+    <div id="c2-fine" class="clip world sunk" data-start="64.79" data-duration="9.93">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">11:30</span></div>
+        <div class="app-body">
+          <div id="c2-receipt" data-hold>
+            <h3>Fine receipt</h3>
+            <div class="label" style="margin-bottom: 16px">Paid at the desk</div>
+            <div class="c2-rrow"><span>Member</span>Ada Brooks</div>
+            <div id="c2-rbook" class="c2-rrow"><span>Book</span>Kindred</div>
+            <div class="c2-rrow"><span>Paid on</span>4 March</div>
+            <div class="c2-rrow"><span>Status</span>Paid</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2-10: the lesson's effect reset code, typed in -->
+    <div id="c2-reset" class="clip world" data-start="74.72" data-duration="9.69">
+      <div id="c2-reset-h" class="c2-h" data-hold><code>computed</code>, <code>linkedSignal</code> and <code>effect</code> do different jobs</div>
+      <div id="c2-rcode" class="code c2-code c2-type" style="left: 200px; width: auto; top: 400px; padding: 44px 56px" data-hold>
+        <span id="c2-r1" class="ln">effect(() =&gt; {</span>
+        <span id="c2-r2" class="ln">  <span class="k">this</span>.shelfId();          <span class="c">// track the shelf</span></span>
+        <span id="c2-r3" class="ln">  <span class="k">this</span>.sort.set(<span class="s">'title'</span>);  <span class="c">// reset the sort</span></span>
+        <span id="c2-r4" class="ln">});</span>
+      </div>
+    </div>
+
+    <!-- c2-11: the lesson's flow, arrows drawing on as each step is named; c2-12: the first two arrows as the accent -->
+    <div id="c2-flow" class="clip world" data-start="84.41" data-duration="15.82">
+      <svg class="c2-svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke-width="4" stroke="#1d1b18">
+        <path id="c2-a1" pathLength="1" d="M470 382 H716" />
+        <path id="c2-h1" d="M704 370 L720 382 L704 394" />
+        <path id="c2-a2" pathLength="1" d="M1110 382 H1476" />
+        <path id="c2-h2" d="M1464 370 L1480 382 L1464 394" />
+        <path id="c2-a3" pathLength="1" d="M1610 434 V560 H900 V676" />
+        <path id="c2-h3" d="M888 664 L900 680 L912 664" />
+        <path id="c2-a4" pathLength="1" d="M1070 742 H1436" />
+        <path id="c2-h4" d="M1424 730 L1440 742 L1424 754" />
+      </svg>
+      <div id="c2-f1" class="fbox" style="left: 190px; top: 330px; width: 280px">openShelf</div>
+      <div id="c2-f2" class="fbox" style="left: 730px; top: 330px; width: 380px">shelfId signal</div>
+      <div id="c2-f3" class="fbox" style="left: 1490px; top: 330px; width: 240px">effect</div>
+      <div id="c2-f4" class="fbox" style="left: 730px; top: 690px; width: 340px">sort signal</div>
+      <div id="c2-f5" class="fbox" style="left: 1450px; top: 690px; width: 280px" data-hold>Template</div>
+      <div id="c2-l1" class="flabel c2-flab" style="left: 480px; top: 316px; width: 240px">written now</div>
+      <div id="c2-l2" class="flabel c2-flab" style="left: 1110px; top: 316px; width: 380px">scheduled for later</div>
+      <div id="c2-l3" class="flabel c2-flab" style="left: 1060px; top: 508px; width: 400px">written later</div>
+      <div id="c2-l4" class="flabel c2-flab" style="left: 1070px; top: 676px; width: 380px" data-hold>rendered after that</div>
+    </div>
+
+    <!-- c2-14: the lesson's linkedSignal sort code, cut in whole -->
+    <div id="c2-linked" class="clip world" data-start="100.23" data-duration="6.05">
+      <div class="code c2-code" style="left: 200px; width: auto; top: 380px; padding: 44px 56px" data-hold>
+        <span class="ln"><span class="k">protected readonly</span> sort = linkedSignal({</span>
+        <span class="ln">  source: <span class="k">this</span>.shelfId,</span>
+        <span class="ln">  computation: (): SortOrder =&gt; <span class="s">'title'</span>,</span>
+        <span class="ln">});</span>
+      </div>
+    </div>
+
+    <!-- c2-15: Tool / Use it when the value / Do not use it when, cut in whole -->
+    <div id="c2-tools" class="clip world" data-start="106.28" data-duration="6.54">
+      <div class="c2-table" data-hold>
+        <div class="th"><span>Tool</span><span>Use it when the value</span><span>Do not use it when</span></div>
+        <div><span><code>computed</code></span><span>is fully determined by other signals</span><span>users must be able to overwrite it</span></div>
+        <div><span><code>linkedSignal</code> / <code>withLinkedState</code></span><span>is writable, and resets or recomputes when a source changes</span><span>it never needs a manual write (use <code>computed</code>)</span></div>
+        <div><span><code>effect</code> / <code>withHooks</code> effect</span><span>must leave the signal graph: storage, logging, analytics, a DOM API</span><span>the result is more signal state</span></div>
+      </div>
+    </div>
+
+    <!-- c2-16: the lesson's localStorage.setItem effect -->
+    <div id="c2-store" class="clip world" data-start="112.82" data-duration="6.94">
+      <div class="code c2-code" style="left: 200px; width: auto; top: 460px; padding: 44px 56px" data-hold>
+        <span class="ln">effect(() =&gt; localStorage.setItem(<span class="s">'shelf-view'</span>, <span class="k">this</span>.viewMode()));</span>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c2-questions" class="clip world note" data-start="119.76" data-duration="25.7">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c2-q1" class="q">Does this need a store at all, or would a component signal or a service do?</div>
+        <div id="c2-q2" class="q">Where does each entity live? If it appears in more than one place, which copy wins when it changes, and is that intended?</div>
+        <div id="c2-q3" class="q">For each <code>effect</code> or hook: does its output leave the signal graph, or does it write signals that something else reads?</div>
+        <div id="c2-q4" class="q">After any write, is there a window in which two values disagree? Who could read them in that window?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c2-pause" class="clip world" data-start="145.46" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c2-pause-2" class="pause-2" data-hold>Now do exercise 02.</div>
+    </div>
+
+    <audio id="c2-bed1" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="44" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c2-bed2" class="clip" src="assets/music/bed.mp3" data-start="119.76" data-duration="25.7" data-media-start="104" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c2-1" class="clip" src="assets/vo/c2-1.wav" data-start="3.0" data-duration="7.552" data-volume="1"></audio>
+    <audio id="vo-c2-2" class="clip" src="assets/vo/c2-2.wav" data-start="10.9" data-duration="9.088" data-volume="1"></audio>
+    <audio id="vo-c2-3" class="clip" src="assets/vo/c2-3.wav" data-start="20.34" data-duration="6.912" data-volume="1"></audio>
+    <audio id="vo-c2-4" class="clip" src="assets/vo/c2-4.wav" data-start="27.6" data-duration="8.96" data-volume="1"></audio>
+    <audio id="vo-c2-5" class="clip" src="assets/vo/c2-5.wav" data-start="36.91" data-duration="3.755" data-volume="1"></audio>
+    <audio id="vo-c2-6" class="clip" src="assets/vo/c2-6.wav" data-start="41.02" data-duration="6.123" data-volume="1"></audio>
+    <audio id="vo-c2-7" class="clip" src="assets/vo/c2-7.wav" data-start="47.49" data-duration="7.808" data-volume="1"></audio>
+    <audio id="vo-c2-8" class="clip" src="assets/vo/c2-8.wav" data-start="55.65" data-duration="8.789" data-volume="1"></audio>
+    <audio id="vo-c2-9" class="clip" src="assets/vo/c2-9.wav" data-start="64.79" data-duration="9.579" data-volume="1"></audio>
+    <audio id="vo-c2-10" class="clip" src="assets/vo/c2-10.wav" data-start="74.72" data-duration="9.344" data-volume="1"></audio>
+    <audio id="vo-c2-11" class="clip" src="assets/vo/c2-11.wav" data-start="84.41" data-duration="7.232" data-volume="1"></audio>
+    <audio id="vo-c2-12" class="clip" src="assets/vo/c2-12.wav" data-start="91.99" data-duration="7.893" data-volume="1"></audio>
+    <audio id="vo-c2-14" class="clip" src="assets/vo/c2-14.wav" data-start="100.23" data-duration="5.696" data-volume="1"></audio>
+    <audio id="vo-c2-15" class="clip" src="assets/vo/c2-15.wav" data-start="106.28" data-duration="6.187" data-volume="1"></audio>
+    <audio id="vo-c2-16" class="clip" src="assets/vo/c2-16.wav" data-start="112.82" data-duration="6.592" data-volume="1"></audio>
+    <audio id="vo-c2-end" class="clip" src="assets/vo/c2-end.wav" data-start="119.76" data-duration="2.027" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ACCENT = "#b8321f";
+    const SOFT = "rgba(245,226,217,1)";
+    const CLEAR = "rgba(245,226,217,0)";
+    const fadeIn = (sel, at, d = 0.5) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const fadeOut = (sel, at, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: CLEAR }, { backgroundColor: SOFT, duration: 0.4 }, at);
+    const draw = (sel, at, d) => tl.fromTo(sel, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+    const typeLine = (sel, chars, at, d) => tl.fromTo(sel, { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: d, ease: "steps(" + chars + ")" }, at);
+
+    // chapter card: on screen from frame 0, no entrance
+
+    // c2-1: the shelf map, then the shelves fill up
+    fadeIn("#c2-map .label", 3.1, 0.5);
+    ["#c2-sp1", "#c2-sp2", "#c2-sp3", "#c2-sp4", "#c2-sp5", "#c2-sp6"].forEach((s, i) => fadeIn(s + " i", 4.2 + i * 0.15, 0.6));
+
+    // c2-2: the heading, the call it is about, then the comparison
+    fadeIn("#c2-ref-h", 11.0, 0.5);
+    fadeIn("#c2-ref-c", 11.9, 0.5);
+    fadeIn("#c2-ref-ne", 16.3, 0.5);
+    tl.to("#c2-ref-ne", { borderColor: ACCENT, color: ACCENT, duration: 0.3 }, 16.5);
+
+    // c2-3: the tree, a changed record below books, then the path up to its top-level key
+    fadeIn("#c2-p0", 20.4, 0.5);
+    fadeIn("#c2-p1, #c2-p2, #c2-p3, #c2-p-edges", 20.7, 0.5);
+    fadeIn("#c2-p4", 22.6, 0.5);
+    draw("#c2-p-climb", 25.0, 0.8);
+    tl.to("#c2-p1", { borderColor: ACCENT, duration: 0.3 }, 25.7);
+
+    // c2-4: the first group as each is named; the second group, the accent
+    fadeIn("#c2-g1h", 27.7, 0.4);
+    fadeIn("#c2-o1", 27.7, 0.4);
+    fadeIn("#c2-o2", 28.0, 0.4);
+    fadeIn("#c2-o3", 28.3, 0.4);
+    fadeIn("#c2-o4", 28.9, 0.4);
+    fadeIn("#c2-g2h", 31.0, 0.4);
+    fadeIn("#c2-o5", 31.05, 0.4);
+    fadeIn("#c2-o6", 31.4, 0.4);
+    fadeIn("#c2-o7", 31.7, 0.4);
+    fadeIn("#c2-o8", 32.1, 0.4);
+    fadeIn("#c2-o9", 33.9, 0.4);
+    tl.to(".c2-g2", { borderColor: ACCENT, duration: 0.3 }, 34.4);
+    tl.to("#c2-g2h", { color: ACCENT, duration: 0.3 }, 34.4);
+
+    // c2-5: the heading; c2-6: two copies, one is updated, the other goes stale
+    fadeIn("#c2-norm-h", 37.0, 0.5);
+    fadeIn("#c2-copy1", 41.1, 0.5);
+    fadeIn("#c2-copy2", 41.25, 0.5);
+    tl.fromTo("#c2-t1new", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 44.3);
+    fadeOut("#c2-t1old", 44.3, 0.4);
+    fadeIn("#c2-stale", 46.0, 0.4);
+    tl.to("#c2-copy2", { borderColor: ACCENT, duration: 0.3 }, 46.0);
+
+    // c2-7: the normalized tree, the view that joins, then the lookup banded
+    fadeIn("#c2-j0, #c2-j1, #c2-j2, #c2-j3, #c2-j-edges", 47.55, 0.5);
+    fadeIn("#c2-jcode", 51.6, 0.5);
+    band("#c2-jband", 53.4);
+
+    // c2-8: withEntities, its shape, then its updaters
+    fadeIn("#c2-e0", 55.8, 0.5);
+    fadeIn("#c2-em", 58.0, 0.4);
+    fadeIn("#c2-el", 59.4, 0.4);
+    ["#c2-e1", "#c2-e2", "#c2-e3", "#c2-e4", "#c2-e5"].forEach((e, i) => fadeIn(e, 61.6 + i * 0.15, 0.4));
+
+    // c2-9: the receipt, its title kept as it was
+    fadeIn("#c2-receipt", 64.9, 0.5);
+    band("#c2-rbook", 69.8);
+
+    // c2-10: the heading, then the first attempt typed in
+    fadeIn("#c2-reset-h", 74.8, 0.5);
+    fadeIn("#c2-rcode", 80.2, 0.3);
+    typeLine("#c2-r1", 14, 80.4, 0.4);
+    typeLine("#c2-r2", 40, 80.85, 0.8);
+    typeLine("#c2-r3", 40, 81.7, 0.8);
+    typeLine("#c2-r4", 3, 82.55, 0.2);
+
+    // c2-11: boxes, then each arrow as its step is named
+    fadeIn("#c2-f1, #c2-f2, #c2-f3, #c2-f4, #c2-f5", 84.5, 0.5);
+    [["#c2-a1", "#c2-h1", "#c2-l1", 85.6], ["#c2-a2", "#c2-h2", "#c2-l2", 87.3], ["#c2-a3", "#c2-h3", "#c2-l3", 88.9], ["#c2-a4", "#c2-h4", "#c2-l4", 90.6]].forEach(([a, h, l, at]) => {
+      draw(a, at, 0.6);
+      fadeIn(h, at + 0.5, 0.2);
+      fadeIn(l, at + 0.15, 0.4);
+    });
+
+    // c2-12: the window between the first two writes
+    tl.to("#c2-a1, #c2-h1, #c2-a2, #c2-h2", { stroke: ACCENT, duration: 0.3 }, 92.1);
+    tl.to("#c2-l1, #c2-l2", { color: ACCENT, duration: 0.3 }, 92.1);
+
+    // c2-14, c2-15, c2-16: cut in whole
+
+    // questions 0.6 s apart, then hold; pause card
+    ["#c2-q1", "#c2-q2", "#c2-q3", "#c2-q4"].forEach((q, i) => fadeIn(q, 120.0 + i * 0.6));
+    fadeIn("#c2-pause-2", 145.94);
+
+    window.__timelines["c2"] = tl;
+  </script>
+</template>

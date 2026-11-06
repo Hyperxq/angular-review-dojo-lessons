@@ -1,0 +1,319 @@
+<template>
+  <link rel="stylesheet" href="assets/kit.css" />
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+
+    .c1-h { position: absolute; left: 140px; top: 84px; width: 1640px; font: 600 56px/1.1 var(--font-display); letter-spacing: -0.01em; }
+    .c1-h code { font: 600 50px/1 var(--font-code); white-space: nowrap; }
+    .c1-chip { position: absolute; padding: 14px 24px; border: 2px solid var(--rule-strong); border-radius: 8px; background: var(--paper-raised); font: 400 34px/1 var(--font-code); white-space: nowrap; }
+    .c1-chip.txt { font: 400 36px/1 var(--font-text); }
+    .c1-prose code { font-family: var(--font-code); font-size: 0.9em; white-space: nowrap; }
+    .c1-code { left: 120px; width: 1680px; box-sizing: border-box; padding: 40px; }
+    .c1-code .ln { white-space: pre-wrap; margin: 0 -40px; padding: 0 40px; background-color: rgba(245, 226, 217, 0); }
+    .c1-code .tok { background-color: rgba(245, 226, 217, 0); border-radius: 4px; }
+
+    /* desk app */
+    .c1-panel-h { font: 600 48px/1.1 var(--font-display); letter-spacing: -0.01em; margin-bottom: 24px; }
+    .c1-loan { display: grid; grid-template-columns: 560px 1fr 220px; align-items: center; height: 92px; padding: 0 24px; border-bottom: 1px solid var(--rule); font: 400 34px/1 var(--font-text); }
+    .c1-loan b { font-weight: 700; }
+    .c1-loan span:nth-child(2) { color: var(--ink-muted); }
+    .c1-loan span:last-child { color: var(--ink-muted); font-variant-numeric: tabular-nums; text-align: right; }
+    .c1-field { margin-bottom: 36px; }
+    .c1-field-l { font: 700 30px/1 var(--font-text); color: var(--ink-muted); margin-bottom: 14px; }
+    .c1-input { width: 960px; height: 84px; box-sizing: border-box; padding: 0 28px; display: flex; align-items: center; border: 3px solid var(--rule-strong); border-radius: 8px; background: var(--paper); font: 400 36px/1 var(--font-text); }
+    .c1-caret { display: inline-block; width: 3px; height: 44px; margin-left: 4px; background: var(--ink); }
+
+    /* the two numbered questions */
+    .c1-ol { position: absolute; left: 140px; top: 260px; width: 1600px; }
+    .c1-oli { display: grid; grid-template-columns: 72px 1fr; margin-bottom: 44px; font: 400 44px/1.4 var(--font-text); }
+    .c1-oli span:first-child { font-weight: 700; color: var(--ink-muted); }
+
+    /* Loan tree from LESSON.md */
+    .c1-tree .node { box-sizing: border-box; height: 92px; display: flex; align-items: center; justify-content: center; }
+    .c1-edges path { stroke: var(--rule-strong); stroke-width: 4; fill: none; }
+
+    /* IMPORTANT callout */
+    .c1-call { position: absolute; left: 160px; top: 220px; width: 1600px; box-sizing: border-box; padding: 44px 56px 52px; border-left: 10px solid var(--note); border-radius: 8px; background: var(--note-soft); }
+    .c1-call-h { font: 700 32px/1 var(--font-text); letter-spacing: 0.06em; color: var(--note); }
+    .c1-call p { margin: 28px 0 0; font: 400 42px/1.5 var(--font-text); }
+    .c1-call code { font: 400 38px/1 var(--font-code); white-space: nowrap; }
+    .c1-call .sent { background-color: rgba(245, 226, 217, 0); border-radius: 4px; }
+
+    /* read table from LESSON.md */
+    .c1-tbl { position: absolute; left: 120px; top: 300px; width: 1680px; font: 400 36px/1.4 var(--font-text); }
+    .c1-tbl code { font: 400 32px/1.3 var(--font-code); white-space: nowrap; }
+    .c1-tr { display: grid; grid-template-columns: 900px 1fr; column-gap: 48px; padding: 26px 28px; border-bottom: 1px solid var(--rule); border-radius: 6px; background-color: rgba(245, 226, 217, 0); }
+    .c1-th { font-weight: 700; color: var(--ink-muted); border-bottom: 2px solid var(--rule-strong); }
+
+    #c1-questions .q { font-size: 40px; }
+    #c1-questions .q code { font: 400 36px/1 var(--font-code); white-space: nowrap; }
+  </style>
+
+  <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
+    <!-- chapter card -->
+    <div id="c1-card" class="clip world" data-start="0" data-duration="3">
+      <div id="c1-card-time" class="chapter-time">09:00</div>
+      <div id="c1-card-title" class="chapter-title">Facts, views and copies</div>
+    </div>
+
+    <!-- c1-1 the desk app, the first loans going out -->
+    <div id="c1-desk" class="clip world" data-start="3" data-duration="6.45">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-panel-h">Loans</div>
+          <div data-hold>
+            <div id="c1-l1" class="c1-loan"><span><b>Persuasion</b></span><span>Ada Brooks</span><span>card 1042</span></div>
+            <div id="c1-l2" class="c1-loan"><span><b>Walden</b></span><span>Tom Okafor</span><span>card 1187</span></div>
+            <div id="c1-l3" class="c1-loan"><span><b>Cranford</b></span><span>Mei Lin</span><span>card 1203</span></div>
+            <div id="c1-l4" class="c1-loan"><span><b>Ivanhoe</b></span><span>Sara Diaz</span><span>card 1251</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-2 the two questions -->
+    <div id="c1-model" class="clip world" data-start="9.45" data-duration="7.73">
+      <div class="c1-h">The mental model: facts and views</div>
+      <div class="c1-ol" data-hold>
+        <div id="c1-q-a" class="c1-oli"><span>1.</span><span>Is this a fact, something nobody can compute from anything else? Or a view of other facts?</span></div>
+        <div id="c1-q-b" class="c1-oli"><span>2.</span><span>Who is allowed to change it?</span></div>
+      </div>
+    </div>
+
+    <!-- c1-3, c1-4 the Loan tree, drawn top down; dueOn as the hot node -->
+    <div id="c1-tree" class="clip world sunk c1-tree" data-start="17.18" data-duration="15.23">
+      <svg class="c1-edges" style="position: absolute; left: 0; top: 0" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <path id="c1-e0" pathLength="1" stroke-dasharray="1" d="M960,202 V246 H560 V290 M960,246 H1360 V290" />
+        <path id="c1-e1" pathLength="1" stroke-dasharray="1" d="M1360,382 V470" />
+        <path id="c1-e2" pathLength="1" stroke-dasharray="1" d="M1360,562 V650" />
+        <path id="c1-e3" pathLength="1" stroke-dasharray="1" d="M1360,742 V830" />
+      </svg>
+      <div id="c1-n-loan" class="node" style="left: 820px; top: 110px; width: 280px">Loan</div>
+      <div id="c1-n-out" class="node" style="left: 260px; top: 290px; width: 600px">checkedOutOn<span class="badge">[fact]</span></div>
+      <div id="c1-n-tier" class="node" style="left: 1080px; top: 290px; width: 560px">memberTier<span class="badge">[fact]</span></div>
+      <div id="c1-n-days" class="node" style="left: 1020px; top: 470px; width: 680px">loanDays<span class="badge">[view of tier]</span></div>
+      <div id="c1-n-due" class="node" style="left: 930px; top: 650px; width: 860px">dueOn<span class="badge">[view of checkedOutOn and loanDays]</span></div>
+      <div id="c1-n-over" class="node" style="left: 960px; top: 830px; width: 800px" data-hold>isOverdue<span class="badge">[view of dueOn and now]</span></div>
+    </div>
+
+    <!-- c1-5, c1-6 Clock and LoanCard, cut in whole; the band moves -->
+    <div id="c1-clock" class="clip world" data-start="32.41" data-duration="16.98">
+      <div class="code c1-code" style="top: 120px; font-size: 28px" data-hold>
+<span class="ln">@Injectable({ providedIn: <span class="s">'root'</span> })</span>
+<span class="ln"><span class="k">export class</span> Clock {</span>
+<span class="ln"><span class="c">  // a signal that ticks, so computed values that depend on time stay live</span></span>
+<span class="ln" style="padding-left: calc(40px + 6ch); text-indent: -6ch">  <span class="k">readonly</span> now = toSignal(interval(<span class="n">60_000</span>).pipe(map(() =&gt; <span class="k">new</span> Date())), { initialValue: <span class="k">new</span> Date() });</span>
+<span class="ln">}</span>
+<span class="ln"> </span>
+<span class="ln"><span class="k">export class</span> LoanCard {</span>
+<span class="ln">  <span class="k">readonly</span> loan = input.required&lt;Loan&gt;();</span>
+<span class="ln">  <span class="k">private readonly</span> policy = inject(LoanPolicy);</span>
+<span class="ln">  <span class="k">private readonly</span> clock = inject(Clock);</span>
+<span class="ln"> </span>
+<span id="c1-cl-due1" class="ln">  <span class="k">protected readonly</span> dueOn = computed(() =&gt;</span>
+<span id="c1-cl-due2" class="ln">    addDays(<span class="k">this</span>.loan().checkedOutOn, <span class="k">this</span>.policy.loanDays(<span class="k">this</span>.loan().memberTier)),</span>
+<span id="c1-cl-due3" class="ln">  );</span>
+<span id="c1-cl-over" class="ln">  <span class="k">protected readonly</span> isOverdue = computed(() =&gt; <span class="k">this</span>.dueOn() &lt; <span id="c1-cl-now" class="tok"><span class="k">this</span>.clock.now()</span>);</span>
+<span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c1-7 the hidden non-signal inputs as labels -->
+    <div id="c1-hidden" class="clip world" data-start="49.39" data-duration="8.41">
+      <div class="c1-h">Hidden non-signal inputs</div>
+      <div id="c1-hi1" class="c1-chip txt" style="left: 200px; top: 300px">the current time</div>
+      <div id="c1-hi2" class="c1-chip" style="left: 200px; top: 430px">localStorage</div>
+      <div id="c1-hi3" class="c1-chip txt" style="left: 200px; top: 560px">a plain field</div>
+      <div id="c1-hi4" class="c1-chip txt" style="left: 200px; top: 690px" data-hold>a global</div>
+    </div>
+
+    <!-- c1-8 the IMPORTANT callout -->
+    <div id="c1-imp" class="clip world" data-start="57.8" data-duration="7.52">
+      <div class="c1-call" data-hold>
+        <div class="c1-call-h">IMPORTANT</div>
+        <p>Fact or view is a business question, so ask it. <span id="c1-imp-rule" class="sent">If the library's rule is "the due date is fixed at checkout, whatever happens to the tier later", then <code>dueOn</code> is a fact and storing it is correct.</span> The code is wrong only when it stores a value the business considers derived.</p>
+      </div>
+    </div>
+
+    <!-- c1-9 Where the read happens / What you get -->
+    <div id="c1-read" class="clip world" data-start="65.32" data-duration="11.27">
+      <div class="c1-h" style="font-size: 52px">A read is a moment; a read in a reactive context is a subscription</div>
+      <div class="c1-tbl c1-prose" data-hold>
+        <div class="c1-tr c1-th"><div>Where the read happens</div><div>What you get</div></div>
+        <div id="c1-r1" class="c1-tr"><div>In a template, <code>{{ book.title() }}</code></div><div>A live dependency. The view updates when the signal changes.</div></div>
+        <div id="c1-r2" class="c1-tr"><div>Inside <code>computed(() =&gt; …)</code> or <code>effect(() =&gt; …)</code></div><div>A live dependency of that computed or effect.</div></div>
+        <div id="c1-r3" class="c1-tr"><div>In a field initializer or constructor, <code>title = book.title()</code></div><div>A plain value, copied once.</div></div>
+      </div>
+    </div>
+
+    <!-- c1-10 the desk app edit form for a book -->
+    <div id="c1-form" class="clip world" data-start="76.59" data-duration="7.44">
+      <div class="app">
+        <div class="app-header"><span>Circulation desk</span><span class="app-clock">09:00</span></div>
+        <div class="app-body">
+          <div class="c1-panel-h">Edit book</div>
+          <div class="c1-field">
+            <div class="c1-field-l">Title</div>
+            <div id="c1-in-title" class="c1-input">Middlemarch<span class="c1-caret"></span></div>
+          </div>
+          <div class="c1-field" data-hold>
+            <div class="c1-field-l">Author</div>
+            <div class="c1-input">George Eliot</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c1-11, c1-12 EditBookForm, band on source, then on computation -->
+    <div id="c1-draft" class="clip world" data-start="84.03" data-duration="17.4">
+      <div class="code c1-code" style="top: 240px; font-size: 34px" data-hold>
+<span class="ln"><span class="k">export class</span> EditBookForm {</span>
+<span class="ln">  <span class="k">readonly</span> book = input.required&lt;Book&gt;();</span>
+<span class="ln"> </span>
+<span class="ln"><span class="c">  // a writable draft that resets when a different book is opened</span></span>
+<span class="ln">  <span class="k">protected readonly</span> draftTitle = linkedSignal({</span>
+<span id="c1-d-src" class="ln">    source: () =&gt; <span class="k">this</span>.book().id,</span>
+<span id="c1-d-comp" class="ln">    computation: () =&gt; untracked(() =&gt; <span class="k">this</span>.book().title),</span>
+<span class="ln">  });</span>
+<span class="ln">}</span>
+      </div>
+    </div>
+
+    <!-- c1-13 the read table again, the field initializer row banded -->
+    <div id="c1-read2" class="clip world" data-start="101.43" data-duration="6.32">
+      <div class="c1-h" style="font-size: 52px">A read is a moment; a read in a reactive context is a subscription</div>
+      <div class="c1-tbl c1-prose" data-hold>
+        <div class="c1-tr c1-th"><div>Where the read happens</div><div>What you get</div></div>
+        <div class="c1-tr"><div>In a template, <code>{{ book.title() }}</code></div><div>A live dependency. The view updates when the signal changes.</div></div>
+        <div class="c1-tr"><div>Inside <code>computed(() =&gt; …)</code> or <code>effect(() =&gt; …)</code></div><div>A live dependency of that computed or effect.</div></div>
+        <div id="c1-r3b" class="c1-tr"><div>In a field initializer or constructor, <code>title = book.title()</code></div><div>A plain value, copied once.</div></div>
+      </div>
+    </div>
+
+    <!-- c1-14 the two dailyGoal lines -->
+    <div id="c1-goal" class="clip world" data-start="107.75" data-duration="7.54">
+      <div class="c1-h">Read access without write access</div>
+      <div class="code c1-code" style="top: 360px; font-size: 28px" data-hold>
+<span id="c1-g1" class="ln"><span class="k">readonly</span> dailyGoal = signal(<span class="n">20</span>);                         <span class="c">// anyone can .set() it</span></span>
+<span id="c1-g2" class="ln" style="padding-left: calc(40px + 60ch); text-indent: -60ch"><span class="k">readonly</span> dailyGoal = <span class="k">this</span>._dailyGoal.asReadonly();       <span class="c">// read here, write through the service's methods</span></span>
+      </div>
+    </div>
+
+    <!-- review questions -->
+    <div id="c1-questions" class="clip world note" data-start="115.29" data-duration="21.2">
+      <div class="q-head">Review questions</div>
+      <div class="q-list" data-hold>
+        <div id="c1-q1" class="q">If you deleted this stored value, could you compute it from what remains? If yes, what is it doing in state?</div>
+        <div id="c1-q2" class="q">What hidden non-signal inputs does each <code>computed</code> read?</div>
+        <div id="c1-q3" class="q">Is this server state or client state? If it is server state, who invalidates it?</div>
+        <div id="c1-q4" class="q">Would this value belong in the URL?</div>
+        <div id="c1-q5" class="q">What is the worst value any component could put into this service's state?</div>
+      </div>
+    </div>
+
+    <!-- pause -->
+    <div id="c1-pause" class="clip world" data-start="136.49" data-duration="3.5">
+      <div class="pause-1">Pause here.</div>
+      <div id="c1-pause-2" class="pause-2" data-hold>Now do exercise 01.</div>
+    </div>
+
+    <audio id="c1-bed" class="clip" src="assets/music/bed.mp3" data-start="0" data-duration="3" data-media-start="35" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="c1-bed2" class="clip" src="assets/music/bed.mp3" data-start="115.29" data-duration="21.2" data-media-start="95" data-volume="0.12" data-fade-in="0.6" data-fade-out="1"></audio>
+    <audio id="vo-c1-1" class="clip" src="assets/vo/c1-1.wav" data-start="3" data-duration="6.101" data-volume="1"></audio>
+    <audio id="vo-c1-2" class="clip" src="assets/vo/c1-2.wav" data-start="9.45" data-duration="7.381" data-volume="1"></audio>
+    <audio id="vo-c1-3" class="clip" src="assets/vo/c1-3.wav" data-start="17.18" data-duration="7.253" data-volume="1"></audio>
+    <audio id="vo-c1-4" class="clip" src="assets/vo/c1-4.wav" data-start="24.79" data-duration="7.275" data-volume="1"></audio>
+    <audio id="vo-c1-5" class="clip" src="assets/vo/c1-5.wav" data-start="32.41" data-duration="8.512" data-volume="1"></audio>
+    <audio id="vo-c1-6" class="clip" src="assets/vo/c1-6.wav" data-start="41.27" data-duration="7.765" data-volume="1"></audio>
+    <audio id="vo-c1-7" class="clip" src="assets/vo/c1-7.wav" data-start="49.39" data-duration="8.064" data-volume="1"></audio>
+    <audio id="vo-c1-8" class="clip" src="assets/vo/c1-8.wav" data-start="57.8" data-duration="7.168" data-volume="1"></audio>
+    <audio id="vo-c1-9" class="clip" src="assets/vo/c1-9.wav" data-start="65.32" data-duration="10.923" data-volume="1"></audio>
+    <audio id="vo-c1-10" class="clip" src="assets/vo/c1-10.wav" data-start="76.59" data-duration="7.083" data-volume="1"></audio>
+    <audio id="vo-c1-11" class="clip" src="assets/vo/c1-11.wav" data-start="84.03" data-duration="7.872" data-volume="1"></audio>
+    <audio id="vo-c1-12" class="clip" src="assets/vo/c1-12.wav" data-start="92.25" data-duration="8.832" data-volume="1"></audio>
+    <audio id="vo-c1-13" class="clip" src="assets/vo/c1-13.wav" data-start="101.43" data-duration="5.973" data-volume="1"></audio>
+    <audio id="vo-c1-14" class="clip" src="assets/vo/c1-14.wav" data-start="107.75" data-duration="7.189" data-volume="1"></audio>
+    <audio id="vo-c1-end" class="clip" src="assets/vo/c1-end.wav" data-start="115.29" data-duration="2.133" data-volume="1"></audio>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const SOFT = "#f5e2d9", SOFT0 = "rgba(245, 226, 217, 0)";
+    const INK = "#1d1b18", RULE = "#c4b9a6", ACCENT = "#b8321f";
+    const fadeIn = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d, ease: "power3.out" }, at);
+    const band = (sel, at) => tl.fromTo(sel, { backgroundColor: SOFT0 }, { backgroundColor: SOFT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+    const unband = (sel, at) => tl.to(sel, { backgroundColor: SOFT0, duration: 0.4, ease: "power2.inOut" }, at);
+    const draw = (sel, at, d = 0.5) => tl.fromTo(sel, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+    const lit = (sel, at) => tl.fromTo(sel, { borderColor: RULE, color: INK }, { borderColor: ACCENT, color: ACCENT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, at);
+
+    // chapter card: on screen from frame 0, the time with no fade
+
+    // c1-1: the loans go out on "The first loans go out"
+    for (let i = 1; i <= 4; i++) fadeIn("#c1-l" + i, 4.4 + (i - 1) * 0.15, 0.5);
+
+    // c1-2: question one on "Is it a fact", question two on "who may change it"
+    fadeIn("#c1-q-a", 12.0);
+    fadeIn("#c1-q-b", 15.3);
+
+    // c1-3: the tree draws on top down as each value is named; c1-4: dueOn turns hot
+    fadeIn("#c1-n-loan", 17.4, 0.5);
+    draw("#c1-e0", 18.1);
+    fadeIn("#c1-n-out", 18.5, 0.5);
+    fadeIn("#c1-n-tier", 19.8, 0.5);
+    draw("#c1-e1", 20.8);
+    fadeIn("#c1-n-days", 21.2, 0.5);
+    draw("#c1-e2", 21.6);
+    fadeIn("#c1-n-due", 22.0, 0.5);
+    draw("#c1-e3", 22.8);
+    fadeIn("#c1-n-over", 23.2, 0.5);
+    lit("#c1-n-due", 25.0);
+
+    // c1-5: band on dueOn on "computed turns a view", then on this.clock.now() on "the clock is a signal"
+    ["#c1-cl-due1", "#c1-cl-due2", "#c1-cl-due3"].forEach((s) => band(s, 32.7));
+    ["#c1-cl-due1", "#c1-cl-due2", "#c1-cl-due3"].forEach((s) => unband(s, 36.4));
+    band("#c1-cl-now", 36.4);
+
+    // c1-6: the band widens to the isOverdue line
+    unband("#c1-cl-now", 41.5);
+    band("#c1-cl-over", 41.5);
+
+    // c1-7: one label per hidden input as it is named
+    fadeIn("#c1-hi1", 53.6, 0.5);
+    fadeIn("#c1-hi2", 54.6, 0.5);
+    fadeIn("#c1-hi3", 55.6, 0.5);
+    fadeIn("#c1-hi4", 56.5, 0.5);
+
+    // c1-8: band on the library's rule on "If the library fixes the due date"
+    band("#c1-imp-rule", 61.0);
+
+    // c1-9: the band follows the row being read
+    band("#c1-r1", 68.6);
+    unband("#c1-r1", 69.8);
+    band("#c1-r2", 69.8);
+    unband("#c1-r2", 72.2);
+    band("#c1-r3", 72.2);
+
+    // c1-10: the title field takes focus on "starts from the book's data"
+    tl.fromTo("#c1-in-title", { borderColor: RULE }, { borderColor: ACCENT, duration: 0.4, ease: "power2.inOut", immediateRender: false }, 78.8);
+
+    // c1-11: band on source on "Its source is the book's ID"; c1-12: on computation on "Follow the title"
+    band("#c1-d-src", 87.7);
+    unband("#c1-d-src", 92.5);
+    band("#c1-d-comp", 92.5);
+
+    // c1-13: the field initializer row banded
+    band("#c1-r3b", 101.8);
+
+    // c1-14: band on the public signal, then on the read-only view
+    band("#c1-g1", 108.3);
+    unband("#c1-g1", 111.6);
+    band("#c1-g2", 111.6);
+
+    // questions 0.6 s apart, then hold; pause card
+    for (let i = 1; i <= 5; i++) fadeIn("#c1-q" + i, 115.7 + (i - 1) * 0.6);
+    fadeIn("#c1-pause-2", 136.99);
+
+    window.__timelines["c1"] = tl;
+  </script>
+</template>
