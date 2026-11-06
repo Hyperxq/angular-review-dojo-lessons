@@ -1,0 +1,436 @@
+{
+  "total": 692.02,
+  "scenes": [
+    {
+      "id": "c0",
+      "start": 0.0,
+      "duration": 138.92,
+      "clips": [
+        {
+          "id": "c0-1",
+          "start": 3.0,
+          "duration": 8.811
+        },
+        {
+          "id": "c0-1b",
+          "start": 12.16,
+          "duration": 5.504
+        },
+        {
+          "id": "c0-2",
+          "start": 18.02,
+          "duration": 10.795
+        },
+        {
+          "id": "c0-3",
+          "start": 29.16,
+          "duration": 9.707
+        },
+        {
+          "id": "c0-4",
+          "start": 39.22,
+          "duration": 10.027
+        },
+        {
+          "id": "c0-5",
+          "start": 49.59,
+          "duration": 10.005
+        },
+        {
+          "id": "c0-6",
+          "start": 59.95,
+          "duration": 11.755
+        },
+        {
+          "id": "c0-7",
+          "start": 72.05,
+          "duration": 10.645
+        },
+        {
+          "id": "c0-8",
+          "start": 83.05,
+          "duration": 9.835
+        },
+        {
+          "id": "c0-9",
+          "start": 93.23,
+          "duration": 9.088
+        },
+        {
+          "id": "c0-10",
+          "start": 102.67,
+          "duration": 5.717
+        },
+        {
+          "id": "c0-11",
+          "start": 108.74,
+          "duration": 9.621
+        },
+        {
+          "id": "c0-12",
+          "start": 118.71,
+          "duration": 7.872
+        },
+        {
+          "id": "c0-13",
+          "start": 126.93,
+          "duration": 10.987
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        }
+      }
+    },
+    {
+      "id": "c1",
+      "start": 138.92,
+      "duration": 177.38,
+      "clips": [
+        {
+          "id": "c1-1",
+          "start": 3.0,
+          "duration": 6.933
+        },
+        {
+          "id": "c1-2",
+          "start": 10.28,
+          "duration": 9.216
+        },
+        {
+          "id": "c1-3",
+          "start": 19.85,
+          "duration": 8.256
+        },
+        {
+          "id": "c1-4",
+          "start": 28.45,
+          "duration": 7.808
+        },
+        {
+          "id": "c1-5",
+          "start": 36.61,
+          "duration": 9.109
+        },
+        {
+          "id": "c1-6",
+          "start": 46.07,
+          "duration": 6.741
+        },
+        {
+          "id": "c1-7",
+          "start": 53.16,
+          "duration": 5.611
+        },
+        {
+          "id": "c1-8",
+          "start": 59.12,
+          "duration": 10.795
+        },
+        {
+          "id": "c1-9",
+          "start": 70.27,
+          "duration": 8.683
+        },
+        {
+          "id": "c1-10",
+          "start": 79.3,
+          "duration": 9.045
+        },
+        {
+          "id": "c1-11",
+          "start": 88.7,
+          "duration": 9.749
+        },
+        {
+          "id": "c1-12",
+          "start": 98.8,
+          "duration": 7.04
+        },
+        {
+          "id": "c1-13",
+          "start": 106.19,
+          "duration": 9.813
+        },
+        {
+          "id": "c1-14",
+          "start": 116.35,
+          "duration": 11.755
+        },
+        {
+          "id": "c1-15",
+          "start": 128.45,
+          "duration": 6.613
+        },
+        {
+          "id": "c1-16",
+          "start": 135.42,
+          "duration": 3.413
+        },
+        {
+          "id": "c1-end",
+          "start": 139.18,
+          "duration": 2.133
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 139.18,
+          "duration": 34.7,
+          "items": [
+            "Put the mouse away. Can every action that has a click handler be done with Tab, Enter, Space or the arrow keys?",
+            "Open the accessibility pane for this component. Does each node's role and name match what a sighted user sees?",
+            "A toolbar button shows only the text \"More\". What does a voice-control user say to press it, and what does a screen reader user hear in the list of buttons?",
+            "Grade a tooltip that appears only on mouse hover and holds the only explanation of a late fee.",
+            "After every Tab, can you see where the focus is, and is the focused element at least partly on screen?"
+          ]
+        },
+        "pause": {
+          "start": 173.88,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c2",
+      "start": 316.3,
+      "duration": 223.47,
+      "clips": [
+        {
+          "id": "c2-1",
+          "start": 3.0,
+          "duration": 6.997
+        },
+        {
+          "id": "c2-2",
+          "start": 10.35,
+          "duration": 8.32
+        },
+        {
+          "id": "c2-3",
+          "start": 19.02,
+          "duration": 8.491
+        },
+        {
+          "id": "c2-4",
+          "start": 27.86,
+          "duration": 8.341
+        },
+        {
+          "id": "c2-5",
+          "start": 36.55,
+          "duration": 7.531
+        },
+        {
+          "id": "c2-6",
+          "start": 44.43,
+          "duration": 10.709
+        },
+        {
+          "id": "c2-7",
+          "start": 55.49,
+          "duration": 10.283
+        },
+        {
+          "id": "c2-8",
+          "start": 66.12,
+          "duration": 9.835
+        },
+        {
+          "id": "c2-9",
+          "start": 76.31,
+          "duration": 9.749
+        },
+        {
+          "id": "c2-10",
+          "start": 86.41,
+          "duration": 9.216
+        },
+        {
+          "id": "c2-11",
+          "start": 95.97,
+          "duration": 9.045
+        },
+        {
+          "id": "c2-12",
+          "start": 105.37,
+          "duration": 9.429
+        },
+        {
+          "id": "c2-13",
+          "start": 115.15,
+          "duration": 10.624
+        },
+        {
+          "id": "c2-13b",
+          "start": 126.12,
+          "duration": 7.467
+        },
+        {
+          "id": "c2-13c",
+          "start": 133.94,
+          "duration": 8.043
+        },
+        {
+          "id": "c2-14",
+          "start": 142.33,
+          "duration": 8.704
+        },
+        {
+          "id": "c2-15",
+          "start": 151.38,
+          "duration": 9.472
+        },
+        {
+          "id": "c2-15b",
+          "start": 161.21,
+          "duration": 7.893
+        },
+        {
+          "id": "c2-16",
+          "start": 169.45,
+          "duration": 10.261
+        },
+        {
+          "id": "c2-17",
+          "start": 180.06,
+          "duration": 11.157
+        },
+        {
+          "id": "c2-end",
+          "start": 191.57,
+          "duration": 2.155
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 191.57,
+          "duration": 28.4,
+          "items": [
+            "For one custom widget in the exercise, write its contract (roles and states, keys, focus) next to the template and compare line by line.",
+            "What would a native element cost here? If native does not fit, why not a maintained library?",
+            "A toast library announces every message assertively. When is that wrong, and for whom?",
+            "Your team uses `<dialog>` with `showModal()`, and a reviewer asks for a hand-rolled focus trap on top. What do you answer?",
+            "Whenever something appears or disappears, where is focus afterwards, and who decided?"
+          ]
+        },
+        "pause": {
+          "start": 219.97,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c3",
+      "start": 539.77,
+      "duration": 152.26,
+      "clips": [
+        {
+          "id": "c3-1",
+          "start": 3.0,
+          "duration": 6.635
+        },
+        {
+          "id": "c3-2",
+          "start": 9.98,
+          "duration": 8.768
+        },
+        {
+          "id": "c3-3",
+          "start": 19.1,
+          "duration": 10.197
+        },
+        {
+          "id": "c3-4",
+          "start": 29.65,
+          "duration": 7.744
+        },
+        {
+          "id": "c3-5",
+          "start": 37.74,
+          "duration": 7.808
+        },
+        {
+          "id": "c3-6",
+          "start": 45.9,
+          "duration": 8.064
+        },
+        {
+          "id": "c3-7",
+          "start": 54.32,
+          "duration": 9.749
+        },
+        {
+          "id": "c3-8",
+          "start": 64.42,
+          "duration": 9.429
+        },
+        {
+          "id": "c3-9",
+          "start": 74.19,
+          "duration": 9.643
+        },
+        {
+          "id": "c3-10",
+          "start": 84.19,
+          "duration": 8.917
+        },
+        {
+          "id": "c3-11",
+          "start": 93.45,
+          "duration": 4.331
+        },
+        {
+          "id": "c3-end",
+          "start": 98.13,
+          "duration": 2.091
+        },
+        {
+          "id": "c3-after",
+          "start": 128.58,
+          "duration": 9.835
+        },
+        {
+          "id": "c3-afterb",
+          "start": 138.77,
+          "duration": 7.189
+        },
+        {
+          "id": "c3-close",
+          "start": 146.31,
+          "duration": 4.949
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 98.13,
+          "duration": 26.6,
+          "items": [
+            "For each change in the exercise that replaces content: what would a page load have done here, and which of those things does the code do?",
+            "A search result count updates while the user types. Announce it on every keystroke, after a pause, or never? Why?",
+            "Grade a chart whose series differ only by colour, first in a report read once a year, then in a dashboard used daily.",
+            "Take a grayscale screenshot and turn off the screen. Is any information lost?"
+          ]
+        },
+        "pause": {
+          "start": 124.73,
+          "duration": 3.5
+        }
+      }
+    }
+  ]
+}
