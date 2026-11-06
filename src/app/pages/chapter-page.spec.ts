@@ -129,7 +129,7 @@ describe('ChapterPage', () => {
       const video = el.querySelector<HTMLVideoElement>('.watch video')!;
 
       expect(el.querySelector('.watch h2')!.textContent).toBe('Watch the lesson');
-      expect(video.getAttribute('src')).toBe('videos/forms-lesson.mp4');
+      expect(video.getAttribute('src')).toBe('https://github.com/Hyperxq/angular-review-dojo-lessons/releases/download/videos-batch-1/forms-lesson.mp4');
       expect(video.getAttribute('aria-label')).toBe('Forms lesson video');
       expect(video.controls).toBe(true);
       expect(video.getAttribute('preload')).toBe('metadata');
@@ -155,7 +155,7 @@ describe('ChapterPage', () => {
       fixture.detectChanges();
       const video = el.querySelector<HTMLVideoElement>('.watch video')!;
       expect(button.getAttribute('aria-expanded')).toBe('true');
-      expect(video.getAttribute('src')).toBe('videos/forms-lesson.mp4#t=65.2,130');
+      expect(video.getAttribute('src')).toBe('https://github.com/Hyperxq/angular-review-dojo-lessons/releases/download/videos-batch-1/forms-lesson.mp4#t=65.2,130');
       expect(video.getAttribute('aria-label')).toBe('Forms lesson video, chapter 1');
     });
 
@@ -164,7 +164,7 @@ describe('ChapterPage', () => {
       el.querySelector<HTMLButtonElement>('.watch button')!.click();
       fixture.detectChanges();
 
-      expect(el.querySelector('.watch video')!.getAttribute('src')).toBe('videos/forms-lesson.mp4#t=130');
+      expect(el.querySelector('.watch video')!.getAttribute('src')).toBe('https://github.com/Hyperxq/angular-review-dojo-lessons/releases/download/videos-batch-1/forms-lesson.mp4#t=130');
     });
 
     it('is hidden in reading mode', async () => {

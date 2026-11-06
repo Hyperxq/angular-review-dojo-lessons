@@ -78,7 +78,7 @@ export class ChapterPage {
     const video = this.catalog.video(this.topic());
     const page = this.current();
     if (!video || !page) return null;
-    const src = `videos/${video.file}`;
+    const src = `https://github.com/Hyperxq/angular-review-dojo-lessons/releases/download/${video.release}/${video.file}`;
     const label = `${this.name()} lesson video`;
     if (page.slug === 'intro') return { src, label, length: clock(video.duration), start: null };
     const i = video.chapters.findIndex((c) => c.number === page.chapter?.number);

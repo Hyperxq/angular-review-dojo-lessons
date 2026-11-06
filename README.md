@@ -55,8 +55,8 @@ A topic's intro page plays its lesson video, and each chapter page has a "Watch 
 video cut to that chapter (a `#t=start,end` media fragment, so it starts there and stops where the next chapter
 begins). Topics without a video show none. Reading mode hides it.
 
-The mp4 files are not in git. They are assets of GitHub releases of this repo, and the deploy downloads each one into
-the site as `videos/<file>`. To add videos:
+The mp4 files are not in git or on the Pages site. They are assets of GitHub releases of this repo, and the reader plays
+each one from its release download URL (`releases/download/<release>/<file>`). To add videos:
 
 1. Publish a release with the mp4 files as assets, for example `gh release create videos-batch-2 *.mp4`.
 2. Add one entry per video to `public/videos.json` and push it to `master`:
@@ -68,8 +68,7 @@ the site as `videos/<file>`. To add videos:
 
    `duration` and each chapter's `start` are seconds into the video; `number` is the lesson's chapter number.
 
-Publishing a release also redeploys the site (the workflow hands over to a `master` run, the only ref the
-`github-pages` environment lets deploy). Pages sites are limited to 1 GB, so keep the videos well under that.
+The push to `master` redeploys the site with the new `videos.json`; the release itself needs no deploy.
 
 The exercise command on each chapter is the one from the dojo README:
 `npm test -- --watch=false --include='src/app/exercises/<topic>/<NN-slug>/**/*.spec.ts'`.

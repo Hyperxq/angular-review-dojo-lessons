@@ -15,7 +15,7 @@ export interface LessonEntry {
   }[];
 }
 
-/** public/videos.json: each lesson video is an asset of a GitHub release, downloaded into videos/ at deploy time. */
+/** public/videos.json: each lesson video is an asset of a GitHub release, played from its download URL. */
 export interface VideoIndex {
   readonly videos: readonly LessonVideo[];
 }
