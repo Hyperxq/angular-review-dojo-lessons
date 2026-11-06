@@ -1,0 +1,404 @@
+{
+  "total": 610.24,
+  "scenes": [
+    {
+      "id": "c0",
+      "start": 0.0,
+      "duration": 113.56,
+      "clips": [
+        {
+          "id": "c0-1",
+          "start": 3.0,
+          "duration": 9.792
+        },
+        {
+          "id": "c0-1b",
+          "start": 13.14,
+          "duration": 7.936
+        },
+        {
+          "id": "c0-1c",
+          "start": 21.43,
+          "duration": 5.568
+        },
+        {
+          "id": "c0-2",
+          "start": 27.35,
+          "duration": 8.235
+        },
+        {
+          "id": "c0-2b",
+          "start": 35.93,
+          "duration": 7.744
+        },
+        {
+          "id": "c0-2c",
+          "start": 44.02,
+          "duration": 7.893
+        },
+        {
+          "id": "c0-3",
+          "start": 52.27,
+          "duration": 8.768
+        },
+        {
+          "id": "c0-3b",
+          "start": 61.39,
+          "duration": 7.979
+        },
+        {
+          "id": "c0-4",
+          "start": 69.72,
+          "duration": 10.496
+        },
+        {
+          "id": "c0-5",
+          "start": 80.56,
+          "duration": 11.691
+        },
+        {
+          "id": "c0-6",
+          "start": 92.6,
+          "duration": 9.749
+        },
+        {
+          "id": "c0-7",
+          "start": 102.7,
+          "duration": 9.856
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        }
+      }
+    },
+    {
+      "id": "c1",
+      "start": 113.56,
+      "duration": 186.89,
+      "clips": [
+        {
+          "id": "c1-1",
+          "start": 3.0,
+          "duration": 7.787
+        },
+        {
+          "id": "c1-2",
+          "start": 11.14,
+          "duration": 7.957
+        },
+        {
+          "id": "c1-3",
+          "start": 19.44,
+          "duration": 8.768
+        },
+        {
+          "id": "c1-4",
+          "start": 28.56,
+          "duration": 8.213
+        },
+        {
+          "id": "c1-5",
+          "start": 37.12,
+          "duration": 9.195
+        },
+        {
+          "id": "c1-5b",
+          "start": 46.67,
+          "duration": 9.045
+        },
+        {
+          "id": "c1-6",
+          "start": 56.06,
+          "duration": 9.451
+        },
+        {
+          "id": "c1-7",
+          "start": 65.87,
+          "duration": 6.784
+        },
+        {
+          "id": "c1-8",
+          "start": 73.0,
+          "duration": 8.725
+        },
+        {
+          "id": "c1-9",
+          "start": 82.08,
+          "duration": 8.725
+        },
+        {
+          "id": "c1-9b",
+          "start": 91.15,
+          "duration": 6.315
+        },
+        {
+          "id": "c1-10",
+          "start": 97.82,
+          "duration": 10.197
+        },
+        {
+          "id": "c1-11",
+          "start": 108.36,
+          "duration": 11.605
+        },
+        {
+          "id": "c1-11b",
+          "start": 120.32,
+          "duration": 8.96
+        },
+        {
+          "id": "c1-12",
+          "start": 129.63,
+          "duration": 9.707
+        },
+        {
+          "id": "c1-12b",
+          "start": 139.68,
+          "duration": 5.717
+        },
+        {
+          "id": "c1-13",
+          "start": 145.75,
+          "duration": 11.285
+        },
+        {
+          "id": "c1-end",
+          "start": 157.39,
+          "duration": 2.091
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 157.39,
+          "duration": 26.0,
+          "items": [
+            "For each service: if the page showed this component twice, how many instances would exist, and does the state need that many?",
+            "Who else can reach this instance by climbing the tree? Is everyone who can reach it supposed to share it?",
+            "For each `inject()` call, including those hidden in `injectX()` helpers: on which line does it run, and is that line inside an injection context?",
+            "Would this class be simpler as a function, a component signal or a token?"
+          ]
+        },
+        "pause": {
+          "start": 183.39,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c2",
+      "start": 300.44,
+      "duration": 156.96,
+      "clips": [
+        {
+          "id": "c2-1",
+          "start": 3.0,
+          "duration": 7.936
+        },
+        {
+          "id": "c2-2",
+          "start": 11.29,
+          "duration": 5.333
+        },
+        {
+          "id": "c2-3",
+          "start": 16.97,
+          "duration": 6.549
+        },
+        {
+          "id": "c2-3b",
+          "start": 23.87,
+          "duration": 10.688
+        },
+        {
+          "id": "c2-4",
+          "start": 34.91,
+          "duration": 10.411
+        },
+        {
+          "id": "c2-5",
+          "start": 45.67,
+          "duration": 7.915
+        },
+        {
+          "id": "c2-6",
+          "start": 53.93,
+          "duration": 8.917
+        },
+        {
+          "id": "c2-7",
+          "start": 63.2,
+          "duration": 11.883
+        },
+        {
+          "id": "c2-8",
+          "start": 75.43,
+          "duration": 10.816
+        },
+        {
+          "id": "c2-8b",
+          "start": 86.6,
+          "duration": 3.925
+        },
+        {
+          "id": "c2-9",
+          "start": 90.87,
+          "duration": 9.835
+        },
+        {
+          "id": "c2-9b",
+          "start": 101.06,
+          "duration": 6.891
+        },
+        {
+          "id": "c2-10",
+          "start": 108.3,
+          "duration": 8.853
+        },
+        {
+          "id": "c2-10b",
+          "start": 117.5,
+          "duration": 8.405
+        },
+        {
+          "id": "c2-end",
+          "start": 126.26,
+          "duration": 2.027
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 126.26,
+          "duration": 27.2,
+          "items": [
+            "For one `provideX()` function in the exercise, read each provider as a sentence: which token, which recipe, how many times?",
+            "Could a consumer use this feature, and replace any of its dependencies in a test, without knowing an internal token?",
+            "Where a token is registered more than once: is the intent \"replace\" or \"collect\", and what happens in a production build if the code says the other one?",
+            "Where two tokens or two classes meet: does anyone need them to be the same object?"
+          ]
+        },
+        "pause": {
+          "start": 153.46,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c3",
+      "start": 457.4,
+      "duration": 152.84,
+      "clips": [
+        {
+          "id": "c3-1",
+          "start": 3.0,
+          "duration": 7.125
+        },
+        {
+          "id": "c3-2",
+          "start": 10.47,
+          "duration": 7.829
+        },
+        {
+          "id": "c3-2b",
+          "start": 18.65,
+          "duration": 5.269
+        },
+        {
+          "id": "c3-3",
+          "start": 24.27,
+          "duration": 6.315
+        },
+        {
+          "id": "c3-3b",
+          "start": 30.94,
+          "duration": 11.115
+        },
+        {
+          "id": "c3-4",
+          "start": 42.4,
+          "duration": 10.283
+        },
+        {
+          "id": "c3-4b",
+          "start": 53.04,
+          "duration": 8.0
+        },
+        {
+          "id": "c3-5",
+          "start": 61.39,
+          "duration": 8.576
+        },
+        {
+          "id": "c3-5b",
+          "start": 70.31,
+          "duration": 8.256
+        },
+        {
+          "id": "c3-5c",
+          "start": 78.92,
+          "duration": 6.421
+        },
+        {
+          "id": "c3-6",
+          "start": 85.69,
+          "duration": 7.701
+        },
+        {
+          "id": "c3-7",
+          "start": 93.74,
+          "duration": 12.181
+        },
+        {
+          "id": "c3-end",
+          "start": 106.27,
+          "duration": 2.091
+        },
+        {
+          "id": "c3-after",
+          "start": 136.42,
+          "duration": 5.184
+        },
+        {
+          "id": "c3-afterb",
+          "start": 141.95,
+          "duration": 7.573
+        },
+        {
+          "id": "c3-close",
+          "start": 149.88,
+          "duration": 1.963
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 106.27,
+          "duration": 26.3,
+          "items": [
+            "Draw the injector tree for the area: root, every route with `providers`, every component with `providers`. How many times is each service provided?",
+            "For each pair of components that must agree on some state: do they reach the same node of the tree?",
+            "For each instance provided below root: who can see it, and how long does it actually live?",
+            "A new interceptor is added in root next month. Which areas of the app will it miss, and would anyone notice?"
+          ]
+        },
+        "pause": {
+          "start": 132.57,
+          "duration": 3.5
+        }
+      }
+    }
+  ]
+}
