@@ -1,0 +1,441 @@
+{
+  "total": 653.51,
+  "scenes": [
+    {
+      "id": "c0",
+      "start": 0.0,
+      "duration": 125.19,
+      "clips": [
+        {
+          "id": "c0-1",
+          "start": 3.0,
+          "duration": 11.008
+        },
+        {
+          "id": "c0-1b",
+          "start": 14.36,
+          "duration": 4.16
+        },
+        {
+          "id": "c0-2",
+          "start": 18.87,
+          "duration": 7.851
+        },
+        {
+          "id": "c0-3",
+          "start": 27.07,
+          "duration": 10.176
+        },
+        {
+          "id": "c0-3b",
+          "start": 37.59,
+          "duration": 10.837
+        },
+        {
+          "id": "c0-4",
+          "start": 48.78,
+          "duration": 9.941
+        },
+        {
+          "id": "c0-5",
+          "start": 59.07,
+          "duration": 10.624
+        },
+        {
+          "id": "c0-6",
+          "start": 70.05,
+          "duration": 9.28
+        },
+        {
+          "id": "c0-6b",
+          "start": 79.68,
+          "duration": 8.64
+        },
+        {
+          "id": "c0-7",
+          "start": 88.67,
+          "duration": 8.661
+        },
+        {
+          "id": "c0-8",
+          "start": 97.68,
+          "duration": 8.917
+        },
+        {
+          "id": "c0-9",
+          "start": 106.94,
+          "duration": 8.512
+        },
+        {
+          "id": "c0-10",
+          "start": 115.81,
+          "duration": 8.384
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        }
+      }
+    },
+    {
+      "id": "c1",
+      "start": 125.19,
+      "duration": 116.86,
+      "clips": [
+        {
+          "id": "c1-1",
+          "start": 3.0,
+          "duration": 6.528
+        },
+        {
+          "id": "c1-2",
+          "start": 9.88,
+          "duration": 7.36
+        },
+        {
+          "id": "c1-3",
+          "start": 17.59,
+          "duration": 10.219
+        },
+        {
+          "id": "c1-4",
+          "start": 28.16,
+          "duration": 10.581
+        },
+        {
+          "id": "c1-5",
+          "start": 39.09,
+          "duration": 9.387
+        },
+        {
+          "id": "c1-5b",
+          "start": 48.83,
+          "duration": 6.805
+        },
+        {
+          "id": "c1-6",
+          "start": 55.98,
+          "duration": 8.512
+        },
+        {
+          "id": "c1-7",
+          "start": 64.84,
+          "duration": 7.637
+        },
+        {
+          "id": "c1-8",
+          "start": 72.83,
+          "duration": 8.832
+        },
+        {
+          "id": "c1-8b",
+          "start": 82.01,
+          "duration": 9.195
+        },
+        {
+          "id": "c1-end",
+          "start": 91.56,
+          "duration": 2.347
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 91.56,
+          "duration": 21.8,
+          "items": [
+            "Sort, filter and refresh each list. Which DOM nodes survive (`$0.isConnected`), and does the DOM state in each row stay with the right item?",
+            "For each `@for`: what does its `track` key identify?",
+            "Which template expressions call a function? How long does one call take, times how many rows, times how many checks per click?",
+            "What would you measure, on what device, to show this matters?"
+          ]
+        },
+        "pause": {
+          "start": 113.36,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c2",
+      "start": 242.05,
+      "duration": 113.25,
+      "clips": [
+        {
+          "id": "c2-1",
+          "start": 3.0,
+          "duration": 4.971
+        },
+        {
+          "id": "c2-2",
+          "start": 8.32,
+          "duration": 7.595
+        },
+        {
+          "id": "c2-3",
+          "start": 16.27,
+          "duration": 9.472
+        },
+        {
+          "id": "c2-4",
+          "start": 26.09,
+          "duration": 9.771
+        },
+        {
+          "id": "c2-4b",
+          "start": 36.21,
+          "duration": 11.627
+        },
+        {
+          "id": "c2-5",
+          "start": 48.19,
+          "duration": 7.317
+        },
+        {
+          "id": "c2-6",
+          "start": 55.85,
+          "duration": 7.189
+        },
+        {
+          "id": "c2-6b",
+          "start": 63.39,
+          "duration": 7.296
+        },
+        {
+          "id": "c2-7",
+          "start": 71.04,
+          "duration": 10.261
+        },
+        {
+          "id": "c2-end",
+          "start": 81.65,
+          "duration": 2.155
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 81.65,
+          "duration": 28.1,
+          "items": [
+            "For each signal holding an object or array: is it ever changed in place instead of being set to a new value?",
+            "For each OnPush child: when its parent's state changes, does the child receive a new reference?",
+            "How many times does each expensive function or getter run for one check of the template, counting calls from other methods?",
+            "For each `effect`, what does it write to, and could the value be derived at read time?",
+            "What would you measure, on what device, to show this matters?"
+          ]
+        },
+        "pause": {
+          "start": 109.75,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c3",
+      "start": 355.3,
+      "duration": 133.53,
+      "clips": [
+        {
+          "id": "c3-1",
+          "start": 3.0,
+          "duration": 8.533
+        },
+        {
+          "id": "c3-2",
+          "start": 11.88,
+          "duration": 9.109
+        },
+        {
+          "id": "c3-3",
+          "start": 21.34,
+          "duration": 8.384
+        },
+        {
+          "id": "c3-4",
+          "start": 30.08,
+          "duration": 6.165
+        },
+        {
+          "id": "c3-6",
+          "start": 36.59,
+          "duration": 9.664
+        },
+        {
+          "id": "c3-6b",
+          "start": 46.61,
+          "duration": 11.349
+        },
+        {
+          "id": "c3-7",
+          "start": 58.3,
+          "duration": 8.277
+        },
+        {
+          "id": "c3-8",
+          "start": 66.93,
+          "duration": 9.045
+        },
+        {
+          "id": "c3-8b",
+          "start": 76.33,
+          "duration": 10.517
+        },
+        {
+          "id": "c3-9",
+          "start": 87.19,
+          "duration": 6.635
+        },
+        {
+          "id": "c3-10",
+          "start": 94.18,
+          "duration": 8.0
+        },
+        {
+          "id": "c3-end",
+          "start": 102.53,
+          "duration": 2.197
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 102.53,
+          "duration": 27.5,
+          "items": [
+            "Change the data from outside Angular (resize, a server message, a timer firing). Does the screen follow without a click?",
+            "For every listener, timer or observer: who removes it, and when?",
+            "Which image is the largest thing on the first screen? Does the browser fetch it as High priority?",
+            "For each `effect`: list every signal it reads, directly or through the functions it calls. Which of those reads should be allowed to re-run it?",
+            "What would you measure, on what device, to show this matters?"
+          ]
+        },
+        "pause": {
+          "start": 130.03,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c4",
+      "start": 488.82,
+      "duration": 164.69,
+      "clips": [
+        {
+          "id": "c4-1",
+          "start": 3.0,
+          "duration": 9.728
+        },
+        {
+          "id": "c4-2",
+          "start": 13.08,
+          "duration": 9.344
+        },
+        {
+          "id": "c4-3",
+          "start": 22.77,
+          "duration": 7.509
+        },
+        {
+          "id": "c4-3b",
+          "start": 30.63,
+          "duration": 8.149
+        },
+        {
+          "id": "c4-4",
+          "start": 39.13,
+          "duration": 7.744
+        },
+        {
+          "id": "c4-5",
+          "start": 47.22,
+          "duration": 6.997
+        },
+        {
+          "id": "c4-6",
+          "start": 54.57,
+          "duration": 6.08
+        },
+        {
+          "id": "c4-6b",
+          "start": 61.0,
+          "duration": 6.187
+        },
+        {
+          "id": "c4-7",
+          "start": 67.54,
+          "duration": 9.536
+        },
+        {
+          "id": "c4-8",
+          "start": 77.42,
+          "duration": 7.083
+        },
+        {
+          "id": "c4-9",
+          "start": 84.86,
+          "duration": 11.776
+        },
+        {
+          "id": "c4-10",
+          "start": 96.98,
+          "duration": 10.368
+        },
+        {
+          "id": "c4-end",
+          "start": 107.7,
+          "duration": 2.325
+        },
+        {
+          "id": "c4-after",
+          "start": 148.05,
+          "duration": 7.723
+        },
+        {
+          "id": "c4-afterb",
+          "start": 156.12,
+          "duration": 4.651
+        },
+        {
+          "id": "c4-close",
+          "start": 161.13,
+          "duration": 2.56
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 107.7,
+          "duration": 36.5,
+          "items": [
+            "Which modules are in the initial chunk files? For each one, does the first screen need it?",
+            "For each route: what does the Network panel download on the first navigation to it, and who uses that page?",
+            "For each `@defer` block, or each place that should have one: when does it load, what does the user see before, and does the layout move when it arrives?",
+            "How would you prove a deferred block really got its own chunk?",
+            "Does any import go through a barrel? What else does that barrel bring along?",
+            "Which routes get preloaded, for whom, and on what kind of connection?",
+            "What would you measure, on what device, to show this matters?"
+          ]
+        },
+        "pause": {
+          "start": 144.2,
+          "duration": 3.5
+        }
+      }
+    }
+  ]
+}

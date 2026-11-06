@@ -1,0 +1,459 @@
+{
+  "total": 656.77,
+  "scenes": [
+    {
+      "id": "c0",
+      "start": 0.0,
+      "duration": 84.71,
+      "clips": [
+        {
+          "id": "c0-1",
+          "start": 3.0,
+          "duration": 9.045
+        },
+        {
+          "id": "c0-2",
+          "start": 12.39,
+          "duration": 10.133
+        },
+        {
+          "id": "c0-3",
+          "start": 22.88,
+          "duration": 6.037
+        },
+        {
+          "id": "c0-4",
+          "start": 29.27,
+          "duration": 10.731
+        },
+        {
+          "id": "c0-5",
+          "start": 40.35,
+          "duration": 9.835
+        },
+        {
+          "id": "c0-6",
+          "start": 50.53,
+          "duration": 10.581
+        },
+        {
+          "id": "c0-7",
+          "start": 61.46,
+          "duration": 6.933
+        },
+        {
+          "id": "c0-8",
+          "start": 68.75,
+          "duration": 8.149
+        },
+        {
+          "id": "c0-9",
+          "start": 77.24,
+          "duration": 6.464
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        }
+      }
+    },
+    {
+      "id": "c1",
+      "start": 84.71,
+      "duration": 110.36,
+      "clips": [
+        {
+          "id": "c1-1",
+          "start": 3.0,
+          "duration": 6.827
+        },
+        {
+          "id": "c1-2",
+          "start": 10.18,
+          "duration": 8.299
+        },
+        {
+          "id": "c1-3",
+          "start": 18.83,
+          "duration": 10.219
+        },
+        {
+          "id": "c1-4",
+          "start": 29.39,
+          "duration": 9.131
+        },
+        {
+          "id": "c1-5",
+          "start": 38.88,
+          "duration": 9.6
+        },
+        {
+          "id": "c1-6",
+          "start": 48.83,
+          "duration": 11.563
+        },
+        {
+          "id": "c1-7",
+          "start": 60.74,
+          "duration": 5.952
+        },
+        {
+          "id": "c1-8",
+          "start": 67.04,
+          "duration": 9.024
+        },
+        {
+          "id": "c1-9",
+          "start": 76.41,
+          "duration": 8.896
+        },
+        {
+          "id": "c1-end",
+          "start": 85.66,
+          "duration": 2.091
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 85.66,
+          "duration": 21.2,
+          "items": [
+            "For each URL a user can reach, walk the `Routes` array top to bottom. Which entry does it hit first, and is that the page the link promises?",
+            "Type each URL into a fresh tab instead of clicking. Does every one land where it should?",
+            "When each guard says no, where does the user end up, both from a click and from a bookmark?"
+          ]
+        },
+        "pause": {
+          "start": 106.86,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c2",
+      "start": 195.07,
+      "duration": 125.97,
+      "clips": [
+        {
+          "id": "c2-1",
+          "start": 3.0,
+          "duration": 7.189
+        },
+        {
+          "id": "c2-2",
+          "start": 10.54,
+          "duration": 9.365
+        },
+        {
+          "id": "c2-3",
+          "start": 20.25,
+          "duration": 7.893
+        },
+        {
+          "id": "c2-4",
+          "start": 28.5,
+          "duration": 7.872
+        },
+        {
+          "id": "c2-5",
+          "start": 36.72,
+          "duration": 9.707
+        },
+        {
+          "id": "c2-6",
+          "start": 46.78,
+          "duration": 8.256
+        },
+        {
+          "id": "c2-7",
+          "start": 55.38,
+          "duration": 11.499
+        },
+        {
+          "id": "c2-8",
+          "start": 67.23,
+          "duration": 7.701
+        },
+        {
+          "id": "c2-9",
+          "start": 75.28,
+          "duration": 7.936
+        },
+        {
+          "id": "c2-10",
+          "start": 83.57,
+          "duration": 10.752
+        },
+        {
+          "id": "c2-end",
+          "start": 94.67,
+          "duration": 2.155
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 94.67,
+          "duration": 27.8,
+          "items": [
+            "Go from one item to the next without a reload. Does every value on screen change with the URL?",
+            "Add and remove each query param by hand. What does the page show when one is absent?",
+            "Which route values does the component read, and from where: snapshot, observable, or input?",
+            "Open an id that does not exist. What does the user see, and where does the error go?",
+            "Does each resolver run again when only the query string changes? Count the requests in the Network panel."
+          ]
+        },
+        "pause": {
+          "start": 122.47,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c3",
+      "start": 321.04,
+      "duration": 111.72,
+      "clips": [
+        {
+          "id": "c3-1",
+          "start": 3.0,
+          "duration": 12.096
+        },
+        {
+          "id": "c3-2",
+          "start": 15.45,
+          "duration": 8.448
+        },
+        {
+          "id": "c3-3",
+          "start": 24.24,
+          "duration": 10.005
+        },
+        {
+          "id": "c3-4",
+          "start": 34.6,
+          "duration": 7.445
+        },
+        {
+          "id": "c3-5",
+          "start": 42.39,
+          "duration": 9.515
+        },
+        {
+          "id": "c3-6",
+          "start": 52.26,
+          "duration": 6.187
+        },
+        {
+          "id": "c3-7",
+          "start": 58.8,
+          "duration": 7.872
+        },
+        {
+          "id": "c3-8",
+          "start": 67.02,
+          "duration": 10.411
+        },
+        {
+          "id": "c3-9",
+          "start": 77.78,
+          "duration": 5.589
+        },
+        {
+          "id": "c3-end",
+          "start": 83.72,
+          "duration": 2.197
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 83.72,
+          "duration": 24.5,
+          "items": [
+            "As an anonymous visitor, open each protected URL in a fresh tab with the Network panel open. Which chunks download before you are turned away?",
+            "Subscribe to `router.events` and deny a navigation. Which `NavigationCancel` code does it report?",
+            "After signing in, where does the user land, compared with the URL they typed?",
+            "If preloading were turned on, which guarded chunks would download anyway?",
+            "What does the API return when the same user calls it directly?"
+          ]
+        },
+        "pause": {
+          "start": 108.22,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c4",
+      "start": 432.76,
+      "duration": 98.08,
+      "clips": [
+        {
+          "id": "c4-1",
+          "start": 3.0,
+          "duration": 7.232
+        },
+        {
+          "id": "c4-2",
+          "start": 10.58,
+          "duration": 7.957
+        },
+        {
+          "id": "c4-3",
+          "start": 18.89,
+          "duration": 6.72
+        },
+        {
+          "id": "c4-4",
+          "start": 25.96,
+          "duration": 8.875
+        },
+        {
+          "id": "c4-5",
+          "start": 35.18,
+          "duration": 7.253
+        },
+        {
+          "id": "c4-6",
+          "start": 42.79,
+          "duration": 9.259
+        },
+        {
+          "id": "c4-7",
+          "start": 52.4,
+          "duration": 10.944
+        },
+        {
+          "id": "c4-8",
+          "start": 63.69,
+          "duration": 6.635
+        },
+        {
+          "id": "c4-end",
+          "start": 70.68,
+          "duration": 2.133
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 70.68,
+          "duration": 23.9,
+          "items": [
+            "Open the deepest URL of the feature directly in a new tab. Which components render, and where on the page?",
+            "Click every link and button in the feature and read the address bar. Does each one stay under the feature's prefix?",
+            "Imagine the feature mounted under another prefix. Which links and `navigate` calls would break?",
+            "Suspend the user's access while they are inside the area, then click a sibling link. Which guard runs?"
+          ]
+        },
+        "pause": {
+          "start": 94.58,
+          "duration": 3.5
+        }
+      }
+    },
+    {
+      "id": "c5",
+      "start": 530.83,
+      "duration": 125.94,
+      "clips": [
+        {
+          "id": "c5-1",
+          "start": 3.0,
+          "duration": 8.299
+        },
+        {
+          "id": "c5-2",
+          "start": 11.65,
+          "duration": 7.787
+        },
+        {
+          "id": "c5-3",
+          "start": 19.79,
+          "duration": 7.659
+        },
+        {
+          "id": "c5-4",
+          "start": 27.8,
+          "duration": 7.424
+        },
+        {
+          "id": "c5-5",
+          "start": 35.57,
+          "duration": 9.899
+        },
+        {
+          "id": "c5-6",
+          "start": 45.82,
+          "duration": 9.28
+        },
+        {
+          "id": "c5-7",
+          "start": 55.45,
+          "duration": 4.011
+        },
+        {
+          "id": "c5-8",
+          "start": 59.81,
+          "duration": 9.024
+        },
+        {
+          "id": "c5-9",
+          "start": 69.18,
+          "duration": 7.744
+        },
+        {
+          "id": "c5-end",
+          "start": 77.28,
+          "duration": 2.155
+        },
+        {
+          "id": "c5-after",
+          "start": 109.83,
+          "duration": 9.621
+        },
+        {
+          "id": "c5-close",
+          "start": 119.8,
+          "duration": 5.141
+        }
+      ],
+      "cards": {
+        "chapter": {
+          "start": 0.0,
+          "duration": 3.0
+        },
+        "questions": {
+          "start": 77.28,
+          "duration": 28.7,
+          "items": [
+            "Type into the editor, switch to a sibling tab and back. Is the data still there? How many instances of the state exist (Angular DevTools shows the injector tree)?",
+            "Leave the editor in every way you can: a sibling tab, another page, after saving, without changes. When does the confirmation appear, and does that match when something could be lost?",
+            "Follow each link to a named outlet. Which component ends up in which outlet?",
+            "Visit every page and read the browser tab. What does it say on each one?"
+          ]
+        },
+        "pause": {
+          "start": 105.98,
+          "duration": 3.5
+        }
+      }
+    }
+  ]
+}
